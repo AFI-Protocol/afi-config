@@ -1,0 +1,35 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "AFI Codex Schema",
+  "type": "object",
+  "properties": {
+    "persona": {
+      "type": "string"
+    },
+    "abilities": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "training": {
+      "type": "object",
+      "properties": {
+        "source": {
+          "type": "string"
+        },
+        "date": {
+          "type": "string",
+          "format": "date"
+        }
+      },
+      "required": [
+        "source"
+      ]
+    }
+  },
+  "required": [
+    "persona",
+    "abilities"
+  ]
+}
