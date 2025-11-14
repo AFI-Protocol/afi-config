@@ -1,0 +1,10 @@
+{
+  "version": "0.1.0",
+  "blueprints": [
+    {
+      "id": "mock-validator-flow",
+      "description": "Simulates a PoI validation pipeline using mock data agents.",
+      "entry": "construct_templates/mock_validator_chain.json"
+    }
+  ]
+}
