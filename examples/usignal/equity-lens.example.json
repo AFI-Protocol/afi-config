@@ -1,0 +1,102 @@
+{
+  "schema": "afi.usignal.v1",
+  "lens": "equity",
+  "core": {
+    "cashProxy": "delta_fcf",
+    "measurement": {
+      "window": "P365D",
+      "lag": "P7D",
+      "benchmark": "S&P500"
+    },
+    "frictions": {
+      "fees": "$0",
+      "slippage": "modeled",
+      "taxes": "modeled",
+      "latencyMs": 75
+    },
+    "capacityConstraints": [
+      "sales_seats: 35",
+      "fab_slots: 3"
+    ],
+    "reinvestmentIntensity": {
+      "roiicIntangible": 0.22,
+      "salesToCapital": 0.5
+    },
+    "rights": {
+      "mode": "owned",
+      "exclusive": true
+    },
+    "telemetry": {
+      "decay": {
+        "halfLifeDays": 360,
+        "function": "exp",
+        "params": {
+          "H": 12
+        }
+      }
+    },
+    "terminalDiscipline": {
+      "method": "gordon",
+      "gStable": 0.03,
+      "wacc": 0.09
+    }
+  },
+  "equity": {
+    "entity": {
+      "ticker": "ABC",
+      "asOf": "2025-09-05"
+    },
+    "deltaFCF": {
+      "drivers": [
+        {
+          "name": "price",
+          "delta": 0.03
+        },
+        {
+          "name": "volume",
+          "delta": 0.02
+        },
+        {
+          "name": "unit_cost",
+          "delta": -0.01
+        }
+      ],
+      "reinvestment": {
+        "roiicIntangible": 0.22,
+        "salesToCapital": 0.5
+      },
+      "frictions": {
+        "taxRate": 0.23
+      },
+      "capacityConstraints": [
+        "sales_seats: 35"
+      ]
+    },
+    "scenarios": {
+      "bear": {
+        "margin": 0.12,
+        "sales_growth": 0.0
+      },
+      "base": {
+        "margin": 0.18,
+        "sales_growth": 0.04
+      },
+      "bull": {
+        "margin": 0.24,
+        "sales_growth": 0.08
+      }
+    },
+    "terminal": {
+      "method": "gordon",
+      "g_stable": 0.03,
+      "wacc": 0.09
+    },
+    "statementsReconciled": true
+  },
+  "provenance": {
+    "datasetId": "file-123",
+    "codeCommit": "a1b2c3",
+    "timestamp": "2025-09-05T12:00:00Z"
+  }
+}
+

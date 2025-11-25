@@ -1,0 +1,203 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Universal Core (v2p1)",
+  "type": "object",
+  "properties": {
+    "cashProxy": {
+      "type": "string",
+      "enum": [
+        "delta_fcf",
+        "pnl",
+        "risk_reduction",
+        "capital_efficiency"
+      ]
+    },
+    "measurement": {
+      "type": "object",
+      "properties": {
+        "window": {
+          "type": "string"
+        },
+        "lag": {
+          "type": "string"
+        },
+        "benchmark": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "frictions": {
+      "type": "object",
+      "properties": {
+        "fees": {
+          "type": [
+            "number",
+            "string"
+          ]
+        },
+        "slippage": {
+          "type": [
+            "number",
+            "string"
+          ]
+        },
+        "taxes": {
+          "type": [
+            "number",
+            "string"
+          ]
+        },
+        "latencyMs": {
+          "type": "number"
+        }
+      },
+      "additionalProperties": true
+    },
+    "capacityConstraints": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "maxItems": 8
+    },
+    "reinvestmentIntensity": {
+      "type": "object",
+      "properties": {
+        "roiicIntangible": {
+          "type": "number"
+        },
+        "salesToCapital": {
+          "type": "number"
+        }
+      },
+      "additionalProperties": false
+    },
+    "rights": {
+      "type": "object",
+      "properties": {
+        "mode": {
+          "type": "string",
+          "enum": [
+            "owned",
+            "licensed",
+            "public",
+            "restricted"
+          ]
+        },
+        "exclusive": {
+          "type": "boolean"
+        }
+      },
+      "additionalProperties": false
+    },
+    "telemetry": {
+      "type": "object",
+      "properties": {
+        "decay": {
+          "type": "object",
+          "properties": {
+            "halfLifeDays": {
+              "type": "number"
+            },
+            "function": {
+              "type": "string",
+              "enum": [
+                "exp",
+                "power",
+                "custom"
+              ]
+            },
+            "params": {
+              "type": "object"
+            }
+          },
+          "additionalProperties": false
+        },
+        "greeks": {
+          "type": "object",
+          "description": "Optional, cross-cutting sensitivities. Treated as claimed values; network recomputes and verifies.",
+          "properties": {
+            "thetaPerDay": {
+              "type": "number"
+            },
+            "deltaPer1pctPrice": {
+              "type": "number"
+            },
+            "vegaPer1vol": {
+              "type": "number"
+            },
+            "rhoPer1pctRate": {
+              "type": "number"
+            },
+            "gammaNote": {
+              "type": "string"
+            },
+            "asOf": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "method": {
+              "type": "string",
+              "enum": [
+                "bsm",
+                "surface_fit",
+                "finite_diff",
+                "path_sim",
+                "other"
+              ]
+            },
+            "surfaceId": {
+              "type": "string"
+            },
+            "source": {
+              "type": "string",
+              "enum": [
+                "self",
+                "network"
+              ]
+            },
+            "hedgePolicy": {
+              "type": "object",
+              "properties": {
+                "deltaBand": {
+                  "type": "number"
+                },
+                "rollCadenceDays": {
+                  "type": "number"
+                },
+                "notes": {
+                  "type": "string"
+                }
+              },
+              "additionalProperties": false
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "terminalDiscipline": {
+      "type": "object",
+      "properties": {
+        "method": {
+          "type": "string",
+          "enum": [
+            "gordon",
+            "exit_multiple"
+          ]
+        },
+        "gStable": {
+          "type": "number"
+        },
+        "wacc": {
+          "type": "number"
+        }
+      },
+      "additionalProperties": false,
+      "description": "Only for issuer-style valuations."
+    }
+  },
+  "additionalProperties": true
+}

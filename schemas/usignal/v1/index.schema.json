@@ -1,0 +1,238 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://afi-protocol.org/schemas/usignal/v1/index.schema.json",
+  "title": "AFI Universal Signal Schema - Root (v1)",
+  "description": "Root schema for AFI Universal Signals with lens support. Signals must declare schema version and provenance, with optional lens-specific data.",
+  "type": "object",
+  "required": [
+    "schema",
+    "provenance"
+  ],
+  "properties": {
+    "schema": {
+      "type": "string",
+      "const": "afi.usignal.v1",
+      "description": "Schema version identifier"
+    },
+    "lens": {
+      "type": "string",
+      "description": "Optional lens type identifier. If omitted, intake will auto-detect or treat as generic.",
+      "enum": [
+        "equity",
+        "strategy",
+        "macro",
+        "onchain"
+      ]
+    },
+    "core": {
+      "$ref": "core.schema.json",
+      "description": "Core universal signal fields (cross-cutting)"
+    },
+    "equity": {
+      "description": "Equity/credit lens data (when lens=equity)",
+      "type": "object",
+      "properties": {
+        "entity": {
+          "type": "object",
+          "properties": {
+            "ticker": {
+              "type": "string"
+            },
+            "asOf": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": true
+        },
+        "deltaFCF": {
+          "type": "object",
+          "properties": {
+            "drivers": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "delta": {
+                    "type": "number"
+                  }
+                },
+                "required": [
+                  "name",
+                  "delta"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "reinvestment": {
+              "type": "object",
+              "properties": {
+                "roiicIntangible": {
+                  "type": "number"
+                },
+                "salesToCapital": {
+                  "type": "number"
+                }
+              },
+              "additionalProperties": false
+            },
+            "frictions": {
+              "type": "object",
+              "properties": {
+                "taxRate": {
+                  "type": "number"
+                }
+              },
+              "additionalProperties": true
+            },
+            "capacityConstraints": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          "additionalProperties": true
+        },
+        "scenarios": {
+          "type": "object"
+        },
+        "terminal": {
+          "type": "object",
+          "properties": {
+            "method": {
+              "type": "string"
+            },
+            "g_stable": {
+              "type": "number"
+            },
+            "wacc": {
+              "type": "number"
+            }
+          },
+          "additionalProperties": false
+        },
+        "statementsReconciled": {
+          "type": "boolean"
+        }
+      },
+      "additionalProperties": true
+    },
+    "strategy": {
+      "description": "Strategy lens data (when lens=strategy)",
+      "type": "object",
+      "properties": {
+        "asset": {
+          "type": "string"
+        },
+        "pnlAfterFrictions": {
+          "type": "number"
+        },
+        "frictions": {
+          "type": "object",
+          "properties": {
+            "hedgingCosts": {
+              "type": "number"
+            },
+            "fundingCosts": {
+              "type": "number"
+            }
+          },
+          "additionalProperties": true
+        },
+        "capacity": {
+          "type": "object",
+          "properties": {
+            "maxNotional": {
+              "type": "number"
+            },
+            "slippageAtSizeBps": {
+              "type": "number"
+            }
+          },
+          "additionalProperties": true
+        },
+        "notes": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true
+    },
+    "macro": {
+      "description": "Macro lens data (when lens=macro)",
+      "type": "object",
+      "properties": {
+        "regimeTag": {
+          "type": "string"
+        },
+        "factorAttribution": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        },
+        "financingRate": {
+          "type": "number"
+        }
+      },
+      "additionalProperties": true
+    },
+    "onchain": {
+      "description": "On-chain microstructure lens data (when lens=onchain)",
+      "type": "object",
+      "properties": {
+        "mevCost": {
+          "type": "number"
+        },
+        "gasCost": {
+          "type": "number"
+        },
+        "poolDepthAt1pct": {
+          "type": "number"
+        },
+        "oracleLatencyMs": {
+          "type": "number"
+        },
+        "privateOrderflowAccess": {
+          "type": "boolean"
+        }
+      },
+      "additionalProperties": true
+    },
+    "provenance": {
+      "type": "object",
+      "description": "Signal provenance and lineage",
+      "required": [
+        "timestamp"
+      ],
+      "properties": {
+        "datasetId": {
+          "type": "string",
+          "description": "Source dataset identifier"
+        },
+        "codeCommit": {
+          "type": "string",
+          "description": "Code commit hash that generated this signal"
+        },
+        "seed": {
+          "description": "Random seed for reproducibility",
+          "oneOf": [
+            { "type": "string" },
+            { "type": "number" },
+            { "type": "null" }
+          ]
+        },
+        "timestamp": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Signal generation timestamp (ISO 8601)"
+        }
+      },
+      "additionalProperties": true
+    }
+  },
+  "additionalProperties": true
+}
+

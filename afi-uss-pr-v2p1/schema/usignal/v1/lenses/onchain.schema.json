@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Lens: On-chain Microstructure",
+  "type": "object",
+  "required": [
+    "onchain"
+  ],
+  "properties": {
+    "onchain": {
+      "type": "object",
+      "properties": {
+        "mevCost": {
+          "type": "number"
+        },
+        "gasCost": {
+          "type": "number"
+        },
+        "poolDepthAt1pct": {
+          "type": "number"
+        },
+        "oracleLatencyMs": {
+          "type": "number"
+        },
+        "privateOrderflowAccess": {
+          "type": "boolean"
+        }
+      },
+      "additionalProperties": true
+    }
+  },
+  "additionalProperties": false
+}

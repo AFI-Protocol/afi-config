@@ -1,0 +1,70 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "AFI USS Root (v2p1)",
+  "type": "object",
+  "required": [
+    "schema",
+    "provenance"
+  ],
+  "properties": {
+    "schema": {
+      "type": "string",
+      "const": "afi.usignal.v1"
+    },
+    "lens": {
+      "type": "string",
+      "enum": [
+        "equity",
+        "strategy",
+        "macro",
+        "onchain"
+      ]
+    },
+    "core": {
+      "$ref": "core.schema.json"
+    },
+    "lens_data": {
+      "oneOf": [
+        {
+          "$ref": "lenses/equity.schema.json"
+        },
+        {
+          "$ref": "lenses/strategy.schema.json"
+        },
+        {
+          "$ref": "lenses/macro.schema.json"
+        },
+        {
+          "$ref": "lenses/onchain.schema.json"
+        }
+      ]
+    },
+    "provenance": {
+      "type": "object",
+      "required": [
+        "timestamp"
+      ],
+      "properties": {
+        "datasetId": {
+          "type": "string"
+        },
+        "codeCommit": {
+          "type": "string"
+        },
+        "seed": {
+          "type": [
+            "string",
+            "number",
+            "null"
+          ]
+        },
+        "timestamp": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "additionalProperties": true
+    }
+  },
+  "additionalProperties": true
+}

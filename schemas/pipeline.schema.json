@@ -1,0 +1,135 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://afi-protocol.org/schemas/pipeline.schema.json",
+  "title": "AFI Pipeline Configuration Schema",
+  "description": "Schema for signal processing pipeline configurations in afi-reactor",
+  "type": "object",
+  "required": ["id", "name", "version", "nodes", "edges"],
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "Unique identifier for the pipeline",
+      "pattern": "^[a-z0-9-]+$"
+    },
+    "name": {
+      "type": "string",
+      "description": "Human-readable name of the pipeline",
+      "minLength": 1,
+      "maxLength": 100
+    },
+    "version": {
+      "type": "string",
+      "description": "Semantic version of the pipeline",
+      "pattern": "^\\d+\\.\\d+\\.\\d+$"
+    },
+    "description": {
+      "type": "string",
+      "description": "Detailed description of the pipeline's purpose",
+      "maxLength": 500
+    },
+    "nodes": {
+      "type": "array",
+      "description": "Processing nodes in the pipeline",
+      "items": {
+        "type": "object",
+        "required": ["id", "type"],
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Unique node identifier within the pipeline"
+          },
+          "type": {
+            "type": "string",
+            "description": "Type of processing node",
+            "enum": [
+              "generator",
+              "analyzer",
+              "validator",
+              "executor",
+              "observer",
+              "transformer",
+              "filter"
+            ]
+          },
+          "pluginId": {
+            "type": "string",
+            "description": "Reference to plugin that implements this node"
+          },
+          "config": {
+            "type": "object",
+            "description": "Node-specific configuration",
+            "additionalProperties": true
+          },
+          "signalSchema": {
+            "type": "string",
+            "description": "Expected signal schema for this node (e.g., afi.usignal.v1)",
+            "default": "afi.usignal.v1"
+          },
+          "inputs": {
+            "type": "array",
+            "description": "Input port definitions",
+            "items": {
+              "type": "string"
+            }
+          },
+          "outputs": {
+            "type": "array",
+            "description": "Output port definitions",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "minItems": 1
+    },
+    "edges": {
+      "type": "array",
+      "description": "Connections between nodes (DAG edges)",
+      "items": {
+        "type": "object",
+        "required": ["from", "to"],
+        "properties": {
+          "from": {
+            "type": "string",
+            "description": "Source node ID"
+          },
+          "to": {
+            "type": "string",
+            "description": "Target node ID"
+          },
+          "fromPort": {
+            "type": "string",
+            "description": "Output port on source node"
+          },
+          "toPort": {
+            "type": "string",
+            "description": "Input port on target node"
+          },
+          "condition": {
+            "type": "string",
+            "description": "Optional condition for edge activation"
+          }
+        }
+      }
+    },
+    "entryNode": {
+      "type": "string",
+      "description": "ID of the entry node for pipeline execution"
+    },
+    "exitNodes": {
+      "type": "array",
+      "description": "IDs of nodes that can terminate pipeline execution",
+      "items": {
+        "type": "string"
+      }
+    },
+    "metadata": {
+      "type": "object",
+      "description": "Additional pipeline metadata",
+      "additionalProperties": true
+    }
+  },
+  "additionalProperties": false
+}
+

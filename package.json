@@ -1,0 +1,39 @@
+{
+  "name": "afi-config",
+  "version": "0.1.0",
+  "description": "Canonical configuration and JSON Schema library for AFI Protocol",
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "test": "vitest",
+    "test:run": "vitest run",
+    "validate": "vitest run tests/schema-validation.test.ts",
+    "typecheck": "tsc --noEmit",
+    "clean": "rm -rf dist"
+  },
+  "keywords": [
+    "afi-protocol",
+    "config",
+    "json-schema",
+    "validation",
+    "schemas"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/AFI-Protocol/afi-config.git"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^20.11.0",
+    "ajv": "^8.12.0",
+    "ajv-formats": "^3.0.1",
+    "typescript": "^5.4.0",
+    "vitest": "^1.5.0"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  }
+}
+

@@ -1,0 +1,146 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://afi-protocol.org/schemas/vault.schema.json",
+  "title": "AFI T.S.S.D. Vault Configuration Schema",
+  "description": "Schema for Time-Series Signal Data Vault configurations in afi-infra",
+  "type": "object",
+  "required": ["id", "engine", "database"],
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "Unique identifier for the vault instance",
+      "pattern": "^[a-z0-9-]+$"
+    },
+    "engine": {
+      "type": "string",
+      "description": "Database engine type",
+      "enum": [
+        "mongodb",
+        "postgresql",
+        "timescaledb",
+        "influxdb"
+      ]
+    },
+    "uri": {
+      "type": "string",
+      "description": "Database connection URI (WARNING: Do not commit secrets in config files. Use environment variables.)",
+      "format": "uri"
+    },
+    "database": {
+      "type": "string",
+      "description": "Database name",
+      "minLength": 1,
+      "maxLength": 100
+    },
+    "collectionSignals": {
+      "type": "string",
+      "description": "Collection/table name for signal data (stores USS-compliant signals)",
+      "default": "signals"
+    },
+    "signalSchema": {
+      "type": "string",
+      "description": "Expected signal schema for stored signals",
+      "default": "afi.usignal.v1"
+    },
+    "collectionReplays": {
+      "type": "string",
+      "description": "Collection/table name for replay data",
+      "default": "replays"
+    },
+    "collectionMetadata": {
+      "type": "string",
+      "description": "Collection/table name for metadata",
+      "default": "metadata"
+    },
+    "retentionPolicy": {
+      "type": "object",
+      "description": "Data retention policy configuration",
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "description": "Whether retention policy is enabled",
+          "default": false
+        },
+        "retentionDays": {
+          "type": "integer",
+          "description": "Number of days to retain data",
+          "minimum": 1,
+          "maximum": 3650
+        },
+        "archiveEnabled": {
+          "type": "boolean",
+          "description": "Whether to archive old data instead of deleting",
+          "default": false
+        },
+        "archiveLocation": {
+          "type": "string",
+          "description": "Location for archived data (e.g., S3 bucket, file path)"
+        }
+      }
+    },
+    "indexing": {
+      "type": "object",
+      "description": "Indexing configuration for performance",
+      "properties": {
+        "signalIdIndex": {
+          "type": "boolean",
+          "description": "Create index on signal ID",
+          "default": true
+        },
+        "timestampIndex": {
+          "type": "boolean",
+          "description": "Create index on timestamp",
+          "default": true
+        },
+        "stageIndex": {
+          "type": "boolean",
+          "description": "Create index on signal stage (RAW, ENRICHED, etc.)",
+          "default": true
+        },
+        "customIndexes": {
+          "type": "array",
+          "description": "Custom index definitions",
+          "items": {
+            "type": "object",
+            "properties": {
+              "fields": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "unique": {
+                "type": "boolean",
+                "default": false
+              }
+            }
+          }
+        }
+      }
+    },
+    "replication": {
+      "type": "object",
+      "description": "Replication configuration",
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "description": "Whether replication is enabled",
+          "default": false
+        },
+        "replicas": {
+          "type": "integer",
+          "description": "Number of replicas",
+          "minimum": 1,
+          "maximum": 10
+        }
+      }
+    },
+    "metadata": {
+      "type": "object",
+      "description": "Additional vault metadata",
+      "additionalProperties": true
+    }
+  },
+  "additionalProperties": false
+}
+

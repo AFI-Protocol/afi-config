@@ -1,0 +1,63 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://afi-protocol.org/schemas/usignal/v1/lenses/strategy.lens.schema.json",
+  "title": "AFI USS Lens: Strategy",
+  "description": "Strategy lens for after-friction P&L and trading strategy signals",
+  "type": "object",
+  "required": [
+    "strategy"
+  ],
+  "properties": {
+    "strategy": {
+      "type": "object",
+      "description": "Strategy-specific signal data",
+      "properties": {
+        "asset": {
+          "type": "string",
+          "description": "Asset or instrument identifier"
+        },
+        "pnlAfterFrictions": {
+          "type": "number",
+          "description": "P&L after all frictions"
+        },
+        "frictions": {
+          "type": "object",
+          "description": "Friction cost breakdown",
+          "properties": {
+            "hedgingCosts": {
+              "type": "number",
+              "description": "Hedging costs"
+            },
+            "fundingCosts": {
+              "type": "number",
+              "description": "Funding costs"
+            }
+          },
+          "additionalProperties": true
+        },
+        "capacity": {
+          "type": "object",
+          "description": "Strategy capacity constraints",
+          "properties": {
+            "maxNotional": {
+              "type": "number",
+              "description": "Maximum notional size"
+            },
+            "slippageAtSizeBps": {
+              "type": "number",
+              "description": "Slippage at max size in basis points"
+            }
+          },
+          "additionalProperties": true
+        },
+        "notes": {
+          "type": "string",
+          "description": "Additional strategy notes"
+        }
+      },
+      "additionalProperties": true
+    }
+  },
+  "additionalProperties": false
+}
+
