@@ -1,0 +1,125 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://afi-protocol.org/schemas/usignal/v1/lenses/equity.lens.schema.json",
+  "title": "AFI USS Lens: Equity/Credit",
+  "description": "Equity and credit lens for traditional equity instruments with fundamental analysis fields",
+  "type": "object",
+  "required": [
+    "equity"
+  ],
+  "properties": {
+    "equity": {
+      "type": "object",
+      "description": "Equity-specific signal data",
+      "properties": {
+        "entity": {
+          "type": "object",
+          "description": "Entity identification",
+          "properties": {
+            "ticker": {
+              "type": "string",
+              "description": "Stock ticker symbol"
+            },
+            "asOf": {
+              "type": "string",
+              "description": "As-of date for entity data"
+            }
+          },
+          "additionalProperties": true
+        },
+        "deltaFCF": {
+          "type": "object",
+          "description": "Delta free cash flow analysis",
+          "properties": {
+            "drivers": {
+              "type": "array",
+              "description": "FCF drivers and their deltas",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "description": "Driver name (e.g., price, volume, unit_cost)"
+                  },
+                  "delta": {
+                    "type": "number",
+                    "description": "Delta value for this driver"
+                  }
+                },
+                "required": [
+                  "name",
+                  "delta"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "reinvestment": {
+              "type": "object",
+              "description": "Reinvestment metrics",
+              "properties": {
+                "roiicIntangible": {
+                  "type": "number",
+                  "description": "Return on invested intangible capital"
+                },
+                "salesToCapital": {
+                  "type": "number",
+                  "description": "Sales to capital ratio"
+                }
+              },
+              "additionalProperties": false
+            },
+            "frictions": {
+              "type": "object",
+              "description": "Friction costs",
+              "properties": {
+                "taxRate": {
+                  "type": "number",
+                  "description": "Effective tax rate"
+                }
+              },
+              "additionalProperties": true
+            },
+            "capacityConstraints": {
+              "type": "array",
+              "description": "Capacity constraint descriptions",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          "additionalProperties": true
+        },
+        "scenarios": {
+          "type": "object",
+          "description": "Scenario analysis (bear/base/bull or custom)"
+        },
+        "terminal": {
+          "type": "object",
+          "description": "Terminal value calculation",
+          "properties": {
+            "method": {
+              "type": "string",
+              "description": "Terminal value method (e.g., gordon, exit_multiple)"
+            },
+            "g_stable": {
+              "type": "number",
+              "description": "Stable growth rate"
+            },
+            "wacc": {
+              "type": "number",
+              "description": "Weighted average cost of capital"
+            }
+          },
+          "additionalProperties": false
+        },
+        "statementsReconciled": {
+          "type": "boolean",
+          "description": "Whether financial statements are reconciled"
+        }
+      },
+      "additionalProperties": true
+    }
+  },
+  "additionalProperties": false
+}
+

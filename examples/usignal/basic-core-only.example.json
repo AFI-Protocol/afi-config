@@ -1,0 +1,26 @@
+{
+  "schema": "afi.usignal.v1",
+  "core": {
+    "cashProxy": "pnl",
+    "measurement": {
+      "window": "P30D",
+      "lag": "P1D"
+    },
+    "frictions": {
+      "fees": 0.001,
+      "slippage": "modeled",
+      "latencyMs": 50
+    },
+    "telemetry": {
+      "decay": {
+        "halfLifeDays": 14,
+        "function": "exp"
+      }
+    }
+  },
+  "provenance": {
+    "datasetId": "generic-001",
+    "timestamp": "2025-11-18T19:00:00Z"
+  }
+}
+

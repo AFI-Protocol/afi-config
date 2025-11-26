@@ -1,0 +1,50 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Lens: Strategy (after-friction P&L)",
+  "type": "object",
+  "required": [
+    "strategy"
+  ],
+  "properties": {
+    "strategy": {
+      "type": "object",
+      "properties": {
+        "asset": {
+          "type": "string"
+        },
+        "pnlAfterFrictions": {
+          "type": "number"
+        },
+        "frictions": {
+          "type": "object",
+          "properties": {
+            "hedgingCosts": {
+              "type": "number"
+            },
+            "fundingCosts": {
+              "type": "number"
+            }
+          },
+          "additionalProperties": true
+        },
+        "capacity": {
+          "type": "object",
+          "properties": {
+            "maxNotional": {
+              "type": "number"
+            },
+            "slippageAtSizeBps": {
+              "type": "number"
+            }
+          },
+          "additionalProperties": true
+        },
+        "notes": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true
+    }
+  },
+  "additionalProperties": false
+}

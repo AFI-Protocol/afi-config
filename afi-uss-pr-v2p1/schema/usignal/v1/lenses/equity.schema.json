@@ -1,0 +1,102 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Lens: Equity/Credit",
+  "type": "object",
+  "required": [
+    "equity"
+  ],
+  "properties": {
+    "equity": {
+      "type": "object",
+      "properties": {
+        "entity": {
+          "type": "object",
+          "properties": {
+            "ticker": {
+              "type": "string"
+            },
+            "asOf": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": true
+        },
+        "deltaFCF": {
+          "type": "object",
+          "properties": {
+            "drivers": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "delta": {
+                    "type": "number"
+                  }
+                },
+                "required": [
+                  "name",
+                  "delta"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "reinvestment": {
+              "type": "object",
+              "properties": {
+                "roiicIntangible": {
+                  "type": "number"
+                },
+                "salesToCapital": {
+                  "type": "number"
+                }
+              },
+              "additionalProperties": false
+            },
+            "frictions": {
+              "type": "object",
+              "properties": {
+                "taxRate": {
+                  "type": "number"
+                }
+              },
+              "additionalProperties": true
+            },
+            "capacityConstraints": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          "additionalProperties": true
+        },
+        "scenarios": {
+          "type": "object"
+        },
+        "terminal": {
+          "type": "object",
+          "properties": {
+            "method": {
+              "type": "string"
+            },
+            "g_stable": {
+              "type": "number"
+            },
+            "wacc": {
+              "type": "number"
+            }
+          },
+          "additionalProperties": false
+        },
+        "statementsReconciled": {
+          "type": "boolean"
+        }
+      },
+      "additionalProperties": true
+    }
+  },
+  "additionalProperties": false
+}

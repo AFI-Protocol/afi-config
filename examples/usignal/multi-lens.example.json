@@ -1,0 +1,43 @@
+{
+  "schema": "afi.usignal.v1",
+  "lens": "macro",
+  "core": {
+    "cashProxy": "risk_reduction",
+    "measurement": {
+      "window": "P90D",
+      "benchmark": "10Y_UST"
+    },
+    "telemetry": {
+      "decay": {
+        "halfLifeDays": 60,
+        "function": "power"
+      }
+    }
+  },
+  "macro": {
+    "regimeTag": "expansion",
+    "factorAttribution": [
+      {
+        "factor": "growth",
+        "contribution": 0.45
+      },
+      {
+        "factor": "inflation",
+        "contribution": 0.30
+      }
+    ],
+    "financingRate": 0.045
+  },
+  "onchain": {
+    "mevCost": 0.0012,
+    "gasCost": 0.0008,
+    "poolDepthAt1pct": 2500000,
+    "oracleLatencyMs": 150,
+    "privateOrderflowAccess": false
+  },
+  "provenance": {
+    "datasetId": "macro-onchain-hybrid-001",
+    "timestamp": "2025-11-18T19:00:00Z"
+  }
+}
+

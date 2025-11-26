@@ -1,0 +1,41 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://afi-protocol.org/schemas/usignal/v1/lenses/onchain.lens.schema.json",
+  "title": "AFI USS Lens: On-chain Microstructure",
+  "description": "On-chain lens for blockchain microstructure and execution signals",
+  "type": "object",
+  "required": [
+    "onchain"
+  ],
+  "properties": {
+    "onchain": {
+      "type": "object",
+      "description": "On-chain specific signal data",
+      "properties": {
+        "mevCost": {
+          "type": "number",
+          "description": "MEV (Maximal Extractable Value) cost"
+        },
+        "gasCost": {
+          "type": "number",
+          "description": "Gas cost for execution"
+        },
+        "poolDepthAt1pct": {
+          "type": "number",
+          "description": "Pool depth at 1% price impact"
+        },
+        "oracleLatencyMs": {
+          "type": "number",
+          "description": "Oracle latency in milliseconds"
+        },
+        "privateOrderflowAccess": {
+          "type": "boolean",
+          "description": "Whether private orderflow access is available"
+        }
+      },
+      "additionalProperties": true
+    }
+  },
+  "additionalProperties": false
+}
+

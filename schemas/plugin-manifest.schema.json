@@ -1,0 +1,118 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://afi-protocol.org/schemas/plugin-manifest.schema.json",
+  "title": "AFI Plugin Manifest Schema",
+  "description": "Schema for plugin manifests in afi-plugins registry",
+  "type": "object",
+  "required": ["id", "name", "type", "version", "entrypoint"],
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "Unique identifier for the plugin",
+      "pattern": "^[a-z0-9-]+$"
+    },
+    "name": {
+      "type": "string",
+      "description": "Human-readable plugin name",
+      "minLength": 1,
+      "maxLength": 100
+    },
+    "type": {
+      "type": "string",
+      "description": "Plugin category/type",
+      "enum": [
+        "generator",
+        "analyzer",
+        "validator",
+        "executor",
+        "observer"
+      ]
+    },
+    "version": {
+      "type": "string",
+      "description": "Semantic version of the plugin",
+      "pattern": "^\\d+\\.\\d+\\.\\d+$"
+    },
+    "description": {
+      "type": "string",
+      "description": "Detailed description of plugin functionality",
+      "maxLength": 500
+    },
+    "entrypoint": {
+      "type": "string",
+      "description": "Path to plugin entrypoint file (relative to plugin root)",
+      "pattern": "^[a-zA-Z0-9_/.-]+\\.(ts|js)$"
+    },
+    "inputs": {
+      "type": "array",
+      "description": "Input data types/schemas the plugin accepts (e.g., afi.usignal.v1)",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
+    },
+    "outputs": {
+      "type": "array",
+      "description": "Output data types/schemas the plugin produces (e.g., afi.usignal.v1)",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
+    },
+    "supportedLenses": {
+      "type": "array",
+      "description": "USS lenses this plugin supports (if applicable)",
+      "items": {
+        "type": "string",
+        "enum": [
+          "equity",
+          "strategy",
+          "macro",
+          "onchain"
+        ]
+      },
+      "uniqueItems": true
+    },
+    "dependencies": {
+      "type": "array",
+      "description": "Other plugins this plugin depends on",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
+    },
+    "config": {
+      "type": "object",
+      "description": "Default configuration for the plugin",
+      "additionalProperties": true
+    },
+    "author": {
+      "type": "string",
+      "description": "Plugin author or organization"
+    },
+    "license": {
+      "type": "string",
+      "description": "Plugin license (e.g., MIT, Apache-2.0)"
+    },
+    "repository": {
+      "type": "string",
+      "description": "URL to plugin source repository",
+      "format": "uri"
+    },
+    "tags": {
+      "type": "array",
+      "description": "Tags for plugin discovery and categorization",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
+    },
+    "metadata": {
+      "type": "object",
+      "description": "Additional plugin metadata",
+      "additionalProperties": true
+    }
+  },
+  "additionalProperties": false
+}
+

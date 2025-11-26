@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Lens: Macro",
+  "type": "object",
+  "required": [
+    "macro"
+  ],
+  "properties": {
+    "macro": {
+      "type": "object",
+      "properties": {
+        "regimeTag": {
+          "type": "string"
+        },
+        "factorAttribution": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        },
+        "financingRate": {
+          "type": "number"
+        }
+      },
+      "additionalProperties": true
+    }
+  },
+  "additionalProperties": false
+}

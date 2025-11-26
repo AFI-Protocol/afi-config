@@ -1,0 +1,57 @@
+{
+  "codexVersion": "2.0.0",
+  "module": {
+    "name": "afi-config",
+    "role": "config-schema-library",
+    "description": "Canonical configuration and JSON Schema library for AFI Protocol. Provides schemas, templates, and validation utilities for all AFI modules.",
+    "version": "0.1.0"
+  },
+  "entrypoints": [
+    {
+      "path": "schemas/",
+      "type": "schema-directory",
+      "description": "JSON Schema definitions for AFI Protocol configurations"
+    },
+    {
+      "path": "templates/",
+      "type": "template-directory",
+      "description": "Configuration templates and starter files"
+    },
+    {
+      "path": "cli_utils/",
+      "type": "utility-directory",
+      "description": "CLI utilities for config validation and management"
+    },
+    {
+      "path": "codex/",
+      "type": "governance-directory",
+      "description": "Codex governance artifacts and policies for afi-config"
+    }
+  ],
+  "provides": [
+    "configSchemas",
+    "codexSchema",
+    "pipelineBlueprintSchema",
+    "characterSchema",
+    "pluginManifestSchema",
+    "vaultSchema",
+    "validationUtilities",
+    "governancePolicies",
+    "droidCharter"
+  ],
+  "dependsOn": [],
+  "consumers": [
+    "afi-core",
+    "afi-reactor",
+    "afi-infra",
+    "afi-plugins",
+    "afi-ops",
+    "afi-token"
+  ],
+  "metadata": {
+    "repository": "https://github.com/AFI-Protocol/afi-config",
+    "license": "MIT",
+    "maintainers": ["AFI Protocol Team"]
+  }
+}
+

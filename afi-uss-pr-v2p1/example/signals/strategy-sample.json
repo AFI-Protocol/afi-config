@@ -1,0 +1,50 @@
+{
+  "schema": "afi.usignal.v1",
+  "lens": "strategy",
+  "core": {
+    "cashProxy": "pnl",
+    "measurement": {
+      "window": "P30D",
+      "lag": "P1D"
+    },
+    "telemetry": {
+      "decay": {
+        "halfLifeDays": 20,
+        "function": "exp"
+      },
+      "greeks": {
+        "thetaPerDay": -0.0006,
+        "deltaPer1pctPrice": 0.12,
+        "vegaPer1vol": 0.04,
+        "rhoPer1pctRate": -0.03,
+        "asOf": "2025-09-05T12:00:00Z",
+        "method": "surface_fit",
+        "surfaceId": "opc-eth-1m-v4",
+        "source": "self",
+        "hedgePolicy": {
+          "deltaBand": 0.15,
+          "rollCadenceDays": 7,
+          "notes": "Rebalance when |\u0394|>0.15"
+        }
+      }
+    }
+  },
+  "strategy": {
+    "asset": "XYZ",
+    "pnlAfterFrictions": 0.012,
+    "frictions": {
+      "hedgingCosts": 0.004,
+      "fundingCosts": 0.002
+    },
+    "capacity": {
+      "maxNotional": 5000000,
+      "slippageAtSizeBps": 12
+    },
+    "notes": "Latency edge; fades with crowding."
+  },
+  "provenance": {
+    "datasetId": "opt-987",
+    "codeCommit": "d4e5f6",
+    "timestamp": "2025-09-05T12:00:00Z"
+  }
+}

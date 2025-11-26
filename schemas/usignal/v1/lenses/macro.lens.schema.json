@@ -1,0 +1,37 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://afi-protocol.org/schemas/usignal/v1/lenses/macro.lens.schema.json",
+  "title": "AFI USS Lens: Macro",
+  "description": "Macro lens for macroeconomic regime and factor attribution signals",
+  "type": "object",
+  "required": [
+    "macro"
+  ],
+  "properties": {
+    "macro": {
+      "type": "object",
+      "description": "Macro-specific signal data",
+      "properties": {
+        "regimeTag": {
+          "type": "string",
+          "description": "Macroeconomic regime identifier (e.g., expansion, contraction, stagflation)"
+        },
+        "factorAttribution": {
+          "type": "array",
+          "description": "Factor attribution breakdown",
+          "items": {
+            "type": "object",
+            "description": "Factor contribution"
+          }
+        },
+        "financingRate": {
+          "type": "number",
+          "description": "Relevant financing rate"
+        }
+      },
+      "additionalProperties": true
+    }
+  },
+  "additionalProperties": false
+}
+

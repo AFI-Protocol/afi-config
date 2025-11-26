@@ -1,0 +1,248 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://afi-protocol.org/schemas/usignal/v1/core.schema.json",
+  "title": "AFI Universal Signal Schema - Core (v1)",
+  "description": "Core envelope schema for AFI Universal Signals. Provides cross-cutting fields for cash proxy, measurement, frictions, capacity, and telemetry.",
+  "type": "object",
+  "properties": {
+    "cashProxy": {
+      "type": "string",
+      "description": "Primary cash flow proxy method",
+      "enum": [
+        "delta_fcf",
+        "pnl",
+        "risk_reduction",
+        "capital_efficiency"
+      ]
+    },
+    "measurement": {
+      "type": "object",
+      "description": "Measurement window and benchmark configuration",
+      "properties": {
+        "window": {
+          "type": "string",
+          "description": "Measurement time window (ISO 8601 duration format, e.g., P365D)"
+        },
+        "lag": {
+          "type": "string",
+          "description": "Data lag/lookback period (ISO 8601 duration format)"
+        },
+        "benchmark": {
+          "type": "string",
+          "description": "Benchmark for comparison (e.g., S&P500, BTC)"
+        }
+      },
+      "additionalProperties": false
+    },
+    "frictions": {
+      "type": "object",
+      "description": "Transaction costs and frictions",
+      "properties": {
+        "fees": {
+          "description": "Fee amount or description",
+          "oneOf": [
+            { "type": "number" },
+            { "type": "string" }
+          ]
+        },
+        "slippage": {
+          "description": "Slippage amount or model",
+          "oneOf": [
+            { "type": "number" },
+            { "type": "string" }
+          ]
+        },
+        "taxes": {
+          "description": "Tax amount or model",
+          "oneOf": [
+            { "type": "number" },
+            { "type": "string" }
+          ]
+        },
+        "latencyMs": {
+          "type": "number",
+          "description": "Execution latency in milliseconds",
+          "minimum": 0
+        }
+      },
+      "additionalProperties": true
+    },
+    "capacityConstraints": {
+      "type": "array",
+      "description": "Capacity constraints as human-readable strings",
+      "items": {
+        "type": "string"
+      },
+      "maxItems": 8
+    },
+    "reinvestmentIntensity": {
+      "type": "object",
+      "description": "Reinvestment metrics",
+      "properties": {
+        "roiicIntangible": {
+          "type": "number",
+          "description": "Return on invested intangible capital"
+        },
+        "salesToCapital": {
+          "type": "number",
+          "description": "Sales to capital ratio"
+        }
+      },
+      "additionalProperties": false
+    },
+    "rights": {
+      "type": "object",
+      "description": "Data rights and licensing",
+      "properties": {
+        "mode": {
+          "type": "string",
+          "description": "Rights mode",
+          "enum": [
+            "owned",
+            "licensed",
+            "public",
+            "restricted"
+          ]
+        },
+        "exclusive": {
+          "type": "boolean",
+          "description": "Whether rights are exclusive"
+        }
+      },
+      "additionalProperties": false
+    },
+    "telemetry": {
+      "type": "object",
+      "description": "Signal telemetry and decay characteristics",
+      "properties": {
+        "decay": {
+          "type": "object",
+          "description": "Signal decay model",
+          "properties": {
+            "halfLifeDays": {
+              "type": "number",
+              "description": "Half-life in days",
+              "minimum": 0
+            },
+            "function": {
+              "type": "string",
+              "description": "Decay function type",
+              "enum": [
+                "exp",
+                "power",
+                "custom"
+              ]
+            },
+            "params": {
+              "type": "object",
+              "description": "Additional decay parameters",
+              "additionalProperties": true
+            }
+          },
+          "additionalProperties": false
+        },
+        "greeks": {
+          "type": "object",
+          "description": "Optional cross-cutting sensitivities. Treated as claimed values; network recomputes and verifies.",
+          "properties": {
+            "thetaPerDay": {
+              "type": "number",
+              "description": "Time decay per day"
+            },
+            "deltaPer1pctPrice": {
+              "type": "number",
+              "description": "Delta per 1% price change"
+            },
+            "vegaPer1vol": {
+              "type": "number",
+              "description": "Vega per 1 vol point"
+            },
+            "rhoPer1pctRate": {
+              "type": "number",
+              "description": "Rho per 1% rate change"
+            },
+            "gammaNote": {
+              "type": "string",
+              "description": "Gamma notes or description"
+            },
+            "asOf": {
+              "type": "string",
+              "format": "date-time",
+              "description": "Timestamp when greeks were calculated"
+            },
+            "method": {
+              "type": "string",
+              "description": "Calculation method",
+              "enum": [
+                "bsm",
+                "surface_fit",
+                "finite_diff",
+                "path_sim",
+                "other"
+              ]
+            },
+            "surfaceId": {
+              "type": "string",
+              "description": "Volatility surface identifier"
+            },
+            "source": {
+              "type": "string",
+              "description": "Source of greeks calculation",
+              "enum": [
+                "self",
+                "network"
+              ]
+            },
+            "hedgePolicy": {
+              "type": "object",
+              "description": "Hedging policy configuration",
+              "properties": {
+                "deltaBand": {
+                  "type": "number",
+                  "description": "Delta band threshold for rebalancing"
+                },
+                "rollCadenceDays": {
+                  "type": "number",
+                  "description": "Roll cadence in days",
+                  "minimum": 0
+                },
+                "notes": {
+                  "type": "string",
+                  "description": "Additional hedging notes"
+                }
+              },
+              "additionalProperties": false
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "terminalDiscipline": {
+      "type": "object",
+      "description": "Terminal value calculation (for issuer-style valuations only)",
+      "properties": {
+        "method": {
+          "type": "string",
+          "description": "Terminal value method",
+          "enum": [
+            "gordon",
+            "exit_multiple"
+          ]
+        },
+        "gStable": {
+          "type": "number",
+          "description": "Stable growth rate (Gordon model)"
+        },
+        "wacc": {
+          "type": "number",
+          "description": "Weighted average cost of capital"
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": true
+}
+
