@@ -16,6 +16,8 @@ This repository is the **single source of truth** for all AFI Protocol configura
 - **cli_utils/** - CLI utilities for config validation
 - **docs/** - Documentation and authoring guidelines
 - **tests/** - Schema validation tests
+- **codex/** - Codex governance artifacts and policies
+  - **governance/droids/** - Droid operation policies (AFI Droid Charter)
 
 ## Core Schemas
 
@@ -36,6 +38,17 @@ Other AFI repos consume these schemas for configuration validation:
 - **afi-plugins**: Plugin registry and manifests
 - **afi-ops**: Deployment and operations
 - **afi-token**: Smart contract configurations
+
+## Governance
+
+AFI Protocol uses **Codex** as the canonical registry for schemas, policies, and provenance.
+
+This repository now includes a Codex governance namespace:
+
+- **AFI Droid Charter v0.1** – defines how Factory droids and automated agents are expected to operate across AFI repos
+  Path: [`codex/governance/droids/AFI_DROID_CHARTER.v0.1.md`](./codex/governance/droids/AFI_DROID_CHARTER.v0.1.md)
+
+Schema and Codex changes in this repo should respect the Charter and are subject to human review.
 
 ## Development
 

@@ -21,6 +21,11 @@
       "path": "cli_utils/",
       "type": "utility-directory",
       "description": "CLI utilities for config validation and management"
+    },
+    {
+      "path": "codex/",
+      "type": "governance-directory",
+      "description": "Codex governance artifacts and policies for afi-config"
     }
   ],
   "provides": [
@@ -30,7 +35,9 @@
     "characterSchema",
     "pluginManifestSchema",
     "vaultSchema",
-    "validationUtilities"
+    "validationUtilities",
+    "governancePolicies",
+    "droidCharter"
   ],
   "dependsOn": [],
   "consumers": [
