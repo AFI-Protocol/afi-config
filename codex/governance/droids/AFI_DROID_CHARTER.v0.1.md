@@ -229,7 +229,18 @@ If the instruction is ambiguous, droids must treat it as **not authorized**.
 
 ---
 
-## 7. Interaction with AOS and Codex
+## 7. Eliza Gateway Boundary
+
+AFI droids MUST treat the Eliza gateway as an external integration surface, not a core AFI codebase. Droids may:
+
+- Modify AFI-owned gateway repos (for example: `afi-eliza-gateway`, AFI-specific Eliza plugins, and character configuration files), and
+- Adjust AFI-side APIs and adapters that the gateway calls.
+
+Droids MUST NOT clone, fork, or modify the upstream ElizaOS repository inside AFI repos, nor introduce direct Eliza code into `afi-reactor`, `afi-core`, or any other AFI core modules. All Eliza-related work happens only in gateway/plugin repos explicitly designated for that purpose.
+
+---
+
+## 8. Interaction with AOS and Codex
 
 1. **AOS as Runtime Policy Enforcer**
    - Where AOS is present, droids should treat it as the environment responsible for:
@@ -249,7 +260,7 @@ If the instruction is ambiguous, droids must treat it as **not authorized**.
 
 ---
 
-## 8. Versioning & Amendments
+## 9. Versioning & Amendments
 
 - This document is **versioned** as `AFI_DROID_CHARTER.v0.1.md`.
 - Future versions (`v0.2`, `v0.3`, …) will:
@@ -263,7 +274,7 @@ Until a newer version is formally adopted, **v0.1 is authoritative**.
 
 ---
 
-## 9. Compliance & Enforcement
+## 10. Compliance & Enforcement
 
 - Droids are expected to treat this Charter as a **hard constraint**, not a suggestion.
 - Human maintainers may:
