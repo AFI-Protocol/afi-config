@@ -5,6 +5,10 @@ Location: `afi-config/codex/governance/droids/AFI_DROID_CHARTER.v0.1.md`
 
 This Charter defines how automated coding agents ("droids") are allowed to operate across the AFI Protocol codebase. It is binding for all droids acting on AFI repositories, regardless of vendor, runtime, or integration.
 
+**Companion documents:**
+- **AFI_DROID_PLAYBOOK.v0.1.md** — practical behavior rules and workflows for droids.
+- **AFI_DROID_GLOSSARY.md** — terminology for droids, agents, and gateways.
+
 ---
 
 ## 1. Purpose & Scope
@@ -14,7 +18,7 @@ The AFI Droid Charter exists to:
 - Protect the **integrity, safety, and intent** of AFI Protocol.
 - Give droids a **clear rulebook** for what they may and may not do.
 - Ensure all automated changes remain **auditable, reversible, and legible** to humans.
-- Harmonize behavior across multiple tools (Factory droids, Augmentcode, IDE agents, etc.).
+- Harmonize behavior across multiple tools (Factory droids, local AI coding assistants, IDE agents, etc.).
 
 This Charter applies to:
 
@@ -56,7 +60,7 @@ When in doubt, **prefer doing less** over doing more. Silence or ambiguity is no
 The collection of repositories, schemas, runtimes, token logic, and governance processes under the `AFI-Protocol` umbrella, centered on Agentic Financial Intelligence.
 
 **Droid**
-Any automated agent that can read, generate, modify, or propose changes to AFI code or configuration. This includes, but is not limited to, Factory.ai droids, Augmentcode agents, and other tool-integrated assistants.
+Any automated agent that can read, generate, modify, or propose changes to AFI code or configuration. This includes, but is not limited to, Factory.ai droids, local AI coding assistants (running on a contributor's machine), and other tool-integrated assistants.
 
 **Human Maintainer**
 A trusted human contributor with commit privileges and/or explicit governance authority over one or more AFI repos.
@@ -229,7 +233,18 @@ If the instruction is ambiguous, droids must treat it as **not authorized**.
 
 ---
 
-## 7. Interaction with AOS and Codex
+## 7. Eliza Gateway Boundary
+
+AFI droids MUST treat the Eliza gateway as an external integration surface, not a core AFI codebase. Droids may:
+
+- Modify AFI-owned gateway repos (for example: `afi-eliza-gateway`, AFI-specific Eliza plugins, and character configuration files), and
+- Adjust AFI-side APIs and adapters that the gateway calls.
+
+Droids MUST NOT clone, fork, or modify the upstream ElizaOS repository inside AFI repos, nor introduce direct Eliza code into `afi-reactor`, `afi-core`, or any other AFI core modules. All Eliza-related work happens only in gateway/plugin repos explicitly designated for that purpose.
+
+---
+
+## 8. Interaction with AOS and Codex
 
 1. **AOS as Runtime Policy Enforcer**
    - Where AOS is present, droids should treat it as the environment responsible for:
@@ -249,7 +264,7 @@ If the instruction is ambiguous, droids must treat it as **not authorized**.
 
 ---
 
-## 8. Versioning & Amendments
+## 9. Versioning & Amendments
 
 - This document is **versioned** as `AFI_DROID_CHARTER.v0.1.md`.
 - Future versions (`v0.2`, `v0.3`, …) will:
@@ -263,7 +278,7 @@ Until a newer version is formally adopted, **v0.1 is authoritative**.
 
 ---
 
-## 9. Compliance & Enforcement
+## 10. Compliance & Enforcement
 
 - Droids are expected to treat this Charter as a **hard constraint**, not a suggestion.
 - Human maintainers may:
