@@ -434,7 +434,7 @@
       "display_name": "Analyst Coach Mentor",
       "kind": "service",
       "lifecycle_stage": "mentor",
-      "purpose": "Evaluates and improves analyst agents using Proof-of-Insight principles",
+      "purpose": "Evaluates and improves analyst agents using PoI (Proof of Intelligence) and PoInsight (Proof of Insight) principles",
       "inputs": [
         "analyst_performance_metrics",
         "signal_quality_feedback"
@@ -454,12 +454,17 @@
         "scope": [
           "agent:evaluate",
           "agent:train",
-          "poi:compute"
+          "poi:compute",
+          "poinsight:compute"
         ]
       },
       "tools": [
         {
           "name": "PoIEvaluator",
+          "permissions": ["evaluate"]
+        },
+        {
+          "name": "PoInsightEvaluator",
           "permissions": ["evaluate"]
         },
         {
