@@ -1,0 +1,202 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://afi-protocol.org/schemas/agent_definition.v0.1.json",
+  "title": "AFI Agent Definition Schema",
+  "description": "Schema for defining agents in AFI Protocol, including lifecycle stage, embodiment kind, and runtime configuration.",
+  "type": "object",
+  "required": [
+    "agent_id",
+    "display_name",
+    "kind",
+    "lifecycle_stage",
+    "purpose",
+    "inputs",
+    "outputs"
+  ],
+  "properties": {
+    "agent_id": {
+      "type": "string",
+      "description": "Unique identifier for the agent, namespaced as {lifecycle_stage}:{name}:{version} or {kind}:{name}:{version}",
+      "pattern": "^(scout|enrich|analyze|validate|audit|mentor|droid|service|companion|contract):[a-z0-9-]+:v[0-9]+$",
+      "examples": [
+        "scout:tv-webhook-btc-perps:v1",
+        "enricher:vol-regime:v1",
+        "analyst:signal-scorer:v1",
+        "validator:mint-gate:v1",
+        "auditor:codex-replay:v1",
+        "mentor:analyst-coach:v1",
+        "droid:schema-sync:v1",
+        "service:vault-indexer:v1",
+        "companion:phoenix:v1",
+        "contract:afi-token:v1"
+      ]
+    },
+    "display_name": {
+      "type": "string",
+      "description": "Human-readable name for the agent",
+      "examples": [
+        "TradingView BTC Perps Webhook Scout",
+        "Volatility Regime Enricher",
+        "Signal Scorer Analyst"
+      ]
+    },
+    "kind": {
+      "type": "string",
+      "enum": ["droid", "service", "companion", "contract"],
+      "description": "Embodiment kind: how the agent runs and where it lives. When kind='droid', this field describes metadata and classification only. Normative droid behavior (what droids are allowed to do, repo/CI constraints, safety rules) is defined in AFI_DROID_CHARTER.v0.1.md and AFI_DROID_PLAYBOOK.v0.1.md. This schema describes metadata, not behavioral rules."
+    },
+    "lifecycle_stage": {
+      "type": "string",
+      "enum": ["scout", "enrich", "analyze", "validate", "audit", "mentor"],
+      "description": "Pipeline stage where the agent operates"
+    },
+    "purpose": {
+      "type": "string",
+      "description": "Clear, concise description of what the agent does",
+      "examples": [
+        "Originates BTC perpetual signals from TradingView webhooks",
+        "Adds volatility regime classification to signals",
+        "Scores signals using ensemble ML models"
+      ]
+    },
+    "origin_kind": {
+      "type": "string",
+      "enum": ["external", "afi_native_model", "human_discretionary"],
+      "description": "Optional field for scouts: where the signal originates from"
+    },
+    "swarm": {
+      "type": "string",
+      "description": "Optional swarm/ensemble membership label",
+      "examples": [
+        "core_enrichment_swarm_v1",
+        "ensemble_analyst_swarm_v1",
+        "audit_swarm_v1"
+      ]
+    },
+    "inputs": {
+      "type": "array",
+      "description": "Array of input types or sources the agent consumes",
+      "items": {
+        "type": "string"
+      },
+      "examples": [
+        ["tradingview_webhook_payload"],
+        ["afi_original_signal"],
+        ["afi_enriched_signal"],
+        ["afi_scored_signal"]
+      ]
+    },
+    "outputs": {
+      "type": "array",
+      "description": "Array of output types or artifacts the agent produces",
+      "items": {
+        "type": "string"
+      },
+      "examples": [
+        ["afi_original_signal"],
+        ["afi_enriched_signal"],
+        ["afi_scored_signal"],
+        ["mint_decision"]
+      ]
+    },
+    "constraints": {
+      "type": "array",
+      "description": "Optional array of constraints or rules the agent must follow",
+      "items": {
+        "type": "string"
+      },
+      "examples": [
+        ["no_scoring", "no_validation"],
+        ["deterministic_only", "replay_consistent"],
+        ["post_hoc_only", "no_smart_analysis"]
+      ]
+    },
+    "runtime": {
+      "type": "object",
+      "description": "Runtime configuration for the agent",
+      "properties": {
+        "environment": {
+          "type": "string",
+          "description": "Runtime environment (e.g., factory, eliza, solana, nodejs)",
+          "examples": ["factory", "eliza", "solana", "nodejs", "docker"]
+        },
+        "repo": {
+          "type": "string",
+          "description": "Primary repository where the agent's code lives",
+          "examples": ["afi-reactor", "afi-core", "afi-eliza-gateway", "afi-token"]
+        },
+        "scope": {
+          "type": "array",
+          "description": "Array of scopes or permissions the agent has",
+          "items": {
+            "type": "string"
+          },
+          "examples": [
+            ["afi-reactor:src/dags", "afi-reactor:config"],
+            ["afi-core:read-only"],
+            ["vault:read", "vault:write"]
+          ]
+        }
+      }
+    },
+    "tools": {
+      "type": "array",
+      "description": "Array of tools the agent can use",
+      "items": {
+        "type": "object",
+        "required": ["name"],
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Tool name",
+            "examples": ["Read", "Write", "Edit", "Bash", "HTTP", "WebSocket"]
+          },
+          "permissions": {
+            "type": "array",
+            "description": "Permissions for this tool",
+            "items": {
+              "type": "string"
+            },
+            "examples": [
+              ["read"],
+              ["read", "write"],
+              ["execute"]
+            ]
+          }
+        }
+      }
+    },
+    "workflows": {
+      "type": "object",
+      "description": "Workflow participation and dependencies",
+      "properties": {
+        "participates_in": {
+          "type": "array",
+          "description": "Array of workflows or pipelines the agent participates in",
+          "items": {
+            "type": "string"
+          },
+          "examples": [
+            ["signal_ingestion_pipeline"],
+            ["signal_enrichment_pipeline"],
+            ["signal_scoring_pipeline"],
+            ["mint_validation_pipeline"]
+          ]
+        },
+        "depends_on": {
+          "type": "array",
+          "description": "Array of upstream agents or services this agent depends on",
+          "items": {
+            "type": "string"
+          },
+          "examples": [
+            ["scout:tv-webhook-btc-perps:v1"],
+            ["enricher:vol-regime:v1"],
+            ["service:vault-indexer:v1"]
+          ]
+        }
+      }
+    }
+  }
+}
+
