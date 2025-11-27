@@ -164,7 +164,7 @@ AFI's signal processing pipeline has six distinct stages. Each agent operates in
 
 ### Validate
 
-**Role**: Dumb mint gate using replay + challenge windows (post-hoc yes/no only).
+**Role**: Deterministic Market Validator (DMV)—a dumb mint gate using replay + challenge windows (post-hoc yes/no only).
 
 **What it does**:
 - Consumes already-scored signals from analysts
@@ -205,12 +205,12 @@ AFI's signal processing pipeline has six distinct stages. Each agent operates in
 
 ### Mentor
 
-**Role**: Evaluate agents (not signals) and train/improve them using Proof-of-Insight principles.
+**Role**: Evaluate agents (not signals) and train/improve them using PoI (Proof of Intelligence) and PoInsight (Proof of Insight) principles.
 
 **What it does**:
 - Evaluates agent performance and quality
 - Trains and improves agents using feedback loops
-- Implements Proof-of-Insight (PoI) evaluation for agents
+- Implements PoI (Proof of Intelligence) and PoInsight (Proof of Insight) evaluation for agents
 - Provides coaching and recommendations for agent improvements
 
 **What it does NOT do**:
@@ -222,7 +222,7 @@ AFI's signal processing pipeline has six distinct stages. Each agent operates in
 
 **Example agents**:
 - `mentor:analyst-coach:v1` — Evaluates and improves analyst agents
-- `mentor:poi-evaluator:v1` — Implements Proof-of-Insight evaluation for agents
+- `mentor:poi-evaluator:v1` — Implements PoI and PoInsight evaluation for agents
 - `mentor:model-trainer:v1` — Trains and fine-tunes ML models used by analysts
 
 ---
