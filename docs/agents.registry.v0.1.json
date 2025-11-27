@@ -1,0 +1,486 @@
+{
+  "$schema": "./agent_definition.schema.v0.1.json",
+  "version": "0.1",
+  "description": "Example agent registry for AFI Protocol, demonstrating one agent per lifecycle stage",
+  "agents": [
+    {
+      "agent_id": "scout:tv-webhook-btc-perps:v1",
+      "display_name": "TradingView BTC Perps Webhook Scout",
+      "kind": "service",
+      "lifecycle_stage": "scout",
+      "purpose": "Originates BTC perpetual signals from TradingView webhooks",
+      "origin_kind": "external",
+      "inputs": [
+        "tradingview_webhook_payload"
+      ],
+      "outputs": [
+        "afi_original_signal"
+      ],
+      "constraints": [
+        "no_enrichment",
+        "no_scoring",
+        "no_validation"
+      ],
+      "runtime": {
+        "environment": "nodejs",
+        "repo": "afi-reactor",
+        "scope": [
+          "webhook:receive",
+          "signal:create"
+        ]
+      },
+      "tools": [
+        {
+          "name": "HTTP",
+          "permissions": ["receive"]
+        },
+        {
+          "name": "SignalEmitter",
+          "permissions": ["create"]
+        }
+      ],
+      "workflows": {
+        "participates_in": [
+          "signal_ingestion_pipeline"
+        ]
+      }
+    },
+    {
+      "agent_id": "scout:afi-regime-signal-gen:v1",
+      "display_name": "AFI Regime Signal Generator",
+      "kind": "service",
+      "lifecycle_stage": "scout",
+      "purpose": "Generates new signals using AFI-trained models based on vault regime data",
+      "origin_kind": "afi_native_model",
+      "inputs": [
+        "vault_regime_data",
+        "historical_signals"
+      ],
+      "outputs": [
+        "afi_original_signal"
+      ],
+      "constraints": [
+        "no_enrichment",
+        "no_scoring",
+        "no_validation"
+      ],
+      "runtime": {
+        "environment": "nodejs",
+        "repo": "afi-reactor",
+        "scope": [
+          "vault:read",
+          "signal:create"
+        ]
+      },
+      "tools": [
+        {
+          "name": "VaultReader",
+          "permissions": ["read"]
+        },
+        {
+          "name": "MLModel",
+          "permissions": ["inference"]
+        },
+        {
+          "name": "SignalEmitter",
+          "permissions": ["create"]
+        }
+      ],
+      "workflows": {
+        "participates_in": [
+          "signal_ingestion_pipeline"
+        ],
+        "depends_on": [
+          "service:vault-indexer:v1"
+        ]
+      }
+    },
+    {
+      "agent_id": "enricher:vol-regime:v1",
+      "display_name": "Volatility Regime Enricher",
+      "kind": "service",
+      "lifecycle_stage": "enrich",
+      "purpose": "Adds volatility regime classification to signals (low/medium/high/extreme)",
+      "swarm": "core_enrichment_swarm_v1",
+      "inputs": [
+        "afi_original_signal"
+      ],
+      "outputs": [
+        "afi_enriched_signal"
+      ],
+      "constraints": [
+        "no_scoring",
+        "no_validation",
+        "context_only"
+      ],
+      "runtime": {
+        "environment": "nodejs",
+        "repo": "afi-reactor",
+        "scope": [
+          "signal:read",
+          "signal:enrich"
+        ]
+      },
+      "tools": [
+        {
+          "name": "VolatilityCalculator",
+          "permissions": ["compute"]
+        },
+        {
+          "name": "SignalEnricher",
+          "permissions": ["enrich"]
+        }
+      ],
+      "workflows": {
+        "participates_in": [
+          "signal_enrichment_pipeline"
+        ],
+        "depends_on": [
+          "scout:tv-webhook-btc-perps:v1"
+        ]
+      }
+    },
+    {
+      "agent_id": "enricher:liquidity-depth:v1",
+      "display_name": "Liquidity Depth Enricher",
+      "kind": "service",
+      "lifecycle_stage": "enrich",
+      "purpose": "Adds order book depth metrics and liquidity analysis to signals",
+      "swarm": "core_enrichment_swarm_v1",
+      "inputs": [
+        "afi_original_signal",
+        "orderbook_snapshot"
+      ],
+      "outputs": [
+        "afi_enriched_signal"
+      ],
+      "constraints": [
+        "no_scoring",
+        "no_validation",
+        "context_only"
+      ],
+      "runtime": {
+        "environment": "nodejs",
+        "repo": "afi-reactor",
+        "scope": [
+          "signal:read",
+          "signal:enrich",
+          "exchange:orderbook:read"
+        ]
+      },
+      "tools": [
+        {
+          "name": "OrderbookReader",
+          "permissions": ["read"]
+        },
+        {
+          "name": "LiquidityAnalyzer",
+          "permissions": ["compute"]
+        },
+        {
+          "name": "SignalEnricher",
+          "permissions": ["enrich"]
+        }
+      ],
+      "workflows": {
+        "participates_in": [
+          "signal_enrichment_pipeline"
+        ]
+      }
+    },
+    {
+      "agent_id": "analyst:signal-scorer:v1",
+      "display_name": "Signal Scorer Analyst",
+      "kind": "service",
+      "lifecycle_stage": "analyze",
+      "purpose": "Scores signals using ensemble ML models for quality, confidence, and risk",
+      "swarm": "ensemble_analyst_swarm_v1",
+      "inputs": [
+        "afi_enriched_signal"
+      ],
+      "outputs": [
+        "afi_scored_signal"
+      ],
+      "constraints": [
+        "no_validation",
+        "no_minting"
+      ],
+      "runtime": {
+        "environment": "nodejs",
+        "repo": "afi-reactor",
+        "scope": [
+          "signal:read",
+          "signal:score",
+          "ml_model:inference"
+        ]
+      },
+      "tools": [
+        {
+          "name": "EnsembleMLModel",
+          "permissions": ["inference"]
+        },
+        {
+          "name": "SignalScorer",
+          "permissions": ["score"]
+        }
+      ],
+      "workflows": {
+        "participates_in": [
+          "signal_scoring_pipeline"
+        ],
+        "depends_on": [
+          "enricher:vol-regime:v1",
+          "enricher:liquidity-depth:v1"
+        ]
+      }
+    },
+    {
+      "agent_id": "analyst:narrative-gen:v1",
+      "display_name": "Narrative Generator Analyst",
+      "kind": "service",
+      "lifecycle_stage": "analyze",
+      "purpose": "Generates human-readable narratives and interpretations for scored signals",
+      "swarm": "ensemble_analyst_swarm_v1",
+      "inputs": [
+        "afi_scored_signal"
+      ],
+      "outputs": [
+        "afi_narrative_signal"
+      ],
+      "constraints": [
+        "no_validation",
+        "no_minting"
+      ],
+      "runtime": {
+        "environment": "nodejs",
+        "repo": "afi-reactor",
+        "scope": [
+          "signal:read",
+          "narrative:generate"
+        ]
+      },
+      "tools": [
+        {
+          "name": "LLMNarrativeGenerator",
+          "permissions": ["generate"]
+        },
+        {
+          "name": "SignalNarrator",
+          "permissions": ["narrate"]
+        }
+      ],
+      "workflows": {
+        "participates_in": [
+          "signal_scoring_pipeline"
+        ],
+        "depends_on": [
+          "analyst:signal-scorer:v1"
+        ]
+      }
+    },
+    {
+      "agent_id": "validator:mint-gate:v1",
+      "display_name": "Mint Gate Validator",
+      "kind": "service",
+      "lifecycle_stage": "validate",
+      "purpose": "Deterministic mint gate using replay + challenge windows (post-hoc yes/no only)",
+      "inputs": [
+        "afi_scored_signal",
+        "replay_output",
+        "challenge_window_status"
+      ],
+      "outputs": [
+        "mint_decision"
+      ],
+      "constraints": [
+        "deterministic_only",
+        "replay_consistent",
+        "post_hoc_only",
+        "no_smart_analysis",
+        "no_score_adjustment"
+      ],
+      "runtime": {
+        "environment": "nodejs",
+        "repo": "afi-reactor",
+        "scope": [
+          "signal:read",
+          "replay:verify",
+          "mint:decide"
+        ]
+      },
+      "tools": [
+        {
+          "name": "ReplayVerifier",
+          "permissions": ["verify"]
+        },
+        {
+          "name": "ChallengeWindowChecker",
+          "permissions": ["check"]
+        },
+        {
+          "name": "MintDecider",
+          "permissions": ["decide"]
+        }
+      ],
+      "workflows": {
+        "participates_in": [
+          "mint_validation_pipeline"
+        ],
+        "depends_on": [
+          "analyst:signal-scorer:v1",
+          "auditor:codex-replay:v1"
+        ]
+      }
+    },
+    {
+      "agent_id": "auditor:codex-replay:v1",
+      "display_name": "Codex Replay Auditor",
+      "kind": "service",
+      "lifecycle_stage": "audit",
+      "purpose": "Replays signals through Codex and checks for determinism and drift",
+      "swarm": "audit_swarm_v1",
+      "inputs": [
+        "afi_scored_signal",
+        "codex_replay_config"
+      ],
+      "outputs": [
+        "replay_output",
+        "drift_report"
+      ],
+      "constraints": [
+        "no_minting",
+        "no_validation",
+        "deterministic_only"
+      ],
+      "runtime": {
+        "environment": "nodejs",
+        "repo": "afi-reactor",
+        "scope": [
+          "signal:read",
+          "codex:replay",
+          "drift:detect"
+        ]
+      },
+      "tools": [
+        {
+          "name": "CodexReplayEngine",
+          "permissions": ["replay"]
+        },
+        {
+          "name": "DriftDetector",
+          "permissions": ["detect"]
+        }
+      ],
+      "workflows": {
+        "participates_in": [
+          "audit_pipeline"
+        ],
+        "depends_on": [
+          "analyst:signal-scorer:v1"
+        ]
+      }
+    },
+    {
+      "agent_id": "auditor:pipeline-health:v1",
+      "display_name": "Pipeline Health Auditor",
+      "kind": "service",
+      "lifecycle_stage": "audit",
+      "purpose": "Monitors pipeline health, latency, and data quality across all stages",
+      "swarm": "audit_swarm_v1",
+      "inputs": [
+        "pipeline_metrics",
+        "signal_flow_logs"
+      ],
+      "outputs": [
+        "health_report",
+        "anomaly_alerts"
+      ],
+      "constraints": [
+        "no_minting",
+        "no_validation",
+        "monitoring_only"
+      ],
+      "runtime": {
+        "environment": "nodejs",
+        "repo": "afi-reactor",
+        "scope": [
+          "metrics:read",
+          "logs:read",
+          "alerts:emit"
+        ]
+      },
+      "tools": [
+        {
+          "name": "MetricsCollector",
+          "permissions": ["read"]
+        },
+        {
+          "name": "HealthMonitor",
+          "permissions": ["monitor"]
+        },
+        {
+          "name": "AnomalyDetector",
+          "permissions": ["detect"]
+        }
+      ],
+      "workflows": {
+        "participates_in": [
+          "audit_pipeline"
+        ]
+      }
+    },
+    {
+      "agent_id": "mentor:analyst-coach:v1",
+      "display_name": "Analyst Coach Mentor",
+      "kind": "service",
+      "lifecycle_stage": "mentor",
+      "purpose": "Evaluates and improves analyst agents using Proof-of-Insight principles",
+      "inputs": [
+        "analyst_performance_metrics",
+        "signal_quality_feedback"
+      ],
+      "outputs": [
+        "agent_evaluation_report",
+        "training_recommendations"
+      ],
+      "constraints": [
+        "no_minting",
+        "no_validation",
+        "agent_evaluation_only"
+      ],
+      "runtime": {
+        "environment": "nodejs",
+        "repo": "afi-reactor",
+        "scope": [
+          "agent:evaluate",
+          "agent:train",
+          "poi:compute"
+        ]
+      },
+      "tools": [
+        {
+          "name": "PoIEvaluator",
+          "permissions": ["evaluate"]
+        },
+        {
+          "name": "AgentTrainer",
+          "permissions": ["train"]
+        },
+        {
+          "name": "PerformanceAnalyzer",
+          "permissions": ["analyze"]
+        }
+      ],
+      "workflows": {
+        "participates_in": [
+          "agent_improvement_pipeline"
+        ],
+        "depends_on": [
+          "analyst:signal-scorer:v1",
+          "auditor:codex-replay:v1"
+        ]
+      }
+    }
+  ]
+}
+
