@@ -1,0 +1,13 @@
+{
+  "schema": "afi.usignal.v1.1",
+  "provenance": {
+    "source": "tradingview-webhook",
+    "providerId": "alpha-scout-001",
+    "signalId": "btcusdt-15m-trend-pullback-20251215-120000",
+    "ingestedAt": "2025-12-15T12:00:00.000Z",
+    "ingestHash": "a1b2c3d4e5f6789012345678901234567890abcdef1234567890abcdef123456",
+    "providerType": "tradingview",
+    "providerRef": "alpha@tradingview"
+  }
+}
+

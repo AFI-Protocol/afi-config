@@ -1,0 +1,31 @@
+{
+  "schema": "afi.usignal.v1.1",
+  "core": {
+    "cashProxy": "pnl",
+    "measurement": {
+      "window": "P1D",
+      "lag": "P0D"
+    },
+    "frictions": {
+      "fees": 0.0006,
+      "slippage": "modeled",
+      "latencyMs": 100
+    },
+    "telemetry": {
+      "decay": {
+        "halfLifeDays": 0.25,
+        "function": "exp"
+      }
+    }
+  },
+  "provenance": {
+    "source": "tradingview-webhook",
+    "providerId": "froggy-scout-tv-001",
+    "signalId": "btcusdt-15m-froggy-trend-pullback-v1-20251215T120530Z",
+    "ingestedAt": "2025-12-15T12:05:30.123Z",
+    "ingestHash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "providerType": "tradingview",
+    "providerRef": "froggy-tv-account-alpha"
+  }
+}
+
