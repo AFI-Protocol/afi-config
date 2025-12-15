@@ -28,6 +28,34 @@
       "$ref": "core.schema.json",
       "description": "Core universal signal fields (cross-cutting)"
     },
+    "facts": {
+      "type": "object",
+      "description": "Ingest facts block - replay-canonical market/strategy metadata populated at ingest time and persisted in TSSD vault for deterministic replay",
+      "properties": {
+        "symbol": {
+          "type": "string",
+          "description": "Trading symbol (e.g., 'BTC/USDT')"
+        },
+        "market": {
+          "type": "string",
+          "description": "Market type (e.g., 'perp', 'spot')"
+        },
+        "timeframe": {
+          "type": "string",
+          "description": "Timeframe (e.g., '4h', '1d')"
+        },
+        "strategy": {
+          "type": "string",
+          "description": "Strategy identifier (e.g., 'froggy_trend_pullback_v1')"
+        },
+        "direction": {
+          "type": "string",
+          "enum": ["long", "short", "neutral"],
+          "description": "Signal direction"
+        }
+      },
+      "additionalProperties": false
+    },
     "equity": {
       "description": "Equity/credit lens data (when lens=equity)",
       "type": "object",

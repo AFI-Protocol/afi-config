@@ -294,5 +294,104 @@ describe('Schema Validation Tests', () => {
             expect(schema.properties.lens.enum).toContain('onchain');
         });
     });
+    describe('USS v1.1 Runtime Canon Validation', () => {
+        it('should compile USS v1.1 core schema without errors', () => {
+            const ajv = createAjv();
+            const schema = loadJSON('schemas/usignal/v1_1/core.schema.json');
+            expect(() => {
+                ajv.compile(schema);
+            }).not.toThrow();
+            const validate = ajv.compile(schema);
+            expect(validate).toBeDefined();
+        });
+        it('should compile USS v1.1 index schema without errors', () => {
+            const ajv = createAjv();
+            // Load core schema first so $ref can resolve
+            const coreSchema = loadJSON('schemas/usignal/v1_1/core.schema.json');
+            ajv.addSchema(coreSchema);
+            const schema = loadJSON('schemas/usignal/v1_1/index.schema.json');
+            expect(() => {
+                ajv.compile(schema);
+            }).not.toThrow();
+        });
+        it('should validate minimal-runtime.example.json against USS v1.1 index schema', () => {
+            const ajv = createAjv();
+            // Load core schema first
+            const coreSchema = loadJSON('schemas/usignal/v1_1/core.schema.json');
+            ajv.addSchema(coreSchema);
+            const schema = loadJSON('schemas/usignal/v1_1/index.schema.json');
+            const example = loadJSON('examples/usignal/v1_1/minimal-runtime.example.json');
+            const validate = ajv.compile(schema);
+            const valid = validate(example);
+            if (!valid) {
+                console.error('Validation errors:', validate.errors);
+            }
+            expect(valid, 'minimal-runtime.example.json should be valid USS v1.1').toBe(true);
+        });
+        it('should validate tradingview-ingest.example.json against USS v1.1 index schema', () => {
+            const ajv = createAjv();
+            // Load core schema first
+            const coreSchema = loadJSON('schemas/usignal/v1_1/core.schema.json');
+            ajv.addSchema(coreSchema);
+            const schema = loadJSON('schemas/usignal/v1_1/index.schema.json');
+            const example = loadJSON('examples/usignal/v1_1/tradingview-ingest.example.json');
+            const validate = ajv.compile(schema);
+            const valid = validate(example);
+            if (!valid) {
+                console.error('Validation errors:', validate.errors);
+            }
+            expect(valid, 'tradingview-ingest.example.json should be valid USS v1.1').toBe(true);
+        });
+        it('USS v1.1 index schema should require providerId and signalId in provenance', () => {
+            const schema = loadJSON('schemas/usignal/v1_1/index.schema.json');
+            expect(schema.properties.provenance).toBeDefined();
+            expect(schema.properties.provenance.required).toBeDefined();
+            expect(schema.properties.provenance.required).toContain('source');
+            expect(schema.properties.provenance.required).toContain('providerId');
+            expect(schema.properties.provenance.required).toContain('signalId');
+            expect(schema.properties.provenance.properties.providerId).toBeDefined();
+            expect(schema.properties.provenance.properties.signalId).toBeDefined();
+            expect(schema.properties.provenance.properties.ingestedAt).toBeDefined();
+            expect(schema.properties.provenance.properties.ingestHash).toBeDefined();
+        });
+        it('should reject USS v1.1 payload missing providerId', () => {
+            const ajv = createAjv();
+            const coreSchema = loadJSON('schemas/usignal/v1_1/core.schema.json');
+            ajv.addSchema(coreSchema);
+            const schema = loadJSON('schemas/usignal/v1_1/index.schema.json');
+            const validate = ajv.compile(schema);
+            const invalidPayload = {
+                schema: 'afi.usignal.v1.1',
+                provenance: {
+                    source: 'test',
+                    signalId: 'test-123'
+                    // Missing providerId
+                }
+            };
+            const valid = validate(invalidPayload);
+            expect(valid).toBe(false);
+            expect(validate.errors).toBeDefined();
+            expect(validate.errors.some(e => e.message?.includes('providerId'))).toBe(true);
+        });
+        it('should reject USS v1.1 payload missing signalId', () => {
+            const ajv = createAjv();
+            const coreSchema = loadJSON('schemas/usignal/v1_1/core.schema.json');
+            ajv.addSchema(coreSchema);
+            const schema = loadJSON('schemas/usignal/v1_1/index.schema.json');
+            const validate = ajv.compile(schema);
+            const invalidPayload = {
+                schema: 'afi.usignal.v1.1',
+                provenance: {
+                    source: 'test',
+                    providerId: 'provider-123'
+                    // Missing signalId
+                }
+            };
+            const valid = validate(invalidPayload);
+            expect(valid).toBe(false);
+            expect(validate.errors).toBeDefined();
+            expect(validate.errors.some(e => e.message?.includes('signalId'))).toBe(true);
+        });
+    });
 });
 //# sourceMappingURL=schema-validation.test.js.map
