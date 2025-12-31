@@ -4,7 +4,7 @@
   "title": "AFI Pipeline Configuration Schema",
   "description": "Schema for signal processing pipeline configurations in afi-reactor",
   "type": "object",
-  "required": ["id", "name", "version", "nodes", "edges"],
+  "required": ["id", "name", "nodes", "edges"],
   "properties": {
     "id": {
       "type": "string",
@@ -19,8 +19,13 @@
     },
     "version": {
       "type": "string",
-      "description": "Semantic version of the pipeline",
-      "pattern": "^\\d+\\.\\d+\\.\\d+$"
+      "description": "Semantic version of the pipeline. Follows the pattern v{major}.{minor}.{patch} for AFI-Reactor LangGraph integration.",
+      "pattern": "^v\\d+\\.\\d+\\.\\d+$",
+      "examples": [
+        "v1.0.0",
+        "v1.2.3",
+        "v2.0.0"
+      ]
     },
     "description": {
       "type": "string",
@@ -123,6 +128,43 @@
       "items": {
         "type": "string"
       }
+    },
+    "requiredNodes": {
+      "type": "array",
+      "description": "Required node types that must be present in the pipeline for AFI-Reactor LangGraph integration. These represent the core processing stages.",
+      "items": {
+        "type": "string",
+        "description": "Type of required node",
+        "enum": ["analyst", "execution", "observer"]
+      },
+      "uniqueItems": true,
+      "examples": [
+        ["analyst", "execution"],
+        ["analyst", "execution", "observer"]
+      ]
+    },
+    "enrichmentNodes": {
+      "type": "object",
+      "description": "Enrichment node definitions for the pipeline. Each key is a node ID and the value is an enrichment node configuration. These nodes provide signal enrichment capabilities.",
+      "additionalProperties": {
+        "$ref": "https://afi-protocol.org/schemas/definitions/enrichment-node.schema.json"
+      },
+      "examples": [
+        {
+          "price-enricher": {
+            "id": "price-enricher",
+            "type": "enrichment",
+            "plugin": "afi-price-enricher",
+            "enabled": true,
+            "optional": false,
+            "parallel": false,
+            "dependencies": [],
+            "config": {
+              "sources": ["coingecko", "coinmarketcap"]
+            }
+          }
+        }
+      ]
     },
     "metadata": {
       "type": "object",

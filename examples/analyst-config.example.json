@@ -1,0 +1,65 @@
+{
+  "analystId": "crypto-analyst",
+  "version": "v1.0.0",
+  "enrichmentNodes": [
+    {
+      "id": "price-enricher",
+      "type": "enrichment",
+      "plugin": "afi-price-enricher",
+      "enabled": true,
+      "optional": false,
+      "parallel": false,
+      "dependencies": [],
+      "config": {
+        "sources": ["coingecko", "coinmarketcap"],
+        "updateInterval": 60,
+        "cacheTTL": 300
+      }
+    },
+    {
+      "id": "sentiment-analyzer",
+      "type": "enrichment",
+      "plugin": "afi-sentiment-plugin",
+      "enabled": true,
+      "optional": true,
+      "parallel": true,
+      "dependencies": ["price-enricher"],
+      "config": {
+        "sources": ["twitter", "reddit"],
+        "minConfidence": 0.7
+      }
+    },
+    {
+      "id": "onchain-tracker",
+      "type": "ingress",
+      "plugin": "afi-onchain-tracker",
+      "enabled": true,
+      "optional": false,
+      "parallel": false,
+      "dependencies": [],
+      "config": {
+        "networks": ["ethereum", "polygon"],
+        "confirmations": 12
+      }
+    },
+    {
+      "id": "defi-protocol-analyzer",
+      "type": "enrichment",
+      "plugin": "afi-defi-analyzer",
+      "enabled": true,
+      "optional": true,
+      "parallel": true,
+      "dependencies": ["onchain-tracker"],
+      "config": {
+        "protocols": ["uniswap", "aave", "compound"],
+        "minTVL": 1000000
+      }
+    }
+  ],
+  "metadata": {
+    "description": "Crypto analyst focused on DeFi protocols and on-chain metrics. This analyst configuration provides comprehensive signal enrichment for cryptocurrency trading signals.",
+    "author": "AFI Team",
+    "createdAt": "2024-12-26T10:00:00Z",
+    "updatedAt": "2024-12-26T15:30:00Z"
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "id": "price-enricher",
+  "type": "enrichment",
+  "plugin": "afi-price-enricher",
+  "enabled": true,
+  "optional": false,
+  "parallel": false,
+  "dependencies": [],
+  "config": {
+    "sources": ["coingecko", "coinmarketcap"],
+    "updateInterval": 60,
+    "cacheTTL": 300,
+    "timeout": 5000,
+    "retryAttempts": 3
+  }
+}

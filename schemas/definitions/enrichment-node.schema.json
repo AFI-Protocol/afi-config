@@ -1,0 +1,142 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://afi-protocol.org/schemas/definitions/enrichment-node.schema.json",
+  "title": "AFI Enrichment Node Definition",
+  "description": "Schema for defining enrichment nodes in AFI analyst configurations. Enrichment nodes are processing units that transform, analyze, or augment signals within the AFI-Reactor LangGraph pipeline.",
+  "type": "object",
+  "required": ["id", "type", "plugin", "enabled"],
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "Unique identifier for the enrichment node. Must be lowercase alphanumeric with hyphens only.",
+      "pattern": "^[a-z0-9-]+$",
+      "minLength": 1,
+      "maxLength": 100,
+      "examples": [
+        "price-enricher",
+        "sentiment-analyzer",
+        "onchain-tracker"
+      ]
+    },
+    "type": {
+      "type": "string",
+      "description": "Type of enrichment node. 'enrichment' nodes transform or augment signals, while 'ingress' nodes bring external data into the pipeline.",
+      "enum": ["enrichment", "ingress"],
+      "examples": [
+        "enrichment",
+        "ingress"
+      ]
+    },
+    "plugin": {
+      "type": "string",
+      "description": "Identifier of the plugin that implements this enrichment node. Must reference a registered plugin in the AFI plugin registry.",
+      "pattern": "^[a-z0-9-]+$",
+      "minLength": 1,
+      "maxLength": 100,
+      "examples": [
+        "afi-price-enricher",
+        "afi-sentiment-plugin",
+        "afi-onchain-tracker"
+      ]
+    },
+    "enabled": {
+      "type": "boolean",
+      "description": "Whether this enrichment node is active and should be executed during pipeline processing. Disabled nodes are skipped during execution.",
+      "examples": [
+        true,
+        false
+      ]
+    },
+    "optional": {
+      "type": "boolean",
+      "description": "Whether this enrichment node is optional. Optional nodes that fail will not cause pipeline failure. Non-optional nodes that fail will halt pipeline execution.",
+      "default": true,
+      "examples": [
+        true,
+        false
+      ]
+    },
+    "parallel": {
+      "type": "boolean",
+      "description": "Whether this enrichment node can be executed in parallel with other nodes. Parallel nodes can improve pipeline throughput for independent operations.",
+      "default": false,
+      "examples": [
+        true,
+        false
+      ]
+    },
+    "dependencies": {
+      "type": "array",
+      "description": "List of enrichment node IDs that this node depends on. The pipeline will ensure all dependencies complete before executing this node. Dependencies must be unique.",
+      "items": {
+        "type": "string",
+        "description": "ID of a dependency enrichment node",
+        "pattern": "^[a-z0-9-]+$"
+      },
+      "uniqueItems": true,
+      "examples": [
+        ["price-enricher"],
+        ["sentiment-analyzer", "onchain-tracker"]
+      ]
+    },
+    "config": {
+      "type": "object",
+      "description": "Plugin-specific configuration for this enrichment node. The structure depends on the plugin implementation. This field allows arbitrary configuration properties.",
+      "additionalProperties": true,
+      "examples": [
+        {
+          "apiKey": "your-api-key",
+          "timeout": 5000,
+          "retryAttempts": 3
+        },
+        {
+          "sources": ["coingecko", "coinmarketcap"],
+          "updateInterval": 60
+        }
+      ]
+    }
+  },
+  "additionalProperties": false,
+  "examples": [
+    {
+      "id": "price-enricher",
+      "type": "enrichment",
+      "plugin": "afi-price-enricher",
+      "enabled": true,
+      "optional": false,
+      "parallel": false,
+      "dependencies": [],
+      "config": {
+        "sources": ["coingecko", "coinmarketcap"],
+        "updateInterval": 60,
+        "cacheTTL": 300
+      }
+    },
+    {
+      "id": "sentiment-analyzer",
+      "type": "enrichment",
+      "plugin": "afi-sentiment-plugin",
+      "enabled": true,
+      "optional": true,
+      "parallel": true,
+      "dependencies": ["price-enricher"],
+      "config": {
+        "sources": ["twitter", "reddit"],
+        "minConfidence": 0.7
+      }
+    },
+    {
+      "id": "onchain-tracker",
+      "type": "ingress",
+      "plugin": "afi-onchain-tracker",
+      "enabled": true,
+      "optional": false,
+      "parallel": false,
+      "dependencies": [],
+      "config": {
+        "networks": ["ethereum", "polygon"],
+        "confirmations": 12
+      }
+    }
+  ]
+}

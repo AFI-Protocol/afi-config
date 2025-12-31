@@ -1,0 +1,47 @@
+{
+  "schema": "afi.cpj.v0.1",
+  "provenance": {
+    "providerType": "telegram",
+    "providerId": "telegram-channel-123456",
+    "messageId": "msg-789012",
+    "postedAt": "2024-12-16T10:30:00Z",
+    "rawText": "🚀 BTC LONG SIGNAL\n\nSymbol: BTCUSDT\nEntry: 42500-42800\nStop Loss: 41800\nTake Profit 1: 43500 (50%)\nTake Profit 2: 44200 (30%)\nTake Profit 3: 45000 (20%)\nLeverage: 5x\nTimeframe: 4h\nVenue: BloFin",
+    "channelName": "Crypto Signals Pro",
+    "authorId": "user-456",
+    "authorName": "TraderAlpha"
+  },
+  "extracted": {
+    "symbolRaw": "BTCUSDT",
+    "side": "long",
+    "entry": {
+      "min": 42500,
+      "max": 42800
+    },
+    "stopLoss": 41800,
+    "takeProfits": [
+      {
+        "price": 43500,
+        "percentage": 50
+      },
+      {
+        "price": 44200,
+        "percentage": 30
+      },
+      {
+        "price": 45000,
+        "percentage": 20
+      }
+    ],
+    "leverageHint": 5,
+    "timeframeHint": "4h",
+    "venueHint": "blofin",
+    "marketTypeHint": "perp"
+  },
+  "parse": {
+    "parserId": "telegram-signal-parser",
+    "parserVersion": "1.0.0",
+    "confidence": 0.95,
+    "warnings": []
+  }
+}
+

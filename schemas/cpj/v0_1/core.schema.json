@@ -1,0 +1,175 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://afi-protocol.org/schemas/cpj/v0.1/core.schema.json",
+  "title": "AFI Canonical Parsed JSON - Core (v0.1)",
+  "description": "Core schema for third-party signal parsing (Telegram/Discord). CPJ is source-faithful parsed object + provenance + parse confidence.",
+  "type": "object",
+  "required": [
+    "schema",
+    "provenance",
+    "extracted",
+    "parse"
+  ],
+  "properties": {
+    "schema": {
+      "type": "string",
+      "const": "afi.cpj.v0.1",
+      "description": "Schema version identifier for CPJ v0.1"
+    },
+    "provenance": {
+      "type": "object",
+      "description": "Source provenance for the third-party signal",
+      "required": [
+        "providerType",
+        "providerId",
+        "messageId",
+        "postedAt"
+      ],
+      "properties": {
+        "providerType": {
+          "type": "string",
+          "description": "Signal source type",
+          "enum": ["telegram", "discord", "twitter", "other"]
+        },
+        "providerId": {
+          "type": "string",
+          "description": "Stable identifier for the signal source (channel ID, server ID, etc.)"
+        },
+        "messageId": {
+          "type": "string",
+          "description": "Unique message identifier from the source platform"
+        },
+        "postedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "ISO 8601 timestamp when the signal was posted on the source platform"
+        },
+        "rawText": {
+          "type": "string",
+          "description": "Original raw text of the signal (for audit and replay)"
+        },
+        "channelName": {
+          "type": "string",
+          "description": "Human-readable channel/server name (optional)"
+        },
+        "authorId": {
+          "type": "string",
+          "description": "Author/poster identifier (optional)"
+        },
+        "authorName": {
+          "type": "string",
+          "description": "Author/poster display name (optional)"
+        }
+      },
+      "additionalProperties": true
+    },
+    "extracted": {
+      "type": "object",
+      "description": "Extracted trading signal fields (source-faithful, minimal normalization)",
+      "required": [
+        "symbolRaw",
+        "side"
+      ],
+      "properties": {
+        "symbolRaw": {
+          "type": "string",
+          "description": "Raw symbol as it appears in the source (e.g., 'BTCUSDT', 'BTC-USD', 'SOLUSDT')"
+        },
+        "side": {
+          "type": "string",
+          "description": "Trade direction",
+          "enum": ["long", "short", "buy", "sell", "neutral"]
+        },
+        "entry": {
+          "description": "Entry price or range",
+          "oneOf": [
+            {
+              "type": "number",
+              "description": "Single entry price"
+            },
+            {
+              "type": "object",
+              "description": "Entry range",
+              "properties": {
+                "min": { "type": "number" },
+                "max": { "type": "number" }
+              },
+              "required": ["min", "max"],
+              "additionalProperties": false
+            }
+          ]
+        },
+        "stopLoss": {
+          "type": "number",
+          "description": "Stop loss price (optional)"
+        },
+        "takeProfits": {
+          "type": "array",
+          "description": "Take profit targets (optional)",
+          "items": {
+            "type": "object",
+            "properties": {
+              "price": { "type": "number" },
+              "percentage": { "type": "number", "description": "Percentage of position to close (optional)" }
+            },
+            "required": ["price"],
+            "additionalProperties": false
+          }
+        },
+        "leverageHint": {
+          "type": "number",
+          "description": "Suggested leverage (optional)"
+        },
+        "timeframeHint": {
+          "type": "string",
+          "description": "Suggested timeframe (e.g., '1h', '4h', '1d') (optional)"
+        },
+        "venueHint": {
+          "type": "string",
+          "description": "Suggested venue/exchange (e.g., 'blofin', 'coinbase') (optional)"
+        },
+        "marketTypeHint": {
+          "type": "string",
+          "description": "Suggested market type (e.g., 'spot', 'perp', 'futures') (optional)",
+          "enum": ["spot", "perp", "futures"]
+        }
+      },
+      "additionalProperties": true
+    },
+    "parse": {
+      "type": "object",
+      "description": "Parser metadata and confidence",
+      "required": [
+        "parserId",
+        "parserVersion",
+        "confidence"
+      ],
+      "properties": {
+        "parserId": {
+          "type": "string",
+          "description": "Parser identifier (e.g., 'telegram-signal-parser', 'discord-signal-parser')"
+        },
+        "parserVersion": {
+          "type": "string",
+          "description": "Parser version (semver recommended)"
+        },
+        "confidence": {
+          "type": "number",
+          "description": "Parse confidence score (0.0 to 1.0)",
+          "minimum": 0.0,
+          "maximum": 1.0
+        },
+        "warnings": {
+          "type": "array",
+          "description": "Parse warnings (optional)",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "additionalProperties": true
+    }
+  },
+  "additionalProperties": true
+}
+

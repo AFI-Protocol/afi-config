@@ -1,0 +1,124 @@
+{
+  "id": "crypto-trading-pipeline",
+  "name": "Crypto Trading Signal Pipeline",
+  "version": "v1.0.0",
+  "description": "A comprehensive pipeline for processing cryptocurrency trading signals with enrichment nodes",
+  "requiredNodes": ["analyst", "execution", "observer"],
+  "nodes": [
+    {
+      "id": "signal-ingress",
+      "type": "generator",
+      "pluginId": "afi-signal-generator",
+      "config": {
+        "source": "telegram",
+        "channel": "crypto-signals"
+      },
+      "signalSchema": "afi.usignal.v1",
+      "inputs": [],
+      "outputs": ["raw-signal"]
+    },
+    {
+      "id": "crypto-analyst",
+      "type": "analyzer",
+      "pluginId": "afi-analyst-plugin",
+      "config": {
+        "analystId": "crypto-analyst"
+      },
+      "signalSchema": "afi.usignal.v1",
+      "inputs": ["raw-signal"],
+      "outputs": ["enriched-signal"]
+    },
+    {
+      "id": "execution-engine",
+      "type": "executor",
+      "pluginId": "afi-execution-plugin",
+      "config": {
+        "exchange": "binance",
+        "maxPositionSize": 10000
+      },
+      "signalSchema": "afi.usignal.v1",
+      "inputs": ["enriched-signal"],
+      "outputs": ["execution-result"]
+    },
+    {
+      "id": "observer",
+      "type": "observer",
+      "pluginId": "afi-observer-plugin",
+      "config": {
+        "logLevel": "info"
+      },
+      "signalSchema": "afi.usignal.v1",
+      "inputs": ["execution-result"],
+      "outputs": []
+    }
+  ],
+  "edges": [
+    {
+      "from": "signal-ingress",
+      "to": "crypto-analyst",
+      "fromPort": "raw-signal",
+      "toPort": "raw-signal"
+    },
+    {
+      "from": "crypto-analyst",
+      "to": "execution-engine",
+      "fromPort": "enriched-signal",
+      "toPort": "enriched-signal"
+    },
+    {
+      "from": "execution-engine",
+      "to": "observer",
+      "fromPort": "execution-result",
+      "toPort": "execution-result"
+    }
+  ],
+  "entryNode": "signal-ingress",
+  "exitNodes": ["observer"],
+  "enrichmentNodes": {
+    "price-enricher": {
+      "id": "price-enricher",
+      "type": "enrichment",
+      "plugin": "afi-price-enricher",
+      "enabled": true,
+      "optional": false,
+      "parallel": false,
+      "dependencies": [],
+      "config": {
+        "sources": ["coingecko", "coinmarketcap"],
+        "updateInterval": 60,
+        "cacheTTL": 300
+      }
+    },
+    "sentiment-analyzer": {
+      "id": "sentiment-analyzer",
+      "type": "enrichment",
+      "plugin": "afi-sentiment-plugin",
+      "enabled": true,
+      "optional": true,
+      "parallel": true,
+      "dependencies": ["price-enricher"],
+      "config": {
+        "sources": ["twitter", "reddit"],
+        "minConfidence": 0.7
+      }
+    },
+    "onchain-tracker": {
+      "id": "onchain-tracker",
+      "type": "ingress",
+      "plugin": "afi-onchain-tracker",
+      "enabled": true,
+      "optional": false,
+      "parallel": false,
+      "dependencies": [],
+      "config": {
+        "networks": ["ethereum", "polygon"],
+        "confirmations": 12
+      }
+    }
+  },
+  "metadata": {
+    "author": "AFI Team",
+    "createdAt": "2024-12-26T10:00:00Z",
+    "updatedAt": "2024-12-26T15:30:00Z"
+  }
+}

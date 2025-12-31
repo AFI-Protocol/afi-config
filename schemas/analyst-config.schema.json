@@ -1,0 +1,174 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://afi-protocol.org/schemas/analyst-config.schema.json",
+  "title": "AFI Analyst Configuration Schema",
+  "description": "Schema for analyst configurations in the AFI-Reactor LangGraph integration. Analyst configurations define the enrichment nodes and processing pipeline for a specific analyst agent within the AFI ecosystem.",
+  "type": "object",
+  "required": ["analystId", "enrichmentNodes"],
+  "properties": {
+    "analystId": {
+      "type": "string",
+      "description": "Unique identifier for the analyst. Must be lowercase alphanumeric with hyphens only. This ID is used to reference the analyst across the AFI ecosystem.",
+      "pattern": "^[a-z0-9-]+$",
+      "minLength": 1,
+      "maxLength": 100,
+      "examples": [
+        "crypto-analyst",
+        "equity-trader",
+        "macro-observer"
+      ]
+    },
+    "version": {
+      "type": "string",
+      "description": "Semantic version of the analyst configuration. Follows the pattern v{major}.{minor}.{patch}. Used for configuration versioning and migration.",
+      "pattern": "^v\\d+\\.\\d+\\.\\d+$",
+      "examples": [
+        "v1.0.0",
+        "v1.2.3",
+        "v2.0.0"
+      ]
+    },
+    "enrichmentNodes": {
+      "type": "array",
+      "description": "Array of enrichment nodes that define the processing pipeline for this analyst. Each node represents a processing step that transforms, analyzes, or augments signals.",
+      "items": {
+        "$ref": "https://afi-protocol.org/schemas/definitions/enrichment-node.schema.json"
+      },
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "metadata": {
+      "type": "object",
+      "description": "Optional metadata about the analyst configuration. This field allows arbitrary properties for documentation and tracking purposes.",
+      "properties": {
+        "description": {
+          "type": "string",
+          "description": "Human-readable description of the analyst's purpose and capabilities.",
+          "maxLength": 1000,
+          "examples": [
+            "Crypto analyst focused on DeFi protocols and on-chain metrics",
+            "Equity trader specializing in tech sector analysis"
+          ]
+        },
+        "author": {
+          "type": "string",
+          "description": "Author or creator of the analyst configuration.",
+          "examples": [
+            "AFI Team",
+            "John Doe"
+          ]
+        },
+        "createdAt": {
+          "type": "string",
+          "description": "ISO 8601 timestamp when the configuration was created.",
+          "format": "date-time",
+          "examples": [
+            "2024-12-26T10:00:00Z"
+          ]
+        },
+        "updatedAt": {
+          "type": "string",
+          "description": "ISO 8601 timestamp when the configuration was last updated.",
+          "format": "date-time",
+          "examples": [
+            "2024-12-26T15:30:00Z"
+          ]
+        }
+      },
+      "additionalProperties": true
+    }
+  },
+  "additionalProperties": false,
+  "examples": [
+    {
+      "analystId": "crypto-analyst",
+      "version": "v1.0.0",
+      "enrichmentNodes": [
+        {
+          "id": "price-enricher",
+          "type": "enrichment",
+          "plugin": "afi-price-enricher",
+          "enabled": true,
+          "optional": false,
+          "parallel": false,
+          "dependencies": [],
+          "config": {
+            "sources": ["coingecko", "coinmarketcap"],
+            "updateInterval": 60,
+            "cacheTTL": 300
+          }
+        },
+        {
+          "id": "sentiment-analyzer",
+          "type": "enrichment",
+          "plugin": "afi-sentiment-plugin",
+          "enabled": true,
+          "optional": true,
+          "parallel": true,
+          "dependencies": ["price-enricher"],
+          "config": {
+            "sources": ["twitter", "reddit"],
+            "minConfidence": 0.7
+          }
+        },
+        {
+          "id": "onchain-tracker",
+          "type": "ingress",
+          "plugin": "afi-onchain-tracker",
+          "enabled": true,
+          "optional": false,
+          "parallel": false,
+          "dependencies": [],
+          "config": {
+            "networks": ["ethereum", "polygon"],
+            "confirmations": 12
+          }
+        }
+      ],
+      "metadata": {
+        "description": "Crypto analyst focused on DeFi protocols and on-chain metrics",
+        "author": "AFI Team",
+        "createdAt": "2024-12-26T10:00:00Z",
+        "updatedAt": "2024-12-26T15:30:00Z"
+      }
+    },
+    {
+      "analystId": "equity-trader",
+      "version": "v1.2.0",
+      "enrichmentNodes": [
+        {
+          "id": "market-data-fetcher",
+          "type": "ingress",
+          "plugin": "afi-market-data-plugin",
+          "enabled": true,
+          "optional": false,
+          "parallel": false,
+          "dependencies": [],
+          "config": {
+            "exchanges": ["NYSE", "NASDAQ"],
+            "symbols": ["AAPL", "MSFT", "GOOGL"]
+          }
+        },
+        {
+          "id": "technical-indicator",
+          "type": "enrichment",
+          "plugin": "afi-technical-analysis",
+          "enabled": true,
+          "optional": false,
+          "parallel": false,
+          "dependencies": ["market-data-fetcher"],
+          "config": {
+            "indicators": ["RSI", "MACD", "BollingerBands"],
+            "period": 14
+          }
+        }
+      ],
+      "metadata": {
+        "description": "Equity trader specializing in tech sector analysis",
+        "author": "AFI Team",
+        "createdAt": "2024-12-20T08:00:00Z",
+        "updatedAt": "2024-12-26T12:00:00Z"
+      }
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "schema": "afi.cpj.v0.1",
+  "provenance": {
+    "providerType": "telegram",
+    "providerId": "telegram-channel-654321",
+    "messageId": "msg-345678",
+    "postedAt": "2024-12-16T11:15:00Z",
+    "rawText": "📊 SOL SPOT BUY\n\nPair: SOL-USD\nEntry: $98.50\nStop: $95.00\nTarget: $105.00\nExchange: Coinbase\nTimeframe: 1h",
+    "channelName": "Spot Trading Signals",
+    "authorId": "user-789",
+    "authorName": "SpotTrader"
+  },
+  "extracted": {
+    "symbolRaw": "SOL-USD",
+    "side": "buy",
+    "entry": 98.50,
+    "stopLoss": 95.00,
+    "takeProfits": [
+      {
+        "price": 105.00
+      }
+    ],
+    "timeframeHint": "1h",
+    "venueHint": "coinbase",
+    "marketTypeHint": "spot"
+  },
+  "parse": {
+    "parserId": "telegram-signal-parser",
+    "parserVersion": "1.0.0",
+    "confidence": 0.92,
+    "warnings": []
+  }
+}
+
