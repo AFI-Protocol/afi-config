@@ -50,7 +50,7 @@ If there is ever a conflict:
 
    - Treat Eliza as a client of AFI services.
    - Do not import Eliza core libraries into AFI core repos.
-   - Eliza-related work is confined to gateway/plugin repos (e.g., `afi-eliza-gateway`).
+   - Eliza-related work is confined to gateway/plugin repos (e.g., `afi-gateway`).
 
 ## 2. Standard Droid Workflow (Single-Repo Missions)
 
@@ -134,7 +134,7 @@ In these cases:
    - Never invert established relationships, such as:
      - `afi-reactor` orchestrates DAGs and exposes APIs; it does not depend on Eliza.
      - `afi-core` provides shared types and validators; it is not a client of Eliza.
-     - `afi-eliza-gateway` is a client of AFI; AFI core repositories never depend on it.
+     - `afi-gateway` is a client of AFI; AFI core repositories never depend on it.
 
 4. **Keep diffs localized**
 
@@ -170,7 +170,7 @@ This section gives high-level guidance for common AFI repos, from a droid's poin
   - Hide business-critical rules in generic helpers.
   - Import Eliza core libraries.
 
-### afi-eliza-gateway
+### afi-gateway
 
 - Integration shell for Eliza-based agents.
 - Hosts AFI-specific plugins and client code.
@@ -198,7 +198,7 @@ To keep boundaries simple:
   - Treat Eliza as an external client that calls your APIs.
   - Do not import Eliza core SDKs or character definitions.
 
-- In `afi-eliza-gateway`:
+- In `afi-gateway`:
   - You may:
     - Use Eliza SDKs and plugin interfaces.
     - Use AFI client libraries from `afi-core`.

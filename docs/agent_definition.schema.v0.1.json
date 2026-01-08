@@ -122,8 +122,8 @@
         },
         "repo": {
           "type": "string",
-          "description": "Primary repository where the agent's code lives",
-          "examples": ["afi-reactor", "afi-core", "afi-eliza-gateway", "afi-token"]
+          "description": "Primary repository where agent's code lives",
+          "examples": ["afi-reactor", "afi-core", "afi-gateway", "afi-token"]
         },
         "scope": {
           "type": "array",

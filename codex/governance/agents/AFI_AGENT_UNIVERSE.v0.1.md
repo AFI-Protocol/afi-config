@@ -10,7 +10,7 @@ This document maps the conceptual universe of AFI Protocol runtime agents—the 
 - **AFI_DROID_INDEX.v0.1.md** — Catalog of house droids (repo maintenance workers)
 - **AFI_DROID_CHARTER.v0.1.md** — Global rules for droids
 - **AFI_DROID_GLOSSARY.md** — Terminology (droids vs agents vs gateways)
-- **afi-eliza-gateway/docs/AFI_AGENT_PLAYBOOK.v0.1.md** — Runtime behavior for ElizaOS agents
+- **afi-gateway/docs/AFI_AGENT_PLAYBOOK.v0.1.md** — Runtime behavior for ElizaOS agents
 
 ---
 
@@ -116,7 +116,7 @@ Each agent class typically has a primary "home" repo or system:
 
 - **afi-reactor**: Pipeline agents (DAG nodes for signal processing)
 - **afi-core**: Validator agents, scoring agents, registry curators
-- **afi-eliza-gateway**: Frontline persona agents (Phoenix, Mentor agents)
+- **afi-gateway**: Frontline persona agents (Phoenix, Mentor agents)
 - **afi-ops**: Ops agents (CI Explainer, Incident Triage, Deployment Dry-Run Advisor)
 - **afi-governance**: Governance agents (Proposal Summarizer, Parameter Impact Simulator, Governance Risk Sentinel)
 - **afi-skills**: Skill-focused agents (skill discovery, skill recommendation, skill eval runners)
@@ -148,7 +148,7 @@ Frontline agents are human-facing personas that serve as the public face of AFI 
 
 - **Interface**: Human-facing (Discord, Telegram, web chat, voice)
 - **Role**: Mentor + Router into AFI backend
-- **Home**: afi-eliza-gateway
+- **Home**: afi-gateway
 - **Stage focus**: Analyzed/Scored signals (presents final intelligence to users)
 - **What it does**: Answers questions about AFI, explains signals and scores, guides users through governance, routes complex queries to specialized mentor agents
 - **Inputs**: User queries (natural language), AFI API responses (signals, scores, proposals)
@@ -161,7 +161,7 @@ Frontline agents are human-facing personas that serve as the public face of AFI 
 - **Risk Mentor**: Specializes in portfolio risk, drawdown analysis, correlation breakdowns
 - **Interface**: Human-facing (conversational)
 - **Role**: Mentor (domain-specific expertise)
-- **Home**: afi-eliza-gateway
+- **Home**: afi-gateway
 - **Stage focus**: Analyzed/Scored signals (interprets complex signals for users)
 - **What they do**: Provide deep, domain-specific explanations of signals, patterns, and strategies
 - **Inputs**: User queries, domain-specific signals (macro regime, derivatives data, risk metrics)
@@ -171,7 +171,7 @@ Frontline agents are human-facing personas that serve as the public face of AFI 
 
 - **Interface**: Human-facing (conversational) + System-facing (API for governance UI)
 - **Role**: Mentor + Governor
-- **Home**: afi-eliza-gateway or afi-governance
+- **Home**: afi-gateway or afi-governance
 - **What it does**: Summarizes governance proposals, explains parameter changes, simulates impact of governance decisions
 - **Inputs**: Governance proposals, parameter change specs, historical governance data
 - **Outputs**: Plain-language summaries, impact assessments, voting guidance
@@ -361,7 +361,7 @@ Droids and agents are complementary but distinct:
 - Execute **skills** from afi-skills, consume **schemas** from afi-core/afi-config, use **Codex** for replay
 - Follow **AFI Agent Playbook v0.1** (for ElizaOS agents) and domain-specific guidelines
 - Produce **runtime outputs** (summaries, scores, alerts, recommendations)
-- Examples: Phoenix (afi-eliza-gateway), Market Scout agents (afi-reactor DAG), Governance Risk Sentinel (afi-governance)
+- Examples: Phoenix (afi-gateway), Market Scout agents (afi-reactor DAG), Governance Risk Sentinel (afi-governance)
 
 **Key relationships**:
 
@@ -393,7 +393,7 @@ This section provides a prioritized conceptual roster of agents likely to appear
 **Phoenix (AFI Ambassador)**:
 
 - **Role**: Front-door agent, mentor, router into AFI backend
-- **Home**: afi-eliza-gateway
+- **Home**: afi-gateway
 - **Primary inputs**: User queries (natural language), AFI API responses (signals, scores, proposals)
 - **Primary outputs**: Natural language responses, signal summaries, governance explanations
 - **Status**: Aspirational (character config and plugins in development)
@@ -402,7 +402,7 @@ This section provides a prioritized conceptual roster of agents likely to appear
 **Core Signal Explainer** (embedded in Phoenix or standalone):
 
 - **Role**: Mentor (signal interpretation)
-- **Home**: afi-eliza-gateway
+- **Home**: afi-gateway
 - **Primary inputs**: Scored signals, signal metadata, user queries
 - **Primary outputs**: Plain-language signal explanations, risk context, strategy fit guidance
 - **Status**: Aspirational (may be integrated into Phoenix persona)
@@ -512,7 +512,7 @@ When agents are implemented, they must:
 
 - **Respect repo-level AGENTS.md files**: Each repo defines allowed actions, forbidden actions, and security constraints.
 - **Respect risk levels and boundaries**: Agents that call high-risk APIs (e.g., token contracts, governance voting) must follow strict safety protocols.
-- **Follow AFI Agent Playbook v0.1**: ElizaOS agents must follow runtime behavior guidelines in `afi-eliza-gateway/docs/AFI_AGENT_PLAYBOOK.v0.1.md`.
+- **Follow AFI Agent Playbook v0.1**: ElizaOS agents must follow runtime behavior guidelines in `afi-gateway/docs/AFI_AGENT_PLAYBOOK.v0.1.md`.
 - **Undergo security review**: Agents that execute skills, call external APIs, or handle user data must pass security review.
 
 ### Risk Levels for Agent Classes

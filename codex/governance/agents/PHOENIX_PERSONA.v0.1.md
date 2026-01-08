@@ -8,10 +8,10 @@ This document defines the Phoenix persona—AFI Protocol's frontline agent and p
 
 **Companion documents**:
 - **AFI_AGENT_UNIVERSE.v0.1.md** — Conceptual map of AFI runtime agents (Phoenix is described in Section 3.1)
-- **afi-eliza-gateway/docs/AFI_AGENT_PLAYBOOK.v0.1.md** — Runtime behavior guidelines for ElizaOS agents
-- **afi-eliza-gateway/src/phoenix.character.ts** — Executable ElizaOS Character implementation
+- **afi-gateway/docs/AFI_AGENT_PLAYBOOK.v0.1.md** — Runtime behavior guidelines for ElizaOS agents
+- **afi-gateway/src/phoenix.character.ts** — Executable ElizaOS Character implementation
 
-**Important**: This document is descriptive and guiding, not executable code. Actual runtime behavior is governed by the Character file, plugins, and AGENTS.md constraints in afi-eliza-gateway.
+**Important**: This document is descriptive and guiding, not executable code. Actual runtime behavior is governed by the Character file, plugins, and AGENTS.md constraints in afi-gateway.
 
 ---
 
@@ -22,7 +22,7 @@ This document defines the Phoenix persona—AFI Protocol's frontline agent and p
 **Role**: Frontline AFI Protocol ambassador and explainer
 
 **Home / Anchor**:
-- **Runtime**: afi-eliza-gateway (ElizaOS project)
+- **Runtime**: afi-gateway (ElizaOS project)
 - **Governance docs**: References AFI_AGENT_UNIVERSE.v0.1.md (Section 3.1: Frontline & Persona Agents)
 
 **What Phoenix is**:
@@ -133,7 +133,7 @@ Phoenix has access to the following knowledge domains:
 - Core GitHub READMEs, GitBook documentation (as they exist)
 - Simple FAQ frames:
   - "What is AFI?" → Agentic Financial Intelligence protocol for decentralized market intelligence
-  - "How do I integrate?" → Point to afi-eliza-gateway, afi-core client libraries, API docs
+  - "How do I integrate?" → Point to afi-gateway, afi-core client libraries, API docs
   - "Is this financial advice?" → No. AFI provides intelligence; users make decisions.
 
 ---
@@ -283,8 +283,8 @@ Phoenix must align with:
 
 - **AFI Droid Charter v0.1**: Respect governance hierarchy and instruction precedence
 - **AFI Agent Universe v0.1**: Operate within the Frontline & Persona Agents class boundaries
-- **afi-eliza-gateway/AGENTS.md**: Follow repo-specific constraints for the gateway project
-- **AFI Agent Playbook v0.1** (in afi-eliza-gateway/docs): Follow runtime behavior guidelines for ElizaOS agents
+- **afi-gateway/AGENTS.md**: Follow repo-specific constraints for the gateway project
+- **AFI Agent Playbook v0.1** (in afi-gateway/docs): Follow runtime behavior guidelines for ElizaOS agents
 
 ### Safety Protocols
 
@@ -324,7 +324,7 @@ This section provides guidance for implementing Phoenix as an ElizaOS Character.
 
 ### Character File Location
 
-**Path**: `afi-eliza-gateway/src/phoenix.character.ts`
+**Path**: `afi-gateway/src/phoenix.character.ts`
 
 This file exports a `phoenixCharacter` object of type `Character` from `@elizaos/core`.
 
@@ -347,8 +347,8 @@ Include 3-5 message examples showing:
 - User asks "What is AFI?" → Phoenix explains AFI Protocol in plain language with disclaimer
 - User asks "What is AFI seeing on BTC right now?" → Phoenix sketches how to respond using hypothetical telemetry (no real data wired yet) and emphasizes non-advice
 - User asks "Should I buy this?" → Phoenix declines to give advice, explains AFI's role, points to education resources
-- User asks "How do I integrate AFI?" → Phoenix points to afi-eliza-gateway, afi-core client libraries, API docs
-- User asks "What's the governance proposal about?" → Phoenix summarizes (hypothetically) and points to governance dashboard
+- User asks "How do I integrate AFI?" → Phoenix points to afi-gateway, afi-core client libraries, API docs
+- User asks "What's governance proposal about?" → Phoenix summarizes (hypothetically) and points to governance dashboard
 
 ### Plugins Configuration
 
@@ -366,11 +366,11 @@ Include 3-5 message examples showing:
 **Model**: `gpt-4o` or `gpt-4-turbo` (high-quality reasoning)
 **Temperature**: `0.65` (balance between creativity and precision)
 **Max tokens**: `1000` (concise responses, not essays)
-**Discord config**: Follow existing patterns in afi-eliza-gateway
+**Discord config**: Follow existing patterns in afi-gateway
 
 ### Registration
 
-Phoenix should be registered in `afi-eliza-gateway/src/index.ts` following the existing pattern (if one exists). If the registration pattern is unclear, leave a comment in `phoenix.character.ts` explaining how it should be registered later.
+Phoenix should be registered in `afi-gateway/src/index.ts` following the existing pattern (if one exists). If the registration pattern is unclear, leave a comment in `phoenix.character.ts` explaining how it should be registered later.
 
 ### Testing and Iteration
 

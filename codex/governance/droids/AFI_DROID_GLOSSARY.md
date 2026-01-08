@@ -1,6 +1,6 @@
 # AFI Droid vs Agent Glossary
 
-This glossary clarifies how **AFI droids** (Factory.ai coding workers) differ from **ElizaOS agents** (runtime personas), and how the Eliza gateway fits into the picture.
+This glossary clarifies how **AFI droids** (Factory.ai coding workers) differ from **ElizaOS agents** (runtime personas), and how Eliza gateway fits into the picture.
 
 It exists to keep roles clean:
 
@@ -50,7 +50,7 @@ An agent is a **runtime persona** inside ElizaOS (e.g., Spartan, Phoenix) that i
 **Where it lives**
 
 - In Eliza runtimes (Discord, Telegram, web, etc.).
-- In gateway environments that connect Eliza to AFI (e.g., `afi-eliza-gateway`).
+- In gateway environments that connect Eliza to AFI (e.g., `afi-gateway`).
 
 **What it reads**
 
@@ -72,11 +72,11 @@ An agent is a **runtime persona** inside ElizaOS (e.g., Spartan, Phoenix) that i
 
 **Mental model:** agents are faces and voices; they ask AFI for help, they don't refactor AFI.
 
-## Gateway (afi-eliza-gateway)
+## Gateway (afi-gateway)
 
 **What it is**
 
-`afi-eliza-gateway` is an **integration shell**: a client-facing bridge between Eliza agents and AFI backends.
+`afi-gateway` is an **integration shell**: a client-facing bridge between Eliza agents and AFI backends.
 
 **Role**
 
@@ -86,7 +86,7 @@ An agent is a **runtime persona** inside ElizaOS (e.g., Spartan, Phoenix) that i
 
 **Dependency direction**
 
-- Eliza agents → `afi-eliza-gateway` → AFI APIs (e.g. `afi-reactor`, `afi-core`).
+- Eliza agents → `afi-gateway` → AFI APIs (e.g. `afi-reactor`, `afi-core`).
 - AFI core repos never depend on Eliza internals.
 
 ## Skills
@@ -96,7 +96,7 @@ An agent is a **runtime persona** inside ElizaOS (e.g., Spartan, Phoenix) that i
 - Canonical, testable capabilities encoded as:
   - Config, templates, or code modules
   - Stored in AFI repos (e.g., `afi-skills`).
-- Governed by the Droid Charter + AGENTS.md.
+- Governed by Droid Charter + AGENTS.md.
 - Extended through repo changes and PRs.
 
 ### Agent Skills (runtime land)
@@ -109,7 +109,7 @@ An agent is a **runtime persona** inside ElizaOS (e.g., Spartan, Phoenix) that i
 
 ## One-sentence Contrast
 
-- **Droids**: "Given these repos and rules, safely change the code."
+- **Droids**: "Given these repos and rules, safely change code."
 - **Agents**: "Given this user, these tools, and these APIs, decide what to do."
 
 ## Scope of this Glossary

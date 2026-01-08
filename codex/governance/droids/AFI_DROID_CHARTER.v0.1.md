@@ -235,12 +235,12 @@ If the instruction is ambiguous, droids must treat it as **not authorized**.
 
 ## 7. Eliza Gateway Boundary
 
-AFI droids MUST treat the Eliza gateway as an external integration surface, not a core AFI codebase. Droids may:
+AFI droids MUST treat Eliza gateway as an external integration surface, not a core AFI codebase. Droids may:
 
-- Modify AFI-owned gateway repos (for example: `afi-eliza-gateway`, AFI-specific Eliza plugins, and character configuration files), and
+- Modify AFI-owned gateway repos (for example: `afi-gateway`, AFI-specific Eliza plugins, and character configuration files), and
 - Adjust AFI-side APIs and adapters that the gateway calls.
 
-Droids MUST NOT clone, fork, or modify the upstream ElizaOS repository inside AFI repos, nor introduce direct Eliza code into `afi-reactor`, `afi-core`, or any other AFI core modules. All Eliza-related work happens only in gateway/plugin repos explicitly designated for that purpose.
+Droids MUST NOT clone, fork, or modify upstream ElizaOS repository inside AFI repos, nor introduce direct Eliza code into `afi-reactor`, `afi-core`, or any other AFI core modules. All Eliza-related work happens only in gateway/plugin repos explicitly designated for that purpose.
 
 ---
 

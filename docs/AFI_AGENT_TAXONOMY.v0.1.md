@@ -66,7 +66,7 @@ This taxonomy does not override, redefine, or replace any droid behavioral rules
 
 **What it is**: A human-facing persona (chat, voice, or UI-based).
 
-**Where it lives**: ElizaOS runtimes (Discord, Telegram, web, etc.) or afi-eliza-gateway.
+**Where it lives**: ElizaOS runtimes (Discord, Telegram, web, etc.).
 
 **Examples**:
 - `companion:phoenix:v1` — AFI's primary user-facing agent
@@ -312,9 +312,8 @@ Swarms group agents for coordination and ensemble behavior. They do NOT replace 
 
 - **AFI Droid Charter**: `afi-config/codex/governance/droids/AFI_DROID_CHARTER.v0.1.md`
 - **AFI Droid Glossary**: `afi-config/codex/governance/droids/AFI_DROID_GLOSSARY.md`
-- **AFI Agent Playbook**: `afi-eliza-gateway/docs/AFI_AGENT_PLAYBOOK.v0.1.md`
+- **AFI Agent Playbook**: `afi-gateway/docs/AFI_AGENT_PLAYBOOK.v0.1.md`
 - **Agent Definition Schema**: `afi-config/docs/agent_definition.schema.v0.1.json`
-- **Agent Registry**: `afi-config/docs/agents.registry.v0.1.json`
 
 ---
 
