@@ -1,0 +1,129 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://afi.protocol/schemas/validatorConfig.schema.json",
+  "title": "Validator Configuration",
+  "description": "Configuration schema for the AFI signal validator orchestrator",
+  "type": "object",
+  "required": [
+    "decayCheckIntervalMs",
+    "challengeWindowDurationHours",
+    "mintApprovalThreshold",
+    "snapshotSpaceId"
+  ],
+  "properties": {
+    "decayCheckIntervalMs": {
+      "type": "integer",
+      "minimum": 1000,
+      "default": 60000,
+      "description": "Interval between decay evaluations in milliseconds"
+    },
+    "challengeWindowDurationHours": {
+      "type": "number",
+      "minimum": 1,
+      "maximum": 168,
+      "default": 24,
+      "description": "Duration of challenge window in hours (max 7 days)"
+    },
+    "mintApprovalThreshold": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1,
+      "default": 0.66,
+      "description": "Minimum approval percentage for minting (0-1)"
+    },
+    "minQuorumThreshold": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1,
+      "default": 0.1,
+      "description": "Minimum quorum for valid vote (0-1)"
+    },
+    "snapshotSpaceId": {
+      "type": "string",
+      "pattern": "^[a-z0-9-]+\\.eth$",
+      "default": "afi.eth",
+      "description": "Snapshot space ID for governance"
+    },
+    "minDecayScoreThreshold": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1,
+      "default": 0.5,
+      "description": "Minimum decay score to pass threshold"
+    },
+    "baseHalfLifeHours": {
+      "type": "number",
+      "minimum": 1,
+      "maximum": 720,
+      "default": 24,
+      "description": "Base half-life for decay calculation in hours"
+    },
+    "snapshot": {
+      "type": "object",
+      "properties": {
+        "hubUrl": {
+          "type": "string",
+          "format": "uri",
+          "default": "https://hub.snapshot.org",
+          "description": "Snapshot hub API URL"
+        },
+        "sequencerUrl": {
+          "type": "string",
+          "format": "uri",
+          "default": "https://seq.snapshot.org",
+          "description": "Snapshot sequencer URL"
+        }
+      },
+      "description": "Snapshot API configuration"
+    },
+    "mint": {
+      "type": "object",
+      "properties": {
+        "coordinatorAddress": {
+          "type": "string",
+          "pattern": "^0x[a-fA-F0-9]{40}$",
+          "description": "AFIMintCoordinator contract address"
+        },
+        "chainId": {
+          "type": "integer",
+          "description": "Chain ID for minting (e.g., 8453 for Base)"
+        },
+        "maxGasPrice": {
+          "type": "string",
+          "description": "Maximum gas price in wei"
+        },
+        "retryAttempts": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 5,
+          "default": 3,
+          "description": "Number of retry attempts for failed mints"
+        }
+      },
+      "description": "Mint submission configuration"
+    },
+    "daemon": {
+      "type": "object",
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "default": true,
+          "description": "Whether daemon is enabled"
+        },
+        "logLevel": {
+          "type": "string",
+          "enum": ["debug", "info", "warn", "error"],
+          "default": "info",
+          "description": "Logging level"
+        },
+        "metricsEnabled": {
+          "type": "boolean",
+          "default": false,
+          "description": "Enable Prometheus metrics"
+        }
+      },
+      "description": "Daemon runtime configuration"
+    }
+  },
+  "additionalProperties": false
+}
