@@ -657,7 +657,7 @@ describe('Schema Validation Tests', () => {
       expect(validate.errors).toBeDefined();
     });
   
-    describe('AFI-Reactor LangGraph Schema Validation', () => {
+    describe('AFI-Reactor DAG Schema Validation', () => {
       describe('Enrichment Node Schema', () => {
         it('should compile enrichment-node.schema.json without errors', () => {
           const ajv = createAjv();
@@ -902,7 +902,7 @@ describe('Schema Validation Tests', () => {
         });
       });
   
-      describe('Pipeline Schema (LangGraph Integration)', () => {
+      describe('Pipeline Schema (DAG Integration)', () => {
         it('should compile updated pipeline.schema.json without errors', () => {
           const ajv = createAjv();
           // Load enrichment-node schema first for $ref resolution
@@ -920,14 +920,14 @@ describe('Schema Validation Tests', () => {
           expect(typeof validate).toBe('function');
         });
   
-        it('should validate pipeline-langgraph.example.json against pipeline schema', () => {
+        it('should validate pipeline-dag.example.json against pipeline schema', () => {
           const ajv = createAjv();
           // Load enrichment-node schema first for $ref resolution
           const enrichmentNodeSchema = loadJSON('schemas/definitions/enrichment-node.schema.json');
           ajv.addSchema(enrichmentNodeSchema);
   
           const schema = loadJSON('schemas/pipeline.schema.json');
-          const example = loadJSON('examples/pipeline-langgraph.example.json');
+          const example = loadJSON('examples/pipeline-dag.example.json');
   
           const validate = ajv.compile(schema);
           const valid = validate(example);
@@ -936,7 +936,7 @@ describe('Schema Validation Tests', () => {
             console.error('Validation errors:', validate.errors);
           }
   
-          expect(valid, 'pipeline-langgraph.example.json should be valid').toBe(true);
+          expect(valid, 'pipeline-dag.example.json should be valid').toBe(true);
         });
   
         it('should reject pipeline with invalid version pattern', () => {
@@ -1019,7 +1019,7 @@ describe('Schema Validation Tests', () => {
           expect(validate.errors).toBeDefined();
         });
   
-        it('should accept pipeline with all new LangGraph fields', () => {
+        it('should accept pipeline with all new DAG pipeline fields', () => {
           const ajv = createAjv();
           const enrichmentNodeSchema = loadJSON('schemas/definitions/enrichment-node.schema.json');
           ajv.addSchema(enrichmentNodeSchema);
@@ -1056,7 +1056,7 @@ describe('Schema Validation Tests', () => {
           expect(valid).toBe(true);
         });
   
-        it('should accept pipeline without optional LangGraph fields for backward compatibility', () => {
+        it('should accept pipeline without optional DAG fields for backward compatibility', () => {
           const ajv = createAjv();
           const enrichmentNodeSchema = loadJSON('schemas/definitions/enrichment-node.schema.json');
           ajv.addSchema(enrichmentNodeSchema);

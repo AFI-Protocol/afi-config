@@ -2,7 +2,7 @@
   "$schema": "http://json-schema.org/draft-07/schema#",
   "$id": "https://afi-protocol.org/schemas/definitions/enrichment-node.schema.json",
   "title": "AFI Enrichment Node Definition",
-  "description": "Schema for defining enrichment nodes in AFI analyst configurations. Enrichment nodes are processing units that transform, analyze, or augment signals within the AFI-Reactor LangGraph pipeline.",
+  "description": "Schema for defining enrichment nodes in AFI analyst configurations. Enrichment nodes are processing units that transform, analyze, or augment signals within the AFI-Reactor pipeline / DAG.",
   "type": "object",
   "required": ["id", "type", "plugin", "enabled"],
   "properties": {

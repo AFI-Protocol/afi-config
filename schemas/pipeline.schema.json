@@ -19,7 +19,7 @@
     },
     "version": {
       "type": "string",
-      "description": "Semantic version of the pipeline. Follows the pattern v{major}.{minor}.{patch} for AFI-Reactor LangGraph integration.",
+      "description": "Semantic version of the pipeline. Follows the pattern v{major}.{minor}.{patch} for AFI-Reactor pipeline / DAG integration.",
       "pattern": "^v\\d+\\.\\d+\\.\\d+$",
       "examples": [
         "v1.0.0",
@@ -131,7 +131,7 @@
     },
     "requiredNodes": {
       "type": "array",
-      "description": "Required node types that must be present in the pipeline for AFI-Reactor LangGraph integration. These represent the core processing stages.",
+      "description": "Required node types that must be present in the pipeline for AFI-Reactor pipeline / DAG integration. These represent the core processing stages.",
       "items": {
         "type": "string",
         "description": "Type of required node",

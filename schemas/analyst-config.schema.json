@@ -2,7 +2,7 @@
   "$schema": "http://json-schema.org/draft-07/schema#",
   "$id": "https://afi-protocol.org/schemas/analyst-config.schema.json",
   "title": "AFI Analyst Configuration Schema",
-  "description": "Schema for analyst configurations in the AFI-Reactor LangGraph integration. Analyst configurations define the enrichment nodes and processing pipeline for a specific analyst agent within the AFI ecosystem.",
+  "description": "Schema for analyst configurations in the AFI-Reactor pipeline / DAG integration. Analyst configurations define the enrichment nodes and processing pipeline for a specific analyst agent within the AFI ecosystem.",
   "type": "object",
   "required": ["analystId", "enrichmentNodes"],
   "properties": {
