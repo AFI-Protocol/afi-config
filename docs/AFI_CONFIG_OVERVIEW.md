@@ -10,6 +10,19 @@ This repository provides:
 - **Validation utilities** for ensuring config correctness
 - **Documentation** for config authoring and best practices
 
+## Portable Protocol Surface
+
+AFI is a **portable protocol** (HTTP-like): schemas and invariants here are **normative** (protocol law). Concrete repos such as `afi-reactor`, `afi-infra`, and Mongo-backed vault adapters are **reference implementations**—demonstration spines, not mandatory stacks for external validators.
+
+| Document | Purpose |
+|----------|---------|
+| [AFI Portable Protocol Surface v0.1](https://github.com/AFI-Protocol/afi-docs/blob/main/specs/AFI_PORTABLE_PROTOCOL_SURFACE.v0.1.md) | Direction, layer model, normative vs reference distinction |
+| [AFI Audit Checkpoint](https://github.com/AFI-Protocol/afi-docs/blob/main/specs/audit/AFI_AUDIT_CHECKPOINT.md) | Investigation status; Phase 1 complete |
+| [AFI Audit Resume Prompt](https://github.com/AFI-Protocol/afi-docs/blob/main/specs/audit/AFI_AUDIT_RESUME_PROMPT.md) | Agent prompt for Phases 2–4 |
+| [AFI Protocol Investigation Prompt](https://github.com/AFI-Protocol/afi-docs/blob/main/specs/AFI_PROTOCOL_INVESTIGATION_PROMPT.md) | Full-org audit prompt (all phases) |
+
+Monorepo local paths: `../afi-docs/specs/AFI_PORTABLE_PROTOCOL_SURFACE.v0.1.md`, `../afi-docs/specs/audit/AFI_AUDIT_CHECKPOINT.md`, `../afi-docs/specs/audit/AFI_AUDIT_RESUME_PROMPT.md`.
+
 ## How Other Repos Use afi-config
 
 AFI Protocol is organized as a modular multi-repo architecture. Each module consumes schemas from afi-config:
