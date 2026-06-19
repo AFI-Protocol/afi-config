@@ -7,7 +7,7 @@ This repository is the **single source of truth** for all AFI Protocol configura
 ## Quick Links
 
 📖 **[AFI Config Overview](./docs/AFI_CONFIG_OVERVIEW.md)** - Comprehensive guide to schemas and usage
-📋 **[Migration Notes](./MIGRATION_NOTES.md)** - Consolidation from afi-construct
+📋 **[Migration Notes](./MIGRATION_NOTES.md)** - Schema and config consolidation history
 
 ## Contents
 
@@ -68,5 +68,5 @@ npm run build
 
 ## Migration Note
 
-**2025-11-14:** Consolidated content from **afi-construct** into this repo.
+**2025-11-14:** Consolidated schema and configuration content into this repo.
 See [MIGRATION_NOTES.md](./MIGRATION_NOTES.md) for details.
