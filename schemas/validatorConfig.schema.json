@@ -41,8 +41,8 @@
     "snapshotSpaceId": {
       "type": "string",
       "pattern": "^[a-z0-9-]+\\.eth$",
-      "default": "afi.eth",
-      "description": "Snapshot space ID for governance"
+      "default": "afidao.eth",
+      "description": "Snapshot space ID for governance (canonical AFI DAO space)"
     },
     "minDecayScoreThreshold": {
       "type": "number",
