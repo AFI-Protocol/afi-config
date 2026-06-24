@@ -1,5 +1,7 @@
 # AFI Droid Index v0.1
 
+> **DEPRECATED / SUPERSEDED:** This document predates AFI Settlement v1 doctrine. It may describe v0 per-signal minting, ERC-1155 receipts, direct beneficiary payouts, stale ENS/Snapshot references, or missing vault architecture. See `afi-docs/specs/AFI_SETTLEMENT_V1_DOCTRINE.md` for canonical architecture.
+
 **Status**: v0.1 — Initial index (subject to future revision)  
 **Location**: `afi-config/codex/governance/droids/AFI_DROID_INDEX.v0.1.md`  
 **Last Updated**: 2025-11-28
