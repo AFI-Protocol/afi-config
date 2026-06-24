@@ -1,0 +1,477 @@
+{
+  "registryVersion": "1.0.0-draft",
+  "generatedDate": "2026-06-24",
+  "status": "draft-owner-review",
+  "mode": "read-only registry; descriptive source-of-truth metadata only. NOT an instruction to move funds, update ENS, create Safe transactions, grant roles, or change runtime config.",
+  "description": "Canonical AFI ENS / Safe / vault address registry (draft v1). Maps afidao.eth aliases and related authority/operator accounts to concrete addresses, chains, Safe status, intended roles, and production readiness. Encodes the gap between ENS reality (placeholder Safes) and the intended AFI Settlement v1 vault architecture.",
+  "sourceOfTruthRule": "Concrete addresses + chainId + Safe threshold + signer policy are AUTHORITATIVE. ENS names are human-readable aliases ONLY. Contracts MUST NOT resolve ENS dynamically for access control or fund routing.",
+  "doctrineRefs": [
+    "afi-docs/specs/AFI_SETTLEMENT_V1_DOCTRINE.md",
+    "afi-docs/specs/AFI_ENS_SAFE_ADDRESS_REGISTRY_DOCTRINE.md",
+    "afi-docs/adrs/ADR-005-ens-aliases-addresses-source-of-truth.md",
+    "afi-docs/adrs/ADR-006-unclaimed-rewards-legal-clawback-open.md"
+  ],
+  "sourceReports": [
+    "reports/afi-ens-vault-registry-recon.md",
+    "reports/afi-ens-vault-registry.draft.json",
+    "reports/afi-vault-architecture-recon.md",
+    "reports/afi-onchain-contract-discovery.md",
+    "reports/afi-settlement-v1-contradiction-audit-and-cleanup.md"
+  ],
+  "designRules": [
+    "1. Concrete addresses are authoritative.",
+    "2. ENS names are aliases only.",
+    "3. Contracts must not resolve ENS names dynamically for access control.",
+    "4. Placeholder ENS names must not be treated as funded vaults.",
+    "5. treasury.afidao.eth must not be treated as the real treasury until owner-approved repointing or registry override exists.",
+    "6. The Base Treasury Safe is represented separately from the ENS placeholder treasury.",
+    "7. 1-of-1 Safes are marked not production-grade.",
+    "8. The legacy (non-canonical) three-letter ENS alias is marked deprecated/stale for AFI governance; the canonical identity is afidao.eth.",
+    "9. No entry claims production readiness unless supported by docs and owner approval.",
+    "10. Unknown values are represented as null or 'unknown', not guessed."
+  ],
+  "entries": [
+    {
+      "id": "afidao-eth-root",
+      "name": "AFI DAO Root Identity",
+      "ens": "afidao.eth",
+      "resolvedAddress": "0x4b02AC8E5551C30c4C92814F63D4576F335E4112",
+      "chainId": 1,
+      "network": "ethereum-mainnet",
+      "accountType": "safe",
+      "recommendedRole": "ROOT_DAO_IDENTITY",
+      "currentStatus": "active-identity",
+      "productionStatus": "not-production",
+      "isCanonical": true,
+      "isPlaceholder": false,
+      "isRuntimeAuthority": false,
+      "isFundedVault": false,
+      "safe": {
+        "isSafe": true,
+        "version": "1.4.1",
+        "threshold": 1,
+        "owners": ["0xb87C647a1a0857a4f96271F1d9846fd470e4ad62"],
+        "controller": "1-of-1 signer EOA 0xb87C647a1a0857a4f96271F1d9846fd470e4ad62",
+        "isOneOfOne": true
+      },
+      "allowedActions": [
+        "own and manage the afidao.eth ENS namespace and its subname records",
+        "act as admin of the afidao.eth Snapshot space (network 1)",
+        "hold the ENS wrapped-name ERC-1155 tokens for the namespace"
+      ],
+      "forbiddenActions": [
+        "custody protocol reward/treasury funds",
+        "be wired as a RewardsVault or settlement custody",
+        "be treated as the canonical on-chain treasury",
+        "be resolved dynamically by contracts for access control"
+      ],
+      "knownMismatches": [
+        "reserve.afidao.eth resolves to this SAME Safe (0x4b02) — 'reserve' is not a segregated vault",
+        "holds 0 ETH and no value tokens; it is not a funded vault",
+        "deployed on Ethereum mainnet only; not on Base"
+      ],
+      "source": "ENS live records (Ethereum mainnet) + reports/afi-ens-vault-registry-recon.md",
+      "confidence": "high",
+      "notes": "Safe v1.4.1 on Ethereum mainnet only. NameWrapper owner of the entire afidao.eth namespace and a Snapshot admin. 18 Safe txs during namespace setup (Nov 2025), dormant since. afidao.eth registration expires 2026-12-01 (renewal is an owner action).",
+      "lastVerified": "2026-06-24",
+      "requiresOwnerConfirmation": true
+    },
+    {
+      "id": "reserve-afidao-eth",
+      "name": "AFI Reserve (ENS alias)",
+      "ens": "reserve.afidao.eth",
+      "resolvedAddress": "0x4b02AC8E5551C30c4C92814F63D4576F335E4112",
+      "chainId": 1,
+      "network": "ethereum-mainnet",
+      "accountType": "safe",
+      "recommendedRole": "AFI_RESERVE_VAULT_PLACEHOLDER",
+      "currentStatus": "placeholder",
+      "productionStatus": "not-production",
+      "isCanonical": false,
+      "isPlaceholder": true,
+      "isRuntimeAuthority": false,
+      "isFundedVault": false,
+      "safe": {
+        "isSafe": true,
+        "version": "1.4.1",
+        "threshold": 1,
+        "owners": ["0xb87C647a1a0857a4f96271F1d9846fd470e4ad62"],
+        "controller": "1-of-1 signer EOA 0xb87C647a1a0857a4f96271F1d9846fd470e4ad62",
+        "isOneOfOne": true
+      },
+      "allowedActions": [
+        "reserve the 'reserve' identity for future use",
+        "after owner approval, be re-pointed to a dedicated cold reserve Safe distinct from the admin key"
+      ],
+      "forbiddenActions": [
+        "be treated as a segregated reserve while it equals the namespace-admin Safe",
+        "hold reserves under a 1-of-1 hot signer",
+        "be resolved dynamically by contracts for access control"
+      ],
+      "knownMismatches": [
+        "COLLISION: resolves to 0x4b02 — identical to afidao.eth (root identity); it is not a segregated cold reserve today",
+        "0 ETH; L1-only; no Base address record"
+      ],
+      "source": "ENS live records (Ethereum mainnet) + reports/afi-ens-vault-registry-recon.md",
+      "confidence": "high",
+      "notes": "Intended AFIReserveVault per AFI Settlement v1, but currently the same account as the root identity. Reserve segregation is an OPEN owner decision.",
+      "lastVerified": "2026-06-24",
+      "requiresOwnerConfirmation": true
+    },
+    {
+      "id": "treasury-afidao-eth",
+      "name": "AFI Treasury (ENS alias)",
+      "ens": "treasury.afidao.eth",
+      "resolvedAddress": "0x7408d8e97280e391A38DffE3AE8dF7E5c553438f",
+      "chainId": 1,
+      "network": "ethereum-mainnet",
+      "accountType": "safe",
+      "recommendedRole": "AFI_TREASURY_VAULT_PLACEHOLDER",
+      "currentStatus": "placeholder",
+      "productionStatus": "not-production",
+      "isCanonical": false,
+      "isPlaceholder": true,
+      "isRuntimeAuthority": false,
+      "isFundedVault": false,
+      "safe": {
+        "isSafe": true,
+        "version": "1.4.1",
+        "threshold": 1,
+        "owners": ["0xb87C647a1a0857a4f96271F1d9846fd470e4ad62"],
+        "controller": "1-of-1 signer EOA 0xb87C647a1a0857a4f96271F1d9846fd470e4ad62",
+        "isOneOfOne": true
+      },
+      "allowedActions": [
+        "reserve the 'treasury' identity for future use",
+        "after owner approval, be re-pointed to the canonical Base Treasury Safe (see related account afi-base-treasury-safe) or to an L1 treasury Safe"
+      ],
+      "forbiddenActions": [
+        "be treated as the real or production treasury",
+        "receive funds before doctrine + signer policy are locked",
+        "be assumed equal to the deployed AFI Base Treasury Safe 0x1Dd6705... (that Safe is on Base, not L1)",
+        "be resolved dynamically by contracts for access control"
+      ],
+      "knownMismatches": [
+        "NOT the real Base Treasury Safe (0x1Dd6705ff84Ecd5eaDc51A913Ad8e2c6C9E79aC4, Base) — see relatedAccounts.afi-base-treasury-safe",
+        "empty L1 Safe: 0 ETH, ZERO executed transactions",
+        "shares its address (0x7408) with grants/ops/liq.afidao.eth",
+        "no Base (coinType) address record exists"
+      ],
+      "source": "ENS live records (Ethereum mainnet) + reports/afi-ens-vault-registry-recon.md",
+      "confidence": "high",
+      "notes": "Highest-confusion alias. Intended AFITreasuryVault, but currently an unused L1 placeholder Safe that is NOT the real treasury authority. Reconciliation with the Base Treasury Safe is an OPEN owner decision (see openQuestions OQ-1).",
+      "lastVerified": "2026-06-24",
+      "requiresOwnerConfirmation": true
+    },
+    {
+      "id": "grants-afidao-eth",
+      "name": "AFI Grants (ENS alias)",
+      "ens": "grants.afidao.eth",
+      "resolvedAddress": "0x7408d8e97280e391A38DffE3AE8dF7E5c553438f",
+      "chainId": 1,
+      "network": "ethereum-mainnet",
+      "accountType": "safe",
+      "recommendedRole": "AFI_GRANTS_VAULT_PLACEHOLDER",
+      "currentStatus": "placeholder",
+      "productionStatus": "not-production",
+      "isCanonical": false,
+      "isPlaceholder": true,
+      "isRuntimeAuthority": false,
+      "isFundedVault": false,
+      "safe": {
+        "isSafe": true,
+        "version": "1.4.1",
+        "threshold": 1,
+        "owners": ["0xb87C647a1a0857a4f96271F1d9846fd470e4ad62"],
+        "controller": "1-of-1 signer EOA 0xb87C647a1a0857a4f96271F1d9846fd470e4ad62",
+        "isOneOfOne": true
+      },
+      "allowedActions": [
+        "reserve the 'grants' identity for future use",
+        "after owner approval, be re-pointed to a dedicated grants/program Safe"
+      ],
+      "forbiddenActions": [
+        "share one address with treasury/ops/liq in a production registry",
+        "receive grant funds before doctrine + signer policy are locked",
+        "be resolved dynamically by contracts for access control"
+      ],
+      "knownMismatches": [
+        "shares its address (0x7408) with treasury/ops/liq.afidao.eth — no lane segregation",
+        "empty placeholder Safe: 0 ETH, 0 executed transactions",
+        "no Base address record"
+      ],
+      "source": "ENS live records (Ethereum mainnet) + reports/afi-ens-vault-registry-recon.md",
+      "confidence": "high",
+      "notes": "Intended AFIGrantsVault / Program Vault. Currently the same empty placeholder Safe as treasury/ops/liq.",
+      "lastVerified": "2026-06-24",
+      "requiresOwnerConfirmation": true
+    },
+    {
+      "id": "ops-afidao-eth",
+      "name": "AFI Ops (ENS alias)",
+      "ens": "ops.afidao.eth",
+      "resolvedAddress": "0x7408d8e97280e391A38DffE3AE8dF7E5c553438f",
+      "chainId": 1,
+      "network": "ethereum-mainnet",
+      "accountType": "safe",
+      "recommendedRole": "AFI_OPS_VAULT_PLACEHOLDER",
+      "currentStatus": "placeholder",
+      "productionStatus": "not-production",
+      "isCanonical": false,
+      "isPlaceholder": true,
+      "isRuntimeAuthority": false,
+      "isFundedVault": false,
+      "safe": {
+        "isSafe": true,
+        "version": "1.4.1",
+        "threshold": 1,
+        "owners": ["0xb87C647a1a0857a4f96271F1d9846fd470e4ad62"],
+        "controller": "1-of-1 signer EOA 0xb87C647a1a0857a4f96271F1d9846fd470e4ad62",
+        "isOneOfOne": true
+      },
+      "allowedActions": [
+        "reserve the 'ops' identity for future use",
+        "after owner approval, be re-pointed to a dedicated operations Safe"
+      ],
+      "forbiddenActions": [
+        "share one address with treasury/grants/liq in a production registry",
+        "be conflated with the AFI deployer EOA 0x732588589F72DDb67F9022E59Ab3f8cFB16455b6",
+        "be resolved dynamically by contracts for access control"
+      ],
+      "knownMismatches": [
+        "shares its address (0x7408) with treasury/grants/liq.afidao.eth — no lane segregation",
+        "empty placeholder Safe: 0 ETH, 0 executed transactions",
+        "distinct from the Base Sepolia deployer EOA; no Base address record"
+      ],
+      "source": "ENS live records (Ethereum mainnet) + reports/afi-ens-vault-registry-recon.md",
+      "confidence": "high",
+      "notes": "Intended AFIOpsVault (operations / infra / deployment funding). Currently the same empty placeholder Safe as treasury/grants/liq.",
+      "lastVerified": "2026-06-24",
+      "requiresOwnerConfirmation": true
+    },
+    {
+      "id": "liq-afidao-eth",
+      "name": "AFI Liquidity (ENS alias)",
+      "ens": "liq.afidao.eth",
+      "resolvedAddress": "0x7408d8e97280e391A38DffE3AE8dF7E5c553438f",
+      "chainId": 1,
+      "network": "ethereum-mainnet",
+      "accountType": "safe",
+      "recommendedRole": "AFI_LIQUIDITY_VAULT_PLACEHOLDER",
+      "currentStatus": "placeholder",
+      "productionStatus": "not-production",
+      "isCanonical": false,
+      "isPlaceholder": true,
+      "isRuntimeAuthority": false,
+      "isFundedVault": false,
+      "safe": {
+        "isSafe": true,
+        "version": "1.4.1",
+        "threshold": 1,
+        "owners": ["0xb87C647a1a0857a4f96271F1d9846fd470e4ad62"],
+        "controller": "1-of-1 signer EOA 0xb87C647a1a0857a4f96271F1d9846fd470e4ad62",
+        "isOneOfOne": true
+      },
+      "allowedActions": [
+        "reserve the 'liq' identity for future use",
+        "after owner approval, be re-pointed to a dedicated liquidity Safe (likely on Base, near the xERC20 lockbox)"
+      ],
+      "forbiddenActions": [
+        "share one address with treasury/grants/ops in a production registry",
+        "be conflated with the xERC20 bridge lockbox custody",
+        "be treated as the reward/treasury vault",
+        "be resolved dynamically by contracts for access control"
+      ],
+      "knownMismatches": [
+        "shares its address (0x7408) with treasury/grants/ops.afidao.eth — no lane segregation",
+        "no liquidity assets; empty placeholder Safe (0 ETH, 0 executed transactions)",
+        "L1-only; AFI liquidity (if any) would live on Base; no Base address record; no relation to xERC20 found"
+      ],
+      "source": "ENS live records (Ethereum mainnet) + reports/afi-ens-vault-registry-recon.md",
+      "confidence": "high",
+      "notes": "Intended AFILiquidityVault (liquidity / market-making / bridge ops). Currently the same empty placeholder Safe as treasury/grants/ops.",
+      "lastVerified": "2026-06-24",
+      "requiresOwnerConfirmation": true
+    }
+  ],
+  "relatedAccounts": [
+    {
+      "id": "afi-base-treasury-safe",
+      "name": "AFI Base Treasury Safe",
+      "ens": null,
+      "resolvedAddress": "0x1Dd6705ff84Ecd5eaDc51A913Ad8e2c6C9E79aC4",
+      "chainId": 84532,
+      "network": "base-sepolia",
+      "accountType": "safe",
+      "recommendedRole": "AFI_BASE_TREASURY_SAFE",
+      "currentStatus": "testnet-authority",
+      "productionStatus": "not-production",
+      "isCanonical": true,
+      "isPlaceholder": false,
+      "isRuntimeAuthority": true,
+      "isFundedVault": false,
+      "safe": {
+        "isSafe": true,
+        "version": "1.4.1",
+        "threshold": 1,
+        "owners": ["0xb87C647a1a0857a4f96271F1d9846fd470e4ad62"],
+        "controller": "1-of-1 signer EOA 0xb87C647a1a0857a4f96271F1d9846fd470e4ad62",
+        "isOneOfOne": true
+      },
+      "chainDeployments": [
+        {
+          "chainId": 84532,
+          "network": "base-sepolia",
+          "status": "testnet-authority",
+          "note": "Holds DEFAULT_ADMIN_ROLE on all three v0 contracts and EMISSIONS_ROLE on AFIToken. SafeProxy created block 33745009. 0 indexed outgoing txs. Coordinator role-wiring is incomplete (mintForSignal would revert)."
+        },
+        {
+          "chainId": 8453,
+          "network": "base-mainnet",
+          "status": "contract-exists-no-afi-stack",
+          "note": "Safe contract exists on Base mainnet with no indexed outgoing txs; the AFI token stack is NOT deployed on Base mainnet."
+        },
+        {
+          "chainId": 1,
+          "network": "ethereum-mainnet",
+          "status": "not-deployed",
+          "note": "Not deployed on Ethereum mainnet."
+        }
+      ],
+      "allowedActions": [
+        "hold v0 admin/emissions authority on Base Sepolia (current testnet reality)",
+        "be referenced as the canonical AFI treasury Safe by future registry/config",
+        "be the owner-approved target for re-pointing treasury.afidao.eth"
+      ],
+      "forbiddenActions": [
+        "remain conflated with treasury.afidao.eth (a different, empty L1 placeholder Safe)",
+        "remain a 1-of-1 Safe for production (must move to N-of-M + timelock)",
+        "be treated as a Base-mainnet AFI authority (no AFI stack deployed there)",
+        "be treated as a funded reward/treasury vault (0 token balance)"
+      ],
+      "knownMismatches": [
+        "NO ENS name currently resolves to this Safe",
+        "treasury.afidao.eth points elsewhere (0x7408, Ethereum mainnet placeholder)",
+        "1-of-1 signer 0xb87C647a1a0857a4f96271F1d9846fd470e4ad62 — single point of control, not production-grade"
+      ],
+      "source": "reports/afi-onchain-contract-discovery.md + reports/afi-ens-vault-registry-recon.md",
+      "confidence": "high",
+      "notes": "The REAL AFI treasury/admin/emissions authority for the v0 stack lives here, on Base Sepolia — not under any afidao.eth ENS name. Encoded with per-chain status to avoid overclaiming Base-mainnet readiness.",
+      "lastVerified": "2026-06-24",
+      "requiresOwnerConfirmation": true
+    },
+    {
+      "id": "operator-signer-0xb87c",
+      "name": "AFI Operator Signer",
+      "ens": null,
+      "resolvedAddress": "0xb87C647a1a0857a4f96271F1d9846fd470e4ad62",
+      "chainId": null,
+      "network": "multi-chain",
+      "accountType": "eoa",
+      "recommendedRole": "OPERATOR_SIGNER",
+      "currentStatus": "runtime-authority",
+      "productionStatus": "not-production",
+      "isCanonical": false,
+      "isPlaceholder": false,
+      "isRuntimeAuthority": true,
+      "isFundedVault": false,
+      "safe": {
+        "isSafe": false,
+        "version": null,
+        "threshold": null,
+        "owners": null,
+        "controller": "self (hot EOA)",
+        "isOneOfOne": false
+      },
+      "allowedActions": [
+        "sign Safe transactions under a documented, least-privilege signer policy"
+      ],
+      "forbiddenActions": [
+        "remain the only signer (1-of-1) for treasury/reserve in production",
+        "be used as a production private key by automated agents",
+        "control treasury funds via automation"
+      ],
+      "knownMismatches": [
+        "SINGLE POINT OF CONTROL: sole 1-of-1 signer of all three known AFI Safes (0x4b02, 0x7408, 0x1Dd6705) on L1 and Base — not production-grade"
+      ],
+      "source": "ENS/Safe recon (VERSION/getOwners reads) — reports/afi-ens-vault-registry-recon.md",
+      "confidence": "high",
+      "notes": "Active EOA (Ethereum mainnet + Base). No reverse/primary ENS. This is the de-facto operator key for the AFI Safe set; hardening to N-of-M + timelock is an OPEN owner decision.",
+      "lastVerified": "2026-06-24",
+      "requiresOwnerConfirmation": true
+    },
+    {
+      "id": "deployer-eoa-0x7325",
+      "name": "AFI Deployer EOA",
+      "ens": null,
+      "resolvedAddress": "0x732588589F72DDb67F9022E59Ab3f8cFB16455b6",
+      "chainId": 84532,
+      "network": "base-sepolia",
+      "accountType": "eoa",
+      "recommendedRole": "DEPLOYER_EOA",
+      "currentStatus": "testnet-authority",
+      "productionStatus": "testnet-only",
+      "isCanonical": false,
+      "isPlaceholder": false,
+      "isRuntimeAuthority": false,
+      "isFundedVault": false,
+      "safe": {
+        "isSafe": false,
+        "version": null,
+        "threshold": null,
+        "owners": null,
+        "controller": "self (EOA)",
+        "isOneOfOne": false
+      },
+      "allowedActions": [
+        "deploy v0 testnet contracts under a documented process"
+      ],
+      "forbiddenActions": [
+        "hold roles or funds long-term",
+        "be treated as a vault",
+        "hold production authority"
+      ],
+      "knownMismatches": [
+        "holds no roles per recon (contract creations only); not a vault"
+      ],
+      "source": "reports/afi-onchain-contract-discovery.md + reports/afi-ens-vault-registry-recon.md",
+      "confidence": "high",
+      "notes": "Base Sepolia deployer EOA (deployed the v0 contracts). Small testnet ETH balance; no ENS name. Distinct from ops.afidao.eth.",
+      "lastVerified": "2026-06-24",
+      "requiresOwnerConfirmation": true
+    }
+  ],
+  "deprecatedAliases": [
+    {
+      "alias": "legacy-three-letter-ens-alias",
+      "resolvedAddress": "0x057302a507F41415DcC68A2C62D5b8abF207a20d",
+      "chainId": 1,
+      "network": "ethereum-mainnet",
+      "reason": "The repo previously used a non-canonical three-letter ENS alias as the Snapshot/governance space default (afi-config/schemas/validatorConfig.schema.json default; afi-mint/src/orchestrator/types.ts:211 DEFAULT_VALIDATOR_CONFIG). That alias is NOT a registered Snapshot space and resolves to an unrelated third party (reverse-resolves to smilefox.eth). The live AFI DAO Snapshot space is 'afidao.eth' (network 1; website afiprotocol.org, github AFI-Protocol, member = the real Base Treasury Safe 0x1Dd6705...).",
+      "status": "stale / wrong / not-AFI-controlled",
+      "correctValue": "afidao.eth",
+      "action": "Do NOT use for AFI governance. The runtime default has now been corrected to 'afidao.eth' (network 1) in validatorConfig.schema.json and afi-mint DEFAULT_VALIDATOR_CONFIG (see reports/afi-legacy-ens-alias-removal.md).",
+      "confidence": "high"
+    }
+  ],
+  "warnings": [
+    { "id": "W-TREASURY-MISMATCH", "severity": "critical", "message": "treasury.afidao.eth (0x7408, Ethereum mainnet, empty placeholder) is NOT the real AFI Base Treasury Safe (0x1Dd6705..., Base). Do not route treasury funds or authority by the ENS name.", "relatedIds": ["treasury-afidao-eth", "afi-base-treasury-safe"] },
+    { "id": "W-RESERVE-COLLISION", "severity": "high", "message": "reserve.afidao.eth resolves to the SAME Safe as afidao.eth (root identity, 0x4b02). 'reserve' is not a segregated vault.", "relatedIds": ["reserve-afidao-eth", "afidao-eth-root"] },
+    { "id": "W-LANE-COLLAPSE", "severity": "high", "message": "treasury, grants, ops, and liq .afidao.eth ALL resolve to one placeholder Safe (0x7408). There is no lane segregation today.", "relatedIds": ["treasury-afidao-eth", "grants-afidao-eth", "ops-afidao-eth", "liq-afidao-eth"] },
+    { "id": "W-LEGACY-ENS-ALIAS-STALE", "severity": "high", "message": "The legacy (non-canonical) three-letter ENS alias is stale/wrong for AFI governance; it is not a Snapshot space and is third-party-owned. The live AFI DAO Snapshot space is afidao.eth (network 1).", "relatedIds": ["legacy-three-letter-ens-alias"] },
+    { "id": "W-ONE-OF-ONE", "severity": "high", "message": "All known AFI Safes (0x4b02, 0x7408, 0x1Dd6705) are 1-of-1, signed by a single EOA 0xb87C647a1a0857a4f96271F1d9846fd470e4ad62. Single point of control; not production-grade.", "relatedIds": ["operator-signer-0xb87c"] },
+    { "id": "W-NO-REWARDS-VAULT", "severity": "medium", "message": "No active RewardsVault / segregated funded vault exists yet. All afidao.eth Safes hold 0 funds; the Base Treasury Safe holds 0 token balance. The Settlement v1 RewardsVault is unbuilt.", "relatedIds": [] },
+    { "id": "W-ENS-ALIAS-ONLY", "severity": "info", "message": "ENS names are aliases only. Concrete addresses + chainId + Safe threshold + signer policy are the source of truth. Contracts MUST NOT resolve ENS dynamically for access control.", "relatedIds": [] },
+    { "id": "W-DESCRIPTIVE-ONLY", "severity": "info", "message": "This registry is a DRAFT, descriptive source-of-truth document. It is NOT an instruction to move funds, update ENS records, create Safe transactions, grant roles, or change runtime config.", "relatedIds": [] },
+    { "id": "W-AFIDAO-EXPIRY", "severity": "medium", "message": "afidao.eth registration expires 2026-12-01. Renewal is an owner action (outside the scope of this registry).", "relatedIds": ["afidao-eth-root"] }
+  ],
+  "openQuestions": [
+    { "id": "OQ-1", "question": "Should treasury.afidao.eth be re-pointed to the real Base Treasury Safe (0x1Dd6705...), or should a new Base treasury Safe be created and the ENS alias updated to it?", "disposition": "OPEN — owner decision" },
+    { "id": "OQ-2", "question": "What is the production Safe topology (N-of-M threshold, signer roster, timelock) to replace the current 1-of-1 control?", "disposition": "OPEN — owner decision" },
+    { "id": "OQ-3", "question": "Does AFI want an L1 reserve vault at all, and should reserve.afidao.eth be separated from the root-identity Safe?", "disposition": "OPEN — owner decision" },
+    { "id": "OQ-4", "question": "Which chain hosts each vault lane? ENS records are all L1 (coinType 60) while AFI executes on Base.", "disposition": "OPEN — owner decision" },
+    { "id": "OQ-5", "question": "Should Base-coinType (ENSIP-11) address records be added to the afidao.eth subnames? None exist today.", "disposition": "OPEN — owner decision" },
+    { "id": "OQ-6", "question": "Legal clawback / escheatment / unclaimed-reward policy for any future funded vault.", "disposition": "OPEN — legal/compliance (per ADR-006)" },
+    { "id": "OQ-7", "question": "The runtime snapshotSpaceId default has now been corrected to 'afidao.eth' (network 1) in validatorConfig.schema.json and afi-mint DEFAULT_VALIDATOR_CONFIG. Remaining: confirm no other runtime consumer hard-codes a non-canonical governance space.", "disposition": "RESOLVED — change applied in working tree, pending owner review" }
+  ]
+}

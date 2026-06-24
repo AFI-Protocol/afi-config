@@ -1,0 +1,213 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://afi-protocol.org/schemas/afiVaultAddressRegistry.schema.json",
+  "title": "AFI Vault / Safe / Address Registry Schema",
+  "description": "Canonical, machine-readable registry mapping AFI ENS aliases to concrete addresses, chains, Safe status, intended roles, and production readiness. Concrete addresses + chainId + Safe threshold + signer policy are authoritative; ENS names are human-readable aliases only. This schema is descriptive source-of-truth metadata; it is NOT an instruction to move funds, update ENS, or change Safes.",
+  "type": "object",
+  "required": [
+    "registryVersion",
+    "generatedDate",
+    "status",
+    "sourceOfTruthRule",
+    "entries",
+    "relatedAccounts",
+    "deprecatedAliases",
+    "warnings",
+    "openQuestions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "registryVersion": { "type": "string", "description": "Semver-ish version of this registry document (e.g. '1.0.0-draft')." },
+    "generatedDate": { "type": "string", "description": "ISO date (YYYY-MM-DD) the registry was generated." },
+    "status": { "type": "string", "description": "Lifecycle status of the registry document.", "enum": ["draft", "draft-owner-review", "canonical", "deprecated"] },
+    "mode": { "type": "string", "description": "Operational mode note (read-only / descriptive)." },
+    "description": { "type": "string" },
+    "sourceOfTruthRule": { "type": "string", "description": "The governing rule: concrete addresses are authoritative; ENS names are aliases only." },
+    "doctrineRefs": { "type": "array", "items": { "type": "string" }, "description": "Paths to the doctrine/ADR documents this registry implements." },
+    "sourceReports": { "type": "array", "items": { "type": "string" }, "description": "Paths to the recon reports this registry is derived from." },
+    "designRules": { "type": "array", "items": { "type": "string" }, "description": "The invariant rules this registry obeys." },
+    "entries": {
+      "type": "array",
+      "description": "Primary registry entries (ENS-aliased accounts and canonical vault/identity accounts).",
+      "items": { "$ref": "#/definitions/registryEntry" }
+    },
+    "relatedAccounts": {
+      "type": "array",
+      "description": "Related canonical/authority/operational accounts (may have no ENS alias).",
+      "items": { "$ref": "#/definitions/registryEntry" }
+    },
+    "deprecatedAliases": {
+      "type": "array",
+      "description": "ENS aliases that are stale/wrong/not-AFI-controlled and MUST NOT be used.",
+      "items": { "$ref": "#/definitions/deprecatedAlias" }
+    },
+    "warnings": {
+      "type": "array",
+      "description": "Cross-cutting warnings about mismatches and risks.",
+      "items": { "$ref": "#/definitions/warning" }
+    },
+    "openQuestions": {
+      "type": "array",
+      "description": "Owner/governance decisions that remain OPEN.",
+      "items": { "$ref": "#/definitions/openQuestion" }
+    }
+  },
+  "definitions": {
+    "address": {
+      "type": ["string", "null"],
+      "description": "0x-prefixed 20-byte hex address, or null when unknown / not applicable.",
+      "pattern": "^0x[a-fA-F0-9]{40}$"
+    },
+    "safeInfo": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["isSafe", "version", "threshold", "owners", "controller", "isOneOfOne"],
+      "properties": {
+        "isSafe": { "type": "boolean", "description": "True if the resolved address is a Gnosis/Safe multisig contract." },
+        "version": { "type": ["string", "null"], "description": "Safe contract version (e.g. '1.4.1'), or null." },
+        "threshold": { "type": ["integer", "null"], "minimum": 1, "description": "Signature threshold, or null if not a Safe / unknown." },
+        "owners": {
+          "type": ["array", "null"],
+          "items": { "type": "string", "pattern": "^0x[a-fA-F0-9]{40}$" },
+          "description": "Safe owner addresses, or null if not a Safe / unknown."
+        },
+        "controller": { "type": ["string", "null"], "description": "Human description of who controls the account (signer/EOA/self)." },
+        "isOneOfOne": { "type": "boolean", "description": "True if this is a 1-of-1 Safe (single signer) — NOT production-grade." }
+      }
+    },
+    "chainDeployment": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["chainId", "network", "status"],
+      "properties": {
+        "chainId": { "type": "integer" },
+        "network": { "type": "string" },
+        "status": { "type": "string", "description": "Per-chain presence/status (e.g. 'runtime-authority', 'contract-exists-no-afi-stack', 'not-deployed')." },
+        "note": { "type": "string" }
+      }
+    },
+    "registryEntry": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "name",
+        "ens",
+        "resolvedAddress",
+        "chainId",
+        "network",
+        "accountType",
+        "recommendedRole",
+        "currentStatus",
+        "productionStatus",
+        "isCanonical",
+        "isPlaceholder",
+        "isRuntimeAuthority",
+        "isFundedVault",
+        "safe",
+        "allowedActions",
+        "forbiddenActions",
+        "knownMismatches",
+        "source",
+        "confidence",
+        "notes",
+        "lastVerified",
+        "requiresOwnerConfirmation"
+      ],
+      "properties": {
+        "id": { "type": "string", "description": "Stable machine id for this entry.", "pattern": "^[a-z0-9-]+$" },
+        "name": { "type": "string" },
+        "ens": { "type": ["string", "null"], "description": "ENS alias (human-readable only), or null if none." },
+        "resolvedAddress": { "$ref": "#/definitions/address" },
+        "chainId": { "type": ["integer", "null"], "description": "Primary chain the address is meaningful on, or null for multi-chain/unknown." },
+        "network": {
+          "type": "string",
+          "enum": ["ethereum-mainnet", "base-mainnet", "base-sepolia", "multi-chain", "unknown"]
+        },
+        "accountType": {
+          "type": "string",
+          "enum": ["safe", "eoa", "contract", "ens-alias", "placeholder", "unknown"]
+        },
+        "recommendedRole": {
+          "type": "string",
+          "enum": [
+            "ROOT_DAO_IDENTITY",
+            "AFI_RESERVE_VAULT_PLACEHOLDER",
+            "AFI_TREASURY_VAULT_PLACEHOLDER",
+            "AFI_GRANTS_VAULT_PLACEHOLDER",
+            "AFI_OPS_VAULT_PLACEHOLDER",
+            "AFI_LIQUIDITY_VAULT_PLACEHOLDER",
+            "AFI_BASE_TREASURY_SAFE",
+            "OPERATOR_SIGNER",
+            "DEPLOYER_EOA",
+            "DEPRECATED_ALIAS",
+            "UNKNOWN"
+          ]
+        },
+        "currentStatus": {
+          "type": "string",
+          "enum": ["active-identity", "placeholder", "runtime-authority", "testnet-authority", "deprecated", "unknown"]
+        },
+        "productionStatus": {
+          "type": "string",
+          "enum": ["not-production", "testnet-only", "production-candidate", "production-approved", "unknown"]
+        },
+        "isCanonical": { "type": "boolean", "description": "True if this is the canonical account for its role (vs a placeholder/alias)." },
+        "isPlaceholder": { "type": "boolean", "description": "True if this is reserved scaffolding, not an active funded vault." },
+        "isRuntimeAuthority": { "type": "boolean", "description": "True if the account currently holds on-chain authority (roles/admin/emissions)." },
+        "isFundedVault": { "type": "boolean", "description": "True ONLY if the account actually custodies tokens/reserves." },
+        "safe": { "$ref": "#/definitions/safeInfo" },
+        "allowedActions": { "type": "array", "items": { "type": "string" } },
+        "forbiddenActions": { "type": "array", "items": { "type": "string" } },
+        "knownMismatches": { "type": "array", "items": { "type": "string" }, "description": "Concrete mismatches between ENS/alias reality and intended role." },
+        "chainDeployments": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/chainDeployment" },
+          "description": "Optional per-chain presence/status for multi-chain accounts."
+        },
+        "source": { "type": "string" },
+        "confidence": { "type": "string", "enum": ["high", "medium", "low"] },
+        "notes": { "type": "string" },
+        "lastVerified": { "type": ["string", "null"], "description": "ISO date the on-chain facts were last verified, or null." },
+        "requiresOwnerConfirmation": { "type": "boolean" }
+      }
+    },
+    "deprecatedAlias": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["alias", "reason", "status", "action", "correctValue"],
+      "properties": {
+        "alias": { "type": "string" },
+        "resolvedAddress": { "$ref": "#/definitions/address" },
+        "chainId": { "type": ["integer", "null"] },
+        "network": { "type": "string" },
+        "reason": { "type": "string" },
+        "status": { "type": "string", "description": "e.g. 'stale / wrong / not-AFI-controlled'." },
+        "correctValue": { "type": ["string", "null"], "description": "The value that should be used instead (e.g. 'afidao.eth')." },
+        "action": { "type": "string", "description": "What to do about it (and whether deferred)." },
+        "confidence": { "type": "string", "enum": ["high", "medium", "low"] }
+      }
+    },
+    "warning": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "severity", "message"],
+      "properties": {
+        "id": { "type": "string", "pattern": "^[A-Z0-9-]+$" },
+        "severity": { "type": "string", "enum": ["critical", "high", "medium", "low", "info"] },
+        "message": { "type": "string" },
+        "relatedIds": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "openQuestion": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "question"],
+      "properties": {
+        "id": { "type": "string", "pattern": "^[A-Z0-9-]+$" },
+        "question": { "type": "string" },
+        "disposition": { "type": "string", "description": "Current disposition (e.g. 'OPEN — owner decision', 'OPEN — legal/compliance')." }
+      }
+    }
+  }
+}
