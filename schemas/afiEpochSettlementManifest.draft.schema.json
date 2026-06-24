@@ -1,0 +1,347 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://afi-protocol.org/schemas/afiEpochSettlementManifest.draft.schema.json",
+  "title": "AFI Settlement v1 — EpochSettlementManifest & Provenance Schema (DRAFT, non-implementation)",
+  "description": "DRAFT / NON-IMPLEMENTATION schema for an AFI Settlement v1 candidate EpochSettlementManifest and its provenance leaf shapes. Specification/interface only: it does NOT deploy, anchor, commit, fund, mint, grant roles, or move funds, and MUST NOT be referenced by any contract, deployment, or runtime config. It fixes field PRESENCE and MEANING per the v1 doctrine; field ENCODINGS/TYPES, hash domains, EAS schema UID/resolver/attester, role-split VALUES, holdback/vesting, unclaimed-reward and clawback policy are deliberately left OPEN (constitution O1-O8) and are NOT constrained here. Companion to afi-docs/specs/AFI_SETTLEMENT_V1_MANIFEST_AND_PROVENANCE_SCHEMA.md. Concrete addresses + chainId are the source of truth; ENS names are aliases only.",
+  "x-afiStatus": "draft-non-implementation",
+  "x-afiPartOf": "AFI Settlement v1",
+  "x-afiDoctrineRefs": [
+    "afi-docs/specs/AFI_SETTLEMENT_V1_DOCTRINE.md",
+    "afi-docs/specs/AFI_SIGNAL_PROVENANCE_AND_EAS_SCHEMA.md",
+    "afi-docs/specs/AFI_EPOCH_SETTLEMENT_MANIFEST.md",
+    "afi-docs/specs/AFI_ERC6909_STRATEGY_EPOCH_RECEIPTS.md",
+    "afi-docs/specs/AFI_REWARDS_VAULT_AND_CLAIMS.md",
+    "afi-docs/specs/AFI_ENS_SAFE_ADDRESS_REGISTRY_DOCTRINE.md"
+  ],
+  "x-afiOpenItems": {
+    "O1": "Legal clawback/escheatment — OPEN (legal/compliance); not modeled as final here.",
+    "O2": "Unclaimed-reward policy value — OPEN; only the placeholder ref (unclaimedRewardPolicyRef) is modeled.",
+    "O3": "Role-split values — OPEN; role keys are modeled, split values are NOT.",
+    "O4": "Holdback/vesting schedule — OPEN; only the placeholder ref (holdbackPolicyRef) is modeled.",
+    "O6": "EAS schema UID/resolver/attester, hash domains, tree construction, enum/units — OPEN; encodings left permissive.",
+    "O7": "Push vs pull default — OPEN; both roleAllocationRoots (pull) and roleAllocationLeaves (push) are permitted.",
+    "O8": "Safe topology for attester/committer/vault — OPEN; concrete addresses are source of truth.",
+    "S-A": "Strategy leaf shape — PROPOSED (not yet canonical); modeled under definitions.strategyLeaf."
+  },
+  "x-afiProposedNotAccepted": [
+    "definitions.strategyLeaf (strategy leaf field set) — PROPOSED per spec §5.3.",
+    "Leaf encoding/hash-domain scheme — PROPOSED per spec §5.5; this schema does not enforce it."
+  ],
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "settlementVersion",
+    "epochId",
+    "rulesetHash",
+    "chainId",
+    "contractAddresses",
+    "roots",
+    "economics",
+    "policyRefs",
+    "pointers",
+    "disclosure",
+    "finalizedTimestamp",
+    "submitter"
+  ],
+  "properties": {
+    "settlementVersion": {
+      "type": "string",
+      "description": "Settlement format/semantics version this manifest conforms to. Distinct from rulesetHash. (Layer 3 §2.1)"
+    },
+    "epochId": {
+      "$ref": "#/definitions/identifier",
+      "description": "The accounting epoch this manifest settles. Exactly one committed manifest per epochId. (Layer 3 §2.1, MANIFEST-3)"
+    },
+    "rulesetHash": {
+      "$ref": "#/definitions/commitment",
+      "description": "Pin of the emissions+scoring+validation+allocation ruleset used to produce this manifest. Same value across the anchor, leaves, and manifest. (constitution §15, Layer 3 §2.1)"
+    },
+    "chainId": {
+      "type": "integer",
+      "minimum": 1,
+      "description": "Chain the manifest root is committed on and the vault enforces (Base = 8453 for v1). Concrete chainId is source of truth, not ENS. (D7)"
+    },
+    "contractAddresses": {
+      "$ref": "#/definitions/contractAddresses",
+      "description": "Concrete addresses of the contracts the manifest binds to. Concrete address + chainId authoritative; no ENS resolution for routing/access control. (CONF-10)"
+    },
+    "roots": {
+      "$ref": "#/definitions/proofAndMoneyRoots",
+      "description": "The four committed roots: signalRoot, evidenceRoot, strategyRoot (proof plane) and claimRoot (money plane). (Layer 3 §2.2, spec §4)"
+    },
+    "economics": {
+      "$ref": "#/definitions/economics",
+      "description": "totalRewardPool, role allocations (split VALUES OPEN O3), and strategy/epoch receipt references (reputation, not claims)."
+    },
+    "policyRefs": {
+      "$ref": "#/definitions/policyRefs",
+      "description": "challengeWindow + holdback/unclaimed policy REFERENCES (hooks, not values). Values OPEN (O2/O4); clawback OPEN (O1)."
+    },
+    "pointers": {
+      "$ref": "#/definitions/pointers",
+      "description": "manifestURI (dense off-chain body) — content-addressed and mutually verifiable against the committed root. (META-1/META-2)"
+    },
+    "disclosure": {
+      "$ref": "#/definitions/disclosure",
+      "description": "Delayed-disclosure surface + state. Governs provenance visibility ONLY; never gates payment. (DISC-4, spec §7)"
+    },
+    "finalizedTimestamp": {
+      "type": ["string", "integer"],
+      "description": "Time the manifest was finalized/committed as the epoch settlement root; anchors challenge/holdback/claim windows. (Layer 3 §2.5)"
+    },
+    "submitter": {
+      "$ref": "#/definitions/submitterMeta",
+      "description": "Who submitted (scoped agent/generator) and who authorized/signed commit+funding (human/governance/Safe). Both required for agent-submitted manifests. (AGENT-2)"
+    },
+    "manifestBody": {
+      "$ref": "#/definitions/manifestBody",
+      "description": "OPTIONAL dense off-chain body: the leaf sets (signal/evidence/strategy/claim) whose digests reduce to the committed roots. Off-chain only; NEVER part of the on-chain footprint. (BND-1)"
+    },
+    "extensions": {
+      "type": "object",
+      "description": "OPTIONAL implementation-specific additions. Presence/meaning here is doctrine; encodings are implementation design (OPEN O6).",
+      "additionalProperties": true
+    }
+  },
+  "definitions": {
+    "identifier": {
+      "type": ["string", "integer"],
+      "description": "Opaque stable identifier. Encoding OPEN (O6): MAY be an integer, a 0x-hex id, or a string. Presence/meaning is doctrine."
+    },
+    "commitment": {
+      "type": "string",
+      "minLength": 1,
+      "description": "A cryptographic commitment (root/hash). Encoding OPEN (O6): MAY be 0x-prefixed bytes32, a content-address/CID, or another digest. NEVER a raw payload, cleartext score, or evidence blob. (BND-1)"
+    },
+    "uri": {
+      "type": "string",
+      "minLength": 1,
+      "description": "A pointer (SHOULD be content-addressed so it is tamper-evident against the committed root). (META-2)"
+    },
+    "concreteAddress": {
+      "type": "string",
+      "minLength": 1,
+      "description": "A concrete on-chain account reference (source of truth). MUST NOT be an ENS name relied on for routing/authorization. (D7, R-3). A 0x-address is the expected form; pattern not enforced to keep encoding OPEN.",
+      "$comment": "Recommended (not enforced): ^0x[a-fA-F0-9]{40}$"
+    },
+    "role": {
+      "type": "string",
+      "enum": ["Provider", "Analyst-Scorer", "Validator"],
+      "description": "The v1 CLAIM role set — exactly Provider | Analyst-Scorer | Validator (Layer 4 §11 R-1). Settlement v1 rewards are a three-way participant split. Governance and public-goods are OUT OF SCOPE for v1 reward claims and MUST NEVER be a claim role or claimant; any future non-participant funding program requires a separate owner-approved spec/ADR (CLM-GOV). Split VALUES across the three roles are OPEN (O3)."
+    },
+    "disclosureStatus": {
+      "type": "string",
+      "enum": ["WITHHELD", "DISCLOSED"],
+      "description": "Minimum delayed-disclosure lifecycle (Layer 1 §5). Additional intermediate states and exact enum encoding are OPEN (O6)."
+    },
+    "contractAddresses": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["commitmentContract", "rewardsVault", "token"],
+      "description": "Concrete contract bindings. The commitment/coordinator contract is to-be-specified and is NOT the v0 AFIMintCoordinator. (Layer 3 §2.1, D9)",
+      "properties": {
+        "commitmentContract": { "$ref": "#/definitions/concreteAddress", "description": "SettlementCoordinator / manifest-commit contract (to-be-specified; OPEN O6)." },
+        "rewardsVault": { "$ref": "#/definitions/concreteAddress", "description": "RewardsVault (Layer 4) that custodies the epoch budget and pays only vs claimRoot." },
+        "distributor": { "$ref": "#/definitions/concreteAddress", "description": "OPTIONAL distributor/router for push mode. Push is optional/OPEN (O7) and MUST NOT be the sole settlement path; proof-based PULL against claimRoot is the mandatory minimum (D-PULL, Layer 4 §5). claimRoot remains required (see #/definitions/proofAndMoneyRoots) regardless of whether a distributor is present." },
+        "token": { "$ref": "#/definitions/concreteAddress", "description": "The AFI (xERC20) reward token. xERC20 retained for v1 (D4); ERC-7802 deferred (D5)." }
+      }
+    },
+    "proofAndMoneyRoots": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["signalRoot", "evidenceRoot", "strategyRoot", "claimRoot"],
+      "description": "Roots-and-hashes only; raw arrays NEVER on-chain (MANIFEST-5). claimRoot MUST be reconcilable with the proof roots + rulesetHash + totalRewardPool (MAN-S2/PROOF-3).",
+      "properties": {
+        "signalRoot": { "$ref": "#/definitions/commitment", "description": "PROOF plane. Merkle/EAS root over signal leaves. Confers NO entitlement. (Layer 1 §4)" },
+        "evidenceRoot": { "$ref": "#/definitions/commitment", "description": "PROOF plane. Merkle root over evidence leaves. (Layer 1 §4)" },
+        "strategyRoot": { "$ref": "#/definitions/commitment", "description": "PROOF plane. Merkle root over strategy leaves (Layer 2 reputation set). Reputation, NOT a claim. (Layer 3 §2.2)" },
+        "claimRoot": { "$ref": "#/definitions/commitment", "description": "MONEY plane. The ONLY payout authority; the vault pays strictly against this root. (L-SEP-4)" }
+      }
+    },
+    "economics": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["totalRewardPool", "strategyReceiptRefs"],
+      "description": "Role allocations: at least one of roleAllocationRoots (pull) or roleAllocationLeaves (push) MUST be present and reconcile to totalRewardPool (ECON-1). Split VALUES are OPEN (O3).",
+      "anyOf": [
+        { "required": ["roleAllocationRoots"] },
+        { "required": ["roleAllocationLeaves"] }
+      ],
+      "properties": {
+        "totalRewardPool": {
+          "type": "string",
+          "pattern": "^[0-9]+$",
+          "description": "Total epoch reward budget, as a STRING-ENCODED INTEGER IN BASE UNITS (preferred draft representation). Recorded (derived from afi-math emissions), not invented. Funding cap enforced at the vault funding seam.",
+          "$comment": "String integer (not JSON number) avoids IEEE-754 precision loss for large token amounts; it does NOT finalize tokenomics. The unit/decimals scale (how many base units = 1 AFI) remains OPEN."
+        },
+        "roleAllocationRoots": {
+          "type": "object",
+          "additionalProperties": false,
+          "description": "Per-role allocation commitments (pull form). Keys are EXACTLY the three v1 CLAIM tracks (Provider, Analyst-Scorer, Validator); split VALUES are OPEN (O3) and intentionally NOT constrained.",
+          "$comment": "Governance and public-goods are out of scope for Settlement v1 reward claims (CLM-GOV): additionalProperties:false rejects any key other than the three claim roles, so 'public-goods'/'governance' allocation keys are invalid here.",
+          "properties": {
+            "Provider": { "$ref": "#/definitions/commitment" },
+            "Analyst-Scorer": { "$ref": "#/definitions/commitment" },
+            "Validator": { "$ref": "#/definitions/commitment" }
+          }
+        },
+        "roleAllocationLeaves": {
+          "type": "array",
+          "description": "Per-role allocation leaves (push form), OPTIONAL. Each reconciles to totalRewardPool; the manifest commits PRESENCE, not split values (O3). Push is never the sole path — proof-based PULL against claimRoot is the mandatory minimum (D-PULL).",
+          "items": { "$ref": "#/definitions/claimLeaf" }
+        },
+        "strategyReceiptRefs": {
+          "type": "array",
+          "description": "References to Layer 2 ERC-6909 receipts (receiptId = hash(strategyId, epochId)). Reputation, NEVER redeemable. (L-SEP-2)",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["receiptId", "strategyId"],
+            "properties": {
+              "receiptId": { "$ref": "#/definitions/commitment", "description": "hash(strategyId, epochId) (Layer 2 §4)." },
+              "strategyId": { "$ref": "#/definitions/identifier" }
+            }
+          }
+        }
+      }
+    },
+    "policyRefs": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["challengeWindow", "holdbackPolicyRef", "unclaimedRewardPolicyRef"],
+      "description": "Policy HOOKS (references), not policy values. The vault enforces the referenced governed policy; it does not author it. (POLICY-1)",
+      "properties": {
+        "challengeWindow": {
+          "type": ["string", "integer", "object"],
+          "description": "Window for challenging settlement/claims before release. DISTINCT from disclosureWindow. Enforced, not authored. (CW-2)"
+        },
+        "holdbackPolicyRef": {
+          "type": ["string", "null"],
+          "description": "Reference to the holdback/vesting policy. SCHEDULE/FRACTION/CURVE is OPEN (O4). Commits the hook, not the value.",
+          "$comment": "PLACEHOLDER hook. Value OPEN (O4). MUST NOT be implemented as final."
+        },
+        "unclaimedRewardPolicyRef": {
+          "type": ["string", "null"],
+          "description": "Reference to the unclaimed-reward policy. PLACEHOLDER; value OPEN (O2). Legal clawback/escheatment OPEN (O1), pending legal/compliance.",
+          "$comment": "PLACEHOLDER hook. Value OPEN (O2); clawback/escheatment OPEN (O1). MUST be present as a hook; MUST NOT be a committed final value. (POLICY-2)"
+        }
+      }
+    },
+    "pointers": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["manifestURI"],
+      "properties": {
+        "manifestURI": { "$ref": "#/definitions/uri", "description": "Pointer to the dense off-chain manifest body. Fetching it + recomputing roots MUST reproduce the committed root. (META-1)" }
+      }
+    },
+    "disclosure": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["disclosureURI", "disclosureWindow", "disclosureStatus"],
+      "description": "Delayed-disclosure surface and state. Governs provenance VISIBILITY only; MUST NOT gate, accelerate, or condition payment. (DISC-4)",
+      "properties": {
+        "disclosureURI": { "$ref": "#/definitions/uri", "description": "Where raw signal/evidence pre-images become available AFTER disclosureWindow elapses. SHOULD be content-addressed. (DISC-5)" },
+        "disclosureWindow": {
+          "type": ["string", "integer", "object"],
+          "description": "Configured delayed-disclosure period. Canonical field name is 'disclosureWindow' (NOT 'delayedDisclosureWindow'). Units/value OPEN (O6).",
+          "$comment": "Naming: the constitution's prose 'delayed-disclosure window' refers to this same field. Do not introduce a separate delayedDisclosureWindow field. (spec §4)"
+        },
+        "disclosureStatus": { "$ref": "#/definitions/disclosureStatus" },
+        "attestationUID": {
+          "type": ["string", "null"],
+          "description": "EAS attestation identifier for the batch root IF EAS anchoring is used. Existence/format tied to the final EAS schema — OPEN (O6). NOT a payout instrument; NOT redeemable. (EAS-2)"
+        }
+      }
+    },
+    "submitterMeta": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["submittedBy", "authorizedBy"],
+      "description": "Agent MAY submit; human/governance/Safe MUST authorize before commit and before funding. Concrete addresses are source of truth; ENS is alias only. (AGENT-2/AGENT-3)",
+      "properties": {
+        "submittedBy": { "type": "string", "description": "The submitting agent/generator reference (scoped, least-privilege; no treasury/keys/upgrade authority)." },
+        "authorizedBy": { "$ref": "#/definitions/concreteAddress", "description": "The human/governance/Safe authorizer of commit + funding (documented Safe, ideally N-of-M + timelock; 1-of-1 not production-grade)." }
+      }
+    },
+    "manifestBody": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "OPTIONAL dense off-chain leaf sets. Present only off-chain (behind manifestURI); NEVER part of the on-chain footprint. (BND-1)",
+      "properties": {
+        "signalLeaves": { "type": "array", "items": { "$ref": "#/definitions/signalLeaf" } },
+        "evidenceLeaves": { "type": "array", "items": { "$ref": "#/definitions/evidenceLeaf" } },
+        "strategyLeaves": { "type": "array", "items": { "$ref": "#/definitions/strategyLeaf" } },
+        "claimLeaves": { "type": "array", "items": { "$ref": "#/definitions/claimLeaf" } }
+      }
+    },
+    "signalLeaf": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["signalId", "strategyId", "epochId", "contentHash", "scoreCommitment", "producer", "timestamp", "rulesetHash"],
+      "description": "CANONICAL (Layer 1 §6). One leaf per qualified signal; commits to signalRoot. No raw payload/cleartext score on-chain.",
+      "properties": {
+        "signalId": { "$ref": "#/definitions/identifier", "description": "Stable unique id (e.g. TSSD/USS provenance.signalId)." },
+        "strategyId": { "$ref": "#/definitions/identifier", "description": "MUST equal the batch strategyId." },
+        "epochId": { "$ref": "#/definitions/identifier", "description": "MUST equal the batch epochId." },
+        "contentHash": { "$ref": "#/definitions/commitment", "description": "Hash binding the signal's canonical off-chain content." },
+        "scoreCommitment": { "$ref": "#/definitions/commitment", "description": "Commitment to the deterministic score/decision; score stays off-chain." },
+        "producer": { "type": "string", "description": "Identity REFERENCE of the author/provider (ref/id/address ref, not raw PII). Confers NO token entitlement." },
+        "timestamp": { "type": ["string", "integer"], "description": "Authoritative time reference (e.g. scored-at)." },
+        "rulesetHash": { "$ref": "#/definitions/commitment", "description": "MUST be consistent with the batch rulesetHash." }
+      }
+    },
+    "evidenceLeaf": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["signalId", "evidenceHash", "stage", "disclosureStatus"],
+      "description": "CANONICAL (Layer 1 §7). One+ leaves per signal lifecycle stage; commits to evidenceRoot. Carries no snapshot contents — only evidenceHash.",
+      "properties": {
+        "signalId": { "$ref": "#/definitions/identifier", "description": "MUST match a signal leaf signalId in the same batch." },
+        "evidenceHash": { "$ref": "#/definitions/commitment", "description": "Hash of the RAW→…→SCORED lifecycle snapshot." },
+        "stage": { "type": "string", "description": "Lifecycle stage (e.g. RAW, ENRICHED, SCORED). Exact set OPEN (O6).", "examples": ["RAW", "ENRICHED", "SCORED"] },
+        "disclosureStatus": { "$ref": "#/definitions/disclosureStatus" }
+      }
+    },
+    "strategyLeaf": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["receiptId", "strategyId", "epochId", "owner", "reputationCommitment", "signalRoot", "evidenceRoot", "rulesetHash", "finalized"],
+      "description": "PROPOSED — NOT yet canonical (spec §5.3, S-A). One leaf per (strategyId, epochId) reputation record; commits to strategyRoot. Derived from the ERC-6909 receipt metadata. Reputation, NEVER a claim; decoupled from claimRoot (STR-1/STR-2).",
+      "properties": {
+        "receiptId": { "$ref": "#/definitions/commitment", "description": "hash(strategyId, epochId) — the ERC-6909 id (Layer 2 §4)." },
+        "strategyId": { "$ref": "#/definitions/identifier" },
+        "epochId": { "$ref": "#/definitions/identifier" },
+        "owner": { "$ref": "#/definitions/concreteAddress", "description": "Strategy controller / reputation subject (concrete address, not ENS). Confers NO payout entitlement. (Layer 2 §6)" },
+        "reputationCommitment": { "$ref": "#/definitions/commitment", "description": "Commitment to the finalized reputation magnitude (balance|score). NOT a token amount, NOT a claim. Whether it binds cleartext aggregate vs commitment is OPEN (L2-O2/O5)." },
+        "signalRoot": { "$ref": "#/definitions/commitment", "description": "Reference to the Layer-1 signal provenance basis (reference, not recompute)." },
+        "evidenceRoot": { "$ref": "#/definitions/commitment", "description": "Reference to the Layer-1 evidence root (reference, not recompute)." },
+        "rulesetHash": { "$ref": "#/definitions/commitment", "description": "MUST equal the batch/manifest rulesetHash." },
+        "finalized": { "type": "boolean", "description": "Epoch reputation finalized; SHOULD be immutable thereafter (Layer 2 §10)." }
+      }
+    },
+    "claimLeaf": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["epochId", "recipient", "role", "amount"],
+      "description": "CANONICAL content (Layer 4 §5.1, ADR-004 D-V5); encoding OPEN. One leaf per entitlement; commits to claimRoot/roleAllocationRoots. The ONLY leaf the vault redeems. Requires a per-(epochId,leaf) identifier (leafIndex|nullifier) for exactly-once claim prevention.",
+      "anyOf": [
+        { "required": ["leafIndex"] },
+        { "required": ["nullifier"] }
+      ],
+      "properties": {
+        "epochId": { "$ref": "#/definitions/identifier", "description": "A leaf is claimable only under its own epoch's root. (B-2)" },
+        "recipient": { "$ref": "#/definitions/concreteAddress", "description": "Payout address — concrete address, source of truth. The vault MUST NOT resolve ENS for recipient. (A-3)" },
+        "role": { "$ref": "#/definitions/role" },
+        "amount": { "type": "string", "pattern": "^[0-9]+$", "description": "Entitled amount, as a STRING-ENCODED INTEGER IN BASE UNITS (preferred draft representation). Aggregate per epoch MUST NOT exceed totalRewardPool. (B-3)", "$comment": "String integer (not JSON number) avoids IEEE-754 precision loss for large token amounts; it does NOT finalize tokenomics. The unit/decimals scale remains OPEN." },
+        "leafIndex": { "type": "integer", "minimum": 0, "description": "Leaf index backing the claimed-bitmap (one of leafIndex|nullifier required). (DC-1)" },
+        "nullifier": { "$ref": "#/definitions/commitment", "description": "Leaf-derived nullifier backing exactly-once claims (one of leafIndex|nullifier required). (DC-1)" },
+        "constraints": {
+          "type": ["object", "null"],
+          "description": "OPTIONAL/PROPOSED per-leaf constraints (e.g. holdback/vesting ref, challenge binding) consistent with the manifest policyRefs. Values OPEN (O4).",
+          "additionalProperties": true
+        }
+      }
+    }
+  }
+}
