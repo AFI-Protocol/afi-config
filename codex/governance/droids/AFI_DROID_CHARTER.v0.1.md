@@ -79,7 +79,7 @@ The AFI metadata and provenance system. Codex describes modules, roles, schemas,
 - **Infra / Ops Layer** – e.g., `afi-infra`, `afi-ops`.
 - **Token Layer** – e.g., `afi-token-finalized` and adjacent tokenomics repos.
 - **Artifacts & Docs** – e.g., `afi-artifacts` (paper bundles, Codex snapshots).
-- **Factory & Starters** – e.g., `afi-factory`, `afi-starters` (droids, tasks, starter templates).
+- **Factory** – e.g., `afi-factory` (droids, tasks, templates).
 
 ---
 
@@ -220,7 +220,7 @@ If the instruction is ambiguous, droids must treat it as **not authorized**.
   - Edit canonical snapshots that are tied to published DOIs without an explicit version bump and human approval.
   - Rewrite history of previously published artifacts.
 
-### 6.7 Factory & Starters (e.g., `afi-factory`, `afi-starters`)
+### 6.7 Factory (e.g., `afi-factory`)
 
 - **May**:
   - Add or refine droid manifests, tasks, recipes, and starter templates.
