@@ -15,10 +15,19 @@ const rootDir = join(__dirname, '..');
 function createAjv(): Ajv {
   const ajv = new Ajv({
     strict: true,
+    allowUnionTypes: true,
+    strictRequired: false,
     allErrors: true,
     verbose: true,
   });
   addFormats(ajv);
+  ajv.addVocabulary([
+    'x-afiStatus',
+    'x-afiPartOf',
+    'x-afiDoctrineRefs',
+    'x-afiOpenItems',
+    'x-afiProposedNotAccepted',
+  ]);
   return ajv;
 }
 
