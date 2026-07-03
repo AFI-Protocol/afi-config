@@ -1,0 +1,16 @@
+{
+  "sourceId": "src-exchange-blofin-api",
+  "sourceClass": "exchange-api",
+  "disclosureLevel": "partial",
+  "withheldReason": "license-restricted",
+  "licenseConstraint": "no-redistribution",
+  "replayabilityLevel": "pinned-inputs",
+  "providerAttestation": "self-attested",
+  "analystVisibleSummary": "Blofin perp market data API; OHLCV and depth snapshots available at 15m granularity.",
+  "validatorVisibleSummary": "Exchange market-data API; payloads pinned by hash, raw redistribution restricted by license.",
+  "qualityClaim": {
+    "statement": "Depth snapshots are captured within one second of candle close.",
+    "basis": "Provider capture-latency measurements over 2025-Q4 sample windows."
+  },
+  "notes": "Descriptive metadata only; weighting/evaluation policy is owned by BenchKit."
+}

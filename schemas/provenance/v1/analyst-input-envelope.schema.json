@@ -1,0 +1,98 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://afi-protocol.org/schemas/provenance/v1/analyst-input-envelope.schema.json",
+  "title": "AFI AnalystInputEnvelope v1 (District 2 M1 DRAFT)",
+  "description": "DRAFT / NON-IMPLEMENTATION wrapper around a strategy-local enriched view handed to an analyst. The envelope is strict and canonical; the strategyLocalView payload inside it is intentionally opaque and NON-CANONICAL. Nothing inside strategyLocalView is protocol canon, and it is NOT canonical hash material by default — it may only participate in hashing via the explicit, domain-declared strategyLocalViewHash pin. This schema deliberately does NOT expand or canonize FroggyEnrichedView or any other strategy-specific view.",
+  "$comment": "Guard against accidental canonization: when strategyLocalView is present, the envelope MUST declare the view via strategyViewType and/or enrichedViewSchemaRef (draft-07 'dependencies'). An anonymous/undeclared strategy-local payload is invalid.",
+  "x-afiStatus": "draft-non-implementation",
+  "x-afiPartOf": "AFI District 2 — Canonical Data & Provenance Boundary (D2 M1)",
+  "x-afiDoctrineRefs": [
+    "District 2 D-17 decision — authorizes D2 M1 only (afi-config schema drafts and tests)",
+    "District 2 hash doctrine — opaque strategy-local payloads are not hash material unless explicitly pinned via a domain-declared CanonicalHash"
+  ],
+  "x-afiOpenItems": {
+    "AIE-O1": "strategyViewType namespace/registry — OPEN; opaque non-empty string in this draft.",
+    "AIE-O2": "Whether enrichedViewSchemaRef must resolve to a registered schema — OPEN; free-form ref string in this draft."
+  },
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "signalId",
+    "strategyLocalView"
+  ],
+  "dependencies": {
+    "strategyLocalView": {
+      "anyOf": [
+        { "required": ["strategyViewType"] },
+        { "required": ["enrichedViewSchemaRef"] }
+      ]
+    }
+  },
+  "properties": {
+    "schema": {
+      "type": "string",
+      "const": "afi.analyst-input-envelope.v1",
+      "description": "Schema version identifier for AnalystInputEnvelope v1."
+    },
+    "signalId": {
+      "type": "string",
+      "description": "Stable unique identifier of the signal this envelope carries (same id space as USS provenance.signalId).",
+      "minLength": 1
+    },
+    "providerId": {
+      "type": "string",
+      "description": "OPTIONAL stable identifier of the signal provider (provider identity at the envelope boundary).",
+      "minLength": 1
+    },
+    "analystId": {
+      "type": "string",
+      "description": "OPTIONAL identifier of the analyst this envelope targets.",
+      "minLength": 1
+    },
+    "strategyId": {
+      "type": "string",
+      "description": "OPTIONAL identifier of the strategy whose local view is wrapped.",
+      "minLength": 1
+    },
+    "strategyLocalView": {
+      "type": "object",
+      "description": "The strategy-local enriched view, as an intentionally opaque object. NON-CANONICAL: contents are strategy-local, are not protocol canon, and are not canonical hash material by default. Requires declaration via strategyViewType and/or enrichedViewSchemaRef when present.",
+      "additionalProperties": true
+    },
+    "strategyViewType": {
+      "type": "string",
+      "description": "Declaration of the strategy-local view's type (e.g. 'froggy-enriched-view'). Required (or enrichedViewSchemaRef) whenever strategyLocalView is present.",
+      "minLength": 1
+    },
+    "enrichedViewSchemaRef": {
+      "type": "string",
+      "description": "Declaration by reference: pointer to the (strategy-owned, non-canonical) schema describing the strategy-local view. Required (or strategyViewType) whenever strategyLocalView is present.",
+      "minLength": 1
+    },
+    "strategyLocalViewHash": {
+      "$ref": "canonical-hash.schema.json",
+      "description": "OPTIONAL explicit, domain-declared CanonicalHash v1 pin of the serialized strategy-local view. This is the ONLY way the opaque view participates in canonical hashing; the inline object is never implicit hash material."
+    },
+    "sourceDisclosureProfiles": {
+      "type": "array",
+      "description": "SourceDisclosureProfile v1 objects for the sources feeding this envelope.",
+      "items": { "$ref": "source-disclosure-profile.schema.json" }
+    },
+    "evidenceRefs": {
+      "type": "array",
+      "description": "EvidenceRef v1 objects backing the enrichment carried by this envelope.",
+      "items": { "$ref": "evidence-ref.schema.json" }
+    },
+    "enrichmentProvenance": {
+      "type": "array",
+      "description": "Per-lane EnrichmentProvenance v1 records for the lanes that produced the enriched view.",
+      "items": { "$ref": "enrichment-provenance.schema.json" }
+    },
+    "replayProfileRef": {
+      "type": "string",
+      "description": "OPTIONAL reference to a ReplayProfile v1 pinning the replay inputs for this envelope.",
+      "minLength": 1
+    }
+  }
+}

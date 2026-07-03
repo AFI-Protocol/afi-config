@@ -1,0 +1,7 @@
+{
+  "algorithm": "sha256",
+  "canonicalizationVersion": "afi.hash.v1",
+  "domainTag": "afi.d2.signal-input",
+  "value": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "legacyHashRef": "uss-v1.1-ingest-hash:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+}

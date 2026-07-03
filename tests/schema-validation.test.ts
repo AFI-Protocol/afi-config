@@ -84,19 +84,29 @@ describe('Schema Validation Tests', () => {
 
       expect(schemaFiles.length).toBeGreaterThan(0);
 
-      // Load enrichment-node schema first for schemas that reference it
-      let enrichmentNodeLoaded = false;
-      try {
-        const enrichmentNodeSchema = loadJSON('schemas/definitions/enrichment-node.schema.json');
-        ajv.addSchema(enrichmentNodeSchema);
-        enrichmentNodeLoaded = true;
-      } catch (error) {
-        // Schema might not exist yet, that's okay
-      }
+      // Preload schemas that other schemas reference via $ref, so cross-file
+      // references resolve regardless of directory read order.
+      const preloadSchemaFiles = [
+        'schemas/definitions/enrichment-node.schema.json',
+        'schemas/provenance/v1/canonical-hash.schema.json',
+        'schemas/provenance/v1/evidence-ref.schema.json',
+        'schemas/provenance/v1/source-disclosure-profile.schema.json',
+        'schemas/provenance/v1/enrichment-provenance.schema.json',
+      ];
+      const preloadedSchemaFiles = new Set<string>();
+      preloadSchemaFiles.forEach(schemaFile => {
+        try {
+          const schema = loadJSON(schemaFile);
+          ajv.addSchema(schema);
+          preloadedSchemaFiles.add(schemaFile);
+        } catch (error) {
+          // Schema might not exist yet, that's okay
+        }
+      });
 
       schemaFiles.forEach(schemaFile => {
-        // Skip enrichment-node schema if already loaded
-        if (enrichmentNodeLoaded && schemaFile === 'schemas/definitions/enrichment-node.schema.json') {
+        // Skip schemas that were already preloaded above
+        if (preloadedSchemaFiles.has(schemaFile)) {
           return;
         }
 

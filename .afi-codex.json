@@ -37,7 +37,8 @@
     "vaultSchema",
     "validationUtilities",
     "governancePolicies",
-    "droidCharter"
+    "droidCharter",
+    "provenanceSchemaDrafts"
   ],
   "dependsOn": [],
   "consumers": [

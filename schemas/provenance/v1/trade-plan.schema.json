@@ -1,0 +1,119 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://afi-protocol.org/schemas/provenance/v1/trade-plan.schema.json",
+  "title": "AFI TradePlan v1 / SignalLevels v1 (District 2 M1 DRAFT)",
+  "description": "DRAFT / NON-IMPLEMENTATION canonical trade-intent projection. Preserves CPJ trade intent (entry range, stop loss, take profits, leverage/venue/market-type hints) that is currently dropped at the CPJ→USS mapping. NUMBER POLICY: all prices and quantities are DECIMAL STRINGS, never IEEE-754 floats — raw JSON numbers are invalid for these fields (precedent: settlement draft's string-encoded integers). SignalLevels v1 is defined under #/definitions/signalLevels.",
+  "$comment": "This schema captures intent as stated by the source signal. It defines no execution, routing, sizing, or settlement behavior.",
+  "x-afiStatus": "draft-non-implementation",
+  "x-afiPartOf": "AFI District 2 — Canonical Data & Provenance Boundary (D2 M1)",
+  "x-afiDoctrineRefs": [
+    "District 2 D-17 decision — authorizes D2 M1 only (afi-config schema drafts and tests)"
+  ],
+  "x-afiOpenItems": {
+    "TP-O1": "Decimal precision/scale limits per venue/instrument — OPEN; the decimalString pattern fixes syntax only.",
+    "TP-O2": "Venue id namespace/registry — OPEN; free-form hint string in this draft."
+  },
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "levels"
+  ],
+  "properties": {
+    "schema": {
+      "type": "string",
+      "const": "afi.trade-plan.v1",
+      "description": "Schema version identifier for TradePlan v1."
+    },
+    "signalId": {
+      "type": "string",
+      "description": "OPTIONAL stable unique identifier of the signal this trade plan belongs to (same id space as USS provenance.signalId).",
+      "minLength": 1
+    },
+    "levels": {
+      "$ref": "#/definitions/signalLevels",
+      "description": "SignalLevels v1: entry, stop loss, and take-profit levels as decimal strings."
+    },
+    "leverageHint": {
+      "$ref": "#/definitions/decimalString",
+      "description": "OPTIONAL suggested leverage as a decimal string (e.g. '5', '2.5')."
+    },
+    "venueHint": {
+      "type": "string",
+      "description": "OPTIONAL suggested venue/exchange (e.g. 'blofin', 'coinbase').",
+      "minLength": 1
+    },
+    "marketTypeHint": {
+      "type": "string",
+      "description": "OPTIONAL suggested market type (aligned with CPJ v0.1 extracted.marketTypeHint).",
+      "enum": ["spot", "perp", "futures"]
+    },
+    "notes": {
+      "type": "string",
+      "description": "OPTIONAL free-form notes on the trade intent as stated by the source."
+    }
+  },
+  "definitions": {
+    "decimalString": {
+      "type": "string",
+      "description": "A non-negative decimal number encoded as a string (e.g. '42000', '42000.50'). Strings avoid IEEE-754 float precision loss; raw JSON numbers are invalid.",
+      "pattern": "^[0-9]+(\\.[0-9]+)?$"
+    },
+    "priceRange": {
+      "type": "object",
+      "description": "An inclusive price range with decimal-string bounds.",
+      "additionalProperties": false,
+      "required": ["min", "max"],
+      "properties": {
+        "min": {
+          "$ref": "#/definitions/decimalString",
+          "description": "Lower bound of the range."
+        },
+        "max": {
+          "$ref": "#/definitions/decimalString",
+          "description": "Upper bound of the range."
+        }
+      }
+    },
+    "takeProfitLevel": {
+      "type": "object",
+      "description": "One take-profit target.",
+      "additionalProperties": false,
+      "required": ["price"],
+      "properties": {
+        "price": {
+          "$ref": "#/definitions/decimalString",
+          "description": "Take-profit price."
+        },
+        "sizePct": {
+          "$ref": "#/definitions/decimalString",
+          "description": "OPTIONAL percentage of the position to close at this level, as a decimal string (e.g. '50')."
+        }
+      }
+    },
+    "signalLevels": {
+      "type": "object",
+      "description": "SignalLevels v1: the price levels stated by the source signal, using decimal strings throughout.",
+      "additionalProperties": false,
+      "required": ["entry"],
+      "properties": {
+        "entry": {
+          "description": "Entry price or entry range.",
+          "oneOf": [
+            { "$ref": "#/definitions/decimalString" },
+            { "$ref": "#/definitions/priceRange" }
+          ]
+        },
+        "stopLoss": {
+          "$ref": "#/definitions/decimalString",
+          "description": "OPTIONAL stop-loss price."
+        },
+        "takeProfits": {
+          "type": "array",
+          "description": "OPTIONAL take-profit targets, in source order.",
+          "items": { "$ref": "#/definitions/takeProfitLevel" }
+        }
+      }
+    }
+  }
+}

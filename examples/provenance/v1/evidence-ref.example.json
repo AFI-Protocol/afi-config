@@ -1,0 +1,17 @@
+{
+  "evidenceId": "ev-price-context-000123-001",
+  "sourceRef": "src-exchange-blofin-api",
+  "evidenceHash": {
+    "algorithm": "sha256",
+    "canonicalizationVersion": "afi.hash.v1",
+    "domainTag": "afi.d2.evidence",
+    "value": "ca978112ca1bbdcafac231b39a23dc4da786eff8147c4e72b9807785afee48bb"
+  },
+  "fetchedAt": "2026-01-15T12:00:05Z",
+  "asOf": "2026-01-15T12:00:00Z",
+  "observedAt": "2026-01-15T12:00:00Z",
+  "uri": "ipfs://bafybeihdwdcefgh4dqkjv67uzcmw7ojee6xedzdetojuzjevtenxquvyku",
+  "mediaType": "application/json",
+  "redactionStatus": "disclosed",
+  "notes": "OHLCV window snapshot backing the price-context lane."
+}

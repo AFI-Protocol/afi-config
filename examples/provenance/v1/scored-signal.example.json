@@ -1,0 +1,33 @@
+{
+  "schema": "afi.scored-signal.v1",
+  "signalId": "sig-d2-20260115-000123",
+  "providerId": "prov-telegram-alpha",
+  "providerRef": "tg-channel-alpha-042",
+  "analystId": "analyst-uwr-01",
+  "strategyId": "trend-pullback",
+  "strategyVersion": "v1.2.0",
+  "direction": "long",
+  "riskBucket": "moderate",
+  "conviction": 0.72,
+  "uwrScore": 0.81,
+  "uwrAxes": {
+    "edge": 0.8,
+    "timing": 0.7,
+    "riskDiscipline": 0.85,
+    "clarity": 0.9
+  },
+  "evaluatedAt": "2026-01-15T12:00:00Z",
+  "provenanceRecordRef": "provenance-record:sig-d2-20260115-000123",
+  "provenanceRecordHash": {
+    "algorithm": "sha256",
+    "canonicalizationVersion": "afi.hash.v1",
+    "domainTag": "afi.d2.provenance-record",
+    "value": "18ac3e7343f016890c510e93f935261169d9e3f565436429830faf0934f4f8e4"
+  },
+  "outputHash": {
+    "algorithm": "sha256",
+    "canonicalizationVersion": "afi.hash.v1",
+    "domainTag": "afi.d2.scored-output",
+    "value": "3f79bb7b435b05321651daefd374cdc681dc06faa65e374e38337b88ca046dea"
+  }
+}

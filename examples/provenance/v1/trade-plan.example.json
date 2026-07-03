@@ -1,0 +1,19 @@
+{
+  "schema": "afi.trade-plan.v1",
+  "signalId": "sig-d2-20260115-000123",
+  "levels": {
+    "entry": {
+      "min": "42000",
+      "max": "42250.50"
+    },
+    "stopLoss": "41200",
+    "takeProfits": [
+      { "price": "43500", "sizePct": "50" },
+      { "price": "44800", "sizePct": "50" }
+    ]
+  },
+  "leverageHint": "3",
+  "venueHint": "blofin",
+  "marketTypeHint": "perp",
+  "notes": "Trade intent preserved verbatim from the parsed source signal; decimal strings throughout."
+}
