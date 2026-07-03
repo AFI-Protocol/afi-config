@@ -1,0 +1,90 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://afi-protocol.org/schemas/provenance/v1/replay-profile.schema.json",
+  "title": "AFI ReplayProfile v1 (District 2 M1 DRAFT)",
+  "description": "DRAFT / NON-IMPLEMENTATION replay metadata profile for District-2-conformant pipelines: which facts are required, which dataset/code/seed the run is pinned to, which evidence and sources back replay, and the resulting replayability level. This is a STRICTER, SEPARATE profile — it does not modify or break the broad USS v1.1 provenance surface (whose legacy datasetId/codeCommit/seed fields it formalizes).",
+  "$comment": "environmentNotes is descriptive version/environment context (e.g. runtime versions), not a runtime timestamp; replay pins must be deterministic inputs, never wall-clock state.",
+  "x-afiStatus": "draft-non-implementation",
+  "x-afiPartOf": "AFI District 2 — Canonical Data & Provenance Boundary (D2 M1)",
+  "x-afiDoctrineRefs": [
+    "District 2 D-17 decision — authorizes D2 M1 only (afi-config schema drafts and tests)"
+  ],
+  "x-afiOpenItems": {
+    "RP-O1": "Dataset id namespace/registry — OPEN; opaque non-empty string in this draft.",
+    "RP-O2": "Whether factsRequired evolves into a leveled facts profile — OPEN; boolean in this draft."
+  },
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "replayabilityLevel",
+    "factsRequired"
+  ],
+  "properties": {
+    "schema": {
+      "type": "string",
+      "const": "afi.replay-profile.v1",
+      "description": "Schema version identifier for ReplayProfile v1."
+    },
+    "replayabilityLevel": {
+      "type": "string",
+      "description": "Replayability level achieved under this profile. 'deterministic' = byte-identical re-derivation; 'pinned-inputs' = replayable from pinned snapshots/hashes; 'best-effort' = approximate replay only; 'non-replayable' = cannot be replayed.",
+      "enum": ["deterministic", "pinned-inputs", "best-effort", "non-replayable"]
+    },
+    "factsRequired": {
+      "type": "boolean",
+      "description": "D2-conformance flag: true when a populated facts block (replay-canonical market/strategy metadata) is required for signals replayed under this profile. Stricter than broad USS v1.1, which leaves facts optional."
+    },
+    "datasetId": {
+      "type": "string",
+      "description": "OPTIONAL pinned source dataset identifier (formalizes USS v1.1 legacy provenance.datasetId).",
+      "minLength": 1
+    },
+    "codeCommit": {
+      "type": "string",
+      "description": "OPTIONAL pinned code commit hash that generated the run (formalizes USS v1.1 legacy provenance.codeCommit).",
+      "minLength": 1
+    },
+    "seed": {
+      "description": "OPTIONAL random seed pin for reproducibility, where applicable (formalizes USS v1.1 legacy provenance.seed).",
+      "oneOf": [
+        { "type": "string" },
+        { "type": "number" },
+        { "type": "null" }
+      ]
+    },
+    "evidenceRefs": {
+      "type": "array",
+      "description": "References (evidenceId values) to EvidenceRef v1 objects pinned for replay.",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "evidenceHashes": {
+      "type": "array",
+      "description": "OPTIONAL CanonicalHash v1 pins of replay-critical evidence payloads.",
+      "items": { "$ref": "canonical-hash.schema.json" }
+    },
+    "sourceRefs": {
+      "type": "array",
+      "description": "References (sourceId values) to SourceDisclosureProfile v1 objects for the sources replay depends on.",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "laneVersions": {
+      "type": "object",
+      "description": "OPTIONAL map of laneId → pinned lane/engine version used for the run (engine/lane version pins).",
+      "additionalProperties": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "environmentNotes": {
+      "type": "string",
+      "description": "OPTIONAL descriptive environment/version notes relevant to replay (e.g. runtime or library versions). Descriptive only — not a replay input pin."
+    }
+  }
+}
