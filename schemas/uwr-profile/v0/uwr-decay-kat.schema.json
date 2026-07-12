@@ -1,0 +1,149 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://afi-protocol.org/schemas/uwr-profile/v0/uwr-decay-kat.schema.json",
+  "title": "AFI UWR Decay KAT Vectors v0 (Testnet-Provisional DRAFT)",
+  "description": "DRAFT / NON-IMPLEMENTATION schema for the applyTimeDecay known-answer-test (KAT) vector file of the version-pinned UWR profile uwr-weighted-lifts-v0.1 (UP-7, UP-11). Vectors are PURE DATA over the pinned GreeksDecayTemplate v1 surface; nothing in afi-config executes the decay function. KAT execution against afi-core code is the separately-authorized PR-UWR-KAT-EXEC. Decay-engine canonicality remains OPEN and deferred to PR-7 (UP-8). All values testnet-provisional, not production scoring law.",
+  "$comment": "Authorized by afi-governance/decisions/uwr-profile-pin-v0.1.md UP-12 (PR-UWR-CONFIG only). Every vector's elapsedMinutes is enum-pinned to an integer multiple of its template's halfLifeMinutes, so with dyadic base scores every expected value is exact in decimal and IEEE-754 binary64 — no comparison tolerance is needed or defined here.",
+  "x-afiStatus": "draft-non-implementation",
+  "x-afiPartOf": "AFI version-pinned UWR profile registry (uwr-profile-pin-v0.1, PR-UWR-CONFIG)",
+  "x-afiDoctrineRefs": [
+    "afi-governance/decisions/uwr-profile-pin-v0.1.md — UP-7 decay template set pin, UP-8 canonicality deferral, UP-11 KAT/golden gate",
+    "afi-governance/decisions/math-authority-v0.1.md §3 and §8 — KAT vectors live in afi-config; PR-7 reserved slot for afi-core decay delegation to afi-math"
+  ],
+  "x-afiOpenItems": {
+    "UP-8": "Which decay engine is canonical (GreeksDecayTemplate.applyTimeDecay vs validators/SignalDecay.ts) is OPEN, deferred to PR-7. These vectors pin the GreeksDecayTemplate surface only.",
+    "thetaBias": "Declared but not consumed by any computation; recorded with thetaBiasConsumed: false. Behavior is NOT pinned."
+  },
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "x-afiStatus",
+    "profileId",
+    "status",
+    "decisionRef",
+    "engine",
+    "templates",
+    "exactnessRule",
+    "vectors"
+  ],
+  "properties": {
+    "schema": {
+      "type": "string",
+      "const": "afi.uwr-decay-kat.v0"
+    },
+    "x-afiStatus": {
+      "type": "string",
+      "const": "draft-non-implementation",
+      "description": "Artifact lifecycle marker carried on the document itself per UP-12."
+    },
+    "profileId": {
+      "type": "string",
+      "const": "uwr-weighted-lifts-v0.1"
+    },
+    "status": {
+      "type": "string",
+      "const": "testnet-provisional"
+    },
+    "description": {
+      "type": "string",
+      "description": "OPTIONAL free-form commentary on the vector set."
+    },
+    "decisionRef": {
+      "type": "string",
+      "const": "afi-governance/decisions/uwr-profile-pin-v0.1.md (UP-7, UP-8, UP-11)"
+    },
+    "engine": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["function", "sourceModule", "sourceCommit", "formula", "decayModel", "unit", "canonicalityNote"],
+      "properties": {
+        "function": { "type": "string", "const": "applyTimeDecay" },
+        "sourceModule": { "type": "string", "const": "afi-core/src/decay/GreeksDecayTemplate.ts" },
+        "sourceCommit": { "type": "string", "const": "390b440" },
+        "formula": {
+          "type": "string",
+          "const": "decayed = baseScore * 0.5 ^ (elapsedMinutes / halfLifeMinutes)"
+        },
+        "decayModel": { "type": "string", "const": "exp" },
+        "unit": { "type": "string", "const": "minutes" },
+        "canonicalityNote": {
+          "type": "string",
+          "const": "Decay-engine canonicality is OPEN and deferred to PR-7 (math-authority-v0.1.md §8); this file pins the GreeksDecayTemplate surface only (UP-8)."
+        }
+      }
+    },
+    "templates": {
+      "const": [
+        { "templateId": "decay-scalp-v1", "halfLifeMinutes": 8, "thetaBias": 0.8, "thetaBiasConsumed": false },
+        { "templateId": "decay-intraday-v1", "halfLifeMinutes": 60, "thetaBias": 0.6, "thetaBiasConsumed": false },
+        { "templateId": "decay-swing-v1", "halfLifeMinutes": 720, "thetaBias": 0.4, "thetaBiasConsumed": false },
+        { "templateId": "decay-position-v1", "halfLifeMinutes": 5040, "thetaBias": 0.2, "thetaBiasConsumed": false }
+      ],
+      "description": "The pinned GreeksDecayTemplate v1 template set (UP-7). thetaBias values are declared-but-not-consumed; thetaBiasConsumed is pinned false."
+    },
+    "exactnessRule": {
+      "type": "string",
+      "const": "elapsedMinutes is always an integer multiple of halfLifeMinutes and baseScore is dyadic, so every expected value equals baseScore * 2^-k exactly in decimal and IEEE-754 binary64; no comparison tolerance is defined in this file (PR-UWR-KAT-EXEC owns comparison policy)."
+    },
+    "vectors": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["vectorId", "templateId", "halfLifeMinutes", "baseScore", "elapsedMinutes", "expected"],
+        "properties": {
+          "vectorId": { "type": "string", "minLength": 1 },
+          "description": { "type": "string" },
+          "templateId": {
+            "enum": ["decay-scalp-v1", "decay-intraday-v1", "decay-swing-v1", "decay-position-v1"]
+          },
+          "halfLifeMinutes": {
+            "enum": [8, 60, 720, 5040]
+          },
+          "baseScore": { "type": "number", "minimum": 0, "maximum": 1 },
+          "elapsedMinutes": { "type": "number", "minimum": 0 },
+          "expected": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["decayedScore"],
+            "properties": {
+              "decayedScore": { "type": "number", "minimum": 0, "maximum": 1 }
+            }
+          }
+        },
+        "oneOf": [
+          {
+            "properties": {
+              "templateId": { "const": "decay-scalp-v1" },
+              "halfLifeMinutes": { "const": 8 },
+              "elapsedMinutes": { "enum": [0, 8, 16, 32] }
+            }
+          },
+          {
+            "properties": {
+              "templateId": { "const": "decay-intraday-v1" },
+              "halfLifeMinutes": { "const": 60 },
+              "elapsedMinutes": { "enum": [0, 60, 120, 240] }
+            }
+          },
+          {
+            "properties": {
+              "templateId": { "const": "decay-swing-v1" },
+              "halfLifeMinutes": { "const": 720 },
+              "elapsedMinutes": { "enum": [0, 720, 1440, 2880] }
+            }
+          },
+          {
+            "properties": {
+              "templateId": { "const": "decay-position-v1" },
+              "halfLifeMinutes": { "const": 5040 },
+              "elapsedMinutes": { "enum": [0, 5040, 10080, 20160] }
+            }
+          }
+        ]
+      }
+    }
+  }
+}

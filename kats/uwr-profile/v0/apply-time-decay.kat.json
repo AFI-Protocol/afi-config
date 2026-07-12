@@ -1,0 +1,366 @@
+{
+  "schema": "afi.uwr-decay-kat.v0",
+  "x-afiStatus": "draft-non-implementation",
+  "profileId": "uwr-weighted-lifts-v0.1",
+  "status": "testnet-provisional",
+  "description": "Known-answer-test vectors for applyTimeDecay over the pinned GreeksDecayTemplate v1 template set of the version-pinned UWR profile uwr-weighted-lifts-v0.1 (UP-11 item 2). Pure data: expected values are decision-anchored literals; nothing in afi-config executes the decay function. 32 vectors: all four templates x base scores {1, 0.1875 (the D2 M2 golden anchor, = 3*2^-4)} x elapsed = {0, 1, 2, 4} half-lives. The base-1 rows at exactly one half-life land on 0.5, the testnet-provisional minDecayScoreThreshold (UP-9) - data commentary only; the qualification gate is not wired.",
+  "decisionRef": "afi-governance/decisions/uwr-profile-pin-v0.1.md (UP-7, UP-8, UP-11)",
+  "engine": {
+    "function": "applyTimeDecay",
+    "sourceModule": "afi-core/src/decay/GreeksDecayTemplate.ts",
+    "sourceCommit": "390b440",
+    "formula": "decayed = baseScore * 0.5 ^ (elapsedMinutes / halfLifeMinutes)",
+    "decayModel": "exp",
+    "unit": "minutes",
+    "canonicalityNote": "Decay-engine canonicality is OPEN and deferred to PR-7 (math-authority-v0.1.md \u00a78); this file pins the GreeksDecayTemplate surface only (UP-8)."
+  },
+  "templates": [
+    {
+      "templateId": "decay-scalp-v1",
+      "halfLifeMinutes": 8,
+      "thetaBias": 0.8,
+      "thetaBiasConsumed": false
+    },
+    {
+      "templateId": "decay-intraday-v1",
+      "halfLifeMinutes": 60,
+      "thetaBias": 0.6,
+      "thetaBiasConsumed": false
+    },
+    {
+      "templateId": "decay-swing-v1",
+      "halfLifeMinutes": 720,
+      "thetaBias": 0.4,
+      "thetaBiasConsumed": false
+    },
+    {
+      "templateId": "decay-position-v1",
+      "halfLifeMinutes": 5040,
+      "thetaBias": 0.2,
+      "thetaBiasConsumed": false
+    }
+  ],
+  "exactnessRule": "elapsedMinutes is always an integer multiple of halfLifeMinutes and baseScore is dyadic, so every expected value equals baseScore * 2^-k exactly in decimal and IEEE-754 binary64; no comparison tolerance is defined in this file (PR-UWR-KAT-EXEC owns comparison policy).",
+  "vectors": [
+    {
+      "vectorId": "decay-scalp-b1-k0",
+      "templateId": "decay-scalp-v1",
+      "halfLifeMinutes": 8,
+      "baseScore": 1,
+      "elapsedMinutes": 0,
+      "expected": {
+        "decayedScore": 1
+      }
+    },
+    {
+      "vectorId": "decay-scalp-b1-k1",
+      "templateId": "decay-scalp-v1",
+      "halfLifeMinutes": 8,
+      "baseScore": 1,
+      "elapsedMinutes": 8,
+      "expected": {
+        "decayedScore": 0.5
+      }
+    },
+    {
+      "vectorId": "decay-scalp-b1-k2",
+      "templateId": "decay-scalp-v1",
+      "halfLifeMinutes": 8,
+      "baseScore": 1,
+      "elapsedMinutes": 16,
+      "expected": {
+        "decayedScore": 0.25
+      }
+    },
+    {
+      "vectorId": "decay-scalp-b1-k4",
+      "templateId": "decay-scalp-v1",
+      "halfLifeMinutes": 8,
+      "baseScore": 1,
+      "elapsedMinutes": 32,
+      "expected": {
+        "decayedScore": 0.0625
+      }
+    },
+    {
+      "vectorId": "decay-scalp-b01875-k0",
+      "templateId": "decay-scalp-v1",
+      "halfLifeMinutes": 8,
+      "baseScore": 0.1875,
+      "elapsedMinutes": 0,
+      "expected": {
+        "decayedScore": 0.1875
+      }
+    },
+    {
+      "vectorId": "decay-scalp-b01875-k1",
+      "templateId": "decay-scalp-v1",
+      "halfLifeMinutes": 8,
+      "baseScore": 0.1875,
+      "elapsedMinutes": 8,
+      "expected": {
+        "decayedScore": 0.09375
+      }
+    },
+    {
+      "vectorId": "decay-scalp-b01875-k2",
+      "templateId": "decay-scalp-v1",
+      "halfLifeMinutes": 8,
+      "baseScore": 0.1875,
+      "elapsedMinutes": 16,
+      "expected": {
+        "decayedScore": 0.046875
+      }
+    },
+    {
+      "vectorId": "decay-scalp-b01875-k4",
+      "templateId": "decay-scalp-v1",
+      "halfLifeMinutes": 8,
+      "baseScore": 0.1875,
+      "elapsedMinutes": 32,
+      "expected": {
+        "decayedScore": 0.01171875
+      }
+    },
+    {
+      "vectorId": "decay-intraday-b1-k0",
+      "templateId": "decay-intraday-v1",
+      "halfLifeMinutes": 60,
+      "baseScore": 1,
+      "elapsedMinutes": 0,
+      "expected": {
+        "decayedScore": 1
+      }
+    },
+    {
+      "vectorId": "decay-intraday-b1-k1",
+      "templateId": "decay-intraday-v1",
+      "halfLifeMinutes": 60,
+      "baseScore": 1,
+      "elapsedMinutes": 60,
+      "expected": {
+        "decayedScore": 0.5
+      }
+    },
+    {
+      "vectorId": "decay-intraday-b1-k2",
+      "templateId": "decay-intraday-v1",
+      "halfLifeMinutes": 60,
+      "baseScore": 1,
+      "elapsedMinutes": 120,
+      "expected": {
+        "decayedScore": 0.25
+      }
+    },
+    {
+      "vectorId": "decay-intraday-b1-k4",
+      "templateId": "decay-intraday-v1",
+      "halfLifeMinutes": 60,
+      "baseScore": 1,
+      "elapsedMinutes": 240,
+      "expected": {
+        "decayedScore": 0.0625
+      }
+    },
+    {
+      "vectorId": "decay-intraday-b01875-k0",
+      "templateId": "decay-intraday-v1",
+      "halfLifeMinutes": 60,
+      "baseScore": 0.1875,
+      "elapsedMinutes": 0,
+      "expected": {
+        "decayedScore": 0.1875
+      }
+    },
+    {
+      "vectorId": "decay-intraday-b01875-k1",
+      "templateId": "decay-intraday-v1",
+      "halfLifeMinutes": 60,
+      "baseScore": 0.1875,
+      "elapsedMinutes": 60,
+      "expected": {
+        "decayedScore": 0.09375
+      }
+    },
+    {
+      "vectorId": "decay-intraday-b01875-k2",
+      "templateId": "decay-intraday-v1",
+      "halfLifeMinutes": 60,
+      "baseScore": 0.1875,
+      "elapsedMinutes": 120,
+      "expected": {
+        "decayedScore": 0.046875
+      }
+    },
+    {
+      "vectorId": "decay-intraday-b01875-k4",
+      "templateId": "decay-intraday-v1",
+      "halfLifeMinutes": 60,
+      "baseScore": 0.1875,
+      "elapsedMinutes": 240,
+      "expected": {
+        "decayedScore": 0.01171875
+      }
+    },
+    {
+      "vectorId": "decay-swing-b1-k0",
+      "templateId": "decay-swing-v1",
+      "halfLifeMinutes": 720,
+      "baseScore": 1,
+      "elapsedMinutes": 0,
+      "expected": {
+        "decayedScore": 1
+      }
+    },
+    {
+      "vectorId": "decay-swing-b1-k1",
+      "templateId": "decay-swing-v1",
+      "halfLifeMinutes": 720,
+      "baseScore": 1,
+      "elapsedMinutes": 720,
+      "expected": {
+        "decayedScore": 0.5
+      }
+    },
+    {
+      "vectorId": "decay-swing-b1-k2",
+      "templateId": "decay-swing-v1",
+      "halfLifeMinutes": 720,
+      "baseScore": 1,
+      "elapsedMinutes": 1440,
+      "expected": {
+        "decayedScore": 0.25
+      }
+    },
+    {
+      "vectorId": "decay-swing-b1-k4",
+      "templateId": "decay-swing-v1",
+      "halfLifeMinutes": 720,
+      "baseScore": 1,
+      "elapsedMinutes": 2880,
+      "expected": {
+        "decayedScore": 0.0625
+      }
+    },
+    {
+      "vectorId": "decay-swing-b01875-k0",
+      "templateId": "decay-swing-v1",
+      "halfLifeMinutes": 720,
+      "baseScore": 0.1875,
+      "elapsedMinutes": 0,
+      "expected": {
+        "decayedScore": 0.1875
+      }
+    },
+    {
+      "vectorId": "decay-swing-b01875-k1",
+      "templateId": "decay-swing-v1",
+      "halfLifeMinutes": 720,
+      "baseScore": 0.1875,
+      "elapsedMinutes": 720,
+      "expected": {
+        "decayedScore": 0.09375
+      }
+    },
+    {
+      "vectorId": "decay-swing-b01875-k2",
+      "templateId": "decay-swing-v1",
+      "halfLifeMinutes": 720,
+      "baseScore": 0.1875,
+      "elapsedMinutes": 1440,
+      "expected": {
+        "decayedScore": 0.046875
+      }
+    },
+    {
+      "vectorId": "decay-swing-b01875-k4",
+      "templateId": "decay-swing-v1",
+      "halfLifeMinutes": 720,
+      "baseScore": 0.1875,
+      "elapsedMinutes": 2880,
+      "expected": {
+        "decayedScore": 0.01171875
+      }
+    },
+    {
+      "vectorId": "decay-position-b1-k0",
+      "templateId": "decay-position-v1",
+      "halfLifeMinutes": 5040,
+      "baseScore": 1,
+      "elapsedMinutes": 0,
+      "expected": {
+        "decayedScore": 1
+      }
+    },
+    {
+      "vectorId": "decay-position-b1-k1",
+      "templateId": "decay-position-v1",
+      "halfLifeMinutes": 5040,
+      "baseScore": 1,
+      "elapsedMinutes": 5040,
+      "expected": {
+        "decayedScore": 0.5
+      }
+    },
+    {
+      "vectorId": "decay-position-b1-k2",
+      "templateId": "decay-position-v1",
+      "halfLifeMinutes": 5040,
+      "baseScore": 1,
+      "elapsedMinutes": 10080,
+      "expected": {
+        "decayedScore": 0.25
+      }
+    },
+    {
+      "vectorId": "decay-position-b1-k4",
+      "templateId": "decay-position-v1",
+      "halfLifeMinutes": 5040,
+      "baseScore": 1,
+      "elapsedMinutes": 20160,
+      "expected": {
+        "decayedScore": 0.0625
+      }
+    },
+    {
+      "vectorId": "decay-position-b01875-k0",
+      "templateId": "decay-position-v1",
+      "halfLifeMinutes": 5040,
+      "baseScore": 0.1875,
+      "elapsedMinutes": 0,
+      "expected": {
+        "decayedScore": 0.1875
+      }
+    },
+    {
+      "vectorId": "decay-position-b01875-k1",
+      "templateId": "decay-position-v1",
+      "halfLifeMinutes": 5040,
+      "baseScore": 0.1875,
+      "elapsedMinutes": 5040,
+      "expected": {
+        "decayedScore": 0.09375
+      }
+    },
+    {
+      "vectorId": "decay-position-b01875-k2",
+      "templateId": "decay-position-v1",
+      "halfLifeMinutes": 5040,
+      "baseScore": 0.1875,
+      "elapsedMinutes": 10080,
+      "expected": {
+        "decayedScore": 0.046875
+      }
+    },
+    {
+      "vectorId": "decay-position-b01875-k4",
+      "templateId": "decay-position-v1",
+      "halfLifeMinutes": 5040,
+      "baseScore": 0.1875,
+      "elapsedMinutes": 20160,
+      "expected": {
+        "decayedScore": 0.01171875
+      }
+    }
+  ]
+}

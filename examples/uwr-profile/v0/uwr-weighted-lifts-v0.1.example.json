@@ -1,0 +1,65 @@
+{
+  "schema": "afi.uwr-profile.v0",
+  "x-afiStatus": "draft-non-implementation",
+  "profileId": "uwr-weighted-lifts-v0.1",
+  "humanAlias": "Testnet Scoring Profile v0",
+  "status": "testnet-provisional",
+  "supersedes": "uwr-default-stub",
+  "engine": {
+    "function": "computeUwrScore",
+    "model": "normalized-weighted-average-of-clamped-axes",
+    "sourceModule": "afi-core/validators/UniversalWeightingRule.ts"
+  },
+  "axes": ["structure", "execution", "risk", "insight"],
+  "weights": {
+    "structureWeight": 0.25,
+    "executionWeight": 0.25,
+    "riskWeight": 0.25,
+    "insightWeight": 0.25
+  },
+  "outputSurface": {
+    "uwrScoreRange": { "min": 0, "max": 1 },
+    "riskBucketTaxonomy": ["low", "medium", "high", "extreme"],
+    "convictionRange": { "min": 0, "max": 1 }
+  },
+  "decaySurface": {
+    "family": "GreeksDecayTemplate",
+    "version": "v1",
+    "unit": "minutes",
+    "decayModel": "exp",
+    "formula": "decayed = baseScore * 0.5 ^ (elapsedMinutes / halfLifeMinutes)",
+    "templates": [
+      { "templateId": "decay-scalp-v1", "halfLifeMinutes": 8, "thetaBias": 0.8 },
+      { "templateId": "decay-intraday-v1", "halfLifeMinutes": 60, "thetaBias": 0.6 },
+      { "templateId": "decay-swing-v1", "halfLifeMinutes": 720, "thetaBias": 0.4 },
+      { "templateId": "decay-position-v1", "halfLifeMinutes": 5040, "thetaBias": 0.2 }
+    ],
+    "horizonSelection": {
+      "scalp": "decay-scalp-v1",
+      "intraday": "decay-intraday-v1",
+      "swing": "decay-swing-v1",
+      "position": "decay-position-v1",
+      "longTerm": "decay-position-v1",
+      "unknownOrMissing": "decay-swing-v1"
+    }
+  },
+  "qualification": {
+    "minDecayScoreThreshold": 0.5,
+    "challengeWindowDurationHours": 24,
+    "rule": "decayedScore >= minDecayScoreThreshold"
+  },
+  "scorerIdentity": {
+    "analystId": "froggy",
+    "strategyId": "trend_pullback_v1",
+    "invokedAs": "scoreFroggyTrendPullbackFromEnriched"
+  },
+  "katRefs": {
+    "computeUwrScore": "kats/uwr-profile/v0/compute-uwr-score.kat.json",
+    "applyTimeDecay": "kats/uwr-profile/v0/apply-time-decay.kat.json"
+  },
+  "doctrineRefs": [
+    "afi-governance/decisions/uwr-profile-pin-v0.1.md",
+    "afi-governance/decisions/math-authority-v0.1.md",
+    "afi-governance/decisions/mint-formula-bt-86b-alignment-v0.1.md"
+  ]
+}

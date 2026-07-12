@@ -1,0 +1,222 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://afi-protocol.org/schemas/uwr-profile/v0/uwr-profile.schema.json",
+  "title": "AFI Version-Pinned UWR Profile v0 (Testnet-Provisional DRAFT)",
+  "description": "DRAFT / NON-IMPLEMENTATION schema for a version-pinned UWR (Universal Weighting Rule) profile document. This v0 schema is the registration gate for exactly one profile — uwr-weighted-lifts-v0.1 — so every governed value is pinned as a const: any deviating document fails validation. All values are TESTNET-PROVISIONAL, not production scoring law. Nothing in this schema is consumed at runtime; afi-core defaultUwrConfig remains in place unchanged until a separately authorized runtime PR consumes the registered profile. A future profile or value change requires a new governance decision, a new profile id, and a new schema version.",
+  "$comment": "Authorized by afi-governance/decisions/uwr-profile-pin-v0.1.md UP-12, which authorizes PR-UWR-CONFIG only (profile schema + registry instance + examples + tests + KAT vector files + docs section, all draft-non-implementation). The decision's §6 non-authorization list is binding: no runtime consumption, no scoring code, no qualification wiring, no golden re-pinning.",
+  "x-afiStatus": "draft-non-implementation",
+  "x-afiPartOf": "AFI version-pinned UWR profile registry (uwr-profile-pin-v0.1, PR-UWR-CONFIG)",
+  "x-afiDoctrineRefs": [
+    "afi-governance/decisions/uwr-profile-pin-v0.1.md — pins profile uwr-weighted-lifts-v0.1 (UP-1..UP-12); authorizes PR-UWR-CONFIG only",
+    "afi-governance/decisions/math-authority-v0.1.md §3 — UWR scoring grammar; profiles only become protocol-recognized if registered and pinned; profile mappings and KATs live in afi-config",
+    "afi-governance/decisions/mint-formula-bt-86b-alignment-v0.1.md §7 — reserved 'UWR profile/mapping system' slot (profile-registration half filled by this registration)"
+  ],
+  "x-afiOpenItems": {
+    "UP-8": "Decay-engine canonicality (GreeksDecayTemplate.applyTimeDecay vs validators/SignalDecay.ts) — OPEN, deferred to the existing PR-7 slot (math-authority-v0.1.md §8). This profile pins the GreeksDecayTemplate SURFACE only.",
+    "thetaBias": "Declared but not consumed by any computation. Values are recorded as declared surface; behavior is NOT pinned. Any future activation requires its own decision.",
+    "linear-cliff": "The linear and cliff decay models exist only as type/schema surface with no evaluator; they are documented, NOT pinned."
+  },
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "x-afiStatus",
+    "profileId",
+    "status",
+    "engine",
+    "axes",
+    "weights",
+    "outputSurface",
+    "decaySurface",
+    "qualification",
+    "scorerIdentity",
+    "katRefs",
+    "doctrineRefs"
+  ],
+  "properties": {
+    "schema": {
+      "type": "string",
+      "const": "afi.uwr-profile.v0",
+      "description": "Schema version identifier for the version-pinned UWR profile document format (v0, draft-non-implementation). Distinct from the profile's own version, which is carried in profileId."
+    },
+    "x-afiStatus": {
+      "type": "string",
+      "const": "draft-non-implementation",
+      "description": "Artifact lifecycle marker carried on the document itself per UP-12 (all PR-UWR-CONFIG artifacts are marked draft-non-implementation)."
+    },
+    "profileId": {
+      "type": "string",
+      "const": "uwr-weighted-lifts-v0.1",
+      "description": "Canonical id of the version-pinned UWR profile (UP-2). Encodes Open Decision 8's classification of the current scorer ('UWR v0.1 weighted-lifts profile'). Any future weight or value change is a NEW profile version (a new id), never a mutation of this one."
+    },
+    "humanAlias": {
+      "type": "string",
+      "const": "Testnet Scoring Profile v0",
+      "description": "OPTIONAL human-facing display alias ONLY (UP-1). It must never be used as a repo identifier, schema $id, field name, or profile id."
+    },
+    "status": {
+      "type": "string",
+      "const": "testnet-provisional",
+      "description": "Value-provisionality status: every value pinned by this profile is testnet-provisional, NOT final production scoring law (production values require their own decision informed by testnet data)."
+    },
+    "supersedes": {
+      "type": "string",
+      "const": "uwr-default-stub",
+      "description": "OPTIONAL record that this registration supersedes the placeholder configuration id 'uwr-default-stub' as the referenced configuration (UP-2). The afi-core code switch is NOT authorized by PR-UWR-CONFIG; defaultUwrConfig remains in place unchanged until a separately authorized runtime PR consumes this profile."
+    },
+    "engine": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["function", "model", "sourceModule"],
+      "description": "Engine pin (UP-3): computeUwrScore, a normalized weighted average of four clamped axes returning a score in [0, 1]. The engine is a protocol-level primitive that MUST NOT be modified by reputation and must not be silently mutated by analysts. The general whitepaper §7.3 combiner (base/guards/penalties/lifts) remains NOT implemented and deferred.",
+      "properties": {
+        "function": {
+          "type": "string",
+          "const": "computeUwrScore"
+        },
+        "model": {
+          "type": "string",
+          "const": "normalized-weighted-average-of-clamped-axes"
+        },
+        "sourceModule": {
+          "type": "string",
+          "const": "afi-core/validators/UniversalWeightingRule.ts"
+        }
+      }
+    },
+    "axes": {
+      "const": ["structure", "execution", "risk", "insight"],
+      "description": "Axis registry for this profile, exactly and in this order (UP-4, order significant), matching AnalystScoreTemplate.uwrAxes and UwrAxesInput in afi-core. Provisionally closes SS-O3 FOR THIS PROFILE ONLY; the org-wide open item in schemas/provenance/v1/scored-signal.schema.json remains OPEN under District 2 authority."
+    },
+    "weights": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["structureWeight", "executionWeight", "riskWeight", "insightWeight"],
+      "description": "Weights pin (UP-5), field names exactly as in afi-core UniversalWeightingRuleConfig. These are the values already used by defaultUwrConfig, so pinning them changes no scored output: the D2 M2 golden anchor uwrScore 0.1875 = mean(0.15, 0, 0.2, 0.4) must hold byte-for-byte. Any future weight change is a new profile version (a new id).",
+      "properties": {
+        "structureWeight": { "type": "number", "const": 0.25 },
+        "executionWeight": { "type": "number", "const": 0.25 },
+        "riskWeight": { "type": "number", "const": 0.25 },
+        "insightWeight": { "type": "number", "const": 0.25 }
+      }
+    },
+    "outputSurface": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["uwrScoreRange", "riskBucketTaxonomy", "convictionRange"],
+      "description": "Output surface pins (UP-6). uwrScore normalized to [0, 1] provisionally closes SS-O2 FOR THIS PROFILE ONLY; the riskBucket taxonomy provisionally closes SS-O1 FOR THIS PROFILE ONLY. The District 2 draft-schema open items themselves remain OPEN.",
+      "properties": {
+        "uwrScoreRange": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["min", "max"],
+          "properties": {
+            "min": { "type": "number", "const": 0 },
+            "max": { "type": "number", "const": 1 }
+          }
+        },
+        "riskBucketTaxonomy": {
+          "const": ["low", "medium", "high", "extreme"],
+          "description": "Pinned riskBucket taxonomy (UP-6), matching AnalystScoreTemplate.riskBucket. The D2 example value 'moderate' is recorded as inconsistent with this taxonomy and is reconciled (example-only change) in PR-UWR-CONFIG."
+        },
+        "convictionRange": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["min", "max"],
+          "properties": {
+            "min": { "type": "number", "const": 0 },
+            "max": { "type": "number", "const": 1 }
+          }
+        }
+      }
+    },
+    "decaySurface": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["family", "version", "unit", "decayModel", "formula", "templates", "horizonSelection"],
+      "description": "Decay surface pin (UP-7): GreeksDecayTemplate v1 template ids, half-lives, model and unit, as carried by ReactorScoredSignalV1.decayParams { halfLifeMinutes, greeksTemplateId }. thetaBias is declared-but-not-consumed; linear/cliff models are documented only, NOT pinned. Decay-engine canonicality remains OPEN and deferred to PR-7 (UP-8) — this pins the surface without resolving canonicality. targetHoldingMinutes/maxLifeMinutes are deliberately NOT recorded: UP-7 does not pin them.",
+      "properties": {
+        "family": { "type": "string", "const": "GreeksDecayTemplate" },
+        "version": { "type": "string", "const": "v1" },
+        "unit": {
+          "type": "string",
+          "const": "minutes",
+          "description": "The pinned half-life unit is MINUTES (halfLifeMinutes). Unit drift elsewhere (baseHalfLifeHours in validatorConfig/afi-mint, halfLifeDays in USS telemetry.decay) is follow-up work, not adopted here."
+        },
+        "decayModel": { "type": "string", "const": "exp" },
+        "formula": {
+          "type": "string",
+          "const": "decayed = baseScore * 0.5 ^ (elapsedMinutes / halfLifeMinutes)"
+        },
+        "templates": {
+          "const": [
+            { "templateId": "decay-scalp-v1", "halfLifeMinutes": 8, "thetaBias": 0.8 },
+            { "templateId": "decay-intraday-v1", "halfLifeMinutes": 60, "thetaBias": 0.6 },
+            { "templateId": "decay-swing-v1", "halfLifeMinutes": 720, "thetaBias": 0.4 },
+            { "templateId": "decay-position-v1", "halfLifeMinutes": 5040, "thetaBias": 0.2 }
+          ],
+          "description": "The pinned GreeksDecayTemplate v1 template set (UP-7). thetaBias values are recorded as DECLARED BUT NOT CONSUMED by any computation; they are not pinned as behavior."
+        },
+        "horizonSelection": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["scalp", "intraday", "swing", "position", "longTerm", "unknownOrMissing"],
+          "description": "The pinned horizon-selection mapping (pickDecayParamsForAnalystScore): identity for the four horizons, long-term maps to position, unknown/missing maps to swing (UP-7).",
+          "properties": {
+            "scalp": { "type": "string", "const": "decay-scalp-v1" },
+            "intraday": { "type": "string", "const": "decay-intraday-v1" },
+            "swing": { "type": "string", "const": "decay-swing-v1" },
+            "position": { "type": "string", "const": "decay-position-v1" },
+            "longTerm": { "type": "string", "const": "decay-position-v1" },
+            "unknownOrMissing": { "type": "string", "const": "decay-swing-v1" }
+          }
+        }
+      }
+    },
+    "qualification": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["minDecayScoreThreshold", "challengeWindowDurationHours", "rule"],
+      "description": "Qualification values recorded as TESTNET-PROVISIONAL (UP-9); the existing defaults in schemas/validatorConfig.schema.json and afi-mint DEFAULT_VALIDATOR_CONFIG. Recording these values does NOT wire the qualification gate: no IValidatorScorer implementation or composition root exists, and wiring remains separately authorized. The canonical term is 'challenge window' (never 'challenge period').",
+      "properties": {
+        "minDecayScoreThreshold": { "type": "number", "const": 0.5 },
+        "challengeWindowDurationHours": { "type": "number", "const": 24 },
+        "rule": { "type": "string", "const": "decayedScore >= minDecayScoreThreshold" }
+      }
+    },
+    "scorerIdentity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["analystId", "strategyId", "invokedAs"],
+      "description": "Scorer identity pin (UP-10): the profile is recognized only for the reference scorer pair. Additional analysts/strategies require either registration under this profile (if value-identical) or new profile versions — always registered and pinned, never silent.",
+      "properties": {
+        "analystId": { "type": "string", "const": "froggy" },
+        "strategyId": { "type": "string", "const": "trend_pullback_v1" },
+        "strategyVersion": {
+          "type": "string",
+          "minLength": 1,
+          "description": "OPTIONAL strategy version, recognized where present (UP-10)."
+        },
+        "invokedAs": { "type": "string", "const": "scoreFroggyTrendPullbackFromEnriched" }
+      }
+    },
+    "katRefs": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["computeUwrScore", "applyTimeDecay"],
+      "description": "KAT vector file references (UP-11). The profile may not back any reward-qualified or mint-eligible flow until these KAT vectors exist and the D2 M2 goldens remain byte-stable. Vectors are PURE DATA in afi-config; KAT execution against afi-core code is the separately-authorized PR-UWR-KAT-EXEC.",
+      "properties": {
+        "computeUwrScore": { "type": "string", "const": "kats/uwr-profile/v0/compute-uwr-score.kat.json" },
+        "applyTimeDecay": { "type": "string", "const": "kats/uwr-profile/v0/apply-time-decay.kat.json" }
+      }
+    },
+    "doctrineRefs": {
+      "const": [
+        "afi-governance/decisions/uwr-profile-pin-v0.1.md",
+        "afi-governance/decisions/math-authority-v0.1.md",
+        "afi-governance/decisions/mint-formula-bt-86b-alignment-v0.1.md"
+      ],
+      "description": "Governance decisions this registration derives from and is subordinate to."
+    }
+  }
+}

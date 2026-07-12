@@ -103,3 +103,32 @@ The draft v1 registry has been validated against the schema (AJV, draft-07) — 
 
 - This is a **draft**. Changing an entry's `productionStatus` to `production-approved`, re-pointing an ENS alias, or marking a placeholder as a funded vault requires **owner confirmation** (and, for legal/clawback items, legal/compliance) — see the registry's `openQuestions`.
 - Address/Safe facts carry a `lastVerified` date; re-verify on-chain before relying on them for any transaction.
+
+---
+
+## UWR profile registry
+
+This directory also holds the **version-pinned UWR profile registry** (one file per registered profile).
+
+- **Schema:** [`../schemas/uwr-profile/v0/uwr-profile.schema.json`](../schemas/uwr-profile/v0/uwr-profile.schema.json)
+- **Registered profile (draft):** [`./uwr-profiles/uwr-weighted-lifts-v0.1.json`](./uwr-profiles/uwr-weighted-lifts-v0.1.json)
+- **KAT vectors:** [`../kats/uwr-profile/v0/`](../kats/uwr-profile/v0/)
+- **Authorization:** `afi-governance/decisions/uwr-profile-pin-v0.1.md` UP-12 (PR-UWR-CONFIG only)
+
+> **This registry is registration metadata only. It is NOT an instruction to consume the profile at runtime, modify `defaultUwrConfig`, stamp profile ids into persisted records, or wire the qualification gate.** Status is `draft-non-implementation`; every pinned value is **testnet-provisional, not production scoring law**.
+
+The registered profile `uwr-weighted-lifts-v0.1` pins the UWR v0.1 weighted-lifts scorer surface (engine `computeUwrScore`, axes `structure/execution/risk/insight`, weights 0.25×4, riskBucket taxonomy `low|medium|high|extreme`, GreeksDecayTemplate v1 decay surface, scorer identity `froggy`/`trend_pullback_v1`) value-identically to afi-core's `defaultUwrConfig` — registration changes no scored output, and the D2 M2 goldens remain byte-stable (`uwrScore 0.1875` anchor). "Testnet Scoring Profile v0" is a human-facing alias only, never an identifier.
+
+### Validation
+
+```
+jq . afi-config/registries/uwr-profiles/uwr-weighted-lifts-v0.1.json   # JSON syntax
+# schema conformance + decision-value pins + KAT coverage (AJV strict, vitest):
+npm run test:run   # full suite, including tests/uwr-profile-schema-validation.test.ts
+```
+
+### Change control
+
+- Values in `uwr-weighted-lifts-v0.1.json` are **testnet-provisional**. Any value change requires a **new governance decision and a new profile version (a new id)** — never a mutation of `uwr-weighted-lifts-v0.1`.
+- Additional profiles require their own scoped governance authorization before being added to `uwr-profiles/` (the test suite pins the directory contents to the authorized set).
+- Registration does **not** authorize runtime consumption; every consuming PR (PR-UWR-KAT-EXEC, PR-UWR-STAMP, qualification wiring) needs its own authorization per the decision's §7.
