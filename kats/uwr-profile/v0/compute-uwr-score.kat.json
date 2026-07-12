@@ -1,0 +1,79 @@
+{
+  "schema": "afi.uwr-score-kat.v0",
+  "x-afiStatus": "draft-non-implementation",
+  "profileId": "uwr-weighted-lifts-v0.1",
+  "status": "testnet-provisional",
+  "description": "Known-answer-test vectors for computeUwrScore under the version-pinned UWR profile uwr-weighted-lifts-v0.1 (UP-11 item 1). Pure data: expected values are decision-anchored literals; nothing in afi-config executes the engine. Includes the D2 M2 golden anchor (uwrScore 0.1875), the mandated anchor set, [0,1] boundaries, and one pre-clamp vector. With equal 0.25 weights the engine reduces to the mean of the four clamped axes; every vector's axis sum equals exactly 4x its anchor in decimal arithmetic.",
+  "decisionRef": "afi-governance/decisions/uwr-profile-pin-v0.1.md (UP-3, UP-4, UP-5, UP-11)",
+  "engine": {
+    "function": "computeUwrScore",
+    "sourceModule": "afi-core/validators/UniversalWeightingRule.ts",
+    "sourceCommit": "390b440",
+    "formula": "uwrScore = (structureWeight*clamp01(structure) + executionWeight*clamp01(execution) + riskWeight*clamp01(risk) + insightWeight*clamp01(insight)) / (structureWeight + executionWeight + riskWeight + insightWeight)"
+  },
+  "weights": {
+    "structureWeight": 0.25,
+    "executionWeight": 0.25,
+    "riskWeight": 0.25,
+    "insightWeight": 0.25
+  },
+  "comparisonPolicyNote": "Expected values are decision-anchored data. Floating-point comparison policy is PR-UWR-KAT-EXEC scope (afi-core); this file deliberately defines none.",
+  "vectors": [
+    {
+      "vectorId": "uwr-score-d2m2-golden-anchor",
+      "description": "The D2 M2 golden replay anchor (afi-reactor/test/pipeheads/fixtures/golden.json @ 79c4a6f): uwrScore 0.1875 = mean(0.15, 0, 0.2, 0.4). Byte-stability of the D2 M2 goldens is an acceptance criterion (UP-5, UP-11).",
+      "axes": { "structure": 0.15, "execution": 0, "risk": 0.2, "insight": 0.4 },
+      "expected": { "uwrScore": 0.1875 }
+    },
+    {
+      "vectorId": "uwr-score-midpoint",
+      "description": "All axes at the midpoint.",
+      "axes": { "structure": 0.5, "execution": 0.5, "risk": 0.5, "insight": 0.5 },
+      "expected": { "uwrScore": 0.5 }
+    },
+    {
+      "vectorId": "uwr-score-anchor-0650",
+      "axes": { "structure": 0.6, "execution": 0.7, "risk": 0.6, "insight": 0.7 },
+      "expected": { "uwrScore": 0.65 }
+    },
+    {
+      "vectorId": "uwr-score-anchor-0375",
+      "description": "Exactly 2x the golden-anchor axes.",
+      "axes": { "structure": 0.3, "execution": 0, "risk": 0.4, "insight": 0.8 },
+      "expected": { "uwrScore": 0.375 }
+    },
+    {
+      "vectorId": "uwr-score-anchor-0625",
+      "axes": { "structure": 0.5, "execution": 0.75, "risk": 0.5, "insight": 0.75 },
+      "expected": { "uwrScore": 0.625 }
+    },
+    {
+      "vectorId": "uwr-score-anchor-0825",
+      "axes": { "structure": 0.9, "execution": 0.8, "risk": 0.8, "insight": 0.8 },
+      "expected": { "uwrScore": 0.825 }
+    },
+    {
+      "vectorId": "uwr-score-anchor-0550",
+      "axes": { "structure": 0.4, "execution": 0.6, "risk": 0.5, "insight": 0.7 },
+      "expected": { "uwrScore": 0.55 }
+    },
+    {
+      "vectorId": "uwr-score-boundary-zero",
+      "description": "Lower output boundary (UP-6: uwrScore in [0, 1]).",
+      "axes": { "structure": 0, "execution": 0, "risk": 0, "insight": 0 },
+      "expected": { "uwrScore": 0 }
+    },
+    {
+      "vectorId": "uwr-score-boundary-one",
+      "description": "Upper output boundary (UP-6: uwrScore in [0, 1]).",
+      "axes": { "structure": 1, "execution": 1, "risk": 1, "insight": 1 },
+      "expected": { "uwrScore": 1 }
+    },
+    {
+      "vectorId": "uwr-score-clamp",
+      "description": "Out-of-range inputs clamp to [0, 1] BEFORE averaging (UP-3: four clamped axes): (1.5, -0.5, 0.5, 0.5) clamps to (1, 0, 0.5, 0.5).",
+      "axes": { "structure": 1.5, "execution": -0.5, "risk": 0.5, "insight": 0.5 },
+      "expected": { "uwrScore": 0.5 }
+    }
+  ]
+}

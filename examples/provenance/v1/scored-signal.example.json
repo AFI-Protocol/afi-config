@@ -7,7 +7,7 @@
   "strategyId": "trend-pullback",
   "strategyVersion": "v1.2.0",
   "direction": "long",
-  "riskBucket": "moderate",
+  "riskBucket": "medium",
   "conviction": 0.72,
   "uwrScore": 0.81,
   "uwrAxes": {

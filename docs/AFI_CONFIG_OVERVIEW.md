@@ -139,6 +139,14 @@ Draft schemas for the District 2 canonical data/provenance boundary (authorized 
 
 These are specification drafts, not production wiring. Valid examples live in `examples/provenance/v1/`; strict AJV tests live in `tests/provenance-schema-validation.test.ts`. See [`schemas/provenance/v1/README.md`](../schemas/provenance/v1/README.md) for scope, timestamp policy, and explicit boundaries (BenchKit owns weighting; storage is an implementation profile, not canon; no settlement/rewards/vault/validator-decision content).
 
+## Version-Pinned UWR Profile Registry (v0)
+
+**Location:** `schemas/uwr-profile/v0/`, `registries/uwr-profiles/`, `kats/uwr-profile/v0/` — **Status:** `draft-non-implementation`.
+
+The canonical artifact term is "**version-pinned UWR profile**"; "Testnet Scoring Profile v0" is a human-facing alias only, never an identifier. Authorized by `afi-governance/decisions/uwr-profile-pin-v0.1.md` (UP-12, PR-UWR-CONFIG only), this registers the first version-pinned UWR profile **`uwr-weighted-lifts-v0.1`**: engine `computeUwrScore` (normalized weighted average of four clamped axes), axes `structure/execution/risk/insight` (order significant), weights `0.25 × 4` (value-identical to afi-core's `defaultUwrConfig` — no scored value changes; the D2 M2 golden anchor `uwrScore 0.1875` holds), output surface `uwrScore`/`conviction` in `[0, 1]` with riskBucket taxonomy `low | medium | high | extreme`, the GreeksDecayTemplate v1 decay surface (`decay-scalp-v1` 8 / `decay-intraday-v1` 60 / `decay-swing-v1` 720 / `decay-position-v1` 5040 `halfLifeMinutes`, `decayModel "exp"`, unit minutes), and scorer identity `froggy` / `trend_pullback_v1`. Per the UP-11 gate, the profile may not back any reward-qualified or mint-eligible flow until its KAT vectors (in `kats/uwr-profile/v0/`, pure data — execution is the separately-authorized PR-UWR-KAT-EXEC) exist and the D2 M2 goldens remain byte-stable. Qualification values (`minDecayScoreThreshold 0.5`, `challengeWindowDurationHours 24`, canonical term "challenge window") are recorded, not wired.
+
+Every value is **testnet-provisional, not production scoring law**. SS-O1/SS-O2/SS-O3 are provisionally closed **for this profile only** — the District 2 scored-signal draft-schema open items remain OPEN. Runtime consumption of the registry is separately authorized. Strict AJV tests live in `tests/uwr-profile-schema-validation.test.ts`; see [`schemas/uwr-profile/v0/README.md`](../schemas/uwr-profile/v0/README.md) for scope and boundaries.
+
 ## Schema Strategy
 
 ### JSON Schema as Canonical Format

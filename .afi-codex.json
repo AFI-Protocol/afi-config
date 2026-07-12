@@ -26,6 +26,11 @@
       "path": "codex/",
       "type": "governance-directory",
       "description": "Codex governance artifacts and policies for afi-config"
+    },
+    {
+      "path": "kats/",
+      "type": "kat-vector-directory",
+      "description": "Known-answer-test vector data for version-pinned profiles (draft-non-implementation)"
     }
   ],
   "provides": [
@@ -38,7 +43,8 @@
     "validationUtilities",
     "governancePolicies",
     "droidCharter",
-    "provenanceSchemaDrafts"
+    "provenanceSchemaDrafts",
+    "uwrProfileRegistryDrafts"
   ],
   "dependsOn": [],
   "consumers": [

@@ -1,0 +1,123 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://afi-protocol.org/schemas/uwr-profile/v0/uwr-score-kat.schema.json",
+  "title": "AFI UWR Score KAT Vectors v0 (Testnet-Provisional DRAFT)",
+  "description": "DRAFT / NON-IMPLEMENTATION schema for the computeUwrScore known-answer-test (KAT) vector file of the version-pinned UWR profile uwr-weighted-lifts-v0.1 (UP-11). Vectors are PURE DATA: expected values are decision-anchored literals; nothing in afi-config executes the engine. KAT execution against afi-core code is the separately-authorized PR-UWR-KAT-EXEC (vendored-golden-with-source-pin pattern). All values testnet-provisional, not production scoring law.",
+  "$comment": "Authorized by afi-governance/decisions/uwr-profile-pin-v0.1.md UP-12 (PR-UWR-CONFIG only). No tolerance/epsilon field exists in this format: floating-point comparison policy deliberately belongs to PR-UWR-KAT-EXEC, and additionalProperties:false rejects any attempt to add one here.",
+  "x-afiStatus": "draft-non-implementation",
+  "x-afiPartOf": "AFI version-pinned UWR profile registry (uwr-profile-pin-v0.1, PR-UWR-CONFIG)",
+  "x-afiDoctrineRefs": [
+    "afi-governance/decisions/uwr-profile-pin-v0.1.md — UP-3 engine pin, UP-4 axes pin, UP-5 weights pin, UP-11 KAT/golden gate",
+    "afi-governance/decisions/math-authority-v0.1.md §3 — KAT vectors (pure data) live in afi-config; KAT execution is a separately-authorized afi-core PR"
+  ],
+  "x-afiOpenItems": {
+    "comparison-policy": "Floating-point comparison policy for executing these vectors is PR-UWR-KAT-EXEC scope (afi-core); this file defines none."
+  },
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "x-afiStatus",
+    "profileId",
+    "status",
+    "decisionRef",
+    "engine",
+    "weights",
+    "comparisonPolicyNote",
+    "vectors"
+  ],
+  "properties": {
+    "schema": {
+      "type": "string",
+      "const": "afi.uwr-score-kat.v0"
+    },
+    "x-afiStatus": {
+      "type": "string",
+      "const": "draft-non-implementation",
+      "description": "Artifact lifecycle marker carried on the document itself per UP-12."
+    },
+    "profileId": {
+      "type": "string",
+      "const": "uwr-weighted-lifts-v0.1"
+    },
+    "status": {
+      "type": "string",
+      "const": "testnet-provisional"
+    },
+    "description": {
+      "type": "string",
+      "description": "OPTIONAL free-form commentary on the vector set."
+    },
+    "decisionRef": {
+      "type": "string",
+      "const": "afi-governance/decisions/uwr-profile-pin-v0.1.md (UP-3, UP-4, UP-5, UP-11)"
+    },
+    "engine": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["function", "sourceModule", "sourceCommit", "formula"],
+      "properties": {
+        "function": { "type": "string", "const": "computeUwrScore" },
+        "sourceModule": { "type": "string", "const": "afi-core/validators/UniversalWeightingRule.ts" },
+        "sourceCommit": { "type": "string", "const": "390b440" },
+        "formula": {
+          "type": "string",
+          "const": "uwrScore = (structureWeight*clamp01(structure) + executionWeight*clamp01(execution) + riskWeight*clamp01(risk) + insightWeight*clamp01(insight)) / (structureWeight + executionWeight + riskWeight + insightWeight)"
+        }
+      }
+    },
+    "weights": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["structureWeight", "executionWeight", "riskWeight", "insightWeight"],
+      "properties": {
+        "structureWeight": { "type": "number", "const": 0.25 },
+        "executionWeight": { "type": "number", "const": 0.25 },
+        "riskWeight": { "type": "number", "const": 0.25 },
+        "insightWeight": { "type": "number", "const": 0.25 }
+      }
+    },
+    "comparisonPolicyNote": {
+      "type": "string",
+      "const": "Expected values are decision-anchored data. Floating-point comparison policy is PR-UWR-KAT-EXEC scope (afi-core); this file deliberately defines none."
+    },
+    "vectors": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["vectorId", "axes", "expected"],
+        "properties": {
+          "vectorId": { "type": "string", "minLength": 1 },
+          "description": { "type": "string" },
+          "axes": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["structure", "execution", "risk", "insight"],
+            "description": "Raw pre-clamp axis inputs (UP-4 axis set, order significant in serialization). Deliberately unbounded numbers: the engine clamps each axis to [0, 1] BEFORE averaging, and clamp vectors exercise out-of-range inputs.",
+            "properties": {
+              "structure": { "type": "number" },
+              "execution": { "type": "number" },
+              "risk": { "type": "number" },
+              "insight": { "type": "number" }
+            }
+          },
+          "expected": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["uwrScore"],
+            "properties": {
+              "uwrScore": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 1,
+                "description": "Decision-anchored expected output in [0, 1] (UP-6)."
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
