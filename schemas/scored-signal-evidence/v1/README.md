@@ -25,7 +25,7 @@ Per MONGO-IMPL Slot 1, this is **schema/contract only**:
 |---|---|---|
 | `schema` (const `afi.scored-signal-evidence.v1`) | OBJ-GOV `D-OBJ-6` axis (a) | per-object schema-id const; versions the record shape |
 | `signalId` | OBJ-GOV `D-OBJ-1`, MONGO-GOV `D-MONGO-6` | canonical join key + store idempotency key |
-| `analystId` / `strategyId` / `strategyVersion?` | OBJ-GOV `D-OBJ-3` | canonical strategy identity triple (top-level, denormalized for keying) |
+| `analystId` / `strategyId` / `strategyVersion` | OBJ-GOV `D-OBJ-3` | **complete** canonical strategy identity triple — all three **required-present** on the evidence record (top-level, denormalized for keying). D-OBJ-3 leaves `strategyVersion` optional at the general object level and the reused projection keeps it optional; the canonical evidence record requires the full triple. Format unchanged (non-binding). |
 | `canonicalizationVersion` (`^afi\.hash\.v[0-9]+$`) | OBJ-GOV `D-OBJ-6` axis (b) | held distinct from the schema-id |
 | `lifecycleState` | LIFE-GOV `D-LIFE-1` / `D-LIFE-6` | restricted to the **persistable** canonical states (post-scoring) |
 | `finalized` | MONGO-GOV `D-MONGO-5`, LIFE-GOV `D-LIFE-4` | immutable-after-`FINALIZED` marker; bound to `lifecycleState` by `if/then/else` |

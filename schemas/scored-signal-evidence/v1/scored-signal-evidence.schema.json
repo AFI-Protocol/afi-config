@@ -27,7 +27,7 @@
     "appendOnceImmutableAfterFinalized": "STORE-LAYER (not JSON-Schema-enforceable): the record is write-once/append-only per signalId (MONGO-GOV D-MONGO-5). One CURRENT record per signalId; a governed correction SUPERSEDES the current record with a new schema-versioned record (recordVersion increments; superseded versions retained immutably as history). Once lifecycleState reaches FINALIZED, the record is immutable (finalized === true marks this). Immutability here is STORAGE custody, NOT settlement finality (CHAIN-GOV).",
     "singleWriterBoundary": "STORE-LAYER (not JSON-Schema-enforceable): only the afi-infra canonical persistence interface may write this record (MONGO-GOV D-MONGO-3). Reactor and Gateway are SUBMITTERS, not writers. A record is admissible only when it carries the afi.scored-signal.v1 projection + provenance linkage + signalId continuity and satisfies the LIFE-GOV D-LIFE-6 handoff. This contract does not define that interface (ATLAS-GOV / MONGO-STORE), only the shape it transports.",
     "operationalVsCanonical": "This record is CANONICAL evidence only (MONGO-GOV D-MONGO-4). Raw/unscored ingestion, intermediate/DAG state, retry/dead-letter, replay inputs, dedupe caches, and telemetry are OPERATIONAL stores and MUST NOT be represented by this contract.",
-    "identifierContinuity": "CROSS-OBJECT (not JSON-Schema-draft-07-enforceable): the top-level signalId MUST equal scoredSignal.signalId AND provenanceRecord.signalId (OBJ-GOV D-OBJ-1, LIFE-GOV D-LIFE-5). The top-level strategy triple (analystId, strategyId, strategyVersion) MUST equal the scoredSignal triple (OBJ-GOV D-OBJ-3). The top-level canonicalizationVersion MUST equal provenanceRecord.canonicalizationVersion (OBJ-GOV D-OBJ-6). Enforced by the drift-guard contract tests.",
+    "identifierContinuity": "CROSS-OBJECT (not JSON-Schema-draft-07-enforceable): the top-level signalId MUST equal scoredSignal.signalId AND provenanceRecord.signalId (OBJ-GOV D-OBJ-1, LIFE-GOV D-LIFE-5). The top-level strategy triple (analystId, strategyId, strategyVersion) — all three REQUIRED-present on this evidence record — MUST equal the scoredSignal triple (OBJ-GOV D-OBJ-3). The top-level canonicalizationVersion MUST equal provenanceRecord.canonicalizationVersion (OBJ-GOV D-OBJ-6). Enforced by the drift-guard contract tests.",
     "replaySufficiency": "The record is structured for deterministic off-line replay/verify (MONGO-GOV D-MONGO-9): it carries the afi.scored-signal.v1 projection AND the afi.provenance-record.v1, which supplies AT MINIMUM the input + output CanonicalHash digests (required by that shape), plus the enrichment digest and replay pins where present (optional on the reused shape). Tightening replay-pin cardinality to a hard minimum is deferred WITH the full afi.provenance-record.v1 canonical shape (OBJ-GOV D-OBJ-6/D-OBJ-7; not re-decided here); this contract does not relax D-MONGO-9 but does not over-fix the deferred provenance shape. This is a data guarantee on the record — NOT a read/replay endpoint (ATLAS-GOV)."
   },
   "type": "object",
@@ -37,6 +37,7 @@
     "signalId",
     "analystId",
     "strategyId",
+    "strategyVersion",
     "canonicalizationVersion",
     "lifecycleState",
     "finalized",
@@ -67,7 +68,7 @@
     "strategyVersion": {
       "type": "string",
       "minLength": 1,
-      "description": "OPTIONAL canonical strategy triple member (OBJ-GOV D-OBJ-3): finer semver-without-v-prefix version, separate from strategyId. When present MUST equal scoredSignal.strategyVersion."
+      "description": "REQUIRED canonical strategy triple member (OBJ-GOV D-OBJ-3): finer semver-without-v-prefix version, separate from strategyId. The canonical evidence record MUST carry the COMPLETE canonical strategy identity triple (analystId + strategyId + strategyVersion), so this field is required on the evidence contract even though D-OBJ-3 leaves it optional at the general object-identity level and the reused afi.scored-signal.v1 projection keeps it optional. MUST equal scoredSignal.strategyVersion (identifier continuity). Format is unchanged from D-OBJ-3 (non-binding, illustrative semver e.g. 1.0.0); this is a presence requirement on the evidence record, not a redefinition of the governed format or of the projection's own optionality."
     },
     "canonicalizationVersion": {
       "type": "string",

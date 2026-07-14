@@ -171,12 +171,16 @@ const EXPECTED_REQUIRED = [
   'signalId',
   'analystId',
   'strategyId',
+  'strategyVersion',
   'canonicalizationVersion',
   'lifecycleState',
   'finalized',
   'scoredSignal',
   'provenanceRecord',
 ];
+// The complete canonical strategy identity triple (OBJ-GOV D-OBJ-3), all
+// REQUIRED-present on a canonical evidence record.
+const STRATEGY_TRIPLE = ['analystId', 'strategyId', 'strategyVersion'];
 
 describe('MONGO-CONTRACT — afi.scored-signal-evidence.v1', () => {
   describe('Schema Compilation & Governed Metadata', () => {
@@ -210,6 +214,16 @@ describe('MONGO-CONTRACT — afi.scored-signal-evidence.v1', () => {
       const schema = loadJSON(EVIDENCE_SCHEMA);
       expect(Object.keys(schema.properties).sort()).toEqual([...EXPECTED_PROPERTY_KEYS].sort());
       expect([...schema.required].sort()).toEqual([...EXPECTED_REQUIRED].sort());
+    });
+
+    it('should REQUIRE the complete canonical strategy identity triple incl. strategyVersion (OBJ-GOV D-OBJ-3)', () => {
+      const schema = loadJSON(EVIDENCE_SCHEMA);
+      STRATEGY_TRIPLE.forEach(member =>
+        expect(schema.required, `triple member '${member}' must be required`).toContain(member)
+      );
+      // Format stays non-binding per D-OBJ-3 (presence requirement only, no imposed pattern).
+      expect(schema.properties.strategyVersion.pattern).toBeUndefined();
+      expect(schema.properties.strategyVersion.type).toBe('string');
     });
 
     it('should reuse the governed District-2 shapes by $ref (not redefine them)', () => {
@@ -276,6 +290,27 @@ describe('MONGO-CONTRACT — afi.scored-signal-evidence.v1', () => {
         });
     });
 
+    it('every valid record carries the complete strategy triple at top level and in the projection', () => {
+      const files = [
+        CANONICAL_EXAMPLE,
+        ...readdirSync(join(rootDir, VALID_DIR))
+          .filter(f => f.endsWith('.json'))
+          .map(f => `${VALID_DIR}/${f}`),
+      ];
+      files.forEach(rel => {
+        const r = loadJSON(rel);
+        STRATEGY_TRIPLE.forEach(member =>
+          expect(r[member], `${rel} top-level ${member}`).toBeTruthy()
+        );
+        // continuity: the projection carries the same triple (incl. strategyVersion)
+        expect(r.scoredSignal.analystId, `${rel} projection analystId`).toBe(r.analystId);
+        expect(r.scoredSignal.strategyId, `${rel} projection strategyId`).toBe(r.strategyId);
+        expect(r.scoredSignal.strategyVersion, `${rel} projection strategyVersion`).toBe(
+          r.strategyVersion
+        );
+      });
+    });
+
     it('valid vector set should be exactly the authorized files (drift guard)', () => {
       const files = readdirSync(join(rootDir, VALID_DIR)).filter(f => f.endsWith('.json')).sort();
       expect(files).toEqual([
@@ -302,6 +337,7 @@ describe('MONGO-CONTRACT — afi.scored-signal-evidence.v1', () => {
       'provenance-signalid-discontinuity.json': { schemaValid: true, continuityOk: false },
       'strategy-triple-mismatch.json': { schemaValid: true, continuityOk: false },
       'canonicalization-version-mismatch.json': { schemaValid: true, continuityOk: false },
+      'missing-strategy-version.json': { schemaValid: false, continuityOk: true },
       'missing-provenance-record.json': { schemaValid: false, continuityOk: false },
       'pre-scoring-lifecycle-state.json': { schemaValid: false, continuityOk: true },
       'legacy-vocabulary-state.json': { schemaValid: false, continuityOk: true },

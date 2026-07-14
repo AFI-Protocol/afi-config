@@ -3,6 +3,7 @@
   "signalId": "sig-finality-0007",
   "analystId": "froggy",
   "strategyId": "trend_pullback_v1",
+  "strategyVersion": "1.0.0",
   "canonicalizationVersion": "afi.hash.v1",
   "lifecycleState": "FINALIZED",
   "finalized": false,
@@ -11,6 +12,7 @@
     "signalId": "sig-finality-0007",
     "analystId": "froggy",
     "strategyId": "trend_pullback_v1",
+    "strategyVersion": "1.0.0",
     "direction": "long",
     "uwrScore": 0.55,
     "provenanceRecordRef": "provenance-record:sig-finality-0007"

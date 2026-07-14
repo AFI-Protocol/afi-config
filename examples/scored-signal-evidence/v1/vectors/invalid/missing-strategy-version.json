@@ -1,32 +1,23 @@
 {
   "schema": "afi.scored-signal-evidence.v1",
-  "signalId": "sig-heavy-0008",
+  "signalId": "sig-nover-0012",
   "analystId": "froggy",
   "strategyId": "trend_pullback_v1",
-  "strategyVersion": "1.0.0",
   "canonicalizationVersion": "afi.hash.v1",
   "lifecycleState": "SCORED",
   "finalized": false,
   "scoredSignal": {
     "schema": "afi.scored-signal.v1",
-    "signalId": "sig-heavy-0008",
+    "signalId": "sig-nover-0012",
     "analystId": "froggy",
     "strategyId": "trend_pullback_v1",
-    "strategyVersion": "1.0.0",
     "direction": "long",
     "uwrScore": 0.55,
-    "provenanceRecordRef": "provenance-record:sig-heavy-0008",
-    "rawUss": {
-      "schema": "afi.usignal.v1.1",
-      "provenance": { "signalId": "sig-heavy-0008", "providerId": "prov-x" }
-    },
-    "lenses": [{ "lens": "strategy", "payload": { "momentum": "up" } }],
-    "_priceFeedMetadata": { "feed": "blofin", "latencyMs": 42 },
-    "rawPayload": "BUY BTCUSDT NOW"
+    "provenanceRecordRef": "provenance-record:sig-nover-0012"
   },
   "provenanceRecord": {
     "schema": "afi.provenance-record.v1",
-    "signalId": "sig-heavy-0008",
+    "signalId": "sig-nover-0012",
     "canonicalizationVersion": "afi.hash.v1",
     "inputHash": {
       "algorithm": "sha256",
