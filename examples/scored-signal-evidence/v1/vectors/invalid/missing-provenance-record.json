@@ -1,0 +1,18 @@
+{
+  "schema": "afi.scored-signal-evidence.v1",
+  "signalId": "sig-noprov-0004",
+  "analystId": "froggy",
+  "strategyId": "trend_pullback_v1",
+  "canonicalizationVersion": "afi.hash.v1",
+  "lifecycleState": "SCORED",
+  "finalized": false,
+  "scoredSignal": {
+    "schema": "afi.scored-signal.v1",
+    "signalId": "sig-noprov-0004",
+    "analystId": "froggy",
+    "strategyId": "trend_pullback_v1",
+    "direction": "long",
+    "uwrScore": 0.55,
+    "provenanceRecordRef": "provenance-record:sig-noprov-0004"
+  }
+}

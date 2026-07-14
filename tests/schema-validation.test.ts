@@ -27,6 +27,7 @@ function createAjv(): Ajv {
     'x-afiDoctrineRefs',
     'x-afiOpenItems',
     'x-afiProposedNotAccepted',
+    'x-afiConstraints',
   ]);
   return ajv;
 }
@@ -92,6 +93,11 @@ describe('Schema Validation Tests', () => {
         'schemas/provenance/v1/evidence-ref.schema.json',
         'schemas/provenance/v1/source-disclosure-profile.schema.json',
         'schemas/provenance/v1/enrichment-provenance.schema.json',
+        // Composite provenance shapes reused by afi.scored-signal-evidence.v1
+        // (MONGO-CONTRACT); preloaded so its cross-file $refs resolve regardless
+        // of directory read order.
+        'schemas/provenance/v1/scored-signal.schema.json',
+        'schemas/provenance/v1/provenance-record.schema.json',
       ];
       const preloadedSchemaFiles = new Set<string>();
       preloadSchemaFiles.forEach(schemaFile => {

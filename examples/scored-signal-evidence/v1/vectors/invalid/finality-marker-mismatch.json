@@ -1,0 +1,35 @@
+{
+  "schema": "afi.scored-signal-evidence.v1",
+  "signalId": "sig-finality-0007",
+  "analystId": "froggy",
+  "strategyId": "trend_pullback_v1",
+  "canonicalizationVersion": "afi.hash.v1",
+  "lifecycleState": "FINALIZED",
+  "finalized": false,
+  "scoredSignal": {
+    "schema": "afi.scored-signal.v1",
+    "signalId": "sig-finality-0007",
+    "analystId": "froggy",
+    "strategyId": "trend_pullback_v1",
+    "direction": "long",
+    "uwrScore": 0.55,
+    "provenanceRecordRef": "provenance-record:sig-finality-0007"
+  },
+  "provenanceRecord": {
+    "schema": "afi.provenance-record.v1",
+    "signalId": "sig-finality-0007",
+    "canonicalizationVersion": "afi.hash.v1",
+    "inputHash": {
+      "algorithm": "sha256",
+      "canonicalizationVersion": "afi.hash.v1",
+      "domainTag": "afi.d2.signal-input",
+      "value": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "outputHash": {
+      "algorithm": "sha256",
+      "canonicalizationVersion": "afi.hash.v1",
+      "domainTag": "afi.d2.scored-output",
+      "value": "3f79bb7b435b05321651daefd374cdc681dc06faa65e374e38337b88ca046dea"
+    }
+  }
+}

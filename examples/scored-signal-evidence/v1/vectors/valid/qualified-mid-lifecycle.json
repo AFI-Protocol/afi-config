@@ -1,0 +1,53 @@
+{
+  "schema": "afi.scored-signal-evidence.v1",
+  "signalId": "cpj-telegram-alpha-000777",
+  "analystId": "froggy",
+  "strategyId": "trend_pullback_v1",
+  "strategyVersion": "1.2.0",
+  "canonicalizationVersion": "afi.hash.v1",
+  "lifecycleState": "QUALIFIED",
+  "finalized": false,
+  "recordVersion": 1,
+  "scoredSignal": {
+    "schema": "afi.scored-signal.v1",
+    "signalId": "cpj-telegram-alpha-000777",
+    "providerId": "prov-telegram-alpha",
+    "analystId": "froggy",
+    "strategyId": "trend_pullback_v1",
+    "strategyVersion": "1.2.0",
+    "direction": "short",
+    "riskBucket": "high",
+    "conviction": 0.64,
+    "uwrScore": 0.66,
+    "uwrAxes": {
+      "structure": 0.6,
+      "execution": 0.7,
+      "risk": 0.5,
+      "insight": 0.84
+    },
+    "provenanceRecordHash": {
+      "algorithm": "sha256",
+      "canonicalizationVersion": "afi.hash.v1",
+      "domainTag": "afi.d2.provenance-record",
+      "value": "18ac3e7343f016890c510e93f935261169d9e3f565436429830faf0934f4f8e4"
+    }
+  },
+  "provenanceRecord": {
+    "schema": "afi.provenance-record.v1",
+    "signalId": "cpj-telegram-alpha-000777",
+    "canonicalizationVersion": "afi.hash.v1",
+    "inputHash": {
+      "algorithm": "sha256",
+      "canonicalizationVersion": "afi.hash.v1",
+      "domainTag": "afi.d2.signal-input",
+      "value": "2c26b46b68ffc68ff99b453c1d30413413422d706483bfa0f98a5e886266e7ae"
+    },
+    "outputHash": {
+      "algorithm": "sha256",
+      "canonicalizationVersion": "afi.hash.v1",
+      "domainTag": "afi.d2.scored-output",
+      "value": "fcde2b2edba56bf408601fb721fe9b5c338d10ee429ea04fae5511b68fbf8fb9"
+    },
+    "sourceDisclosureRefs": ["src-telegram-alpha-channel"]
+  }
+}

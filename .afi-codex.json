@@ -44,7 +44,8 @@
     "governancePolicies",
     "droidCharter",
     "provenanceSchemaDrafts",
-    "uwrProfileRegistryDrafts"
+    "uwrProfileRegistryDrafts",
+    "scoredSignalEvidenceContract"
   ],
   "dependsOn": [],
   "consumers": [

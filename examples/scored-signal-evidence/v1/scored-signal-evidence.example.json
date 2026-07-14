@@ -1,0 +1,86 @@
+{
+  "schema": "afi.scored-signal-evidence.v1",
+  "signalId": "sig-d2-20260115-000123",
+  "analystId": "froggy",
+  "strategyId": "trend_pullback_v1",
+  "strategyVersion": "1.0.0",
+  "canonicalizationVersion": "afi.hash.v1",
+  "lifecycleState": "FINALIZED",
+  "finalized": true,
+  "recordVersion": 1,
+  "scoredSignal": {
+    "schema": "afi.scored-signal.v1",
+    "signalId": "sig-d2-20260115-000123",
+    "analystId": "froggy",
+    "strategyId": "trend_pullback_v1",
+    "strategyVersion": "1.0.0",
+    "direction": "long",
+    "riskBucket": "medium",
+    "conviction": 0.72,
+    "uwrScore": 0.81,
+    "uwrAxes": {
+      "structure": 0.8,
+      "execution": 0.7,
+      "risk": 0.85,
+      "insight": 0.9
+    },
+    "evaluatedAt": "2026-01-15T12:00:00Z",
+    "provenanceRecordRef": "provenance-record:sig-d2-20260115-000123",
+    "outputHash": {
+      "algorithm": "sha256",
+      "canonicalizationVersion": "afi.hash.v1",
+      "domainTag": "afi.d2.scored-output",
+      "value": "3f79bb7b435b05321651daefd374cdc681dc06faa65e374e38337b88ca046dea"
+    }
+  },
+  "provenanceRecord": {
+    "schema": "afi.provenance-record.v1",
+    "signalId": "sig-d2-20260115-000123",
+    "canonicalizationVersion": "afi.hash.v1",
+    "inputHash": {
+      "algorithm": "sha256",
+      "canonicalizationVersion": "afi.hash.v1",
+      "domainTag": "afi.d2.signal-input",
+      "value": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "enrichmentHash": {
+      "algorithm": "sha256",
+      "canonicalizationVersion": "afi.hash.v1",
+      "domainTag": "afi.d2.enrichment-bundle",
+      "value": "3e23e8160039594a33894f6564e1b1348bbd7a0088d42c4acb73eeaed59c009d"
+    },
+    "outputHash": {
+      "algorithm": "sha256",
+      "canonicalizationVersion": "afi.hash.v1",
+      "domainTag": "afi.d2.scored-output",
+      "value": "3f79bb7b435b05321651daefd374cdc681dc06faa65e374e38337b88ca046dea"
+    },
+    "evidenceRefs": [
+      {
+        "evidenceId": "ev-price-context-000123-001",
+        "sourceRef": "src-exchange-blofin-api",
+        "evidenceHash": {
+          "algorithm": "sha256",
+          "canonicalizationVersion": "afi.hash.v1",
+          "domainTag": "afi.d2.evidence",
+          "value": "ca978112ca1bbdcafac231b39a23dc4da786eff8147c4e72b9807785afee48bb"
+        },
+        "asOf": "2026-01-15T12:00:00Z",
+        "redactionStatus": "disclosed"
+      }
+    ],
+    "sourceDisclosureRefs": ["src-exchange-blofin-api"],
+    "replayProfileRef": "replay-profile:sig-d2-20260115-000123",
+    "domainTags": [
+      "afi.d2.signal-input",
+      "afi.d2.enrichment-bundle",
+      "afi.d2.scored-output",
+      "afi.d2.evidence"
+    ],
+    "schemaVersions": {
+      "input": "afi.usignal.v1.1",
+      "envelope": "afi.analyst-input-envelope.v1",
+      "output": "afi.scored-signal.v1"
+    }
+  }
+}
