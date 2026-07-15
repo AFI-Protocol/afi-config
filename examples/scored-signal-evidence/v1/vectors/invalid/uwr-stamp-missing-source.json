@@ -1,6 +1,6 @@
 {
   "schema": "afi.scored-signal-evidence.v1",
-  "signalId": "sig-provdisc-0011",
+  "signalId": "sig-stamp-nosrc-0001",
   "analystId": "froggy",
   "strategyId": "trend_pullback_v1",
   "strategyVersion": "1.0.0",
@@ -10,22 +10,21 @@
   "uwrProfile": {
     "profileId": "uwr-weighted-lifts-v0.1",
     "status": "testnet-provisional",
-    "decisionRef": "afi-governance/decisions/uwr-profile-pin-v0.1.md",
-    "source": "builtin-value-identity"
+    "decisionRef": "afi-governance/decisions/uwr-profile-pin-v0.1.md"
   },
   "scoredSignal": {
     "schema": "afi.scored-signal.v1",
-    "signalId": "sig-provdisc-0011",
+    "signalId": "sig-stamp-nosrc-0001",
     "analystId": "froggy",
     "strategyId": "trend_pullback_v1",
     "strategyVersion": "1.0.0",
     "direction": "long",
     "uwrScore": 0.55,
-    "provenanceRecordRef": "provenance-record:sig-provdisc-0011"
+    "provenanceRecordRef": "provenance-record:sig-stamp-nosrc-0001"
   },
   "provenanceRecord": {
     "schema": "afi.provenance-record.v1",
-    "signalId": "sig-provdisc-0011-OTHER",
+    "signalId": "sig-stamp-nosrc-0001",
     "canonicalizationVersion": "afi.hash.v1",
     "inputHash": {
       "algorithm": "sha256",

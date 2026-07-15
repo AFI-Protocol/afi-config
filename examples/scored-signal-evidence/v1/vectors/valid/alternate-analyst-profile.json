@@ -1,31 +1,31 @@
 {
   "schema": "afi.scored-signal-evidence.v1",
-  "signalId": "sig-provdisc-0011",
-  "analystId": "froggy",
-  "strategyId": "trend_pullback_v1",
-  "strategyVersion": "1.0.0",
+  "signalId": "sig-alt-analyst-0001",
+  "analystId": "kestrel",
+  "strategyId": "mean_reversion_v2",
+  "strategyVersion": "3.1.4",
   "canonicalizationVersion": "afi.hash.v1",
   "lifecycleState": "SCORED",
   "finalized": false,
   "uwrProfile": {
-    "profileId": "uwr-weighted-lifts-v0.1",
-    "status": "testnet-provisional",
-    "decisionRef": "afi-governance/decisions/uwr-profile-pin-v0.1.md",
-    "source": "builtin-value-identity"
+    "profileId": "kestrel-adaptive-lifts-v2.0",
+    "status": "analyst-declared",
+    "decisionRef": "analysts/kestrel/profiles/adaptive-lifts-v2.0.md",
+    "source": "registry-consumed"
   },
   "scoredSignal": {
     "schema": "afi.scored-signal.v1",
-    "signalId": "sig-provdisc-0011",
-    "analystId": "froggy",
-    "strategyId": "trend_pullback_v1",
-    "strategyVersion": "1.0.0",
-    "direction": "long",
-    "uwrScore": 0.55,
-    "provenanceRecordRef": "provenance-record:sig-provdisc-0011"
+    "signalId": "sig-alt-analyst-0001",
+    "analystId": "kestrel",
+    "strategyId": "mean_reversion_v2",
+    "strategyVersion": "3.1.4",
+    "direction": "short",
+    "uwrScore": 0.64,
+    "provenanceRecordRef": "provenance-record:sig-alt-analyst-0001"
   },
   "provenanceRecord": {
     "schema": "afi.provenance-record.v1",
-    "signalId": "sig-provdisc-0011-OTHER",
+    "signalId": "sig-alt-analyst-0001",
     "canonicalizationVersion": "afi.hash.v1",
     "inputHash": {
       "algorithm": "sha256",

@@ -8,6 +8,12 @@
   "lifecycleState": "EPOCH_ELIGIBLE",
   "finalized": true,
   "recordVersion": 2,
+  "uwrProfile": {
+    "profileId": "uwr-weighted-lifts-v0.1",
+    "status": "testnet-provisional",
+    "decisionRef": "afi-governance/decisions/uwr-profile-pin-v0.1.md",
+    "source": "registry-consumed"
+  },
   "supersedesRecordHash": {
     "algorithm": "sha256",
     "canonicalizationVersion": "afi.hash.v1",

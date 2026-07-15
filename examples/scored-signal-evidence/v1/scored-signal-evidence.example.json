@@ -8,6 +8,12 @@
   "lifecycleState": "FINALIZED",
   "finalized": true,
   "recordVersion": 1,
+  "uwrProfile": {
+    "profileId": "uwr-weighted-lifts-v0.1",
+    "status": "testnet-provisional",
+    "decisionRef": "afi-governance/decisions/uwr-profile-pin-v0.1.md",
+    "source": "builtin-value-identity"
+  },
   "scoredSignal": {
     "schema": "afi.scored-signal.v1",
     "signalId": "sig-d2-20260115-000123",
