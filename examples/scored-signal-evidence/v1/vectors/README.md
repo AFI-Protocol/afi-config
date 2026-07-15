@@ -7,13 +7,18 @@ Positive and negative vectors for the canonical scored-signal evidence contract
 A record is **admissible** only when it is BOTH schema-valid AND passes the governed
 identifier-continuity contract constraint (which JSON Schema draft-07 cannot express).
 
+Every record also carries the **required** governed UWR profile stamp (`uwrProfile` —
+PR-UWR-STAMP; RC-6 `source` discriminator). The vector suite exercises **both** governed
+sources; the continuity-only negatives below carry a valid stamp so they stay schema-valid
+and are caught purely by the continuity layer.
+
 ## Valid vectors (`valid/`)
 
-| File | Demonstrates |
-|---|---|
-| `minimal-scored.json` | Minimal required record: `SCORED`, `finalized:false`, the complete strategy triple (incl. required `strategyVersion`), thin `scoredSignal` (ref-linked provenance) + minimal `provenanceRecord`. |
-| `qualified-mid-lifecycle.json` | Mid-lifecycle `QUALIFIED` record with optional `strategyVersion`/`recordVersion`, hash-linked provenance, full scored-signal surface. |
-| `epoch-eligible-superseded.json` | Post-finalization `EPOCH_ELIGIBLE`, `finalized:true`, `recordVersion:2` + `supersedesRecordHash` (versioning-by-supersession, MONGO-GOV D-MONGO-5). |
+| File | Demonstrates | Stamp `source` |
+|---|---|---|
+| `minimal-scored.json` | Minimal required record: `SCORED`, `finalized:false`, the complete strategy triple (incl. required `strategyVersion`), thin `scoredSignal` (ref-linked provenance) + minimal `provenanceRecord`. | `builtin-value-identity` |
+| `qualified-mid-lifecycle.json` | Mid-lifecycle `QUALIFIED` record with optional `strategyVersion`/`recordVersion`, hash-linked provenance, full scored-signal surface. | `registry-consumed` |
+| `epoch-eligible-superseded.json` | Post-finalization `EPOCH_ELIGIBLE`, `finalized:true`, `recordVersion:2` + `supersedesRecordHash` (versioning-by-supersession, MONGO-GOV D-MONGO-5). | `registry-consumed` |
 
 ## Invalid vectors (`invalid/`)
 
@@ -31,3 +36,6 @@ identifier-continuity contract constraint (which JSON Schema draft-07 cannot exp
 | `heavy-carrier-substitution.json` | heavy `ReactorScoredSignalDocument` fields (`rawUss`/`lenses`/`_priceFeedMetadata`/`rawPayload`) substituted into `scoredSignal` | JSON Schema (reused thin projection `additionalProperties:false`) |
 | `vaulted-lifecycle-brain.json` | full `VaultedSignalRecord` brain fields (`validator`/`minted`/`replayed`/`training`/`proprietary`) at top level | JSON Schema (`additionalProperties:false`) |
 | `volatile-timestamp.json` | volatile storage timestamp (`storedAt`) at top level (District-2 hash doctrine / MONGO-GOV D-MONGO-1) | JSON Schema (`additionalProperties:false`) |
+| `missing-uwr-profile.json` | required governed UWR profile stamp absent (PR-UWR-STAMP). The canonical store is fresh (MONGO-GOV D-MONGO-1, Option A) and has no compatibility obligation to accept a newly written **unstamped** record. | JSON Schema (`required`) |
+| `uwr-stamp-missing-source.json` | stamp present but the RC-6 `source` discriminator is absent. RC-6 reserves an **absent** source to identify the pre-program era; this fresh store holds no pre-program records, so an unsourced stamp written now would masquerade as one. | JSON Schema (`required`) |
+| `uwr-stamp-invalid-source.json` | stamp carries an ungoverned source (`"registry"` — the runtime *resolved-source* name, not the persisted RC-6 discriminator). Only `builtin-value-identity` / `registry-consumed` are governed. | JSON Schema (`enum`) |

@@ -31,7 +31,25 @@ Per MONGO-IMPL Slot 1, this is **schema/contract only**:
 | `finalized` | MONGO-GOV `D-MONGO-5`, LIFE-GOV `D-LIFE-4` | immutable-after-`FINALIZED` marker; bound to `lifecycleState` by `if/then/else` |
 | `scoredSignal` (`$ref afi.scored-signal.v1`) | OBJ-GOV `D-OBJ-5` | the thin canonical projection, by reuse |
 | `provenanceRecord` (`$ref afi.provenance-record.v1`) | LIFE-GOV `D-LIFE-6`, MONGO-GOV `D-MONGO-9` | present + replay/verify-sufficient; full canonical shape deferred |
+| `uwrProfile` | PR-UWR-STAMP `UP-2`/`UP-5`/`UP-10`, PR-UWR-STAMP-SEMANTICS `RC-6` | **required** governed UWR profile stamp, reused **verbatim** (`profileId` + `status` + `decisionRef` + `source`). Traceability metadata only — no qualification gate (`UP-9`), no reward/mint wiring (§6). See below. |
 | `recordVersion?` / `supersedesRecordHash?` | MONGO-GOV `D-MONGO-5` | versioning-by-supersession (contract-level, not storage) |
+
+### The governed UWR profile stamp (`uwrProfile`)
+
+Added under **MONGO-CONTRACT** authority (this slot owns the canonical record contract, MONGO-GOV `D-MONGO-2`) consuming the **already-accepted** `PR-UWR-STAMP` / `PR-UWR-STAMP-SEMANTICS` decisions **exactly**. This contract **reuses** the governed stamp shape and discriminator values; it does **not** redesign UWR, change any profile value, alter scoring, reopen `UP-8`/`UP-9`, or add stamp semantics.
+
+| Stamp field | Governed meaning |
+|---|---|
+| `profileId` | the pinned governed profile the scoring configuration corresponds to (`UP-2`), e.g. `uwr-weighted-lifts-v0.1` |
+| `status` (const `testnet-provisional`) | the pinned profile's governance status, mirroring the governed stamp literal; promoting it is a separate governed change |
+| `decisionRef` | the decision that pinned the profile |
+| `source` (`builtin-value-identity` \| `registry-consumed`) | **required** `RC-6` discriminator: whether scoring ran afi-core's builtin `defaultUwrConfig` (value-identical by construction, registry **not** read) or the profile actually **read** from the registry and validated under the `RC-5` identity predicate |
+
+**Why `source` is required here** (while the governed stamp type leaves it optional): `RC-6` reserves an **absent** `source` to identify the **pre-program era**. This canonical store is **fresh** (MONGO-GOV `D-MONGO-1`, Option A) and contains no pre-program records, so it has **no compatibility obligation** to accept a newly written unstamped/unsourced record — one written now would masquerade as pre-program. The pre-program allowance stays governed for **reading** historical records in the demoted legacy stores; it is not relevant to what this store admits.
+
+**Consequence of requiring the stamp** (`UP-10`): the profile is recognized only for the registry `scorerIdentity`, so only records from that identity are stampable — and therefore admissible. A record from an unrecognized scorer identity is not admissible to this store until its profile recognition is separately governed.
+
+**Runtime obligations** (not JSON-Schema-enforceable; see `x-afiConstraints.uwrProfileStamp`): the submitter must build the stamp from the source the composition path **actually scored with** (propagated explicitly, never re-derived at the stamp site or read from the environment), and `RC-4` fail-closed resolution means a failed/invalid registry read refuses to score — so **no record and no stamp exist** for a failed resolution.
 
 ## Constraints that JSON Schema cannot enforce
 
@@ -41,6 +59,7 @@ Recorded as governed contract constraints in the schema's `x-afiConstraints` and
 - **Append-once / immutable-after-`FINALIZED`** — one current record per `signalId`; corrections **supersede** (MONGO-GOV `D-MONGO-5`).
 - **Single-writer boundary** — only the afi-infra interface writes; Reactor/Gateway submit, never write (MONGO-GOV `D-MONGO-3`).
 - **Identifier continuity** — top-level `signalId` == `scoredSignal.signalId` == `provenanceRecord.signalId`; strategy triple agrees; `canonicalizationVersion` agrees with the provenance record (OBJ-GOV `D-OBJ-1`, LIFE-GOV `D-LIFE-5`). Not expressible in JSON Schema draft-07; enforced by the drift-guard tests.
+- **UWR profile stamp honesty** — the stamp must reflect the source actually scored with (propagated, never re-derived); only the `UP-10`-recognized scorer identity is stampable; `RC-4` fail-closed resolution means a failed registry read produces no record at all (PR-UWR-STAMP / `RC-6`). Enforced by the afi-reactor runtime guardrails, not by this schema.
 
 ## Validation
 

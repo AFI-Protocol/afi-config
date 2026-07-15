@@ -8,6 +8,12 @@
   "lifecycleState": "QUALIFIED",
   "finalized": false,
   "recordVersion": 1,
+  "uwrProfile": {
+    "profileId": "uwr-weighted-lifts-v0.1",
+    "status": "testnet-provisional",
+    "decisionRef": "afi-governance/decisions/uwr-profile-pin-v0.1.md",
+    "source": "registry-consumed"
+  },
   "scoredSignal": {
     "schema": "afi.scored-signal.v1",
     "signalId": "cpj-telegram-alpha-000777",

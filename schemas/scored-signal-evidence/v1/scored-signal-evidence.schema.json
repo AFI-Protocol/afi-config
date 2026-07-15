@@ -20,7 +20,9 @@
     "afi-governance/decisions/lifecycle-v0.1.md (LIFE-GOV) D-LIFE-1 — one canonical lifecycle state machine",
     "afi-governance/decisions/lifecycle-v0.1.md (LIFE-GOV) D-LIFE-4 — single finality writer; FINALIZED is a lifecycle-finality event (not settlement finality)",
     "afi-governance/decisions/lifecycle-v0.1.md (LIFE-GOV) D-LIFE-5 — identifier continuity: every lifecycle record keyed on signalId + carries the strategy triple + references afi.scored-signal.v1",
-    "afi-governance/decisions/lifecycle-v0.1.md (LIFE-GOV) D-LIFE-6 — pre-persistence handoff: VALIDATED + SCORED (afi.scored-signal.v1 projection AND its ProvenanceRecord) + identifier continuity before entry into this store"
+    "afi-governance/decisions/lifecycle-v0.1.md (LIFE-GOV) D-LIFE-6 — pre-persistence handoff: VALIDATED + SCORED (afi.scored-signal.v1 projection AND its ProvenanceRecord) + identifier continuity before entry into this store",
+    "afi-governance/decisions/uwr-profile-pin-v0.1.md (PR-UWR-STAMP) UP-2/UP-5/UP-10 — the governed, version-pinned UWR profile identity this record stamps (profileId + status + decisionRef), recognized ONLY for the registry scorerIdentity. Stamping is traceability metadata only: it does NOT wire the qualification gate (UP-9), create reward eligibility, or promote production scoring law (§6). This contract reuses the pinned stamp shape verbatim and fixes no profile value.",
+    "afi-governance/decisions/uwr-runtime-consumption-v0.1.md (PR-UWR-STAMP-SEMANTICS) RC-4/RC-5/RC-6 — the stamp's source discriminator (builtin-value-identity | registry-consumed), fail-closed runtime resolution (a failed/invalid registry read refuses to score, so no record exists to stamp), and RC-6's reserved meaning for an ABSENT source (identifies the pre-program era). Reused exactly; no new stamp semantics are introduced here."
   ],
   "x-afiConstraints": {
     "storeUniqueness": "STORE-LAYER (not JSON-Schema-enforceable): the canonical evidence store MUST enforce signalId uniqueness on the single CURRENT canonical record per signalId (MONGO-GOV D-MONGO-6 — unique constraint / insert-if-absent). Re-ingesting the same signalId MUST NOT create a duplicate canonical record. The store type MUST support a unique signalId constraint (i.e. a standard collection, NOT time-series). This contract fixes signalId as the idempotency key; the index/DDL/collection is MONGO-STORE (Slot 2), not this schema.",
@@ -28,6 +30,7 @@
     "singleWriterBoundary": "STORE-LAYER (not JSON-Schema-enforceable): only the afi-infra canonical persistence interface may write this record (MONGO-GOV D-MONGO-3). Reactor and Gateway are SUBMITTERS, not writers. A record is admissible only when it carries the afi.scored-signal.v1 projection + provenance linkage + signalId continuity and satisfies the LIFE-GOV D-LIFE-6 handoff. This contract does not define that interface (ATLAS-GOV / MONGO-STORE), only the shape it transports.",
     "operationalVsCanonical": "This record is CANONICAL evidence only (MONGO-GOV D-MONGO-4). Raw/unscored ingestion, intermediate/DAG state, retry/dead-letter, replay inputs, dedupe caches, and telemetry are OPERATIONAL stores and MUST NOT be represented by this contract.",
     "identifierContinuity": "CROSS-OBJECT (not JSON-Schema-draft-07-enforceable): the top-level signalId MUST equal scoredSignal.signalId AND provenanceRecord.signalId (OBJ-GOV D-OBJ-1, LIFE-GOV D-LIFE-5). The top-level strategy triple (analystId, strategyId, strategyVersion) — all three REQUIRED-present on this evidence record — MUST equal the scoredSignal triple (OBJ-GOV D-OBJ-3). The top-level canonicalizationVersion MUST equal provenanceRecord.canonicalizationVersion (OBJ-GOV D-OBJ-6). Enforced by the drift-guard contract tests.",
+    "uwrProfileStamp": "GOVERNED STAMP, RUNTIME-LAYER (not JSON-Schema-enforceable): the uwrProfile stamp reuses the already-governed PR-UWR-STAMP shape and the PR-UWR-STAMP-SEMANTICS RC-6 discriminator VERBATIM — this contract adds no stamp semantics, redesigns no UWR, changes no profile value, and does not reopen UP-8/UP-9. The runtime submitter MUST: (a) build the stamp from the source the composition path ACTUALLY scored with, propagated explicitly — never re-derived at the stamp site, never read from the environment (RC-6); (b) stamp only records produced by the scorer identity the profile is recognized for (UP-10) — consequently a record from an unrecognized scorer identity is NOT admissible to this store until its profile recognition is separately governed; (c) rely on fail-closed resolution (RC-4) — a failed/invalid registry read refuses to score, so no evidence record and no stamp can exist for a failed resolution. Enforced by the afi-reactor runtime guardrails, not by this schema.",
     "replaySufficiency": "The record is structured for deterministic off-line replay/verify (MONGO-GOV D-MONGO-9): it carries the afi.scored-signal.v1 projection AND the afi.provenance-record.v1, which supplies AT MINIMUM the input + output CanonicalHash digests (required by that shape), plus the enrichment digest and replay pins where present (optional on the reused shape). Tightening replay-pin cardinality to a hard minimum is deferred WITH the full afi.provenance-record.v1 canonical shape (OBJ-GOV D-OBJ-6/D-OBJ-7; not re-decided here); this contract does not relax D-MONGO-9 but does not over-fix the deferred provenance shape. This is a data guarantee on the record — NOT a read/replay endpoint (ATLAS-GOV)."
   },
   "type": "object",
@@ -42,7 +45,8 @@
     "lifecycleState",
     "finalized",
     "scoredSignal",
-    "provenanceRecord"
+    "provenanceRecord",
+    "uwrProfile"
   ],
   "properties": {
     "schema": {
@@ -102,6 +106,32 @@
     "provenanceRecord": {
       "$ref": "https://afi-protocol.org/schemas/provenance/v1/provenance-record.schema.json",
       "description": "The afi.provenance-record.v1 required PRESENT by LIFE-GOV D-LIFE-6, carried BY REUSE of the governed schema. Supplies the input/enrichment/output CanonicalHash digests + replay pins for MONGO-GOV D-MONGO-9 replay/verify sufficiency. Its full canonical shape remains a deferred afi-config schema (OBJ-GOV D-OBJ-6 / D-OBJ-7 fix only its versioning/continuity-linkage role); this contract reuses the existing District-2 draft shape and does not re-decide it."
+    },
+    "uwrProfile": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["profileId", "status", "decisionRef", "source"],
+      "description": "REQUIRED governed UWR profile stamp (PR-UWR-STAMP, uwr-profile-pin-v0.1.md §7; source discriminator per PR-UWR-STAMP-SEMANTICS RC-6), reused VERBATIM — no new stamp semantics are defined here. Traceability metadata ONLY: it records which governed, version-pinned UWR profile the scoring configuration corresponds to (UP-2/UP-5) and, via `source`, HOW that configuration was sourced at runtime. It does NOT indicate qualification, reward eligibility, or mint wiring — each remains separately authorized (UP-9/§6). REQUIRED on every canonical evidence record this contract admits: the canonical store is FRESH (MONGO-GOV D-MONGO-1, Option A) and holds no pre-program records, so it carries no compatibility obligation to accept a newly written UNSTAMPED record. Because the profile is recognized only for the registry scorerIdentity (UP-10), a record from an unrecognized scorer identity is not admissible until that recognition is separately governed (see x-afiConstraints.uwrProfileStamp).",
+      "properties": {
+        "profileId": {
+          "type": "string",
+          "minLength": 1,
+          "description": "The pinned governed profile id the scoring configuration corresponds to (UP-2), e.g. \"uwr-weighted-lifts-v0.1\" — the registry profileId. Reused from the governed stamp shape; this contract fixes no new profile value and imposes no format beyond non-empty."
+        },
+        "status": {
+          "const": "testnet-provisional",
+          "description": "The governance status of the pinned profile, stamped so persisted records self-describe. Mirrors the governed stamp shape EXACTLY — \"testnet-provisional\" is the pinned profile's only governed status today. Promoting that status is a separate governed change that would amend this const; this contract does not widen it."
+        },
+        "decisionRef": {
+          "type": "string",
+          "minLength": 1,
+          "description": "The decision that pinned the profile, e.g. \"afi-governance/decisions/uwr-profile-pin-v0.1.md\". Reused verbatim from the governed stamp shape."
+        },
+        "source": {
+          "enum": ["builtin-value-identity", "registry-consumed"],
+          "description": "REQUIRED RC-6 source discriminator (PR-UWR-STAMP-SEMANTICS), reusing the governed values EXACTLY. \"builtin-value-identity\": scoring ran afi-core's builtin defaultUwrConfig — value-identical to the registered profile by construction (UP-2/UP-5) — and the registry was NOT read. \"registry-consumed\": scoring ran the profile actually READ from the afi-config registry and validated under the RC-5 identity predicate. Runtime resolution is fail-closed (RC-4): a failed/invalid registry read refuses to score, so no evidence record — and no stamp — can exist for a failed resolution. REQUIRED here because RC-6 reserves an ABSENT source to identify the PRE-PROGRAM era: this fresh canonical store contains no pre-program records, so a newly written stamp without a source would masquerade as pre-program and is rejected. (The pre-program allowance remains governed for reading historical records in the demoted legacy stores — it is not relevant to what this store admits.)"
+        }
+      }
     },
     "recordVersion": {
       "type": "integer",

@@ -163,6 +163,7 @@ const EXPECTED_PROPERTY_KEYS = [
   'finalized',
   'scoredSignal',
   'provenanceRecord',
+  'uwrProfile',
   'recordVersion',
   'supersedesRecordHash',
 ];
@@ -177,7 +178,14 @@ const EXPECTED_REQUIRED = [
   'finalized',
   'scoredSignal',
   'provenanceRecord',
+  'uwrProfile',
 ];
+
+// The governed UWR profile stamp shape (PR-UWR-STAMP §7) + its RC-6 source
+// discriminator values (PR-UWR-STAMP-SEMANTICS), reused VERBATIM. This contract
+// introduces no new stamp fields and no new discriminator values.
+const EXPECTED_STAMP_KEYS = ['profileId', 'status', 'decisionRef', 'source'];
+const GOVERNED_STAMP_SOURCES = ['builtin-value-identity', 'registry-consumed'];
 // The complete canonical strategy identity triple (OBJ-GOV D-OBJ-3), all
 // REQUIRED-present on a canonical evidence record.
 const STRATEGY_TRIPLE = ['analystId', 'strategyId', 'strategyVersion'];
@@ -260,14 +268,28 @@ describe('MONGO-CONTRACT — afi.scored-signal-evidence.v1', () => {
         'operationalVsCanonical',
         'identifierContinuity',
         'replaySufficiency',
+        'uwrProfileStamp',
       ].forEach(k => expect(keys, `x-afiConstraints.${k} must be present`).toContain(k));
     });
 
     it('should cite the governing decisions it consumes (x-afiDoctrineRefs)', () => {
       const refs = JSON.stringify(loadJSON(EVIDENCE_SCHEMA)['x-afiDoctrineRefs']);
-      ['MONGO-IMPL', 'D-MONGO-1', 'D-MONGO-5', 'D-MONGO-6', 'D-OBJ-1', 'D-OBJ-5', 'D-OBJ-6', 'D-LIFE-5', 'D-LIFE-6'].forEach(
-        clause => expect(refs, `should cite ${clause}`).toContain(clause)
-      );
+      [
+        'MONGO-IMPL',
+        'D-MONGO-1',
+        'D-MONGO-5',
+        'D-MONGO-6',
+        'D-OBJ-1',
+        'D-OBJ-5',
+        'D-OBJ-6',
+        'D-LIFE-5',
+        'D-LIFE-6',
+        // The stamp's governing decisions (reused, not re-decided).
+        'PR-UWR-STAMP',
+        'PR-UWR-STAMP-SEMANTICS',
+        'UP-10',
+        'RC-6',
+      ].forEach(clause => expect(refs, `should cite ${clause}`).toContain(clause));
     });
   });
 
@@ -345,6 +367,11 @@ describe('MONGO-CONTRACT — afi.scored-signal-evidence.v1', () => {
       'heavy-carrier-substitution.json': { schemaValid: false, continuityOk: true },
       'vaulted-lifecycle-brain.json': { schemaValid: false, continuityOk: true },
       'volatile-timestamp.json': { schemaValid: false, continuityOk: true },
+      // Governed UWR stamp (PR-UWR-STAMP / RC-6). Each is continuity-clean, so
+      // the SCHEMA layer is proven to be what rejects the stamp defect.
+      'missing-uwr-profile.json': { schemaValid: false, continuityOk: true },
+      'uwr-stamp-missing-source.json': { schemaValid: false, continuityOk: true },
+      'uwr-stamp-invalid-source.json': { schemaValid: false, continuityOk: true },
     };
 
     it('invalid vector set should be exactly the authorized files (drift guard)', () => {
@@ -466,6 +493,107 @@ describe('MONGO-CONTRACT — afi.scored-signal-evidence.v1', () => {
       const invalid: any = clone(BASE);
       invalid.recordVersion = 0;
       expect(validate(invalid)).toBe(false);
+    });
+  });
+
+  describe('Governed UWR Profile Stamp (PR-UWR-STAMP / PR-UWR-STAMP-SEMANTICS RC-6)', () => {
+    const BASE = loadJSON(CANONICAL_EXAMPLE);
+
+    it('should expose exactly the governed stamp shape, all fields required (no new semantics)', () => {
+      const stamp = loadJSON(EVIDENCE_SCHEMA).properties.uwrProfile;
+      expect(stamp.type).toBe('object');
+      expect(stamp.additionalProperties).toBe(false);
+      expect(Object.keys(stamp.properties).sort()).toEqual([...EXPECTED_STAMP_KEYS].sort());
+      expect([...stamp.required].sort()).toEqual([...EXPECTED_STAMP_KEYS].sort());
+    });
+
+    it('should reuse the governed RC-6 discriminator values and pinned status EXACTLY', () => {
+      const stamp = loadJSON(EVIDENCE_SCHEMA).properties.uwrProfile;
+      expect(stamp.properties.source.enum).toEqual(GOVERNED_STAMP_SOURCES);
+      expect(stamp.properties.status.const).toBe('testnet-provisional');
+    });
+
+    it('should REQUIRE the stamp on every newly created canonical evidence record', () => {
+      expect(loadJSON(EVIDENCE_SCHEMA).required).toContain('uwrProfile');
+      const validate = compileEvidenceSchema();
+      const invalid: any = clone(BASE);
+      delete invalid.uwrProfile;
+      expect(validate(invalid), 'an unstamped record must not be admissible').toBe(false);
+      expect(validate.errors!.some(e => e.params?.missingProperty === 'uwrProfile')).toBe(true);
+    });
+
+    it('should ADMIT both governed sources: builtin-value-identity and registry-consumed', () => {
+      const validate = compileEvidenceSchema();
+      GOVERNED_STAMP_SOURCES.forEach(source => {
+        const record: any = clone(BASE);
+        record.uwrProfile.source = source;
+        const result = admit(validate, record);
+        if (!result.ok) console.error(`${source} failure:`, validate.errors, result.violations);
+        expect(result.ok, `source '${source}' must be admissible`).toBe(true);
+      });
+    });
+
+    it('should REJECT a stamp with a missing source (RC-6 reserves absence for the pre-program era)', () => {
+      const validate = compileEvidenceSchema();
+      const invalid: any = clone(BASE);
+      delete invalid.uwrProfile.source;
+      expect(validate(invalid)).toBe(false);
+      expect(validate.errors!.some(e => e.params?.missingProperty === 'source')).toBe(true);
+    });
+
+    it('should REJECT an ungoverned/invalid source value', () => {
+      const validate = compileEvidenceSchema();
+      // "builtin"/"registry" are the RUNTIME resolved-source names, NOT the
+      // persisted RC-6 discriminators; unknown/empty/miscased are never governed.
+      ['registry', 'builtin', 'unknown', '', 'REGISTRY-CONSUMED', null].forEach(bad => {
+        const invalid: any = clone(BASE);
+        invalid.uwrProfile.source = bad;
+        expect(validate(invalid), `source ${JSON.stringify(bad)} must be rejected`).toBe(false);
+        expect(validate.errors!.some(e => e.instancePath === '/uwrProfile/source')).toBe(true);
+      });
+    });
+
+    it('should REJECT an ungoverned profile status (pinned by the governed stamp)', () => {
+      const validate = compileEvidenceSchema();
+      ['production', 'mainnet', 'testnet-provisional-v2', ''].forEach(bad => {
+        const invalid: any = clone(BASE);
+        invalid.uwrProfile.status = bad;
+        expect(validate(invalid), `status '${bad}' must be rejected`).toBe(false);
+      });
+    });
+
+    it('should REJECT a missing profileId/decisionRef and any unknown stamp field', () => {
+      const validate = compileEvidenceSchema();
+      ['profileId', 'decisionRef'].forEach(field => {
+        const invalid: any = clone(BASE);
+        delete invalid.uwrProfile[field];
+        expect(validate(invalid), `missing ${field} must be rejected`).toBe(false);
+      });
+      const extra: any = clone(BASE);
+      // Stamping is traceability only — it never carries a qualification verdict (UP-9).
+      extra.uwrProfile.qualified = true;
+      expect(validate(extra), 'unknown stamp field must be rejected').toBe(false);
+    });
+
+    it('every valid record carries a governed stamp, and the suite exercises BOTH sources', () => {
+      const files = [
+        CANONICAL_EXAMPLE,
+        ...readdirSync(join(rootDir, VALID_DIR))
+          .filter(f => f.endsWith('.json'))
+          .map(f => `${VALID_DIR}/${f}`),
+      ];
+      files.forEach(rel => {
+        const r = loadJSON(rel);
+        expect(r.uwrProfile, `${rel} must carry the stamp`).toBeTruthy();
+        expect(GOVERNED_STAMP_SOURCES, `${rel} stamp source`).toContain(r.uwrProfile.source);
+        expect(r.uwrProfile.status, `${rel} stamp status`).toBe('testnet-provisional');
+        expect(r.uwrProfile.profileId, `${rel} stamp profileId`).toBeTruthy();
+        expect(r.uwrProfile.decisionRef, `${rel} stamp decisionRef`).toBeTruthy();
+      });
+      const sources = files.map(rel => loadJSON(rel).uwrProfile.source);
+      GOVERNED_STAMP_SOURCES.forEach(s =>
+        expect(sources, `valid vectors must exercise '${s}'`).toContain(s)
+      );
     });
   });
 
