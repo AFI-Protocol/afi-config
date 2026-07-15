@@ -7,10 +7,12 @@ Positive and negative vectors for the canonical scored-signal evidence contract
 A record is **admissible** only when it is BOTH schema-valid AND passes the governed
 identifier-continuity contract constraint (which JSON Schema draft-07 cannot express).
 
-Every record also carries the **required** governed UWR profile stamp (`uwrProfile` —
-PR-UWR-STAMP; RC-6 `source` discriminator). The vector suite exercises **both** governed
-sources; the continuity-only negatives below carry a valid stamp so they stay schema-valid
-and are caught purely by the continuity layer.
+Every record also carries the **required** scoring-profile stamp (`uwrProfile` — PR-UWR-STAMP
+shape; RC-6 `source` discriminator), identifying the profile that actually produced the score.
+The suite exercises **both** governed `source` values. The contract is **analyst-/strategy-/
+profile-neutral**: only `source` has a fixed vocabulary, so the vectors below deliberately
+include a **non-Froggy analyst with its own profile**. The continuity-only negatives carry a
+valid stamp so they stay schema-valid and are caught purely by the continuity layer.
 
 ## Valid vectors (`valid/`)
 
@@ -19,6 +21,7 @@ and are caught purely by the continuity layer.
 | `minimal-scored.json` | Minimal required record: `SCORED`, `finalized:false`, the complete strategy triple (incl. required `strategyVersion`), thin `scoredSignal` (ref-linked provenance) + minimal `provenanceRecord`. | `builtin-value-identity` |
 | `qualified-mid-lifecycle.json` | Mid-lifecycle `QUALIFIED` record with optional `strategyVersion`/`recordVersion`, hash-linked provenance, full scored-signal surface. | `registry-consumed` |
 | `epoch-eligible-superseded.json` | Post-finalization `EPOCH_ELIGIBLE`, `finalized:true`, `recordVersion:2` + `supersedesRecordHash` (versioning-by-supersession, MONGO-GOV D-MONGO-5). | `registry-consumed` |
+| `alternate-analyst-profile.json` | **Neutrality:** a different analyst (`kestrel`) + strategy (`mean_reversion_v2`) stamping its **own** conforming profile (`kestrel-adaptive-lifts-v2.0`, status `analyst-declared`). The contract admits it — today's single-profile Reactor is an implementation limit, not a schema restriction, and no bespoke governance decision is needed to run a conforming strategy. | `registry-consumed` |
 
 ## Invalid vectors (`invalid/`)
 

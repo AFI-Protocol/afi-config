@@ -284,10 +284,12 @@ describe('MONGO-CONTRACT — afi.scored-signal-evidence.v1', () => {
         'D-OBJ-6',
         'D-LIFE-5',
         'D-LIFE-6',
-        // The stamp's governing decisions (reused, not re-decided).
+        // The stamp's governing decisions (shape + source values reused, not re-decided).
+        // NOTE: UP-10 profile RECOGNITION is deliberately NOT cited as an admission
+        // rule — it scopes what an implementation may stamp, not what this
+        // analyst-neutral contract admits.
         'PR-UWR-STAMP',
         'PR-UWR-STAMP-SEMANTICS',
-        'UP-10',
         'RC-6',
       ].forEach(clause => expect(refs, `should cite ${clause}`).toContain(clause));
     });
@@ -336,6 +338,7 @@ describe('MONGO-CONTRACT — afi.scored-signal-evidence.v1', () => {
     it('valid vector set should be exactly the authorized files (drift guard)', () => {
       const files = readdirSync(join(rootDir, VALID_DIR)).filter(f => f.endsWith('.json')).sort();
       expect(files).toEqual([
+        'alternate-analyst-profile.json',
         'epoch-eligible-superseded.json',
         'minimal-scored.json',
         'qualified-mid-lifecycle.json',
@@ -507,10 +510,27 @@ describe('MONGO-CONTRACT — afi.scored-signal-evidence.v1', () => {
       expect([...stamp.required].sort()).toEqual([...EXPECTED_STAMP_KEYS].sort());
     });
 
-    it('should reuse the governed RC-6 discriminator values and pinned status EXACTLY', () => {
+    it('should reuse the governed RC-6 source discriminator values EXACTLY (the ONLY fixed vocabulary)', () => {
       const stamp = loadJSON(EVIDENCE_SCHEMA).properties.uwrProfile;
       expect(stamp.properties.source.enum).toEqual(GOVERNED_STAMP_SOURCES);
-      expect(stamp.properties.status.const).toBe('testnet-provisional');
+    });
+
+    it('should stay analyst-/strategy-/profile-NEUTRAL: no identity is pinned as the only admissible value', () => {
+      const schema = loadJSON(EVIDENCE_SCHEMA);
+      const stamp = schema.properties.uwrProfile;
+      // The record's own identity fields fix no value (no Froggy, no trend_pullback_v1).
+      ['analystId', 'strategyId', 'strategyVersion'].forEach(f => {
+        expect(schema.properties[f].const, `${f} must not be const-pinned`).toBeUndefined();
+        expect(schema.properties[f].enum, `${f} must not be enum-pinned`).toBeUndefined();
+        expect(schema.properties[f].pattern, `${f} must not be pattern-pinned`).toBeUndefined();
+      });
+      // Nor do the stamp's profile-identity fields (no uwr-weighted-lifts-v0.1,
+      // no pinned status). `source` is the ONLY fixed vocabulary in the stamp.
+      ['profileId', 'status', 'decisionRef'].forEach(f => {
+        expect(stamp.properties[f].type, `uwrProfile.${f} type`).toBe('string');
+        expect(stamp.properties[f].const, `uwrProfile.${f} must not be const-pinned`).toBeUndefined();
+        expect(stamp.properties[f].enum, `uwrProfile.${f} must not be enum-pinned`).toBeUndefined();
+      });
     });
 
     it('should REQUIRE the stamp on every newly created canonical evidence record', () => {
@@ -553,12 +573,40 @@ describe('MONGO-CONTRACT — afi.scored-signal-evidence.v1', () => {
       });
     });
 
-    it('should REJECT an ungoverned profile status (pinned by the governed stamp)', () => {
+    it('should ADMIT any AFI-conforming profile from any analyst/strategy (neutrality)', () => {
       const validate = compileEvidenceSchema();
-      ['production', 'mainnet', 'testnet-provisional-v2', ''].forEach(bad => {
-        const invalid: any = clone(BASE);
-        invalid.uwrProfile.status = bad;
-        expect(validate(invalid), `status '${bad}' must be rejected`).toBe(false);
+      // A different analyst, strategy, profile id AND profile status — the only
+      // governed vocabulary is `source`. This must be admissible: today's Reactor
+      // emitting a single profile is an implementation limit, not a contract rule.
+      const other: any = clone(BASE);
+      other.analystId = 'kestrel';
+      other.strategyId = 'mean_reversion_v2';
+      other.strategyVersion = '3.1.4';
+      other.scoredSignal.analystId = 'kestrel';
+      other.scoredSignal.strategyId = 'mean_reversion_v2';
+      other.scoredSignal.strategyVersion = '3.1.4';
+      other.uwrProfile = {
+        profileId: 'kestrel-adaptive-lifts-v2.0',
+        status: 'analyst-declared',
+        decisionRef: 'analysts/kestrel/profiles/adaptive-lifts-v2.0.md',
+        source: 'registry-consumed',
+      };
+      const result = admit(validate, other);
+      if (!result.ok) console.error('neutrality failure:', validate.errors, result.violations);
+      expect(result.ok, 'a non-Froggy analyst with its own conforming profile must be admissible').toBe(true);
+    });
+
+    it('should REJECT malformed profile metadata (empty/non-string), without pinning a vocabulary', () => {
+      const validate = compileEvidenceSchema();
+      ['profileId', 'status', 'decisionRef'].forEach(field => {
+        ['', 42, null].forEach(bad => {
+          const invalid: any = clone(BASE);
+          invalid.uwrProfile[field] = bad;
+          expect(
+            validate(invalid),
+            `uwrProfile.${field} = ${JSON.stringify(bad)} must be rejected`
+          ).toBe(false);
+        });
       });
     });
 
@@ -585,8 +633,11 @@ describe('MONGO-CONTRACT — afi.scored-signal-evidence.v1', () => {
       files.forEach(rel => {
         const r = loadJSON(rel);
         expect(r.uwrProfile, `${rel} must carry the stamp`).toBeTruthy();
+        // Only `source` has a governed vocabulary; the profile identity fields
+        // must merely be present + well-formed (analyst-neutral).
         expect(GOVERNED_STAMP_SOURCES, `${rel} stamp source`).toContain(r.uwrProfile.source);
-        expect(r.uwrProfile.status, `${rel} stamp status`).toBe('testnet-provisional');
+        expect(typeof r.uwrProfile.status, `${rel} stamp status`).toBe('string');
+        expect(r.uwrProfile.status.length, `${rel} stamp status non-empty`).toBeGreaterThan(0);
         expect(r.uwrProfile.profileId, `${rel} stamp profileId`).toBeTruthy();
         expect(r.uwrProfile.decisionRef, `${rel} stamp decisionRef`).toBeTruthy();
       });
