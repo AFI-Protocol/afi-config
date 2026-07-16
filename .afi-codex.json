@@ -52,7 +52,6 @@
     "afi-core",
     "afi-reactor",
     "afi-infra",
-    "afi-plugins",
     "afi-ops",
     "afi-token"
   ],

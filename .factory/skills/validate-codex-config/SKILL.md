@@ -645,4 +645,4 @@ jobs:
 **Maintainers**: AFI Core Team
 **Charter**: `afi-config/codex/governance/droids/AFI_DROID_CHARTER.v0.1.md`
 **Workflow**: `afi-config/AGENTS.md`
-**Consumers**: afi-core, afi-reactor, afi-skills, afi-ops, afi-token, afi-infra, afi-plugins
+**Consumers**: afi-core, afi-reactor, afi-skills, afi-ops, afi-token, afi-infra

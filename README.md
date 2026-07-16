@@ -24,7 +24,7 @@ This repository is the **single source of truth** for all AFI Protocol configura
 - `character.schema.json` - Agent/character configs (afi-core)
 - `pipeline.schema.json` - Pipeline configs (afi-reactor)
 - `blueprint.schema.json` - DAG/construct blueprints (afi-reactor)
-- `plugin-manifest.schema.json` - Plugin manifests (afi-plugins)
+- `plugin-manifest.schema.json` - Plugin manifests
 - `vault.schema.json` - T.S.S.D. Vault configs (afi-infra)
 - `.afi-codex.schema.json` - Codex metadata schema (all repos)
 
@@ -35,7 +35,6 @@ Other AFI repos consume these schemas for configuration validation:
 - **afi-core**: Character and agent configurations
 - **afi-reactor**: Pipeline and DAG orchestration
 - **afi-infra**: T.S.S.D. Vault and infrastructure
-- **afi-plugins**: Plugin registry and manifests
 - **afi-ops**: Deployment and operations
 - **afi-token**: Smart contract configurations
 
