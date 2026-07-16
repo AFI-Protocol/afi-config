@@ -2,7 +2,7 @@
   "$schema": "http://json-schema.org/draft-07/schema#",
   "$id": "https://afi-protocol.org/schemas/plugin-manifest.schema.json",
   "title": "AFI Plugin Manifest Schema",
-  "description": "Schema for plugin manifests in afi-plugins registry",
+  "description": "Schema for AFI plugin manifests",
   "type": "object",
   "required": ["id", "name", "type", "version", "entrypoint"],
   "properties": {

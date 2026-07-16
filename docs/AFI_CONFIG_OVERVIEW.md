@@ -42,11 +42,6 @@ AFI Protocol is organized as a modular multi-repo architecture. Each module cons
 - **Schema**: `vault.schema.json`
 - **Use Case**: Define database connections, collection names, retention policies
 
-### afi-plugins (Plugin Registry)
-- **Plugin Manifest**: Declares plugin metadata, inputs, outputs, and entrypoints
-- **Schema**: `plugin-manifest.schema.json`
-- **Use Case**: Register signal generators, analyzers, validators, executors, and observers
-
 ### afi-ops (Operations Toolkit)
 - **Deployment Config**: Defines service orchestration and health check parameters
 - **Schema**: `ops-config.schema.json` (future)
@@ -272,7 +267,6 @@ afi-config (foundational)
     ├── afi-core (consumes character.schema.json)
     ├── afi-reactor (consumes pipeline.schema.json, blueprint.schema.json)
     ├── afi-infra (consumes vault.schema.json)
-    ├── afi-plugins (consumes plugin-manifest.schema.json)
     ├── afi-ops (consumes ops-config.schema.json)
     └── afi-token (consumes token-config.schema.json)
 ```
