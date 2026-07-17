@@ -2,7 +2,7 @@
   "schema": "afi.provider-strategy-binding.v1",
   "bindingId": "gateway-tenant-a",
   "providerId": "gateway:tenant-a",
-  "providerType": "gateway",
+  "providerType": "webhook",
   "authenticatedBy": "gateway-tenant",
   "allowedStrategies": [
     {
