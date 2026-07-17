@@ -50,7 +50,8 @@ Volatile/administrative fields are **removed before serialization**. Exclusion a
 | `afi.analyst-strategy-registration.v1` | `registeredAt` | `afi.factory.strategy-registration` |
 | `afi.provider-strategy-binding.v1` | *(none)* | `afi.factory.provider-binding` |
 | `afi.composition-ref.v1` | *(none)* | `afi.factory.composition-ref` |
-| execution summary (operational object) | must be authored timestamp-free (District 2 hash doctrine) — nothing to exclude | `afi.reactor.execution-summary` |
+| execution summary (`afi.execution-summary.v1` derived object) | must be authored timestamp-free (District 2 hash doctrine) — nothing to exclude | `afi.d2.execution-summary` |
+| enrichment bundle (timestamp-free canonical projection, `afi.enrichment-bundle.v1`) | volatile fields (e.g. `enrichedAt`) are excluded by the projection itself | `afi.d2.enrichment-bundle` |
 
 > **Amendment (W3a, per accepted `afi-governance/decisions/factory-configurable-pipelines-v1` D-FCP-7):** the three composition domain tags are the D-FCP-7 registered tags shipped by the accepted afi-factory implementation — `afi.d2.composition-manifest` (`manifestHash`), `afi.d2.analyst-config` (`analystConfigHash`), `afi.d2.plugin-set` (`pluginSetHash`). This table previously listed `afi.factory.pipeline-manifest` / `afi.factory.analyst-config` for those rows and an array-of-stripped-manifests plugin-set rule; the accepted decision + shipped rule supersede that text. **`pluginSetHash` rule (shipped):** the hash material is the derived object
 > `{"schema":"afi.plugin-set.v1","plugins":[{"pluginId":…,"pluginVersion":…,"implementationVersion":…},…]}`
