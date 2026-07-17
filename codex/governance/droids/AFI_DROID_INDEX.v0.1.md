@@ -130,43 +130,7 @@ All information is derived directly from the droid and skill definitions in each
 
 ---
 
-### 3.3 afi-skills: skillsmith-droid
-
-**Name**: skillsmith-droid  
-**Home repo**: afi-skills  
-**Primary skill(s)**:
-- add-skill-from-template
-
-**Risk level**: LOW
-
-**What it does**:
-- Creates new skills from canonical templates with proper front-matter and structure
-- Maintains skill quality by ensuring compliance with Skill Contract v1
-- Manages evals by creating and maintaining golden test cases for deterministic skills
-- Validates consistency across skill metadata, domain placement, and risk levels
-- Keeps the skill library clean by fixing minor drift and documentation issues
-
-**Hard boundaries**:
-- MUST NOT modify skill IDs (breaks versioning)
-- MUST NOT remove required front-matter fields (breaks contract)
-- MUST NOT skip eval golden cases for deterministic skills
-- MUST NOT add skills without security review (risk patterns)
-- MUST NOT modify afi-core schemas, afi-reactor DAGs, or afi-token contracts
-- MUST NOT change skill domain after publication
-
-**When to use it**:
-- Adding a new skill to the AFI skills library
-- Creating golden test cases for deterministic skills
-- Validating skill front-matter and metadata compliance
-- Fixing documentation drift or minor skill issues
-
-**Key file paths**:
-- Droid: `afi-skills/.factory/droids/skillsmith-droid.md`
-- Skill: `afi-skills/.factory/skills/add-skill-from-template/SKILL.md`
-
----
-
-### 3.4 afi-ops: ci-guardian-droid
+### 3.3 afi-ops: ci-guardian-droid
 
 **Name**: ci-guardian-droid
 **Home repo**: afi-ops
@@ -176,7 +140,7 @@ All information is derived directly from the droid and skill definitions in each
 **Risk level**: LOW
 
 **What it does**:
-- Runs smoke checks across key AFI repos (afi-core, afi-reactor, afi-skills, afi-token)
+- Runs smoke checks across key AFI repos (afi-core, afi-reactor, afi-token)
 - Validates builds by running `npm run build` or `forge build` in each repo
 - Runs tests by executing `npm test` or `forge test` in each repo
 - Checks linters by running `npm run lint` or equivalent validation commands
@@ -203,7 +167,7 @@ All information is derived directly from the droid and skill definitions in each
 
 ---
 
-### 3.5 afi-token: contract-test-droid
+### 3.4 afi-token: contract-test-droid
 
 **Name**: contract-test-droid
 **Home repo**: afi-token
@@ -227,7 +191,7 @@ All information is derived directly from the droid and skill definitions in each
 - MUST NEVER alter tokenomics, emissions logic, or supply caps
 - MUST NEVER modify role management or access control logic
 - MUST NEVER deploy or broadcast transactions to any network
-- MUST NEVER modify other repos (afi-core, afi-reactor, afi-skills, afi-ops, etc.)
+- MUST NEVER modify other repos (afi-core, afi-reactor, afi-ops, etc.)
 
 **When to use it**:
 - Adding test coverage for AFI token contracts
@@ -247,7 +211,7 @@ All information is derived directly from the droid and skill definitions in each
 
 ---
 
-### 3.6 afi-config: config-keeper-droid
+### 3.5 afi-config: config-keeper-droid
 
 **Name**: config-keeper-droid
 **Home repo**: afi-config
@@ -266,11 +230,10 @@ All information is derived directly from the droid and skill definitions in each
 - Maintains internal consistency across schemas, templates, and governance artifacts
 
 **Hard boundaries**:
-- MUST NOT modify code in other repos (afi-core, afi-reactor, afi-skills, afi-ops, afi-token, etc.)
+- MUST NOT modify code in other repos (afi-core, afi-reactor, afi-ops, afi-token, etc.)
 - MUST NOT change AFI token parameters, emissions, or economics
 - MUST NOT change DAG structure or orchestration logic (afi-reactor)
 - MUST NOT change signal schemas or validators in afi-core (beyond schema definition)
-- MUST NOT change skills in afi-skills
 - MUST NOT modify Eliza configs or agent behavior
 - MUST NOT change protocol governance rules without explicit human approval
 - MUST NOT remove or rename schema fields (breaks backward compatibility)
@@ -305,7 +268,6 @@ AFI droids are assigned risk levels based on the potential impact of their actio
 **Examples**:
 - dag-builder-droid (afi-reactor): Adds DAG nodes following strict doctrine
 - schema-validator-droid (afi-core): Extends schemas with backward compatibility
-- skillsmith-droid (afi-skills): Adds skills with security review
 - ci-guardian-droid (afi-ops): Read-only validation, no modifications
 
 **Safety characteristics**:
@@ -364,15 +326,10 @@ This section provides a quick reference for choosing the right droid for your ta
 - Skill: extend-signal-schema
 - Preserves backward compatibility and determinism
 
-**If you're adding or refining skills**:
-- Use **skillsmith-droid** in afi-skills
-- Skill: add-skill-from-template
-- Ensures compliance with Skill Contract v1 and security review
-
 **If you want a quick cross-repo health check**:
 - Use **ci-guardian-droid** in afi-ops
 - Skill: run-ci-smoke-suite
-- Read-only validation across afi-core, afi-reactor, afi-skills, afi-token
+- Read-only validation across afi-core, afi-reactor, afi-token
 
 **If you're adding contract test scenarios** (HIGH RISK, tests only):
 - Use **contract-test-droid** in afi-token
@@ -404,13 +361,6 @@ The following future droids and skills have been mentioned in existing droid def
 - add-validator — Scaffold a new validator with tests and registry integration
 - migrate-schema — Safe migration workflow for breaking schema changes
 - test-schema-compatibility — Validate schema changes against afi-reactor usage
-
-**afi-skills (skillsmith-droid)**:
-- validate-skill-evals — Run golden cases and validate deterministic skills
-- refactor-skill-domain — Move a skill to a different domain (with migration)
-- deprecate-skill — Mark a skill as deprecated and provide migration path
-- bump-skill-version — Update skill version following semver rules
-- audit-skill-security — Deep security review for high-risk skills
 
 **afi-ops (ci-guardian-droid)**:
 - run-full-ci — Run comprehensive CI suite with coverage, gas reports, security scans

@@ -52,7 +52,7 @@ This repo has no dev server. Typical workflow:
 - `codex/governance/droids/` — **Canonical droid governance** (AFI Droid Charter v0.1)
 - `.afi-codex.json` — This repo's Codex metadata
 
-**Consumed by**: afi-core, afi-reactor, afi-skills, afi-factory, afi-ops, and all other AFI repos.
+**Consumed by**: afi-core, afi-reactor, afi-factory, afi-ops, and all other AFI repos.
 
 ---
 
