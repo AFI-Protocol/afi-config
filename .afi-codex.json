@@ -36,7 +36,7 @@
   "provides": [
     "configSchemas",
     "codexSchema",
-    "pipelineBlueprintSchema",
+    "factoryPipelineContracts",
     "characterSchema",
     "pluginManifestSchema",
     "vaultSchema",

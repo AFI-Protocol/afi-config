@@ -34,7 +34,7 @@ AFI Protocol is organized as a modular multi-repo architecture. Each module cons
 
 ### afi-reactor (DAG Orchestrator)
 - **Pipeline Config**: Defines signal processing pipelines and DAG workflows
-- **Schema**: `pipeline.schema.json`, `blueprint.schema.json`
+- **Schema**: `schemas/pipeline/v1/pipeline.schema.json` (`afi.pipeline.v1`, FACTORY-CONTRACT)
 - **Use Case**: Orchestrate multi-stage signal analysis flows (RAW → ENRICHED → ANALYZED → SCORED)
 
 ### afi-infra (Infrastructure Layer)
@@ -93,7 +93,7 @@ USS defines:
 
 ### How USS Integrates with Other Schemas
 
-- **Pipeline Schema** (`pipeline.schema.json`): Pipeline nodes declare `signalSchema: "afi.usignal.v1"` to indicate they process USS-compliant signals
+- **Pipeline Schema** (`schemas/pipeline/v1/pipeline.schema.json`): Pipeline nodes bind `afi.analysis-plugin.v1` manifests whose `inputSchemaRef`/`outputSchemaRef` identify the USS/lens schemas they process
 - **Vault Schema** (`vault.schema.json`): Vaults store USS-compliant signals with `signalSchema` field
 - **Plugin Manifest** (`plugin-manifest.schema.json`): Plugins declare supported lenses via `supportedLenses` array
 
@@ -158,9 +158,9 @@ All schemas live in the `schemas/` directory:
 
 ```
 schemas/
-├── blueprint.schema.json          # DAG/construct blueprints
+├── pipeline/v1/                   # afi.pipeline.v1 canonical topology contract
 ├── character.schema.json          # Agent/character configs
-├── pipeline.schema.json           # Pipeline configs
+├── pipeline-template/v1/          # afi.pipeline-template.v1 parameterized templates
 ├── plugin-manifest.schema.json    # Plugin manifests
 ├── vault.schema.json              # T.S.S.D. Vault configs
 └── .afi-codex.schema.json         # Codex metadata schema
@@ -173,7 +173,7 @@ Example configuration files live in the `examples/` directory (when created):
 ```
 examples/
 ├── character.example.json
-├── pipeline.example.json
+├── pipeline/v1/pipeline.example.json
 └── plugin-manifest.example.json
 ```
 
@@ -265,7 +265,7 @@ afi-config is a **foundational repository** with no dependencies on other AFI re
 afi-config (foundational)
     ↓
     ├── afi-core (consumes character.schema.json)
-    ├── afi-reactor (consumes pipeline.schema.json, blueprint.schema.json)
+    ├── afi-reactor (consumes schemas/pipeline/v1/, schemas/composition-ref/v1/)
     ├── afi-infra (consumes vault.schema.json)
     ├── afi-ops (consumes ops-config.schema.json)
     └── afi-token (consumes token-config.schema.json)
