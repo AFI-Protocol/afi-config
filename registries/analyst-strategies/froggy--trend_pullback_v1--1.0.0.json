@@ -14,6 +14,7 @@
     "mode": "explicit",
     "allowedBindings": [
       "tradingview-default-webhook",
+      "gateway-tenant-a",
       "cpj-oracle-telegram-channel-1",
       "cpj-oracle-telegram-channel-2",
       "cpj-oracle-discord-guild-3"

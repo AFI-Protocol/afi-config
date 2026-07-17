@@ -68,6 +68,7 @@ const EXPECTED_BINDING_FILES = [
   'cpj-oracle-telegram-channel-1.json',
   'cpj-oracle-telegram-channel-2.json',
   'example-inactive-webhook.json',
+  'gateway-tenant-a.json',
   'tradingview-default-webhook.json',
 ];
 
@@ -382,7 +383,9 @@ describe('W3a SEEDING — registries/provider-bindings', () => {
         binding.allowedStrategies.some((t: any) => tripleEquals(t, binding.defaultStrategy)),
         `${f} defaultStrategy membership`
       ).toBe(true);
-      expect(binding.authenticatedBy).toBe('route-secret');
+      expect(['route-secret', 'gateway-tenant', 'integration-key']).toContain(
+        binding.authenticatedBy
+      );
       // Every seeded binding routes (only) the registered froggy triple.
       expect(binding.allowedStrategies).toEqual([FROGGY_TRIPLE]);
       expect(binding.defaultStrategy).toEqual(FROGGY_TRIPLE);
@@ -424,6 +427,7 @@ describe('W3a SEEDING — registries/provider-bindings', () => {
       'cpj-oracle-discord-guild-3',
       'cpj-oracle-telegram-channel-1',
       'cpj-oracle-telegram-channel-2',
+      'gateway-tenant-a',
       'tradingview-default-webhook',
     ]);
     allowed.forEach(bindingId => {
