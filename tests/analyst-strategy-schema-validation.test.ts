@@ -331,9 +331,16 @@ describe('FACTORY-CONTRACT — afi.analyst-strategy-registration.v1', () => {
   });
 
   describe('Analyst Strategy Registry Scope Guard', () => {
-    it('registries/analyst-strategies should contain no seeded entries yet (froggy lands with the reactor wave)', () => {
+    it('registries/analyst-strategies should contain EXACTLY the W3a-seeded froggy registration (drift guard)', () => {
+      // Seeded by the W3a administrative registry seeding PR (D-FCP-5 generic
+      // registration rule); validated in depth by
+      // tests/registries-seeding-validation.test.ts.
       const files = readdirSync(join(rootDir, 'registries/analyst-strategies')).sort();
-      expect(files).toEqual(['README.md']);
+      expect(files).toEqual([
+        'README.md',
+        'froggy--trend_pullback_v1--1.0.0.config.json',
+        'froggy--trend_pullback_v1--1.0.0.json',
+      ]);
     });
   });
 });
