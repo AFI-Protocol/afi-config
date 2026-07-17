@@ -130,44 +130,7 @@ All information is derived directly from the droid and skill definitions in each
 
 ---
 
-### 3.3 afi-ops: ci-guardian-droid
-
-**Name**: ci-guardian-droid
-**Home repo**: afi-ops
-**Primary skill(s)**:
-- run-ci-smoke-suite
-
-**Risk level**: LOW
-
-**What it does**:
-- Runs smoke checks across key AFI repos (afi-core, afi-reactor, afi-token)
-- Validates builds by running `npm run build` or `forge build` in each repo
-- Runs tests by executing `npm test` or `forge test` in each repo
-- Checks linters by running `npm run lint` or equivalent validation commands
-- Summarizes results in a clear, human-readable format with pass/fail status
-- Acts as safety officer that can be called after other droids make changes
-
-**Hard boundaries**:
-- MUST NOT edit application code, configs, or scripts in any repo
-- MUST NOT commit, push, or deploy anything
-- MUST NOT modify schemas, DAGs, skills, or contracts
-- MUST NOT run destructive operations (DB wipes, migrations, data loss)
-- MUST NOT handle secrets or production environments
-- MUST NOT change CI/CD pipeline configurations
-
-**When to use it**:
-- Running a quick cross-repo health check after making changes
-- Validating that builds and tests pass before opening a PR
-- Getting a fast sanity check on the current state of AFI repos
-- Confirming that recent changes didn't break builds or tests
-
-**Key file paths**:
-- Droid: `afi-ops/.factory/droids/ci-guardian-droid.md`
-- Skill: `afi-ops/.factory/skills/run-ci-smoke-suite/SKILL.md`
-
----
-
-### 3.4 afi-token: contract-test-droid
+### 3.3 afi-token: contract-test-droid
 
 **Name**: contract-test-droid
 **Home repo**: afi-token
@@ -191,7 +154,7 @@ All information is derived directly from the droid and skill definitions in each
 - MUST NEVER alter tokenomics, emissions logic, or supply caps
 - MUST NEVER modify role management or access control logic
 - MUST NEVER deploy or broadcast transactions to any network
-- MUST NEVER modify other repos (afi-core, afi-reactor, afi-ops, etc.)
+- MUST NEVER modify other repos (afi-core, afi-reactor, etc.)
 
 **When to use it**:
 - Adding test coverage for AFI token contracts
@@ -211,7 +174,7 @@ All information is derived directly from the droid and skill definitions in each
 
 ---
 
-### 3.5 afi-config: config-keeper-droid
+### 3.4 afi-config: config-keeper-droid
 
 **Name**: config-keeper-droid
 **Home repo**: afi-config
@@ -230,7 +193,7 @@ All information is derived directly from the droid and skill definitions in each
 - Maintains internal consistency across schemas, templates, and governance artifacts
 
 **Hard boundaries**:
-- MUST NOT modify code in other repos (afi-core, afi-reactor, afi-ops, afi-token, etc.)
+- MUST NOT modify code in other repos (afi-core, afi-reactor, afi-token, etc.)
 - MUST NOT change AFI token parameters, emissions, or economics
 - MUST NOT change DAG structure or orchestration logic (afi-reactor)
 - MUST NOT change signal schemas or validators in afi-core (beyond schema definition)
@@ -268,7 +231,6 @@ AFI droids are assigned risk levels based on the potential impact of their actio
 **Examples**:
 - dag-builder-droid (afi-reactor): Adds DAG nodes following strict doctrine
 - schema-validator-droid (afi-core): Extends schemas with backward compatibility
-- ci-guardian-droid (afi-ops): Read-only validation, no modifications
 
 **Safety characteristics**:
 - Changes are reversible via Git
@@ -326,11 +288,6 @@ This section provides a quick reference for choosing the right droid for your ta
 - Skill: extend-signal-schema
 - Preserves backward compatibility and determinism
 
-**If you want a quick cross-repo health check**:
-- Use **ci-guardian-droid** in afi-ops
-- Skill: run-ci-smoke-suite
-- Read-only validation across afi-core, afi-reactor, afi-token
-
 **If you're adding contract test scenarios** (HIGH RISK, tests only):
 - Use **contract-test-droid** in afi-token
 - Skill: add-contract-test-scenario
@@ -361,13 +318,6 @@ The following future droids and skills have been mentioned in existing droid def
 - add-validator — Scaffold a new validator with tests and registry integration
 - migrate-schema — Safe migration workflow for breaking schema changes
 - test-schema-compatibility — Validate schema changes against afi-reactor usage
-
-**afi-ops (ci-guardian-droid)**:
-- run-full-ci — Run comprehensive CI suite with coverage, gas reports, security scans
-- generate-ci-report — Generate detailed CI report with metrics and trends
-- run-cross-repo-integration-tests — Run integration tests across multiple repos
-- validate-deployment-readiness — Check if repos are ready for deployment
-- run-security-audit — Run automated security scans (Slither, MythX, etc.)
 
 **afi-token (contract-test-droid)**:
 - add-invariant-test-suite — Add comprehensive invariant tests for critical properties

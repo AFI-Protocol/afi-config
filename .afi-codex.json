@@ -52,7 +52,6 @@
     "afi-core",
     "afi-reactor",
     "afi-infra",
-    "afi-ops",
     "afi-token"
   ],
   "metadata": {

@@ -46,7 +46,7 @@ Agents are **not** repo maintenance workers. They do not edit code, schemas, or 
 - Maintain **schemas, DAGs, skills, contracts, and CI/CD**
 - Follow **AFI Droid Charter v0.1** and repo-specific AGENTS.md files
 - Produce **commits and pull requests** for human review
-- Examples: dag-builder-droid, schema-validator-droid, ci-guardian-droid, contract-test-droid, config-keeper-droid
+- Examples: dag-builder-droid, schema-validator-droid, contract-test-droid, config-keeper-droid
 
 **Agents** (runtime actors):
 - Operate on **live data** (signals, proposals, logs, user queries)
@@ -72,7 +72,7 @@ This document does NOT cover:
 - Executable agent specifications (those live in character configs, plugin code, and skill definitions)
 - Droid behavior (see AFI_DROID_INDEX.v0.1.md and AFI_DROID_CHARTER.v0.1.md)
 - Smart contract behavior or on-chain logic (see afi-token documentation)
-- Infrastructure deployment (see afi-ops documentation)
+- Infrastructure deployment (see afi-infra documentation)
 
 ---
 
@@ -116,7 +116,7 @@ Each agent class typically has a primary "home" repo or system:
 - **afi-reactor**: Pipeline agents (DAG nodes for signal processing)
 - **afi-core**: Validator agents, scoring agents, registry curators
 - **afi-gateway**: Frontline persona agents (Phoenix, Mentor agents)
-- **afi-ops**: Ops agents (CI Explainer, Incident Triage, Deployment Dry-Run Advisor)
+- **afi-infra**: Ops agents (CI Explainer, Incident Triage, Deployment Dry-Run Advisor)
 - **afi-governance**: Governance agents (Proposal Summarizer, Parameter Impact Simulator, Governance Risk Sentinel)
 
 ### Signal Lifecycle Stage
@@ -316,7 +316,7 @@ Ops agents support operational concerns like CI/CD, health monitoring, incident 
 
 - **Interface**: Human-facing (GitHub comments, Slack) + System-facing (CI/CD API)
 - **Role**: Operator (CI/CD interpretation)
-- **Home**: afi-ops
+- **Home**: afi-infra
 - **What it does**: Wraps CI outputs (test failures, lint errors, build logs) in plain-language explanations for maintainers
 - **Inputs**: CI/CD logs, test results, build outputs
 - **Outputs**: Plain-language summaries, root cause analysis, fix suggestions
@@ -325,7 +325,7 @@ Ops agents support operational concerns like CI/CD, health monitoring, incident 
 
 - **Interface**: System-facing (monitoring alerts) + Human-facing (incident reports)
 - **Role**: Operator (incident response)
-- **Home**: afi-ops
+- **Home**: afi-infra
 - **What it does**: Triages production incidents, correlates alerts, suggests runbooks
 - **Inputs**: Monitoring alerts, logs, metrics, historical incident data
 - **Outputs**: Incident severity ratings, runbook recommendations, escalation decisions
@@ -334,7 +334,7 @@ Ops agents support operational concerns like CI/CD, health monitoring, incident 
 
 - **Interface**: System-facing (deployment pipeline) + Human-facing (deployment reports)
 - **Role**: Operator (deployment safety)
-- **Home**: afi-ops
+- **Home**: afi-infra
 - **What it does**: Simulates deployments, checks for breaking changes, validates rollback procedures
 - **Inputs**: Deployment manifests, infrastructure state, historical deployment data
 - **Outputs**: Dry-run reports, risk assessments, rollback validation
@@ -351,7 +351,7 @@ Droids and agents are complementary but distinct:
 - Maintain **DAGs, schemas, skills, configs, tests, CI/CD, contracts**
 - Follow **AFI Droid Charter v0.1** and repo-specific AGENTS.md files
 - Produce **commits and pull requests** for human review
-- Examples: dag-builder-droid (afi-reactor), schema-validator-droid (afi-core), ci-guardian-droid (afi-ops), contract-test-droid (afi-token), config-keeper-droid (afi-config)
+- Examples: dag-builder-droid (afi-reactor), schema-validator-droid (afi-core), contract-test-droid (afi-token), config-keeper-droid (afi-config)
 
 **Agents = Runtime actors using those structures**:
 
@@ -370,7 +370,6 @@ Droids and agents are complementary but distinct:
 
 - **dag-builder-droid** (afi-reactor): Scaffolds DAG nodes, wires nodes into pipeline
 - **schema-validator-droid** (afi-core): Extends signal schemas, creates validators
-- **ci-guardian-droid** (afi-ops): Runs smoke checks, validates builds and tests (read-only)
 - **contract-test-droid** (afi-token): Adds test coverage for smart contracts (test-only, HIGH RISK)
 - **config-keeper-droid** (afi-config): Validates codex structure, governance artifacts, schemas (MEDIUM RISK)
 
@@ -407,10 +406,10 @@ This section provides a prioritized conceptual roster of agents likely to appear
 **CI Explainer Agent**:
 
 - **Role**: Operator (CI/CD interpretation for maintainers)
-- **Home**: afi-ops
+- **Home**: afi-infra
 - **Primary inputs**: CI/CD logs, test results, build outputs
 - **Primary outputs**: Plain-language summaries, root cause analysis, fix suggestions
-- **Status**: Aspirational (wraps ci-guardian-droid outputs)
+- **Status**: Aspirational (wraps CI outputs)
 - **Why Wave 1**: Maintainers need fast feedback on CI failures without reading raw logs.
 
 ---

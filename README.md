@@ -35,7 +35,6 @@ Other AFI repos consume these schemas for configuration validation:
 - **afi-core**: Character and agent configurations
 - **afi-reactor**: Pipeline and DAG orchestration
 - **afi-infra**: T.S.S.D. Vault and infrastructure
-- **afi-ops**: Deployment and operations
 - **afi-token**: Smart contract configurations
 
 ## Governance

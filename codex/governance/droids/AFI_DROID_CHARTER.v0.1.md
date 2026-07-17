@@ -76,7 +76,7 @@ The AFI metadata and provenance system. Codex describes modules, roles, schemas,
 - **Config Layer** – e.g., `afi-config` (schemas, templates, registry).
 - **Orchestrator Layer** – e.g., `afi-reactor` (DAGs, pipelines, orchestration).
 - **Runtime / Agent Layer** – e.g., `afi-core`.
-- **Infra / Ops Layer** – e.g., `afi-infra`, `afi-ops`.
+- **Infra / Ops Layer** – e.g., `afi-infra`.
 - **Token Layer** – e.g., `afi-token-finalized` and adjacent tokenomics repos.
 - **Artifacts & Docs** – e.g., `afi-artifacts` (paper bundles, Codex snapshots).
 - **Factory** – e.g., `afi-factory` (droids, tasks, templates).
@@ -193,7 +193,7 @@ If the instruction is ambiguous, droids must treat it as **not authorized**.
   - Hard-code orchestration; orchestration belongs in `afi-reactor`.
   - Circumvent AOS or Codex-based configuration with hidden runtime switches.
 
-### 6.4 Infra / Ops Layer (e.g., `afi-infra`, `afi-ops`)
+### 6.4 Infra / Ops Layer (e.g., `afi-infra`)
 
 - **May**:
   - Propose improvements to deployment scripts, observability, or local dev tooling.
