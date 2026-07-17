@@ -23,7 +23,13 @@ This directory holds the **canonical registry of registered analyst strategies**
 
 ## Current contents
 
-**Empty by design.** The production `froggy` registration deliberately does **not** land with the contract wave — it lands with the reactor wave (its `analystConfigHash` must pin the actual production composition, which the reactor wave produces).
+The production **froggy** registration (W3a administrative seeding, reactor wave):
+
+- [`froggy--trend_pullback_v1--1.0.0.json`](./froggy--trend_pullback_v1--1.0.0.json) — the registration entry (`status: active`, `providerBindingPolicy: explicit` over the seeded [`provider-bindings`](../provider-bindings/)).
+- [`froggy--trend_pullback_v1--1.0.0.config.json`](./froggy--trend_pullback_v1--1.0.0.config.json) — the co-located registered `afi.analyst-strategy-config.v1` artifact the entry's `configRef` resolves to (a **byte-identical copy** of the accepted `afi-factory` main `templates/official/froggy-trend-pullback/analyst-config.json`). Its canonical hash (domain tag `afi.d2.analyst-config`) is
+  `269ae355a0d8bfaf53d849c38fba16e167f0571b6319ddc8d94841ff7c275261`, recomputed and asserted by the test suite.
+
+Co-located config artifacts are named `<analystId>--<strategyId>--<strategyVersion>.config.json` beside their registration entry.
 
 Complete worked examples (schema-valid, semantically clean, with real canonical hashes) live under
 [`examples/analyst-strategy-registration/v1/`](../../examples/analyst-strategy-registration/v1/) with governed valid/invalid vectors.

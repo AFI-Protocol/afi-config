@@ -106,6 +106,21 @@ The draft v1 registry has been validated against the schema (AJV, draft-07) — 
 
 ---
 
+## Factory composition registries
+
+The four **factory composition registries** authorized by
+`afi-governance/decisions/factory-configurable-pipelines-v1` (D-FCP-5 generic
+registration rule) live beside this file, each with its own README:
+
+- [`analysis-plugins/`](./analysis-plugins/README.md) — `afi.analysis-plugin.v1` manifests (W3a-seeded: the seven official froggy plugins)
+- [`pipelines/`](./pipelines/README.md) — `afi.pipeline.v1` manifests (W3a-seeded: `froggy-trend-pullback` v1.0.0)
+- [`analyst-strategies/`](./analyst-strategies/README.md) — `afi.analyst-strategy-registration.v1` entries + co-located configs (W3a-seeded: `froggy`/`trend_pullback_v1`/`1.0.0`)
+- [`provider-bindings/`](./provider-bindings/README.md) — `afi.provider-strategy-binding.v1` entries (W3a-seeded: TradingView webhook default + CPJ oracle-fixture bindings + one inactive example)
+
+Every entry is AJV-validated, hash-recomputed, and cross-resolved by
+`tests/registries-seeding-validation.test.ts`; directory contents are
+drift-guarded to the authorized set.
+
 ## UWR profile registry
 
 This directory also holds the **version-pinned UWR profile registry** (one file per registered profile).
