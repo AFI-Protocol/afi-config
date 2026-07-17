@@ -1,0 +1,177 @@
+{
+  "schema": "afi.pipeline-template.v1",
+  "templateId": "mean-reversion-core-template",
+  "parameters": [
+    {
+      "name": "newsWindowHours",
+      "schema": {
+        "type": "integer",
+        "minimum": 1
+      },
+      "required": false,
+      "default": 24,
+      "description": "Lookback window for the news node."
+    },
+    {
+      "name": "aiMlTimeoutMs",
+      "schema": {
+        "type": "integer",
+        "minimum": 1
+      },
+      "required": true,
+      "description": "Timeout for the aiMl provider call."
+    },
+    {
+      "name": "minAtrPct",
+      "schema": {
+        "type": "number"
+      },
+      "required": false,
+      "default": 0,
+      "description": "Minimum ATR%% gate for the news branch."
+    }
+  ],
+  "pipelineId": "mean-reversion-core",
+  "pipelineVersion": "v1.0.0",
+  "description": "Canonical example: five-category enrichment fan-out with a deterministic merge and a single non-bypassable scorer sink.",
+  "entry": "tech-indicators",
+  "nodes": [
+    {
+      "id": "tech-indicators",
+      "category": "technical",
+      "pluginId": "technical-indicators",
+      "pluginVersion": "1.0.0",
+      "config": {
+        "emaPeriods": [
+          20,
+          50
+        ]
+      }
+    },
+    {
+      "id": "pattern-detect",
+      "category": "pattern",
+      "pluginId": "pattern-recognition",
+      "pluginVersion": "1.0.0"
+    },
+    {
+      "id": "perp-sentiment",
+      "category": "sentiment",
+      "pluginId": "perp-sentiment",
+      "pluginVersion": "1.0.0",
+      "timeoutMs": 10000,
+      "maxRetries": 2,
+      "retryDelayMs": 500,
+      "backoff": "fixed"
+    },
+    {
+      "id": "market-news",
+      "category": "news",
+      "pluginId": "newsdata-features",
+      "pluginVersion": "1.0.0",
+      "config": {
+        "windowHours": {
+          "$param": "newsWindowHours"
+        }
+      },
+      "timeoutMs": 10000,
+      "critical": false,
+      "failurePolicy": "degrade"
+    },
+    {
+      "id": "ai-ml",
+      "category": "aiMl",
+      "pluginId": "tiny-brains-aiml",
+      "pluginVersion": "1.0.0",
+      "timeoutMs": {
+        "$param": "aiMlTimeoutMs"
+      },
+      "maxRetries": 1,
+      "retryDelayMs": 250,
+      "backoff": "exponential",
+      "critical": false,
+      "failurePolicy": "degrade",
+      "resourceLimits": {
+        "maxConcurrent": 1
+      }
+    },
+    {
+      "id": "enrichment-merge",
+      "category": "merge",
+      "pluginId": "namespace-merge",
+      "pluginVersion": "1.0.0",
+      "join": {
+        "policy": "all",
+        "merge": {
+          "strategy": "namespace-by-node",
+          "conflictRule": "error"
+        }
+      }
+    },
+    {
+      "id": "mean-reversion-scorer",
+      "category": "scorer",
+      "pluginId": "mean-reversion-scorer",
+      "pluginVersion": "1.0.0"
+    }
+  ],
+  "edges": [
+    {
+      "from": "tech-indicators",
+      "to": "pattern-detect"
+    },
+    {
+      "from": "tech-indicators",
+      "to": "perp-sentiment"
+    },
+    {
+      "from": "tech-indicators",
+      "to": "market-news",
+      "condition": {
+        "all": [
+          {
+            "exists": "/nodes/tech-indicators/output/technical"
+          },
+          {
+            "gte": {
+              "path": "/nodes/tech-indicators/output/technical/atrPct",
+              "value": {
+                "$param": "minAtrPct"
+              }
+            }
+          }
+        ]
+      },
+      "optional": true
+    },
+    {
+      "from": "tech-indicators",
+      "to": "ai-ml",
+      "optional": true
+    },
+    {
+      "from": "pattern-detect",
+      "to": "enrichment-merge"
+    },
+    {
+      "from": "perp-sentiment",
+      "to": "enrichment-merge"
+    },
+    {
+      "from": "market-news",
+      "to": "enrichment-merge"
+    },
+    {
+      "from": "ai-ml",
+      "to": "enrichment-merge"
+    },
+    {
+      "from": "enrichment-merge",
+      "to": "mean-reversion-scorer"
+    }
+  ],
+  "metadata": {
+    "author": "AFI Factory",
+    "note": "non-authoritative annotation; excluded from canonical hash material"
+  }
+}

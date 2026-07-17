@@ -22,8 +22,8 @@ This repository is the **single source of truth** for all AFI Protocol configura
 ## Core Schemas
 
 - `character.schema.json` - Agent/character configs (afi-core)
-- `pipeline.schema.json` - Pipeline configs (afi-reactor)
-- `blueprint.schema.json` - DAG/construct blueprints (afi-reactor)
+- `schemas/pipeline/v1/` - Canonical pipeline topology contract `afi.pipeline.v1` (FACTORY-CONTRACT; supersedes the retired ungoverned `pipeline.schema.json` / `blueprint.schema.json` drafts)
+- `schemas/pipeline-template/v1/`, `schemas/analysis-plugin/v1/`, `schemas/analyst-strategy-config/v1/`, `schemas/analyst-strategy-registration/v1/`, `schemas/provider-strategy-binding/v1/`, `schemas/composition-ref/v1/` - The analyst-configurable pipelines V1 contract family
 - `plugin-manifest.schema.json` - Plugin manifests
 - `vault.schema.json` - T.S.S.D. Vault configs (afi-infra)
 - `.afi-codex.schema.json` - Codex metadata schema (all repos)

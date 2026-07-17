@@ -1,0 +1,37 @@
+{
+  "schema": "afi.composition-ref.v1",
+  "pipelineId": "trend-pullback-core",
+  "pipelineVersion": "v1.0.0",
+  "manifestHash": {
+    "algorithm": "sha256",
+    "canonicalizationVersion": "afi.hash.v1",
+    "domainTag": "afi.factory.pipeline-manifest",
+    "value": "c8a345ee2815ae02e011f40928fe03ca1a91bdbba5ff7ebb3accf8e484ee4f56"
+  },
+  "analystConfigHash": {
+    "algorithm": "sha256",
+    "canonicalizationVersion": "afi.hash.v1",
+    "domainTag": "afi.factory.analyst-config",
+    "value": "25cf714c9f93a27b1f21abefa75cacc2da6ded5d95bb9d6c4f663f1053009023"
+  },
+  "scorerPluginId": "trend-pullback-scorer",
+  "scorerPluginVersion": "1.0.0",
+  "pluginSetHash": {
+    "algorithm": "sha256",
+    "canonicalizationVersion": "afi.hash.v1",
+    "domainTag": "afi.factory.plugin-set",
+    "value": "e6684fcdae1b0934178506c7beee585b1c36ecad3bcfaa429172e6a7a174784a"
+  },
+  "executionSummaryHash": {
+    "algorithm": "sha256",
+    "canonicalizationVersion": "afi.hash.v1",
+    "domainTag": "afi.reactor.execution-summary",
+    "value": "58f583d4f0061528fea188f90c607e9396f72b2f49b3f9aeaeb7b43f06630b8a"
+  },
+  "enrichmentHash": {
+    "algorithm": "sha256",
+    "canonicalizationVersion": "afi.hash.v1",
+    "domainTag": "afi.d2.enrichment-bundle",
+    "value": "b6cab7e6f26ec8edafae325c386aa73ca95929bc14eed2e0d5afeacc997f3ed5"
+  }
+}

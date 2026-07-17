@@ -1,0 +1,67 @@
+{
+  "schema": "afi.pipeline.v1",
+  "pipelineId": "parallel-join",
+  "pipelineVersion": "v1.2.3",
+  "entry": "tech",
+  "nodes": [
+    {
+      "id": "tech",
+      "category": "technical",
+      "pluginId": "technical-indicators",
+      "pluginVersion": "1.0.0"
+    },
+    {
+      "id": "pat",
+      "category": "pattern",
+      "pluginId": "pattern-recognition",
+      "pluginVersion": "1.0.0"
+    },
+    {
+      "id": "sent",
+      "category": "sentiment",
+      "pluginId": "perp-sentiment",
+      "pluginVersion": "1.0.0"
+    },
+    {
+      "id": "merge",
+      "category": "merge",
+      "pluginId": "namespace-merge",
+      "pluginVersion": "1.0.0",
+      "join": {
+        "policy": "all",
+        "merge": {
+          "strategy": "namespace-by-node",
+          "conflictRule": "error"
+        }
+      }
+    },
+    {
+      "id": "score",
+      "category": "scorer",
+      "pluginId": "mean-reversion-scorer",
+      "pluginVersion": "1.0.0"
+    }
+  ],
+  "edges": [
+    {
+      "from": "tech",
+      "to": "pat"
+    },
+    {
+      "from": "tech",
+      "to": "sent"
+    },
+    {
+      "from": "pat",
+      "to": "merge"
+    },
+    {
+      "from": "sent",
+      "to": "merge"
+    },
+    {
+      "from": "merge",
+      "to": "score"
+    }
+  ]
+}

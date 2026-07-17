@@ -1,0 +1,60 @@
+{
+  "schema": "afi.pipeline.v1",
+  "pipelineId": "vector",
+  "pipelineVersion": "v1.0.0",
+  "entry": "tech",
+  "nodes": [
+    {
+      "id": "tech",
+      "category": "technical",
+      "pluginId": "technical-indicators",
+      "pluginVersion": "1.0.0"
+    },
+    {
+      "id": "pat",
+      "category": "pattern",
+      "pluginId": "pattern-recognition",
+      "pluginVersion": "1.0.0"
+    },
+    {
+      "id": "news",
+      "category": "news",
+      "pluginId": "newsdata-features",
+      "pluginVersion": "1.0.0"
+    },
+    {
+      "id": "merge",
+      "category": "merge",
+      "pluginId": "namespace-merge",
+      "pluginVersion": "1.0.0"
+    },
+    {
+      "id": "score",
+      "category": "scorer",
+      "pluginId": "mean-reversion-scorer",
+      "pluginVersion": "1.0.0"
+    }
+  ],
+  "edges": [
+    {
+      "from": "tech",
+      "to": "pat"
+    },
+    {
+      "from": "tech",
+      "to": "news"
+    },
+    {
+      "from": "pat",
+      "to": "merge"
+    },
+    {
+      "from": "news",
+      "to": "merge"
+    },
+    {
+      "from": "merge",
+      "to": "score"
+    }
+  ]
+}

@@ -82,7 +82,7 @@ The caller should provide, in natural language or structured form:
   - `all` — Run all checks
 
 Optional:
-- **filters**: Specific files or patterns to validate (e.g., `schemas/pipeline.schema.json`)
+- **filters**: Specific files or patterns to validate (e.g., `schemas/pipeline/v1/pipeline.schema.json`)
 - **report_format**: Output format (`summary`, `detailed`, `json`)
 
 If no inputs are provided, use conservative defaults:
@@ -164,7 +164,7 @@ For each codex file and governance doc:
 
 1. **Extract file references**:
    - Look for markdown links: `[text](path/to/file.md)`
-   - Look for JSON/YAML path fields: `"path": "schemas/pipeline.schema.json"`
+   - Look for JSON/YAML path fields: `"path": "schemas/pipeline/v1/pipeline.schema.json"`
    - Look for relative paths in documentation
 
 2. **Validate each reference**:
@@ -505,7 +505,7 @@ At the end of a successful `validate-codex-config` operation, produce a summary 
 
 1. Restate: "Validating all schema files in `schemas/` for JSON Schema Draft 2020-12 compliance."
 2. Enumerate files:
-   - Schemas: 7 files (blueprint.schema.json, character.schema.json, pipeline.schema.json, etc.)
+   - Schemas: root singletons (character.schema.json, plugin-manifest.schema.json, repo-metadata.schema.json, vault.schema.json, …) plus the versioned families under `schemas/<family>/v<N>/`
 3. Run checks:
    - Schema compliance: Validate each schema against meta-schema → All valid
 4. Collect findings: No errors
@@ -517,9 +517,8 @@ At the end of a successful `validate-codex-config` operation, produce a summary 
 **Scope**: Schema validation only (schemas/)
 
 **Files Scanned**: 7 schemas
-- blueprint.schema.json
 - character.schema.json
-- pipeline.schema.json
+- pipeline/v1/pipeline.schema.json
 - plugin-manifest.schema.json
 - repo-metadata.schema.json
 - vault.schema.json

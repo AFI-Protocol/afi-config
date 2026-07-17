@@ -1,0 +1,13 @@
+{
+  "schema": "afi.analysis-plugin.v1",
+  "pluginId": "namespace-merge",
+  "pluginVersion": "1.0.0",
+  "implementationVersion": "1.0.0",
+  "category": "merge",
+  "inputSchemaRef": "afi.enrichment-bundle.v1",
+  "outputSchemaRef": "afi.enrichment-bundle.v1",
+  "deterministic": true,
+  "paramsSchema": {},
+  "multiInstance": true,
+  "mayFeedScorer": true
+}

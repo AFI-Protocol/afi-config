@@ -1,0 +1,19 @@
+{
+  "schema": "afi.analyst-strategy-registration.v1",
+  "analystId": "kestrel",
+  "strategyId": "vol_breakout_v1",
+  "strategyVersion": "1.0.3",
+  "analystConfigHash": {
+    "algorithm": "sha256",
+    "canonicalizationVersion": "afi.hash.v1",
+    "domainTag": "afi.factory.analyst-config",
+    "value": "05d9c82352539b98fbab3b112b11b48f0b92075f2c02b5f0e8061c98d1f953f0"
+  },
+  "configRef": "afi-config/examples/analyst-strategy-config/v1/vectors/valid/inline-decay.json",
+  "providerBindingPolicy": {
+    "mode": "any-authenticated"
+  },
+  "status": "inactive",
+  "registeredAt": "2026-07-16",
+  "registrationRef": "afi-governance/decisions/factory-configurable-pipelines-v1 (example entry)"
+}
