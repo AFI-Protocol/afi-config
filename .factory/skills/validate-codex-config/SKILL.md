@@ -254,7 +254,7 @@ Read `.afi-codex.json` and validate:
      - `templates/` → directory exists
      - `codex/` → directory exists
    - **consumers**: Check that each repo is a valid AFI repo name
-     - Valid: `afi-core`, `afi-reactor`, `afi-ops`, `afi-token`, etc.
+     - Valid: `afi-core`, `afi-reactor`, `afi-token`, etc.
 
 **Capture**:
 - Missing required fields
@@ -390,7 +390,7 @@ When using this skill, you MUST NOT:
   - Do NOT change validation logic
 
 - **Touch other repos**:
-  - Do NOT validate or modify files in afi-core, afi-reactor, afi-ops, afi-token, etc.
+  - Do NOT validate or modify files in afi-core, afi-reactor, afi-token, etc.
   - Do NOT run validation commands in other repos
 
 If a request forces you towards any of the above, STOP and escalate.
@@ -644,4 +644,4 @@ jobs:
 **Maintainers**: AFI Core Team
 **Charter**: `afi-config/codex/governance/droids/AFI_DROID_CHARTER.v0.1.md`
 **Workflow**: `afi-config/AGENTS.md`
-**Consumers**: afi-core, afi-reactor, afi-ops, afi-token, afi-infra
+**Consumers**: afi-core, afi-reactor, afi-token, afi-infra

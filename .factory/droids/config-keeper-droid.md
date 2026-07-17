@@ -50,7 +50,7 @@ This droid is a **governance and configuration guardian** for afi-config. It:
 
 This droid is **configuration-only** and **NEVER modifies runtime behavior or cross-repo code**:
 
-- ❌ Does NOT modify code in other repos (afi-core, afi-reactor, afi-ops, afi-token, etc.)
+- ❌ Does NOT modify code in other repos (afi-core, afi-reactor, afi-token, etc.)
 - ❌ Does NOT change AFI token parameters, emissions, or economics
 - ❌ Does NOT change DAG structure or orchestration logic (afi-reactor)
 - ❌ Does NOT change signal schemas or validators in afi-core (beyond schema definition)
@@ -77,7 +77,7 @@ This droid is **configuration-only** and **NEVER modifies runtime behavior or cr
 **May NOT modify**:
 - `codex/governance/droids/AFI_DROID_CHARTER.v0.1.md` — Requires explicit human approval
 - `codex/governance/droids/AFI_DROID_PLAYBOOK.v0.1.md` — Requires explicit human approval
-- Any code in other repos (afi-core, afi-reactor, afi-ops, afi-token, etc.)
+- Any code in other repos (afi-core, afi-reactor, afi-token, etc.)
 - Schema fields in breaking ways (removal, type changes)
 
 ### Why This Droid Exists
@@ -142,7 +142,7 @@ From `afi-config/AGENTS.md`:
 
 **Why afi-config is MEDIUM RISK**:
 
-1. **System-wide impact**: Schema changes cascade to all AFI repos (afi-core, afi-reactor, afi-ops, afi-token)
+1. **System-wide impact**: Schema changes cascade to all AFI repos (afi-core, afi-reactor, afi-token)
 2. **Governance authority**: Hosts AFI Droid Charter v0.1, which governs all droids
 3. **Backward compatibility**: Removing or changing schema fields breaks contracts
 4. **Validation logic**: Changes to validation can break CI/CD pipelines across repos
@@ -240,7 +240,7 @@ This droid MUST NOT:
    - Do NOT change schema semantics without coordination
 
 3. **Modify cross-repo code**:
-   - Do NOT change code in afi-core, afi-reactor, afi-ops, afi-token, or any other repo
+   - Do NOT change code in afi-core, afi-reactor, afi-token, or any other repo
    - Do NOT add cross-repo dependencies
    - Do NOT move files between repos
 
@@ -519,4 +519,4 @@ This droid may eventually use these skills (not yet implemented):
 **Maintainers**: AFI Core Team
 **Charter**: `afi-config/codex/governance/droids/AFI_DROID_CHARTER.v0.1.md`
 **Workflow**: `afi-config/AGENTS.md`
-**Consumers**: afi-core, afi-reactor, afi-ops, afi-token, afi-infra
+**Consumers**: afi-core, afi-reactor, afi-token, afi-infra

@@ -42,11 +42,6 @@ AFI Protocol is organized as a modular multi-repo architecture. Each module cons
 - **Schema**: `vault.schema.json`
 - **Use Case**: Define database connections, collection names, retention policies
 
-### afi-ops (Operations Toolkit)
-- **Deployment Config**: Defines service orchestration and health check parameters
-- **Schema**: `ops-config.schema.json` (future)
-- **Use Case**: Configure local/production deployments, SLOs, and monitoring
-
 ### afi-token (Smart Contracts)
 - **Token Config**: Defines contract deployment parameters and governance settings
 - **Schema**: `token-config.schema.json` (future)
@@ -267,7 +262,6 @@ afi-config (foundational)
     ├── afi-core (consumes character.schema.json)
     ├── afi-reactor (consumes schemas/pipeline/v1/, schemas/composition-ref/v1/)
     ├── afi-infra (consumes vault.schema.json)
-    ├── afi-ops (consumes ops-config.schema.json)
     └── afi-token (consumes token-config.schema.json)
 ```
 
