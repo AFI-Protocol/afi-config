@@ -95,7 +95,7 @@ An agent is a **runtime persona** inside ElizaOS (e.g., Spartan, Phoenix) that i
 
 - Canonical, testable capabilities encoded as:
   - Config, templates, or code modules
-  - Stored in AFI repos (e.g., `afi-skills`).
+  - Stored in AFI repos.
 - Governed by Droid Charter + AGENTS.md.
 - Extended through repo changes and PRs.
 

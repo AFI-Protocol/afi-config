@@ -33,7 +33,6 @@ This is a **design-level orientation document**, not a binding specification. It
 In AFI Protocol, **agents** are runtime actors that:
 
 - Operate on **live data** (signals, proposals, logs, user queries)
-- Execute **skills** from the canonical skill library (afi-skills)
 - Consume **schemas and types** defined in afi-core and afi-config
 - Interact with **humans** (via chat, voice, UI) or **systems** (via APIs, DAG nodes, batch jobs)
 - Produce **outputs** (summaries, scores, alerts, recommendations, governance votes)
@@ -47,7 +46,7 @@ Agents are **not** repo maintenance workers. They do not edit code, schemas, or 
 - Maintain **schemas, DAGs, skills, contracts, and CI/CD**
 - Follow **AFI Droid Charter v0.1** and repo-specific AGENTS.md files
 - Produce **commits and pull requests** for human review
-- Examples: dag-builder-droid, schema-validator-droid, skillsmith-droid, ci-guardian-droid, contract-test-droid, config-keeper-droid
+- Examples: dag-builder-droid, schema-validator-droid, ci-guardian-droid, contract-test-droid, config-keeper-droid
 
 **Agents** (runtime actors):
 - Operate on **live data** (signals, proposals, logs, user queries)
@@ -119,7 +118,6 @@ Each agent class typically has a primary "home" repo or system:
 - **afi-gateway**: Frontline persona agents (Phoenix, Mentor agents)
 - **afi-ops**: Ops agents (CI Explainer, Incident Triage, Deployment Dry-Run Advisor)
 - **afi-governance**: Governance agents (Proposal Summarizer, Parameter Impact Simulator, Governance Risk Sentinel)
-- **afi-skills**: Skill-focused agents (skill discovery, skill recommendation, skill eval runners)
 
 ### Signal Lifecycle Stage
 
@@ -353,19 +351,18 @@ Droids and agents are complementary but distinct:
 - Maintain **DAGs, schemas, skills, configs, tests, CI/CD, contracts**
 - Follow **AFI Droid Charter v0.1** and repo-specific AGENTS.md files
 - Produce **commits and pull requests** for human review
-- Examples: dag-builder-droid (afi-reactor), schema-validator-droid (afi-core), skillsmith-droid (afi-skills), ci-guardian-droid (afi-ops), contract-test-droid (afi-token), config-keeper-droid (afi-config)
+- Examples: dag-builder-droid (afi-reactor), schema-validator-droid (afi-core), ci-guardian-droid (afi-ops), contract-test-droid (afi-token), config-keeper-droid (afi-config)
 
 **Agents = Runtime actors using those structures**:
 
 - Operate on **live data** (signals, proposals, logs, user queries)
-- Execute **skills** from afi-skills, consume **schemas** from afi-core/afi-config, use **Codex** for replay
+- Consume **schemas** from afi-core/afi-config, use **Codex** for replay
 - Follow **AFI Agent Playbook v0.1** (for ElizaOS agents) and domain-specific guidelines
 - Produce **runtime outputs** (summaries, scores, alerts, recommendations)
 - Examples: Phoenix (afi-gateway), Market Scout agents (afi-reactor DAG), Governance Risk Sentinel (afi-governance)
 
 **Key relationships**:
 
-- **Agents invoke skills, but do not edit them**: Skills are maintained by skillsmith-droid in afi-skills. Agents execute skills at runtime.
 - **Agents consume schemas and Codex; droids maintain them**: Schemas are maintained by schema-validator-droid (afi-core) and config-keeper-droid (afi-config). Agents use schemas to validate signals and parse data.
 - **Droids create safe playgrounds (guardrails); agents play inside that sandbox**: Droids enforce boundaries via AGENTS.md, Charter, and Playbook. Agents operate within those boundaries.
 
@@ -373,7 +370,6 @@ Droids and agents are complementary but distinct:
 
 - **dag-builder-droid** (afi-reactor): Scaffolds DAG nodes, wires nodes into pipeline
 - **schema-validator-droid** (afi-core): Extends signal schemas, creates validators
-- **skillsmith-droid** (afi-skills): Adds skills, maintains skill quality, manages evals
 - **ci-guardian-droid** (afi-ops): Runs smoke checks, validates builds and tests (read-only)
 - **contract-test-droid** (afi-token): Adds test coverage for smart contracts (test-only, HIGH RISK)
 - **config-keeper-droid** (afi-config): Validates codex structure, governance artifacts, schemas (MEDIUM RISK)
@@ -526,7 +522,6 @@ Agent classes can be informally categorized by risk level (similar to droids):
 
 **MEDIUM Risk**:
 - Agents that call AFI APIs (Phoenix, Market Scout agents, Pattern Analyst)
-- Agents that execute skills from afi-skills
 - Agents that interact with users but do not handle funds or governance votes
 
 **HIGH Risk**:

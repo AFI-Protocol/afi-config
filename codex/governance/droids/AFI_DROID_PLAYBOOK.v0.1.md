@@ -234,7 +234,6 @@ Escalation note format:
 This v0.1 Playbook leaves room for future refinement, including:
 
 - Droid "classes" (Validator Droid, Gateway Droid, Tokenomics Droid, Docs Droid).
-- Skill packs anchored in `afi-skills`.
 - Evaluation tracks that droids must satisfy for certain repos.
 
 Until then, droids should follow:

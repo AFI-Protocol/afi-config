@@ -59,7 +59,7 @@ Phoenix's mission can be summarized in three directives:
 
 - Explain AFI Protocol architecture, signal flow, and how agents/droids fit together
 - Point users to canonical docs, repos, dashboards, and governance resources
-- Clarify the roles of afi-reactor (orchestration), afi-core (validation), afi-skills (skill library), afi-ops (deployment), afi-config (governance), and afi-token (tokenomics)
+- Clarify the roles of afi-reactor (orchestration), afi-core (validation), afi-ops (deployment), afi-config (governance), and afi-token (tokenomics)
 - Never invent rules, promises, or protocol guarantees—always defer to documented sources
 
 ### Act as a Safe Query Front-End
@@ -109,7 +109,6 @@ Phoenix has access to the following knowledge domains:
 - Roles of core repos:
   - **afi-reactor**: DAG orchestration, signal pipeline management
   - **afi-core**: Signal validation, PoI/PoInsight scoring, validator/mentor registry
-  - **afi-skills**: Canonical skill library (agents execute skills; droids maintain them)
   - **afi-ops**: Deployment automation, health checks, operational tooling
   - **afi-config**: Configuration and governance home (schemas, Codex, governance docs)
   - **afi-token**: Smart contracts, tokenomics (HIGH RISK, immutable after deployment)
@@ -198,12 +197,6 @@ This custom plugin will expose safe, read-only AFI data endpoints:
   - Rate limiting (prevent abuse or overload)
   - Read-only access (no writes, no state mutations)
   - Pre-digested views (no direct SQL queries or raw DB access)
-
-**@afi/plugin-afi-skills** (future):
-
-- Allows Phoenix to invoke AFI skills from afi-skills library
-- Skills are executed via afi-reactor or afi-core APIs (not locally)
-- Provides structured skill invocation with input validation and output formatting
 
 ### Capabilities Summary
 
@@ -359,7 +352,6 @@ Include 3-5 message examples showing:
 **Future plugins** (commented placeholders):
 - `@elizaos/plugin-sql` (session state, conversation history)
 - `@afi/plugin-afi-telemetry` (safe AFI data access)
-- `@afi/plugin-afi-skills` (skill invocation via AFI APIs)
 
 ### Settings
 

@@ -75,7 +75,7 @@ The AFI metadata and provenance system. Codex describes modules, roles, schemas,
 
 - **Config Layer** – e.g., `afi-config` (schemas, templates, registry).
 - **Orchestrator Layer** – e.g., `afi-reactor` (DAGs, pipelines, orchestration).
-- **Runtime / Agent Layer** – e.g., `afi-core`, `afi-skills`.
+- **Runtime / Agent Layer** – e.g., `afi-core`.
 - **Infra / Ops Layer** – e.g., `afi-infra`, `afi-ops`.
 - **Token Layer** – e.g., `afi-token-finalized` and adjacent tokenomics repos.
 - **Artifacts & Docs** – e.g., `afi-artifacts` (paper bundles, Codex snapshots).
@@ -184,7 +184,7 @@ If the instruction is ambiguous, droids must treat it as **not authorized**.
   - Rename or remove existing DAG nodes or edges without explicit instruction.
   - Introduce tokenomics logic; emissions and rewards belong in token repos.
 
-### 6.3 Runtime / Agent Layer (e.g., `afi-core`, `afi-skills`)
+### 6.3 Runtime / Agent Layer (e.g., `afi-core`)
 
 - **May**:
   - Add new agents, skills, and behavior modules consistent with existing patterns.
