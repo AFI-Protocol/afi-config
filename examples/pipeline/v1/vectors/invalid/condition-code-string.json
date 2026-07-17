@@ -1,0 +1,27 @@
+{
+  "schema": "afi.pipeline.v1",
+  "pipelineId": "vector",
+  "pipelineVersion": "v1.0.0",
+  "entry": "tech",
+  "nodes": [
+    {
+      "id": "tech",
+      "category": "technical",
+      "pluginId": "technical-indicators",
+      "pluginVersion": "1.0.0"
+    },
+    {
+      "id": "score",
+      "category": "scorer",
+      "pluginId": "mean-reversion-scorer",
+      "pluginVersion": "1.0.0"
+    }
+  ],
+  "edges": [
+    {
+      "from": "tech",
+      "to": "score",
+      "condition": "payload.uwrScore > 0.5 && ctx.symbol == 'BTCUSDT'"
+    }
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "schema": "afi.provider-strategy-binding.v1",
+  "bindingId": "tradingview-kestrel-webhook",
+  "providerId": "tradingview-kestrel",
+  "providerType": "webhook",
+  "authenticatedBy": "route-secret",
+  "allowedStrategies": [
+    {
+      "analystId": "kestrel",
+      "strategyId": "mean_reversion_v2",
+      "strategyVersion": "v2.1.0"
+    }
+  ],
+  "defaultStrategy": {
+    "analystId": "kestrel",
+    "strategyId": "mean_reversion_v2",
+    "strategyVersion": "v2.1.0"
+  },
+  "status": "active"
+}

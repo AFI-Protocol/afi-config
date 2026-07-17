@@ -1,0 +1,29 @@
+{
+  "schema": "afi.analyst-strategy-config.v1",
+  "analystId": "kestrel",
+  "strategyId": "vol_breakout_v1",
+  "strategyVersion": "1.0.3",
+  "pipelineRef": {
+    "pipelineId": "mean-reversion-core",
+    "pipelineVersion": "v1.0.0",
+    "manifestHash": {
+      "algorithm": "sha256",
+      "canonicalizationVersion": "afi.hash.v1",
+      "domainTag": "afi.factory.pipeline-manifest",
+      "value": "b82f1c35766575cd2e111a447dc5bfc5e3ea6699894f064d287e8748e8992285"
+    }
+  },
+  "scorerRef": {
+    "pluginId": "mean-reversion-scorer",
+    "pluginVersion": "1.0.0"
+  },
+  "uwrProfileRef": {
+    "profileId": "uwr-weighted-lifts-v0.1"
+  },
+  "decayConfig": {
+    "inline": {
+      "halfLifeMinutes": 90,
+      "greeksTemplateId": "decay-intraday-v1"
+    }
+  }
+}

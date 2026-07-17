@@ -1,0 +1,54 @@
+{
+  "schema": "afi.analysis-plugin.v1",
+  "pluginId": "perp-sentiment",
+  "pluginVersion": "v1.0.0",
+  "implementationVersion": "1.4.2",
+  "category": "sentiment",
+  "description": "Perp-positioning sentiment classifier over Coinalyze metrics.",
+  "inputSchemaRef": "afi.usignal.v1.1",
+  "outputSchemaRef": "https://afi-protocol.org/schemas/usignal/v1/lenses/strategy.lens.schema.json",
+  "deterministic": false,
+  "capabilities": [
+    "provider:coinalyze",
+    "secret:COINALYZE_API_KEY"
+  ],
+  "defaultTimeoutMs": 10000,
+  "defaultRetryPolicy": {
+    "maxRetries": 2,
+    "retryDelayMs": 500,
+    "backoff": "fixed"
+  },
+  "permittedFailurePolicies": [
+    "abort",
+    "degrade"
+  ],
+  "paramsSchema": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+      "symbol": {
+        "type": "string",
+        "minLength": 1
+      },
+      "timeframe": {
+        "enum": [
+          "15m",
+          "1h",
+          "4h",
+          "1d"
+        ]
+      }
+    }
+  },
+  "multiInstance": false,
+  "orderingConstraints": {
+    "mustRunBefore": [
+      "merge",
+      "scorer"
+    ]
+  },
+  "mayFeedScorer": true,
+  "metadata": {
+    "note": "non-authoritative annotation; excluded from canonical hash material"
+  }
+}

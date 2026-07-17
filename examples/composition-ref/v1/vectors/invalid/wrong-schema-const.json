@@ -1,0 +1,37 @@
+{
+  "schema": "afi.composition-ref.v2",
+  "pipelineId": "mean-reversion-core",
+  "pipelineVersion": "v1.0.0",
+  "manifestHash": {
+    "algorithm": "sha256",
+    "canonicalizationVersion": "afi.hash.v1",
+    "domainTag": "afi.factory.pipeline-manifest",
+    "value": "b82f1c35766575cd2e111a447dc5bfc5e3ea6699894f064d287e8748e8992285"
+  },
+  "analystConfigHash": {
+    "algorithm": "sha256",
+    "canonicalizationVersion": "afi.hash.v1",
+    "domainTag": "afi.factory.analyst-config",
+    "value": "ea988ce85d1102ce17174bfdf8eb3d1530cefe7f0aae26b88be50f2fef7fb2a5"
+  },
+  "scorerPluginId": "mean-reversion-scorer",
+  "scorerPluginVersion": "1.0.0",
+  "pluginSetHash": {
+    "algorithm": "sha256",
+    "canonicalizationVersion": "afi.hash.v1",
+    "domainTag": "afi.factory.plugin-set",
+    "value": "3690fe3e121eb48d44afae56b04e0c4a22858fcb5ea8cb905eafb9140406c303"
+  },
+  "executionSummaryHash": {
+    "algorithm": "sha256",
+    "canonicalizationVersion": "afi.hash.v1",
+    "domainTag": "afi.reactor.execution-summary",
+    "value": "2df4a963685f6cb5fa8232c01f3b45949b28b39862d7283b4861fe8f88292889"
+  },
+  "enrichmentHash": {
+    "algorithm": "sha256",
+    "canonicalizationVersion": "afi.hash.v1",
+    "domainTag": "afi.d2.enrichment-bundle",
+    "value": "4e3f9d9ff7f185a16ab6c1542abfada595440e2ae93223bcdd528e05f9dd3b2e"
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "schema": "afi.analyst-strategy-config.v1",
+  "analystId": "kestrel",
+  "strategyId": "mean_reversion_v2",
+  "strategyVersion": "2.1.0",
+  "pipelineRef": {
+    "pipelineId": "mean-reversion-core",
+    "pipelineVersion": "v1.0.0"
+  },
+  "scorerRef": {
+    "pluginId": "mean-reversion-scorer",
+    "pluginVersion": "1.0.0"
+  },
+  "uwrProfileRef": {
+    "profileId": "uwr-weighted-lifts-v0.1"
+  },
+  "decayConfig": {
+    "ref": {
+      "templateId": "decay-swing-v1"
+    }
+  },
+  "nodeOverrides": {
+    "market-news": {
+      "enabled": true,
+      "config": {
+        "windowHours": 12
+      }
+    },
+    "ai-ml": {
+      "enabled": false
+    }
+  },
+  "metadata": {
+    "note": "non-authoritative annotation; excluded from canonical hash material (analystConfigHash)"
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "schema": "afi.analysis-plugin.v1",
+  "pluginId": "mean-reversion-scorer",
+  "pluginVersion": "1.0.0",
+  "implementationVersion": "3.2.0",
+  "category": "scorer",
+  "inputSchemaRef": "afi.enrichment-bundle.v1",
+  "outputSchemaRef": "https://afi-protocol.org/schemas/provenance/v1/scored-signal.schema.json",
+  "deterministic": true,
+  "orderingConstraints": {
+    "mustRunAfter": [
+      "merge"
+    ]
+  },
+  "paramsSchema": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+      "conviction": {
+        "type": "number",
+        "minimum": 0,
+        "maximum": 1
+      }
+    }
+  },
+  "mayFeedScorer": false
+}

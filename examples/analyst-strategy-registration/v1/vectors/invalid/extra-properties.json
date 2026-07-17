@@ -1,0 +1,25 @@
+{
+  "schema": "afi.analyst-strategy-registration.v1",
+  "analystId": "kestrel",
+  "strategyId": "mean_reversion_v2",
+  "strategyVersion": "2.1.0",
+  "analystConfigHash": {
+    "algorithm": "sha256",
+    "canonicalizationVersion": "afi.hash.v1",
+    "domainTag": "afi.factory.analyst-config",
+    "value": "ea988ce85d1102ce17174bfdf8eb3d1530cefe7f0aae26b88be50f2fef7fb2a5"
+  },
+  "configRef": "afi-config/examples/analyst-strategy-config/v1/analyst-strategy-config.example.json",
+  "providerBindingPolicy": {
+    "mode": "explicit",
+    "allowedBindings": [
+      "tradingview-kestrel-webhook"
+    ]
+  },
+  "status": "active",
+  "registeredAt": "2026-07-16",
+  "registrationRef": "afi-governance/decisions/factory-configurable-pipelines-v1 (example entry)",
+  "qualification": {
+    "qualified": true
+  }
+}

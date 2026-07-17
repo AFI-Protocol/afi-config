@@ -1,0 +1,24 @@
+{
+  "schema": "afi.analysis-plugin.v1",
+  "pluginId": "technical-indicators",
+  "pluginVersion": "1.0.0",
+  "implementationVersion": "2.0.1",
+  "category": "technical",
+  "inputSchemaRef": "afi.usignal.v1.1",
+  "outputSchemaRef": "afi.technical-lens.v1",
+  "deterministic": true,
+  "paramsSchema": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+      "emaPeriods": {
+        "type": "array",
+        "items": {
+          "type": "integer",
+          "minimum": 1
+        }
+      }
+    }
+  },
+  "mayFeedScorer": true
+}
