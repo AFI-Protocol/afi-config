@@ -2,7 +2,7 @@
   "schema": "afi.analyst-strategy-config.v1",
   "analystId": "froggy",
   "strategyId": "trend_pullback_v1",
-  "strategyVersion": "1.1.0",
+  "strategyVersion": "1.0.0",
   "pipelineRef": {
     "pipelineId": "froggy-trend-pullback",
     "pipelineVersion": "v1.1.0",

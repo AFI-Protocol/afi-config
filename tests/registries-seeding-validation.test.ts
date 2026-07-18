@@ -30,7 +30,7 @@ const rootDir = join(__dirname, '..');
 
 // --- pinned values (five-lane provider runtime, FLPR-GOV; recomputed and asserted below) ---
 const PINNED_MANIFEST_HASH = '87bcb7ed752820994a5b4bdb72bd55d51c39a2c58daa36fe8d0df4778778ae57';
-const PINNED_ANALYST_CONFIG_HASH = '120cd9ada58a86b6b84b9fe376ca35ac82c44e7eda95254c7c8f42b684cc1603';
+const PINNED_ANALYST_CONFIG_HASH = '2274978afdffb798440ce08268dd4c0f06af2df94433d25d6f907335c9a3bc03';
 const PINNED_PLUGIN_SET_HASH = '5384e1c08ce4bd7f533acc15487df81d7d37b6615d109d611bde968a81f2f386';
 
 // D-FCP-7 registered composition domain tags (canonical-json-hashing.v1 §3, amended).
@@ -41,7 +41,7 @@ const TAG_PLUGIN_SET = 'afi.d2.plugin-set';
 const FROGGY_TRIPLE = {
   analystId: 'froggy',
   strategyId: 'trend_pullback_v1',
-  strategyVersion: '1.1.0',
+  strategyVersion: '1.0.0',
 };
 
 const PLUGINS_DIR = 'registries/analysis-plugins';
@@ -49,8 +49,8 @@ const PIPELINES_DIR = 'registries/pipelines';
 const STRATEGIES_DIR = 'registries/analyst-strategies';
 const BINDINGS_DIR = 'registries/provider-bindings';
 
-const REGISTRATION_FILE = `${STRATEGIES_DIR}/froggy--trend_pullback_v1--1.1.0.json`;
-const CONFIG_FILE = `${STRATEGIES_DIR}/froggy--trend_pullback_v1--1.1.0.config.json`;
+const REGISTRATION_FILE = `${STRATEGIES_DIR}/froggy--trend_pullback_v1--1.0.0.json`;
+const CONFIG_FILE = `${STRATEGIES_DIR}/froggy--trend_pullback_v1--1.0.0.config.json`;
 const PIPELINE_FILE = `${PIPELINES_DIR}/froggy-trend-pullback--v1.1.0.json`;
 
 const EXPECTED_PLUGIN_FILES = [
@@ -357,6 +357,25 @@ describe('W3a SEEDING — registries/analyst-strategies (froggy registration)', 
     const profile = loadJSON('registries/uwr-profiles/uwr-weighted-lifts-v0.1.json');
     expect(profile.profileId).toBe(config.uwrProfileRef.profileId);
     expect(config.decayConfig).toEqual({ ref: { templateId: 'decay-swing-v1' } });
+  });
+});
+
+describe('FLPR-GOV SEEDING — manifest providerInstanceRefs cross-resolve', () => {
+  it('every lane node ref in the registered manifest resolves to an ACTIVE seeded instance of the same category and version', () => {
+    const pipeline = loadJSON(PIPELINE_FILE);
+    const LANES = new Set(['technical', 'pattern', 'sentiment', 'news', 'aiMl']);
+    const laneNodes = pipeline.nodes.filter((n: any) => LANES.has(n.category));
+    expect(laneNodes).toHaveLength(5);
+    for (const node of laneNodes) {
+      expect(node.providerInstanceRef, `${node.id} must select explicitly`).toBeDefined();
+      const { providerInstanceId, recordVersion } = node.providerInstanceRef;
+      const inst = loadJSON(
+        `registries/provider-instances/${providerInstanceId}--${recordVersion}.json`
+      );
+      expect(inst.status, `${providerInstanceId} must be active`).toBe('active');
+      expect(inst.category, `${providerInstanceId} category`).toBe(node.category);
+      expect(inst.recordVersion).toBe(recordVersion);
+    }
   });
 });
 

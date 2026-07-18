@@ -338,8 +338,8 @@ describe('FACTORY-CONTRACT — afi.analyst-strategy-registration.v1', () => {
       const files = readdirSync(join(rootDir, 'registries/analyst-strategies')).sort();
       expect(files).toEqual([
         'README.md',
-        'froggy--trend_pullback_v1--1.1.0.config.json',
-        'froggy--trend_pullback_v1--1.1.0.json',
+        'froggy--trend_pullback_v1--1.0.0.config.json',
+        'froggy--trend_pullback_v1--1.0.0.json',
       ]);
     });
   });

@@ -2,14 +2,14 @@
   "schema": "afi.analyst-strategy-registration.v1",
   "analystId": "froggy",
   "strategyId": "trend_pullback_v1",
-  "strategyVersion": "1.1.0",
+  "strategyVersion": "1.0.0",
   "analystConfigHash": {
     "algorithm": "sha256",
     "canonicalizationVersion": "afi.hash.v1",
     "domainTag": "afi.d2.analyst-config",
-    "value": "120cd9ada58a86b6b84b9fe376ca35ac82c44e7eda95254c7c8f42b684cc1603"
+    "value": "2274978afdffb798440ce08268dd4c0f06af2df94433d25d6f907335c9a3bc03"
   },
-  "configRef": "afi-config/registries/analyst-strategies/froggy--trend_pullback_v1--1.1.0.config.json",
+  "configRef": "afi-config/registries/analyst-strategies/froggy--trend_pullback_v1--1.0.0.config.json",
   "providerBindingPolicy": {
     "mode": "explicit",
     "allowedBindings": [
