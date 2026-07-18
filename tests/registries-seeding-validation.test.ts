@@ -28,10 +28,10 @@ const rootDir = join(__dirname, '..');
  *      the pinned values, with the D-FCP-7 domain tags CARRIED (never hashed).
  */
 
-// --- pinned values (afi-factory main templates/official/froggy-trend-pullback/hashes.json) ---
-const PINNED_MANIFEST_HASH = 'b8d9b73410ce8ec0d1827d75ee2a2e750aa85553fb2fc985a7a52fdb75080d49';
-const PINNED_ANALYST_CONFIG_HASH = '269ae355a0d8bfaf53d849c38fba16e167f0571b6319ddc8d94841ff7c275261';
-const PINNED_PLUGIN_SET_HASH = '6d54c8b720d6d709962bc2b8c792b4e8b1657308fac46fbec33a8f24232e0bb7';
+// --- pinned values (five-lane provider runtime, FLPR-GOV; recomputed and asserted below) ---
+const PINNED_MANIFEST_HASH = '87bcb7ed752820994a5b4bdb72bd55d51c39a2c58daa36fe8d0df4778778ae57';
+const PINNED_ANALYST_CONFIG_HASH = '2274978afdffb798440ce08268dd4c0f06af2df94433d25d6f907335c9a3bc03';
+const PINNED_PLUGIN_SET_HASH = '5384e1c08ce4bd7f533acc15487df81d7d37b6615d109d611bde968a81f2f386';
 
 // D-FCP-7 registered composition domain tags (canonical-json-hashing.v1 §3, amended).
 const TAG_COMPOSITION_MANIFEST = 'afi.d2.composition-manifest';
@@ -51,15 +51,15 @@ const BINDINGS_DIR = 'registries/provider-bindings';
 
 const REGISTRATION_FILE = `${STRATEGIES_DIR}/froggy--trend_pullback_v1--1.0.0.json`;
 const CONFIG_FILE = `${STRATEGIES_DIR}/froggy--trend_pullback_v1--1.0.0.config.json`;
-const PIPELINE_FILE = `${PIPELINES_DIR}/froggy-trend-pullback--v1.0.0.json`;
+const PIPELINE_FILE = `${PIPELINES_DIR}/froggy-trend-pullback--v1.1.0.json`;
 
 const EXPECTED_PLUGIN_FILES = [
-  'afi-analysis-aiml--1.0.0.json',
-  'afi-analysis-news--1.0.0.json',
-  'afi-analysis-pattern--1.0.0.json',
-  'afi-analysis-sentiment--1.0.0.json',
-  'afi-analysis-technical--1.0.0.json',
-  'afi-merge-enriched-view--1.0.0.json',
+  'afi-analysis-aiml--2.0.0.json',
+  'afi-analysis-news--2.0.0.json',
+  'afi-analysis-pattern--2.0.0.json',
+  'afi-analysis-sentiment--2.0.0.json',
+  'afi-analysis-technical--2.0.0.json',
+  'afi-merge-enriched-view--1.1.0.json',
   'afi-scorer-froggy-trend-pullback--1.0.0.json',
 ];
 
@@ -198,16 +198,16 @@ describe('W3a SEEDING — registries/analysis-plugins', () => {
   });
 });
 
-describe('W3a SEEDING — registries/pipelines (froggy-trend-pullback v1.0.0)', () => {
+describe('SEEDING — registries/pipelines (froggy-trend-pullback v1.1.0, FLPR-GOV)', () => {
   const pipeline = loadJSON(PIPELINE_FILE);
 
-  it('seeded manifest is schema-valid and self-identifies as froggy-trend-pullback v1.0.0', () => {
+  it('seeded manifest is schema-valid and self-identifies as froggy-trend-pullback v1.1.0', () => {
     const validate = createAjv().compile(loadJSON('schemas/pipeline/v1/pipeline.schema.json'));
     const valid = validate(pipeline);
     if (!valid) console.error('pipeline failure:', validate.errors);
     expect(valid).toBe(true);
     expect(pipeline.pipelineId).toBe('froggy-trend-pullback');
-    expect(pipeline.pipelineVersion).toBe('v1.0.0');
+    expect(pipeline.pipelineVersion).toBe('v1.1.0');
   });
 
   it('graph-semantic layer: unique ids, known endpoints, acyclic, single scorer sink, joins declared', () => {
@@ -357,6 +357,25 @@ describe('W3a SEEDING — registries/analyst-strategies (froggy registration)', 
     const profile = loadJSON('registries/uwr-profiles/uwr-weighted-lifts-v0.1.json');
     expect(profile.profileId).toBe(config.uwrProfileRef.profileId);
     expect(config.decayConfig).toEqual({ ref: { templateId: 'decay-swing-v1' } });
+  });
+});
+
+describe('FLPR-GOV SEEDING — manifest providerInstanceRefs cross-resolve', () => {
+  it('every lane node ref in the registered manifest resolves to an ACTIVE seeded instance of the same category and version', () => {
+    const pipeline = loadJSON(PIPELINE_FILE);
+    const LANES = new Set(['technical', 'pattern', 'sentiment', 'news', 'aiMl']);
+    const laneNodes = pipeline.nodes.filter((n: any) => LANES.has(n.category));
+    expect(laneNodes).toHaveLength(5);
+    for (const node of laneNodes) {
+      expect(node.providerInstanceRef, `${node.id} must select explicitly`).toBeDefined();
+      const { providerInstanceId, recordVersion } = node.providerInstanceRef;
+      const inst = loadJSON(
+        `registries/provider-instances/${providerInstanceId}--${recordVersion}.json`
+      );
+      expect(inst.status, `${providerInstanceId} must be active`).toBe('active');
+      expect(inst.category, `${providerInstanceId} category`).toBe(node.category);
+      expect(inst.recordVersion).toBe(recordVersion);
+    }
   });
 });
 

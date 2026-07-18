@@ -31,9 +31,42 @@ function loadJSON(rel: string): any {
 
 const PROVIDERS_DIR = 'registries/providers';
 const EXPECTED_PROVIDER_FILES = [
+  'afi-provider-aiml-tiny-brains--1.0.0.json',
   'afi-provider-news-http--1.0.0.json',
+  'afi-provider-news-sec-edgar--1.0.0.json',
+  'afi-provider-pattern-candlestick--1.0.0.json',
+  'afi-provider-pattern-tiny-brains--1.0.0.json',
+  'afi-provider-sentiment-cftc-cot--1.0.0.json',
+  'afi-provider-sentiment-coinalyze--1.0.0.json',
   'afi-provider-technical-local--1.0.0.json',
 ];
+
+const INSTANCES_DIR = 'registries/provider-instances';
+const EXPECTED_INSTANCE_FILES = [
+  'afi-instance-byok-news-newsdata--1.0.0.json',
+  'afi-instance-byok-sentiment-coinalyze--1.0.0.json',
+  'afi-instance-reference-aiml-tiny-brains--1.0.0.json',
+  'afi-instance-reference-news-sec-edgar--1.0.0.json',
+  'afi-instance-reference-pattern-candlestick--1.0.0.json',
+  'afi-instance-reference-pattern-tiny-brains--1.0.0.json',
+  'afi-instance-reference-sentiment-cftc-cot--1.0.0.json',
+  'afi-instance-reference-technical-local--1.0.0.json',
+];
+
+const CREDREFS_DIR = 'registries/credential-refs';
+const EXPECTED_CREDREF_FILES = [
+  'credential-coinalyze-reference--1.0.0.json',
+  'credential-newsdata-reference--1.0.0.json',
+];
+
+/** The five reference instances forming the committed all-five keyless profile (FLPR-GOV D-FLPR-7). */
+const REFERENCE_PROFILE = {
+  technical: 'afi-instance-reference-technical-local',
+  pattern: 'afi-instance-reference-pattern-candlestick',
+  sentiment: 'afi-instance-reference-sentiment-cftc-cot',
+  news: 'afi-instance-reference-news-sec-edgar',
+  aiMl: 'afi-instance-reference-aiml-tiny-brains',
+};
 
 // -----------------------------------------------------------------------------
 // Secret-name DENYLIST scanner (defense in depth). Normalizes each key
@@ -102,8 +135,8 @@ function providerInstanceViolations(inst: any, ctx: Ctx): string[] {
   return v;
 }
 
-describe('PBF-GOV — registries/providers seeding', () => {
-  it('directory contains EXACTLY the two seeded provider records + README (drift guard)', () => {
+describe('PBF-GOV/FLPR-GOV — registries/providers seeding', () => {
+  it('directory contains EXACTLY the eight seeded provider records + README (drift guard)', () => {
     const files = readdirSync(join(rootDir, PROVIDERS_DIR)).sort();
     expect(files).toEqual(['README.md', ...EXPECTED_PROVIDER_FILES]);
   });
@@ -119,7 +152,7 @@ describe('PBF-GOV — registries/providers seeding', () => {
     });
   });
 
-  it('the seeded providers cover the two mission proofs: one keyless technical, one credentialed news', () => {
+  it('the seeded providers keep the two PBF proofs: one keyless technical, one credentialed news', () => {
     const tech = loadJSON(`${PROVIDERS_DIR}/afi-provider-technical-local--1.0.0.json`);
     const news = loadJSON(`${PROVIDERS_DIR}/afi-provider-news-http--1.0.0.json`);
     expect(tech.supportedCategories).toEqual(['technical']);
@@ -128,6 +161,87 @@ describe('PBF-GOV — registries/providers seeding', () => {
     expect(news.supportedCategories).toEqual(['news']);
     expect(news.requiresCredential).toBe(true);
     expect(news.credentialKind).toBe('apiKeyHeader');
+  });
+
+  it('the seeded portfolio covers all five lanes with a keyless provider, plus the two BYOK providers', () => {
+    const all = EXPECTED_PROVIDER_FILES.map(f => loadJSON(`${PROVIDERS_DIR}/${f}`));
+    const keylessLanes = new Set(
+      all.filter(p => !p.requiresCredential).flatMap(p => p.supportedCategories)
+    );
+    expect([...keylessLanes].sort()).toEqual(['aiMl', 'news', 'pattern', 'sentiment', 'technical']);
+    const byok = all.filter(p => p.requiresCredential).map(p => p.providerId).sort();
+    expect(byok).toEqual(['afi-provider-news-http', 'afi-provider-sentiment-coinalyze']);
+    byok.forEach(id => {
+      const p = all.find(x => x.providerId === id)!;
+      expect(p.credentialKind, `${id} must be header-key`).toBe('apiKeyHeader');
+    });
+  });
+});
+
+describe('FLPR-GOV — registries/provider-instances seeding', () => {
+  it('directory contains EXACTLY the eight seeded instance records + README (drift guard)', () => {
+    const files = readdirSync(join(rootDir, INSTANCES_DIR)).sort();
+    expect(files).toEqual(['README.md', ...EXPECTED_INSTANCE_FILES]);
+  });
+
+  it('every seeded instance is schema-valid and filename matches providerInstanceId--recordVersion', () => {
+    const validate = createAjv().compile(loadJSON('schemas/provider-instance/v1/provider-instance.schema.json'));
+    EXPECTED_INSTANCE_FILES.forEach(f => {
+      const inst = loadJSON(`${INSTANCES_DIR}/${f}`);
+      const ok = validate(inst);
+      if (!ok) console.error(`${f} failure:`, validate.errors);
+      expect(ok, `${f} must be schema-valid`).toBe(true);
+      expect(f).toBe(`${inst.providerInstanceId}--${inst.recordVersion}.json`);
+    });
+  });
+
+  it('every seeded instance cross-resolves against the seeded providers + credential-refs with ZERO violations', () => {
+    const providers: Record<string, any> = {};
+    EXPECTED_PROVIDER_FILES.forEach(f => {
+      const p = loadJSON(`${PROVIDERS_DIR}/${f}`);
+      providers[p.providerId] = p;
+    });
+    const credRefs: Record<string, any> = {};
+    EXPECTED_CREDREF_FILES.forEach(f => {
+      const c = loadJSON(`${CREDREFS_DIR}/${f}`);
+      credRefs[c.credentialRef] = c;
+    });
+    EXPECTED_INSTANCE_FILES.forEach(f => {
+      const inst = loadJSON(`${INSTANCES_DIR}/${f}`);
+      expect(providerInstanceViolations(inst, { providers, credRefs }), `${f} must cross-resolve`).toEqual([]);
+    });
+  });
+
+  it('the five reference instances form the committed all-five KEYLESS profile (FLPR-GOV D-FLPR-7)', () => {
+    Object.entries(REFERENCE_PROFILE).forEach(([lane, id]) => {
+      const inst = loadJSON(`${INSTANCES_DIR}/${id}--1.0.0.json`);
+      expect(inst.category, `${id} lane`).toBe(lane);
+      expect(inst.status).toBe('active');
+      expect(inst.credentialRef, `${id} must be keyless`).toBeUndefined();
+      const provider = loadJSON(`${PROVIDERS_DIR}/${inst.providerId}--1.0.0.json`);
+      expect(provider.requiresCredential, `${id} provider must be keyless`).toBe(false);
+    });
+  });
+});
+
+describe('FLPR-GOV — registries/credential-refs seeding', () => {
+  it('directory contains EXACTLY the two seeded credential-ref records + README (drift guard)', () => {
+    const files = readdirSync(join(rootDir, CREDREFS_DIR)).sort();
+    expect(files).toEqual(['README.md', ...EXPECTED_CREDREF_FILES]);
+  });
+
+  it('every seeded credential-ref is schema-valid, filename matches, and points at a credentialed provider', () => {
+    const validate = createAjv().compile(loadJSON('schemas/credential-ref/v1/credential-ref.schema.json'));
+    EXPECTED_CREDREF_FILES.forEach(f => {
+      const c = loadJSON(`${CREDREFS_DIR}/${f}`);
+      const ok = validate(c);
+      if (!ok) console.error(`${f} failure:`, validate.errors);
+      expect(ok, `${f} must be schema-valid`).toBe(true);
+      expect(f).toBe(`${c.credentialRef}--${c.recordVersion}.json`);
+      const provider = loadJSON(`${PROVIDERS_DIR}/${c.providerId}--1.0.0.json`);
+      expect(provider.requiresCredential, `${f} provider must require a credential`).toBe(true);
+      expect(c.credentialKind).toBe(provider.credentialKind);
+    });
   });
 });
 
@@ -140,8 +254,12 @@ describe('PBF-GOV — secret-name denylist (defense in depth)', () => {
     expect(secretFieldViolations({ credentialRef: 'ref-1', credentialKind: 'apiKeyHeader' })).toEqual([]);
   });
 
-  it('no seeded provider record, credential-ref, or provider-instance fixture contains a secret-named field', () => {
-    const providerFiles = EXPECTED_PROVIDER_FILES.map(f => `${PROVIDERS_DIR}/${f}`);
+  it('no seeded provider/instance/credential-ref record or fixture contains a secret-named field', () => {
+    const registryFiles = [
+      ...EXPECTED_PROVIDER_FILES.map(f => `${PROVIDERS_DIR}/${f}`),
+      ...EXPECTED_INSTANCE_FILES.map(f => `${INSTANCES_DIR}/${f}`),
+      ...EXPECTED_CREDREF_FILES.map(f => `${CREDREFS_DIR}/${f}`),
+    ];
     const fixtureDirs = [
       'examples/provider/v1/vectors/valid',
       'examples/credential-ref/v1/vectors/valid',
@@ -150,7 +268,7 @@ describe('PBF-GOV — secret-name denylist (defense in depth)', () => {
     const fixtureFiles = fixtureDirs.flatMap(d =>
       readdirSync(join(rootDir, d)).filter(f => f.endsWith('.json')).map(f => `${d}/${f}`)
     );
-    [...providerFiles, ...fixtureFiles].forEach(rel => {
+    [...registryFiles, ...fixtureFiles].forEach(rel => {
       expect(secretFieldViolations(loadJSON(rel)), `${rel} must carry no secret-named field`).toEqual([]);
     });
   });

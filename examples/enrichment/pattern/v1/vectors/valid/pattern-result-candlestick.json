@@ -1,0 +1,21 @@
+{
+  "category": "pattern",
+  "series": {
+    "seriesId": "sig-000123:candles:close",
+    "length": 100,
+    "indexBasis": "position"
+  },
+  "motifs": [],
+  "discords": [],
+  "changePoints": [],
+  "pivots": [],
+  "candlestick": {
+    "patternName": "bullish engulfing",
+    "patternConfidence": 75,
+    "flags": {
+      "bullishEngulfing": true
+    },
+    "structureBias": "higher-highs",
+    "trendPullbackConfirmed": true
+  }
+}

@@ -22,25 +22,29 @@ This directory holds the **canonical registry of analysis plugin manifests** —
 ## Change control (the generic administrative rule)
 
 - Adding a manifest is an administrative registry act (owner-merged PR, schema-validated).
-- Files are never edited in place and never deleted; supersession is by new version.
+- Files are never edited in place; supersession is by new version (a new file).
+- Removing a **superseded** version that no registered pipeline references is an
+  owner-authorized governance act, never a routine edit (FLPR-GOV D-FLPR-6 removed the
+  five 1.0.0 lane manifests and the 1.0.0 merge manifest when the five-lane provider
+  runtime superseded them; git history is the archive).
 - The test suite pins this directory's contents to the authorized set (drift guard): adding a manifest requires updating the pinned list in the same PR.
 
 ## Current contents
 
-The **seven official froggy-trend-pullback plugin manifests** (W3a administrative seeding; byte-identical copies of the accepted `afi-factory` main `templates/official/froggy-trend-pullback/plugins/` artifacts):
+The **seven official froggy-trend-pullback plugin manifests** (five-lane provider runtime, FLPR-GOV — the five lane plugins are vendor-neutral and provider-instance-backed):
 
 | pluginId | pluginVersion | category |
 |---|---|---|
-| `afi-analysis-technical` | 1.0.0 | technical |
-| `afi-analysis-pattern` | 1.0.0 | pattern |
-| `afi-analysis-sentiment` | 1.0.0 | sentiment |
-| `afi-analysis-news` | 1.0.0 | news |
-| `afi-analysis-aiml` | 1.0.0 | aiMl |
-| `afi-merge-enriched-view` | 1.0.0 | merge |
+| `afi-analysis-technical` | 2.0.0 | technical |
+| `afi-analysis-pattern` | 2.0.0 | pattern |
+| `afi-analysis-sentiment` | 2.0.0 | sentiment |
+| `afi-analysis-news` | 2.0.0 | news |
+| `afi-analysis-aiml` | 2.0.0 | aiMl |
+| `afi-merge-enriched-view` | 1.1.0 | merge |
 | `afi-scorer-froggy-trend-pullback` | 1.0.0 | scorer |
 
 Their canonical plugin-set hash (`afi.d2.plugin-set`) is
-`6d54c8b720d6d709962bc2b8c792b4e8b1657308fac46fbec33a8f24232e0bb7`, recomputed
+`5384e1c08ce4bd7f533acc15487df81d7d37b6615d109d611bde968a81f2f386`, recomputed
 and asserted by the test suite.
 
 Worked examples (schema-valid vectors, including negatives) live under
