@@ -1,0 +1,14 @@
+{
+  "schema": "afi.provider.v1",
+  "providerId": "afi-provider-technical-local",
+  "recordVersion": "1.0.0",
+  "displayName": "AFI Local Technical Indicators (keyless)",
+  "supportedCategories": [
+    "technical"
+  ],
+  "executionClass": "local",
+  "deterministic": true,
+  "adapterId": "../../etc/passwd",
+  "requiresCredential": false,
+  "status": "active"
+}

@@ -1,0 +1,12 @@
+{
+  "schema": "afi.provider-instance.v1",
+  "providerInstanceId": "pi-news-http-tenant-a",
+  "recordVersion": "1.0.0",
+  "tenant": "tenant-a",
+  "category": "news",
+  "providerId": "afi-provider-news-http",
+  "adapterId": "afi-adapter-news-http",
+  "adapterVersion": "1.0.0",
+  "credentialRef": "newsdata-key-tenant-a",
+  "status": "active"
+}

@@ -1,0 +1,15 @@
+{
+  "category": "technical",
+  "news": {
+    "shockScore": 0.42,
+    "articleCount": 7,
+    "topHeadline": "BTC ETF inflows rise",
+    "sentiment": "positive",
+    "windowHours": 4
+  },
+  "newsFeatures": {
+    "shock": 0.42,
+    "volume": 7,
+    "polarity": 0.31
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "category": "news",
+  "news": {
+    "shockScore": 0.0,
+    "articleCount": 0,
+    "topHeadline": null,
+    "sentiment": "neutral",
+    "windowHours": 4
+  },
+  "newsFeatures": {
+    "shock": 0.0,
+    "volume": 0,
+    "polarity": 0.0
+  }
+}
