@@ -1,0 +1,9 @@
+{
+  "schema": "afi.credential-ref.v1",
+  "credentialRef": "newsdata-key-tenant-a",
+  "recordVersion": "1.0.0",
+  "tenant": "tenant-a",
+  "providerId": "afi-provider-news-http",
+  "credentialKind": "oauthRefreshToken",
+  "status": "active"
+}

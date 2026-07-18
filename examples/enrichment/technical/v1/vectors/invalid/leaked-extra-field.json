@@ -1,0 +1,29 @@
+{
+  "category": "technical",
+  "technical": {
+    "rsi14": 61.2,
+    "ema20": 42120.5,
+    "atr14": 355.7,
+    "trend": "up"
+  },
+  "candles": [
+    {
+      "t": 1700000000000,
+      "o": 41900,
+      "h": 42200,
+      "l": 41850,
+      "c": 42120,
+      "v": 1234.5
+    },
+    {
+      "t": 1700003600000,
+      "o": 42120,
+      "h": 42400,
+      "l": 42050,
+      "c": 42310,
+      "v": 987.1
+    }
+  ],
+  "priceSource": "blofin",
+  "requestUrl": "https://newsdata.io/api/1/crypto?apikey=LEAK"
+}

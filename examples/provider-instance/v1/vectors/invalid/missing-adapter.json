@@ -1,0 +1,10 @@
+{
+  "schema": "afi.provider-instance.v1",
+  "providerInstanceId": "pi-technical-local-tenant-a",
+  "recordVersion": "1.0.0",
+  "tenant": "tenant-a",
+  "category": "technical",
+  "providerId": "afi-provider-technical-local",
+  "adapterVersion": "1.0.0",
+  "status": "active"
+}

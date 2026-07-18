@@ -1,0 +1,19 @@
+{
+  "schema": "afi.provider.v1",
+  "providerId": "afi-provider-aiml-tinybrains",
+  "recordVersion": "1.0.0",
+  "displayName": "AFI Tiny Brains (aiMl, keyless sidecar)",
+  "supportedCategories": [
+    "aiMl"
+  ],
+  "executionClass": "remote",
+  "deterministic": false,
+  "adapterId": "afi-adapter-aiml-tinybrains",
+  "requiresCredential": false,
+  "supportedModels": [
+    "chronos",
+    "hmm",
+    "lightgbm"
+  ],
+  "status": "active"
+}

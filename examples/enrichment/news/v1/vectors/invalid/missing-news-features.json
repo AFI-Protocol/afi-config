@@ -1,0 +1,10 @@
+{
+  "category": "news",
+  "news": {
+    "shockScore": 0.42,
+    "articleCount": 7,
+    "topHeadline": "BTC ETF inflows rise",
+    "sentiment": "positive",
+    "windowHours": 4
+  }
+}

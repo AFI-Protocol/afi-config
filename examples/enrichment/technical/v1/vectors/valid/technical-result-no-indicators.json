@@ -1,0 +1,15 @@
+{
+  "category": "technical",
+  "technical": null,
+  "candles": [
+    {
+      "t": 1700000000000,
+      "o": 1,
+      "h": 2,
+      "l": 0.5,
+      "c": 1.5,
+      "v": 10
+    }
+  ],
+  "priceSource": "coinbase"
+}
