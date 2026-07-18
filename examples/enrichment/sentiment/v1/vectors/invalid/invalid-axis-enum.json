@@ -1,0 +1,9 @@
+{
+  "category": "sentiment",
+  "axes": [
+    {
+      "axis": "vibes",
+      "score": 0.5
+    }
+  ]
+}

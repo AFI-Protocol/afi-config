@@ -1,0 +1,10 @@
+{
+  "category": "aiMl",
+  "forecast": {
+    "direction": "long",
+    "conviction": 0.5
+  },
+  "regime": {
+    "label": "the model believes we are in a calm bull regime"
+  }
+}

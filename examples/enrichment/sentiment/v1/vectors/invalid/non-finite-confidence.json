@@ -1,0 +1,10 @@
+{
+  "category": "sentiment",
+  "axes": [
+    {
+      "axis": "funding",
+      "score": 0.1,
+      "confidence": 1e400
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "category": "pattern",
+  "series": {
+    "seriesId": "series-a",
+    "length": 128,
+    "indexBasis": "position"
+  },
+  "motifs": [],
+  "discords": [],
+  "changePoints": [],
+  "pivots": [],
+  "matrixProfile": [1.23, 0.41, 2.02, 0.0]
+}

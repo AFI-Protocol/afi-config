@@ -1,0 +1,9 @@
+{
+  "category": "news",
+  "axes": [
+    {
+      "axis": "funding",
+      "score": 0.1
+    }
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "category": "pattern",
+  "series": {
+    "seriesId": "series-a",
+    "length": 128,
+    "indexBasis": "position"
+  },
+  "motifs": [
+    {
+      "windowSize": 8,
+      "index": -1,
+      "neighborIndex": 60,
+      "similarity": 0.9
+    }
+  ],
+  "discords": [],
+  "changePoints": [],
+  "pivots": []
+}
