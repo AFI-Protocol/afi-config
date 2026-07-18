@@ -18,7 +18,7 @@ This directory holds the **canonical registry of registered analyst strategies**
 ## Change control (the generic administrative rule)
 
 - **Adding** an entry and **flipping `status`** (`active` ⇔ `inactive`) are administrative registry acts: an owner-merged PR referencing the registering act in `registrationRef`.
-- An entry's **triple and `analystConfigHash` never mutate**. Corrections register a **new `strategyVersion`** (a new file); retirement flips `status`.
+- An entry's **triple never mutates**, and its **`analystConfigHash` never mutates outside an owner-authorized pin re-record** (next bullet). Corrections register a **new `strategyVersion`** (a new file); retirement flips `status`.
 - Re-recording an entry's **composition pin** (its config's `pipelineRef` and the
   recomputed `analystConfigHash`) under the SAME strategy triple is an
   owner-authorized governance act, never a routine edit (FLPR-GOV D-FLPR-6 re-recorded
