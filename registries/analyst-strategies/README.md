@@ -18,16 +18,20 @@ This directory holds the **canonical registry of registered analyst strategies**
 ## Change control (the generic administrative rule)
 
 - **Adding** an entry and **flipping `status`** (`active` ⇔ `inactive`) are administrative registry acts: an owner-merged PR referencing the registering act in `registrationRef`.
-- An entry's **triple and `analystConfigHash` never mutate**. Corrections register a **new `strategyVersion`** (a new file); retirement flips `status` — files are never deleted.
+- An entry's **triple and `analystConfigHash` never mutate**. Corrections register a **new `strategyVersion`** (a new file); retirement flips `status`.
+- Removing a **superseded** entry (and its co-located config) that nothing references
+  is an owner-authorized governance act, never a routine edit (FLPR-GOV D-FLPR-6
+  removed the 1.0.0 registration + config when the five-lane provider runtime
+  superseded them; git history is the archive).
 - The test suite pins this directory's contents to the authorized set (drift guard): adding an entry requires updating the pinned list in the same PR.
 
 ## Current contents
 
-The production **froggy** registration (W3a administrative seeding, reactor wave):
+The production **froggy** registration (five-lane provider runtime, FLPR-GOV):
 
-- [`froggy--trend_pullback_v1--1.0.0.json`](./froggy--trend_pullback_v1--1.0.0.json) — the registration entry (`status: active`, `providerBindingPolicy: explicit` over the seeded [`provider-bindings`](../provider-bindings/)).
-- [`froggy--trend_pullback_v1--1.0.0.config.json`](./froggy--trend_pullback_v1--1.0.0.config.json) — the co-located registered `afi.analyst-strategy-config.v1` artifact the entry's `configRef` resolves to (a **byte-identical copy** of the accepted `afi-factory` main `templates/official/froggy-trend-pullback/analyst-config.json`). Its canonical hash (domain tag `afi.d2.analyst-config`) is
-  `269ae355a0d8bfaf53d849c38fba16e167f0571b6319ddc8d94841ff7c275261`, recomputed and asserted by the test suite.
+- [`froggy--trend_pullback_v1--1.1.0.json`](./froggy--trend_pullback_v1--1.1.0.json) — the registration entry (`status: active`, `providerBindingPolicy: explicit` over the seeded [`provider-bindings`](../provider-bindings/)).
+- [`froggy--trend_pullback_v1--1.1.0.config.json`](./froggy--trend_pullback_v1--1.1.0.config.json) — the co-located registered `afi.analyst-strategy-config.v1` artifact the entry's `configRef` resolves to, pinning the [`froggy-trend-pullback--v1.1.0`](../pipelines/froggy-trend-pullback--v1.1.0.json) manifest by canonical hash. Its canonical hash (domain tag `afi.d2.analyst-config`) is
+  `120cd9ada58a86b6b84b9fe376ca35ac82c44e7eda95254c7c8f42b684cc1603`, recomputed and asserted by the test suite.
 
 Co-located config artifacts are named `<analystId>--<strategyId>--<strategyVersion>.config.json` beside their registration entry.
 

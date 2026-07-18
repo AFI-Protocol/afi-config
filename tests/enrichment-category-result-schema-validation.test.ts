@@ -63,8 +63,11 @@ const FAMILIES = [
     example: 'examples/enrichment/pattern/v1/enrichment-pattern.example.json',
     validDir: 'examples/enrichment/pattern/v1/vectors/valid',
     invalidDir: 'examples/enrichment/pattern/v1/vectors/invalid',
-    valid: ['pattern-result.json', 'pattern-result-empty.json'],
+    valid: ['pattern-result.json', 'pattern-result-candlestick.json', 'pattern-result-empty.json'],
     invalid: [
+      'candlestick-confidence-out-of-range.json',
+      'candlestick-extra-property.json',
+      'candlestick-unknown-pattern-name.json',
       'credential-like-field.json',
       'invalid-pivot-kind.json',
       'malformed-index.json',

@@ -1,0 +1,16 @@
+{
+  "category": "pattern",
+  "series": {
+    "seriesId": "series-a",
+    "length": 100,
+    "indexBasis": "position"
+  },
+  "motifs": [],
+  "discords": [],
+  "changePoints": [],
+  "pivots": [],
+  "candlestick": {
+    "patternName": "double top",
+    "patternConfidence": 75
+  }
+}

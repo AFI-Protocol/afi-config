@@ -17,17 +17,26 @@ whether it requires a credential (and, if so, the **kind** — never a value), a
 closed set of supported models, and an active/inactive status. It never contains a
 credential value (`additionalProperties:false`).
 
-## Seeded reference records (the two v0.1 proofs)
+## Seeded records (the five-lane provider portfolio, FLPR-GOV)
 
 | Provider | Category | Credential | Adapter |
 |---|---|---|---|
 | `afi-provider-technical-local` | `technical` | keyless | `afi-adapter-technical-local` (local, deterministic) |
+| `afi-provider-pattern-candlestick` | `pattern` | keyless | `afi-adapter-pattern-candlestick` (local, deterministic) |
+| `afi-provider-pattern-tiny-brains` | `pattern` | keyless | `afi-adapter-pattern-tiny-brains` (remote self-hosted, deterministic) |
+| `afi-provider-sentiment-cftc-cot` | `sentiment` | keyless | `afi-adapter-sentiment-cftc-cot` (remote, public-domain source) |
+| `afi-provider-sentiment-coinalyze` | `sentiment` | BYOK `apiKeyHeader` | `afi-adapter-sentiment-coinalyze` (remote, header-authenticated) |
 | `afi-provider-news-http` | `news` | BYOK `apiKeyHeader` | `afi-adapter-news-http` (remote, header-authenticated) |
+| `afi-provider-news-sec-edgar` | `news` | keyless | `afi-adapter-news-sec-edgar` (remote, US-government source) |
+| `afi-provider-aiml-tiny-brains` | `aiMl` | keyless | `afi-adapter-aiml-tiny-brains` (remote self-hosted) |
 
 Adding a conforming provider is an **administrative registry update** under FCP-GOV
 D-FCP-5 — not per-participant governance.
 
-**Provider instances and credential references are deployment-local tenant/operator
-configuration, not a public registry** (D-PBF-7); their reference shapes live under
+**Deployment- or tenant-specific provider instances and credential references remain
+tenant/operator configuration** (D-PBF-7). The committed, non-secret **reference**
+instance and credential-ref records that make up the all-five reference profile
+(FLPR-GOV D-FLPR-7) live in `registries/provider-instances/` and
+`registries/credential-refs/`; the governed shapes live under
 `schemas/provider-instance/` and `schemas/credential-ref/`, with fixtures under
 `examples/provider-instance/` and `examples/credential-ref/`.

@@ -1,0 +1,19 @@
+{
+  "category": "pattern",
+  "series": {
+    "seriesId": "series-a",
+    "length": 100,
+    "indexBasis": "position"
+  },
+  "motifs": [],
+  "discords": [],
+  "changePoints": [],
+  "pivots": [],
+  "candlestick": {
+    "patternName": "inside bar",
+    "patternConfidence": 60,
+    "rawProviderPayload": {
+      "vendor": "not-allowed"
+    }
+  }
+}
