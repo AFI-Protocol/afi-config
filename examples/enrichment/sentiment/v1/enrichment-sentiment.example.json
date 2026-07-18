@@ -1,0 +1,21 @@
+{
+  "category": "sentiment",
+  "axes": [
+    {
+      "axis": "positioning",
+      "score": -0.35,
+      "confidence": 0.7,
+      "horizon": "weekly"
+    },
+    {
+      "axis": "funding",
+      "score": 0.12,
+      "confidence": 0.5,
+      "horizon": "intraday"
+    },
+    {
+      "axis": "narrative",
+      "score": 0.6
+    }
+  ]
+}

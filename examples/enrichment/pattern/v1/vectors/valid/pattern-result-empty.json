@@ -1,0 +1,12 @@
+{
+  "category": "pattern",
+  "series": {
+    "seriesId": "short-series",
+    "length": 3,
+    "indexBasis": "position"
+  },
+  "motifs": [],
+  "discords": [],
+  "changePoints": [],
+  "pivots": []
+}

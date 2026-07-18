@@ -1,0 +1,11 @@
+{
+  "category": "aiMl",
+  "forecast": {
+    "direction": "short",
+    "conviction": 0.4
+  },
+  "regime": {
+    "label": "panic_bear"
+  },
+  "riskFlag": true
+}

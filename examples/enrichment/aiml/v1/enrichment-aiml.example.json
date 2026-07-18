@@ -1,0 +1,13 @@
+{
+  "category": "aiMl",
+  "forecast": {
+    "direction": "long",
+    "conviction": 0.72,
+    "horizon": "daily"
+  },
+  "regime": {
+    "label": "calm_bull",
+    "confidence": 0.66
+  },
+  "riskFlag": false
+}

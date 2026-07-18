@@ -1,0 +1,8 @@
+{
+  "category": "aiMl",
+  "forecast": {
+    "direction": "long",
+    "conviction": 0.5
+  },
+  "notes": "chain-of-thought: first I considered the RSI, then the trend, and concluded long."
+}

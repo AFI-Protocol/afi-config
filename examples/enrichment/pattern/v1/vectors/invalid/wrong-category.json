@@ -1,0 +1,12 @@
+{
+  "category": "technical",
+  "series": {
+    "seriesId": "series-a",
+    "length": 128,
+    "indexBasis": "position"
+  },
+  "motifs": [],
+  "discords": [],
+  "changePoints": [],
+  "pivots": []
+}

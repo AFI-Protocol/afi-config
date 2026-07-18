@@ -1,0 +1,19 @@
+{
+  "category": "sentiment",
+  "axes": [
+    {
+      "axis": "openInterest",
+      "score": 0.2
+    },
+    {
+      "axis": "longShort",
+      "score": -0.8,
+      "confidence": 0.9
+    },
+    {
+      "axis": "impliedVolatility",
+      "score": 0.0,
+      "horizon": "daily"
+    }
+  ]
+}

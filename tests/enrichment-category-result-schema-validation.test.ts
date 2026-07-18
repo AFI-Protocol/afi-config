@@ -51,6 +51,69 @@ const FAMILIES = [
     valid: ['news-result-default-summary.json', 'news-result.json'],
     invalid: ['leaked-url-field.json', 'missing-news-features.json', 'wrong-category.json'],
   },
+  // Mission 4 (enrichment contracts + local pattern proof v0.1): the three
+  // previously-missing category-result contracts. 'pattern' additionally gets a
+  // live deterministic local implementation (afi-tiny-brains kernel + afi-reactor
+  // adapter); 'sentiment' and 'aiMl' ship as contracts + fixtures only. The
+  // 'aiMl' schema path/ref is lowercase ('aiml'); its runtime category MARKER is
+  // camelCase 'aiMl' (matching AnalysisCategory) — so lane === the category const.
+  {
+    lane: 'pattern',
+    schema: 'schemas/enrichment/pattern/v1/enrichment-pattern.schema.json',
+    example: 'examples/enrichment/pattern/v1/enrichment-pattern.example.json',
+    validDir: 'examples/enrichment/pattern/v1/vectors/valid',
+    invalidDir: 'examples/enrichment/pattern/v1/vectors/invalid',
+    valid: ['pattern-result.json', 'pattern-result-empty.json'],
+    invalid: [
+      'credential-like-field.json',
+      'invalid-pivot-kind.json',
+      'malformed-index.json',
+      'missing-series.json',
+      'non-finite-anomaly-score.json',
+      'out-of-range-similarity.json',
+      'oversized-motifs.json',
+      'provider-payload-injection.json',
+      'unknown-top-level-field.json',
+      'wrong-category.json',
+    ],
+  },
+  {
+    lane: 'sentiment',
+    schema: 'schemas/enrichment/sentiment/v1/enrichment-sentiment.schema.json',
+    example: 'examples/enrichment/sentiment/v1/enrichment-sentiment.example.json',
+    validDir: 'examples/enrichment/sentiment/v1/vectors/valid',
+    invalidDir: 'examples/enrichment/sentiment/v1/vectors/invalid',
+    valid: ['sentiment-result.json', 'sentiment-result-empty.json'],
+    invalid: [
+      'credential-like-field.json',
+      'invalid-axis-enum.json',
+      'missing-axes.json',
+      'non-finite-confidence.json',
+      'out-of-range-score.json',
+      'oversized-axes.json',
+      'unknown-top-level-field.json',
+      'wrong-category.json',
+    ],
+  },
+  {
+    lane: 'aiMl',
+    schema: 'schemas/enrichment/aiml/v1/enrichment-aiml.schema.json',
+    example: 'examples/enrichment/aiml/v1/enrichment-aiml.example.json',
+    validDir: 'examples/enrichment/aiml/v1/vectors/valid',
+    invalidDir: 'examples/enrichment/aiml/v1/vectors/invalid',
+    valid: ['aiml-result.json', 'aiml-result-forecast-only.json'],
+    invalid: [
+      'credential-like-field.json',
+      'invalid-direction-enum.json',
+      'missing-forecast.json',
+      'non-finite-conviction.json',
+      'out-of-range-conviction.json',
+      'prose-notes-field.json',
+      'regime-label-prose.json',
+      'unknown-top-level-field.json',
+      'wrong-category.json',
+    ],
+  },
 ];
 
 describe('PBF-GOV — afi.enrichment.*.v1 category-result contracts', () => {

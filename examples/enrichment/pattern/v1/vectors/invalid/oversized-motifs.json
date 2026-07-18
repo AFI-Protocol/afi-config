@@ -1,0 +1,403 @@
+{
+  "category": "pattern",
+  "series": {
+    "seriesId": "series-a",
+    "length": 128,
+    "indexBasis": "position"
+  },
+  "motifs": [
+    {
+      "windowSize": 8,
+      "index": 0,
+      "neighborIndex": 1,
+      "similarity": 0.5
+    },
+    {
+      "windowSize": 8,
+      "index": 1,
+      "neighborIndex": 2,
+      "similarity": 0.5
+    },
+    {
+      "windowSize": 8,
+      "index": 2,
+      "neighborIndex": 3,
+      "similarity": 0.5
+    },
+    {
+      "windowSize": 8,
+      "index": 3,
+      "neighborIndex": 4,
+      "similarity": 0.5
+    },
+    {
+      "windowSize": 8,
+      "index": 4,
+      "neighborIndex": 5,
+      "similarity": 0.5
+    },
+    {
+      "windowSize": 8,
+      "index": 5,
+      "neighborIndex": 6,
+      "similarity": 0.5
+    },
+    {
+      "windowSize": 8,
+      "index": 6,
+      "neighborIndex": 7,
+      "similarity": 0.5
+    },
+    {
+      "windowSize": 8,
+      "index": 7,
+      "neighborIndex": 8,
+      "similarity": 0.5
+    },
+    {
+      "windowSize": 8,
+      "index": 8,
+      "neighborIndex": 9,
+      "similarity": 0.5
+    },
+    {
+      "windowSize": 8,
+      "index": 9,
+      "neighborIndex": 10,
+      "similarity": 0.5
+    },
+    {
+      "windowSize": 8,
+      "index": 10,
+      "neighborIndex": 11,
+      "similarity": 0.5
+    },
+    {
+      "windowSize": 8,
+      "index": 11,
+      "neighborIndex": 12,
+      "similarity": 0.5
+    },
+    {
+      "windowSize": 8,
+      "index": 12,
+      "neighborIndex": 13,
+      "similarity": 0.5
+    },
+    {
+      "windowSize": 8,
+      "index": 13,
+      "neighborIndex": 14,
+      "similarity": 0.5
+    },
+    {
+      "windowSize": 8,
+      "index": 14,
+      "neighborIndex": 15,
+      "similarity": 0.5
+    },
+    {
+      "windowSize": 8,
+      "index": 15,
+      "neighborIndex": 16,
+      "similarity": 0.5
+    },
+    {
+      "windowSize": 8,
+      "index": 16,
+      "neighborIndex": 17,
+      "similarity": 0.5
+    },
+    {
+      "windowSize": 8,
+      "index": 17,
+      "neighborIndex": 18,
+      "similarity": 0.5
+    },
+    {
+      "windowSize": 8,
+      "index": 18,
+      "neighborIndex": 19,
+      "similarity": 0.5
+    },
+    {
+      "windowSize": 8,
+      "index": 19,
+      "neighborIndex": 20,
+      "similarity": 0.5
+    },
+    {
+      "windowSize": 8,
+      "index": 20,
+      "neighborIndex": 21,
+      "similarity": 0.5
+    },
+    {
+      "windowSize": 8,
+      "index": 21,
+      "neighborIndex": 22,
+      "similarity": 0.5
+    },
+    {
+      "windowSize": 8,
+      "index": 22,
+      "neighborIndex": 23,
+      "similarity": 0.5
+    },
+    {
+      "windowSize": 8,
+      "index": 23,
+      "neighborIndex": 24,
+      "similarity": 0.5
+    },
+    {
+      "windowSize": 8,
+      "index": 24,
+      "neighborIndex": 25,
+      "similarity": 0.5
+    },
+    {
+      "windowSize": 8,
+      "index": 25,
+      "neighborIndex": 26,
+      "similarity": 0.5
+    },
+    {
+      "windowSize": 8,
+      "index": 26,
+      "neighborIndex": 27,
+      "similarity": 0.5
+    },
+    {
+      "windowSize": 8,
+      "index": 27,
+      "neighborIndex": 28,
+      "similarity": 0.5
+    },
+    {
+      "windowSize": 8,
+      "index": 28,
+      "neighborIndex": 29,
+      "similarity": 0.5
+    },
+    {
+      "windowSize": 8,
+      "index": 29,
+      "neighborIndex": 30,
+      "similarity": 0.5
+    },
+    {
+      "windowSize": 8,
+      "index": 30,
+      "neighborIndex": 31,
+      "similarity": 0.5
+    },
+    {
+      "windowSize": 8,
+      "index": 31,
+      "neighborIndex": 32,
+      "similarity": 0.5
+    },
+    {
+      "windowSize": 8,
+      "index": 32,
+      "neighborIndex": 33,
+      "similarity": 0.5
+    },
+    {
+      "windowSize": 8,
+      "index": 33,
+      "neighborIndex": 34,
+      "similarity": 0.5
+    },
+    {
+      "windowSize": 8,
+      "index": 34,
+      "neighborIndex": 35,
+      "similarity": 0.5
+    },
+    {
+      "windowSize": 8,
+      "index": 35,
+      "neighborIndex": 36,
+      "similarity": 0.5
+    },
+    {
+      "windowSize": 8,
+      "index": 36,
+      "neighborIndex": 37,
+      "similarity": 0.5
+    },
+    {
+      "windowSize": 8,
+      "index": 37,
+      "neighborIndex": 38,
+      "similarity": 0.5
+    },
+    {
+      "windowSize": 8,
+      "index": 38,
+      "neighborIndex": 39,
+      "similarity": 0.5
+    },
+    {
+      "windowSize": 8,
+      "index": 39,
+      "neighborIndex": 40,
+      "similarity": 0.5
+    },
+    {
+      "windowSize": 8,
+      "index": 40,
+      "neighborIndex": 41,
+      "similarity": 0.5
+    },
+    {
+      "windowSize": 8,
+      "index": 41,
+      "neighborIndex": 42,
+      "similarity": 0.5
+    },
+    {
+      "windowSize": 8,
+      "index": 42,
+      "neighborIndex": 43,
+      "similarity": 0.5
+    },
+    {
+      "windowSize": 8,
+      "index": 43,
+      "neighborIndex": 44,
+      "similarity": 0.5
+    },
+    {
+      "windowSize": 8,
+      "index": 44,
+      "neighborIndex": 45,
+      "similarity": 0.5
+    },
+    {
+      "windowSize": 8,
+      "index": 45,
+      "neighborIndex": 46,
+      "similarity": 0.5
+    },
+    {
+      "windowSize": 8,
+      "index": 46,
+      "neighborIndex": 47,
+      "similarity": 0.5
+    },
+    {
+      "windowSize": 8,
+      "index": 47,
+      "neighborIndex": 48,
+      "similarity": 0.5
+    },
+    {
+      "windowSize": 8,
+      "index": 48,
+      "neighborIndex": 49,
+      "similarity": 0.5
+    },
+    {
+      "windowSize": 8,
+      "index": 49,
+      "neighborIndex": 50,
+      "similarity": 0.5
+    },
+    {
+      "windowSize": 8,
+      "index": 50,
+      "neighborIndex": 51,
+      "similarity": 0.5
+    },
+    {
+      "windowSize": 8,
+      "index": 51,
+      "neighborIndex": 52,
+      "similarity": 0.5
+    },
+    {
+      "windowSize": 8,
+      "index": 52,
+      "neighborIndex": 53,
+      "similarity": 0.5
+    },
+    {
+      "windowSize": 8,
+      "index": 53,
+      "neighborIndex": 54,
+      "similarity": 0.5
+    },
+    {
+      "windowSize": 8,
+      "index": 54,
+      "neighborIndex": 55,
+      "similarity": 0.5
+    },
+    {
+      "windowSize": 8,
+      "index": 55,
+      "neighborIndex": 56,
+      "similarity": 0.5
+    },
+    {
+      "windowSize": 8,
+      "index": 56,
+      "neighborIndex": 57,
+      "similarity": 0.5
+    },
+    {
+      "windowSize": 8,
+      "index": 57,
+      "neighborIndex": 58,
+      "similarity": 0.5
+    },
+    {
+      "windowSize": 8,
+      "index": 58,
+      "neighborIndex": 59,
+      "similarity": 0.5
+    },
+    {
+      "windowSize": 8,
+      "index": 59,
+      "neighborIndex": 60,
+      "similarity": 0.5
+    },
+    {
+      "windowSize": 8,
+      "index": 60,
+      "neighborIndex": 61,
+      "similarity": 0.5
+    },
+    {
+      "windowSize": 8,
+      "index": 61,
+      "neighborIndex": 62,
+      "similarity": 0.5
+    },
+    {
+      "windowSize": 8,
+      "index": 62,
+      "neighborIndex": 63,
+      "similarity": 0.5
+    },
+    {
+      "windowSize": 8,
+      "index": 63,
+      "neighborIndex": 64,
+      "similarity": 0.5
+    },
+    {
+      "windowSize": 8,
+      "index": 64,
+      "neighborIndex": 65,
+      "similarity": 0.5
+    }
+  ],
+  "discords": [],
+  "changePoints": [],
+  "pivots": []
+}
