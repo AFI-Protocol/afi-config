@@ -30,7 +30,7 @@ All hashes `$ref` the governed [`canonical-hash.schema.json`](../../provenance/v
 ## Validation
 
 ```
-npm run test:run   # includes tests/composition-evidence-v2-schema-validation.test.ts
+npm run test:run   # includes tests/composition-evidence-v3-schema-validation.test.ts
 ```
 
 Canonical example + governed vectors: [`../../../examples/composition-ref/v1/`](../../../examples/composition-ref/v1/).
