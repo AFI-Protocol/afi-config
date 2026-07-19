@@ -91,15 +91,18 @@ describe('Schema Validation Tests', () => {
         'schemas/provenance/v1/canonical-hash.schema.json',
         'schemas/provenance/v1/evidence-ref.schema.json',
         'schemas/provenance/v1/source-disclosure-profile.schema.json',
-        'schemas/provenance/v1/enrichment-provenance.schema.json',
-        // Composite provenance shapes reused by afi.scored-signal-evidence.v1/v2
-        // (MONGO-CONTRACT / FACTORY-CONTRACT); preloaded so cross-file $refs
-        // resolve regardless of directory read order.
+        // Composite provenance shapes reused by afi.scored-signal-evidence.v3
+        // (EV3-CONTRACT); preloaded so cross-file $refs resolve regardless of
+        // directory read order.
         'schemas/provenance/v1/scored-signal.schema.json',
         'schemas/provenance/v1/provenance-record.schema.json',
-        // Composition provenance stamp reused by afi.scored-signal-evidence.v2
-        // (FACTORY-CONTRACT).
+        // Composition provenance stamp reused by afi.scored-signal-evidence.v3
+        // (FACTORY-CONTRACT / EV3-CONTRACT).
         'schemas/composition-ref/v1/composition-ref.schema.json',
+        // Provider invocation provenance proofs reused by
+        // afi.scored-signal-evidence.v3 (EV3-CONTRACT, EV3-GOV D-EV3-2/D-EV3-3).
+        'schemas/aiml-invocation-proof/v1/aiml-invocation-proof.schema.json',
+        'schemas/provider-invocation-proof/v1/provider-invocation-proof.schema.json',
       ];
       const preloadedSchemaFiles = new Set<string>();
       preloadSchemaFiles.forEach(schemaFile => {

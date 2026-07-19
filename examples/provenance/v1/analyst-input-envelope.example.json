@@ -51,19 +51,5 @@
       "redactionStatus": "disclosed"
     }
   ],
-  "enrichmentProvenance": [
-    {
-      "laneId": "price-context",
-      "engineId": "enrich-engine-a",
-      "laneVersion": "v0.3.0",
-      "engineVersion": "1.4.2",
-      "provisional": false,
-      "status": "complete",
-      "replayabilityLevel": "pinned-inputs",
-      "asOf": "2026-01-15T12:00:00Z",
-      "evidenceRefs": ["ev-price-context-000123-001"],
-      "sourceDisclosureRefs": ["src-exchange-blofin-api"]
-    }
-  ],
   "replayProfileRef": "replay-profile:sig-d2-20260115-000123"
 }

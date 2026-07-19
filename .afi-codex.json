@@ -31,6 +31,11 @@
       "path": "kats/",
       "type": "kat-vector-directory",
       "description": "Known-answer-test vector data for version-pinned profiles (draft-non-implementation)"
+    },
+    {
+      "path": "schemas/scored-signal-evidence/v3/",
+      "type": "schema-directory",
+      "description": "Canonical scored-signal evidence contract (afi.scored-signal-evidence.v3) with per-lane provider invocation provenance — the sole current evidence contract (EV3-GOV)"
     }
   ],
   "provides": [

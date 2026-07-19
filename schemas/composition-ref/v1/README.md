@@ -4,7 +4,7 @@
 **Status:** `governed-contract` (FACTORY-CONTRACT slot of the AFI Factory analyst-configurable pipelines V1 program).
 **Authorization:** `afi-governance/decisions/factory-configurable-pipelines-v1` (realizes reconciliation report §9 N1 as a dedicated object, avoiding N5's `strategyVersion` overloading).
 
-The composition ref is the **complete, hash-pinned identity of what composed a score**. It is carried by `afi.scored-signal-evidence.v2` as the required `composition` property.
+The composition ref is the **complete, hash-pinned identity of what composed a score**. It is carried by `afi.scored-signal-evidence.v3` as the required `composition` property.
 
 ## Shape — ALL fields required, `additionalProperties:false`
 
