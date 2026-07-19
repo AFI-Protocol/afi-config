@@ -1,0 +1,1063 @@
+{
+  "schema": "afi.protocol-atlas.v1",
+  "registryVersion": "0.1.0",
+  "generatedDate": "2026-07-19",
+  "status": "draft-owner-review",
+  "mode": "descriptive / read-only",
+  "authorityRef": "afi-governance/decisions/district-api-atlas-foundation-v0.1 (ATLAS-GOV)",
+  "description": "The canonical machine-readable AFI District / API Atlas foundation (v0.1). Descriptive discoverability layer over the current protocol: two active Districts, their capabilities, the structures that implement them, the real current interfaces, typed routes, referenced contracts, repository roles, participant roles, and onboarding descriptors. Every operational/partial entity cites implementation + test evidence. The Atlas describes protocol truth; it executes, routes, resolves, activates, and persists nothing (ATLAS-GOV D-ATLAS-1).",
+  "sourceOfTruthOrder": [
+    "accepted governance (afi-governance/decisions) — owns authority and District boundaries",
+    "canonical schemas/contracts (afi-config, afi-math) — own machine-valid shape and invariants",
+    "current implementation and tests (afi-reactor, afi-infra, afi-core, afi-gateway, afi-tiny-brains, afi-factory, afi-token) — prove operational reality",
+    "this Atlas registry — assembles discoverability and relationships",
+    "human documentation (afi-docs/AFI_Full_Architecture.md) — explains the Atlas",
+    "the future AFI Protocol City — later visualizes and navigates the Atlas"
+  ],
+  "flowTypes": ["data", "control", "identityTrust", "evidence", "buildArtifact", "value"],
+
+  "districts": [
+    {
+      "districtId": "district-one",
+      "name": "Signal Evaluation",
+      "purpose": "AFI's active Signal Evaluation capability and authority domain: canonical signal input -> five-category provider-backed enrichment -> deterministic join -> analyst/scorer/UWR seam -> the scored evaluation result handed to District Two, without becoming a source of financial truth.",
+      "active": true,
+      "authorityRefs": [
+        "authority-districts-v0.1 (Part D)",
+        "district-one-signal-evaluation-capability-v0.1 (D1CAP-GOV D-D1CAP-1/2/3)",
+        "district-surface-consolidation-v0.1 (DSC-GOV D-DSC-1)"
+      ],
+      "maturity": "operational",
+      "visibility": "restricted",
+      "ownedCapabilityRefs": ["signal-ingest-normalization", "five-category-enrichment", "deterministic-scoring-uwr", "pipeline-composition-authoring"],
+      "servedStructureRefs": ["reactor-runtime", "afi-core-scoring-lib", "afi-math-kernels", "factory-authoring", "gateway", "tiny-brains", "config-registry"],
+      "incomingRouteRefs": ["route-signal-ingest", "route-cpj-ingest", "route-composition-authoring"],
+      "outgoingRouteRefs": ["route-enrichment-tb", "route-credential-resolution", "route-strategy-resolution", "route-scoring", "route-evidence-handoff"],
+      "evidence": [
+        { "kind": "governanceDecision", "ref": "district-one-signal-evaluation-capability-v0.1 (D1CAP-GOV)" },
+        { "kind": "repoPath", "ref": "afi-reactor:src/pipeline/executor.ts", "note": "the one GraphExecutor; sole signal-evaluation executor" },
+        { "kind": "test", "ref": "afi-reactor:test/providers/fiveLaneAdapters.test.ts", "note": "all five lanes fire; one result per category" }
+      ]
+    },
+    {
+      "districtId": "district-two",
+      "name": "Evidence and Provenance",
+      "registryLongForm": "Canonical Data & Provenance Boundary",
+      "purpose": "AFI's active Evidence and Provenance capability and authority domain: invocation-proof binding, canonical Evidence V3 record construction, canonical record and replay hashing, the append-once persistence admission boundary, and replay/supersession semantics. District Two never invokes a provider; evidence describes the invocation that occurred.",
+      "active": true,
+      "authorityRefs": [
+        "authority-districts-v0.1 (Part D)",
+        "district-2-m2-ratification-v0.1",
+        "district-surface-consolidation-v0.1 (DSC-GOV D-DSC-3 relocation to src/evidence/)",
+        "evidence-v3-provider-provenance-v0.1 (EV3-GOV)",
+        "persistence-v0.1 (MONGO-GOV D-MONGO-3)"
+      ],
+      "maturity": "operational",
+      "visibility": "internal",
+      "ownedCapabilityRefs": ["evidence-v3-construction", "canonical-evidence-persistence"],
+      "servedStructureRefs": ["reactor-runtime", "evidence-store", "config-registry"],
+      "incomingRouteRefs": ["route-evidence-handoff"],
+      "outgoingRouteRefs": [],
+      "evidence": [
+        { "kind": "governanceDecision", "ref": "evidence-v3-provider-provenance-v0.1 (EV3-GOV D-EV3-1)" },
+        { "kind": "schemaId", "ref": "afi.scored-signal-evidence.v3" },
+        { "kind": "repoPath", "ref": "afi-infra:src/evidence/MongoScoredSignalEvidenceStore.ts", "note": "sole canonical evidence writer" },
+        { "kind": "test", "ref": "afi-infra:tests/evidence/MongoEvidenceStore.integration.test.ts", "note": "real-Mongo persistence proof" }
+      ]
+    },
+    {
+      "districtId": "chain-settlement",
+      "name": "Settlement, Rewards, Reputation & On-Chain Value",
+      "purpose": "RESERVED capability-domain candidate (not an active District): the future domain of epoch settlement, reward tracks, reputation, and on-chain value. Recorded exactly as authority-districts-v0.1 Part D.2 and Addendum §13 already record it -- an unnumbered, uncreated candidate that requires its own governance (CHAIN-GOV) before it becomes a District. No current capability is owned here.",
+      "active": false,
+      "authorityRefs": [
+        "authority-districts-v0.1 (Part D.2 -- unnumbered uncreated candidate: settlement-readiness/reputation/contracts)",
+        "AFI_DROID_PIPEHEAD_ADDENDUM.v0.1 (§13 version-expansion roster)",
+        "CHAIN-GOV (reserved, unfiled)"
+      ],
+      "maturity": "reserved",
+      "visibility": "public",
+      "ownedCapabilityRefs": [],
+      "servedStructureRefs": ["afi-token", "afi-mint", "afi-math-kernels"],
+      "incomingRouteRefs": [],
+      "outgoingRouteRefs": ["route-emissions-value"],
+      "constructionSummary": "afi-token is deployed on Base Sepolia testnet (86B hard cap, role-gated emissions); afi-mint's off-chain orchestration is implemented and parity-tested but its on-chain execution is not wired; AFI Settlement v1 is governed doctrine with no contracts implemented; the Provider/Analyst/Validator reward-track closure is draft, not accepted. The owning District/authority is reserved to CHAIN-GOV.",
+      "evidence": [
+        { "kind": "governanceDecision", "ref": "authority-districts-v0.1 (Part D.2 / Part H reserved)" },
+        { "kind": "repoPath", "ref": "afi-token:src/AFIToken.sol", "note": "86B cap, Base Sepolia testnet only" }
+      ]
+    }
+  ],
+
+  "capabilities": [
+    {
+      "capabilityId": "signal-ingest-normalization",
+      "name": "Signal ingest and canonical normalization",
+      "purpose": "Receive authorized signal input at an ingress boundary (USS v1.1 webhook or the CPJ community-provider-journal route), resolve the provider->strategy binding fail-closed, map to the canonical USS v1.1 form, and validate before evaluation.",
+      "owningDistrictRef": "district-one",
+      "implementingStructureRefs": ["reactor-runtime", "gateway"],
+      "inputContractRefs": ["afi.usignal.v1.1", "afi.cpj.v0.1"],
+      "outputContractRefs": ["afi.usignal.v1.1"],
+      "interfaceRefs": ["iface-gateway-signals", "iface-reactor-webhook", "iface-reactor-cpj", "iface-uss-schema", "iface-cpj-schema"],
+      "participantRoleRefs": ["role-signal-provider"],
+      "maturity": "operational",
+      "visibility": "restricted",
+      "evidence": [
+        { "kind": "repoPath", "ref": "afi-reactor:src/server.ts:215", "note": "POST /api/webhooks/tradingview" },
+        { "kind": "repoPath", "ref": "afi-reactor:src/server.ts:376", "note": "POST /api/ingest/cpj" },
+        { "kind": "test", "ref": "afi-reactor:test/integration/cpj-ingestion.test.ts" }
+      ]
+    },
+    {
+      "capabilityId": "five-category-enrichment",
+      "name": "Five-category provider-backed enrichment",
+      "purpose": "Execute exactly the five governed enrichment categories (technical, pattern, sentiment, news, aiMl) through the provider-adapter runtime, resolving an explicit ProviderInstance per lane, validating each governed afi.enrichment.<category>.v1 output, and joining exactly one result per category. All five lanes must succeed for a scored evaluation to exist.",
+      "owningDistrictRef": "district-one",
+      "implementingStructureRefs": ["reactor-runtime", "tiny-brains"],
+      "inputContractRefs": ["afi.provider.v1", "afi.provider-instance.v1", "afi.credential-ref.v1"],
+      "outputContractRefs": ["afi.enrichment.technical.v1", "afi.enrichment.pattern.v1", "afi.enrichment.sentiment.v1", "afi.enrichment.news.v1", "afi.enrichment.aiml.v1"],
+      "interfaceRefs": ["iface-enrichment-schemas", "iface-provider-byok-schemas", "iface-tb-predict", "iface-tb-pattern"],
+      "participantRoleRefs": ["role-data-enrichment-provider"],
+      "maturity": "operational",
+      "visibility": "internal",
+      "evidence": [
+        { "kind": "governanceDecision", "ref": "five-lane-provider-runtime-v0.1 (FLPR-GOV)" },
+        { "kind": "repoPath", "ref": "afi-reactor:src/providers/index.ts:50", "note": "eight registered adapters (6 keyless, 2 BYOK)" },
+        { "kind": "test", "ref": "afi-reactor:test/providers/fiveLaneAdapters.test.ts:970" }
+      ]
+    },
+    {
+      "capabilityId": "deterministic-scoring-uwr",
+      "name": "Deterministic analyst scoring and UWR",
+      "purpose": "Invoke the registered analyst strategy and the canonical afi-core UWR scorer (invoked, never re-implemented) under the pinned UWR profile law, producing the scored evaluation result at the scorer/UWR seam handed to District Two.",
+      "owningDistrictRef": "district-one",
+      "implementingStructureRefs": ["reactor-runtime", "afi-core-scoring-lib", "afi-math-kernels"],
+      "inputContractRefs": ["afi.uwr-profile.v0"],
+      "outputContractRefs": ["afi.scored-signal.v1"],
+      "interfaceRefs": ["iface-uwr-profile-schema"],
+      "participantRoleRefs": ["role-analyst-scorer"],
+      "maturity": "operational",
+      "visibility": "internal",
+      "evidence": [
+        { "kind": "repoPath", "ref": "afi-core:validators/UniversalWeightingRule.ts:78", "note": "computeUwrScore" },
+        { "kind": "repoPath", "ref": "afi-reactor:src/pipeline/nodes/scorerFroggyTrendPullback.ts", "note": "sole scorer sink" },
+        { "kind": "test", "ref": "afi-core:validators/__tests__/computeUwrScore.kat.test.ts" }
+      ]
+    },
+    {
+      "capabilityId": "pipeline-composition-authoring",
+      "name": "Pipeline composition authoring",
+      "purpose": "Author, validate, inspect, and hash the governed signal-evaluation compositions (pipeline manifests, analyst-strategy configs, analysis plugins) that District One executes. A District One (Signal Evaluation domain) capability governed by the FCP-GOV composition model and implemented by the replaceable Factory authoring structure (SLOT-FCP-FACTORY); Factory produces artifacts and executes nothing.",
+      "owningDistrictRef": "district-one",
+      "implementingStructureRefs": ["factory-authoring"],
+      "inputContractRefs": ["afi.pipeline.v1"],
+      "outputContractRefs": ["afi.pipeline.v1", "afi.composition-ref.v1"],
+      "interfaceRefs": ["iface-factory-operations", "iface-factory-sdk", "iface-factory-cli", "iface-factory-mcp"],
+      "participantRoleRefs": ["role-builder-developer", "role-analyst-scorer"],
+      "maturity": "operational",
+      "visibility": "internal",
+      "evidence": [
+        { "kind": "governanceDecision", "ref": "factory-configurable-pipelines-v1 (FCP-GOV D-FCP-4 SLOT-FCP-FACTORY)" },
+        { "kind": "repoPath", "ref": "afi-factory:src/operations/registry.ts", "note": "14-operation registry over one dispatch" },
+        { "kind": "test", "ref": "afi-factory:tests/provider-backed-authoring.test.ts:145", "note": "exactly 14 operations across five projections" }
+      ]
+    },
+    {
+      "capabilityId": "evidence-v3-construction",
+      "name": "Canonical Evidence V3 construction",
+      "purpose": "Construct the one canonical afi.scored-signal-evidence.v3 record from the scored evaluation result and the five carried provider-invocation proofs: bind invocation proofs, cross-check every identity and hash fail-closed, and compute the recordHash/replayHash commitments. Implemented in afi-reactor's District Two evidence law (src/evidence/); the record shape is the afi-config governed contract.",
+      "owningDistrictRef": "district-two",
+      "implementingStructureRefs": ["reactor-runtime", "config-registry"],
+      "inputContractRefs": ["afi.scored-signal.v1", "afi.provider-invocation-proof.v1", "afi.aiml-invocation-proof.v1", "afi.composition-ref.v1"],
+      "outputContractRefs": ["afi.scored-signal-evidence.v3"],
+      "interfaceRefs": ["iface-evidence-v3-schema"],
+      "participantRoleRefs": [],
+      "maturity": "operational",
+      "visibility": "internal",
+      "evidence": [
+        { "kind": "governanceDecision", "ref": "evidence-v3-provider-provenance-v0.1 (EV3-GOV D-EV3-2/D-EV3-5)" },
+        { "kind": "repoPath", "ref": "afi-reactor:src/evidence/reactorEvidenceRecord.ts", "note": "five ordered proofs; fail-closed builder" },
+        { "kind": "test", "ref": "afi-reactor:test/evidence/evidenceV3BuilderContract.test.ts:62" }
+      ]
+    },
+    {
+      "capabilityId": "canonical-evidence-persistence",
+      "name": "Canonical evidence persistence (sole writer)",
+      "purpose": "The sole canonical evidence write path: V3-only admission, recordHash/replayHash verified by recomputation before insert, a unique signalId index, append-once/idempotent submit, and transactional supersede that refuses a finalized record. afi-infra is the single writer; Reactor and Gateway are submitters, never writers.",
+      "owningDistrictRef": "district-two",
+      "implementingStructureRefs": ["evidence-store"],
+      "inputContractRefs": ["afi.scored-signal-evidence.v3"],
+      "outputContractRefs": ["afi.scored-signal-evidence.v3"],
+      "interfaceRefs": ["iface-evidence-persistence"],
+      "participantRoleRefs": [],
+      "maturity": "operational",
+      "visibility": "internal",
+      "evidence": [
+        { "kind": "governanceDecision", "ref": "persistence-v0.1 (MONGO-GOV D-MONGO-3/D-MONGO-6)" },
+        { "kind": "repoPath", "ref": "afi-infra:src/evidence/MongoScoredSignalEvidenceStore.ts:175", "note": "submit; verify-by-recomputation admission" },
+        { "kind": "test", "ref": "afi-infra:tests/evidence/MongoEvidenceStore.integration.test.ts" }
+      ]
+    }
+  ],
+
+  "structures": [
+    {
+      "structureId": "reactor-runtime",
+      "name": "AFI Reactor runtime",
+      "kind": "runtime",
+      "purpose": "The one manifest-driven GraphExecutor host. Serves District One (signal ingest, five-category enrichment, deterministic scoring) and District Two (the src/evidence/ Evidence V3 construction law). Boot is a fail-closed gate over the afi-config registries; it is a submitter to afi-infra, never a writer.",
+      "maturity": "operational",
+      "visibility": "internal",
+      "capabilityRefs": ["signal-ingest-normalization", "five-category-enrichment", "deterministic-scoring-uwr", "evidence-v3-construction"],
+      "homeDistrictRef": "district-one",
+      "servedDistrictRefs": ["district-one", "district-two"],
+      "repositoryRefs": ["repo-afi-reactor"],
+      "exposedInterfaceRefs": ["iface-reactor-webhook", "iface-reactor-cpj", "iface-evidence-v3-schema"],
+      "routingInterfaceRefs": ["iface-tb-predict", "iface-tb-pattern"],
+      "evidence": [
+        { "kind": "repoPath", "ref": "afi-reactor:src/config/runtimeComposition.ts:132", "note": "sole GraphExecutor construction site" },
+        { "kind": "test", "ref": "afi-reactor:test/pipeline/runtimeComposition.test.ts" }
+      ]
+    },
+    {
+      "structureId": "afi-core-scoring-lib",
+      "name": "afi-core scoring library",
+      "kind": "sharedInfrastructure",
+      "purpose": "The canonical in-process scoring library: the UWR aggregator (structure/execution/risk/insight axes clamped to [0,1]), the fail-closed UWR profile loader, and the decay/Greeks templates. Invoked by the Reactor scorer node; delegates numeric decay to afi-math.",
+      "maturity": "operational",
+      "visibility": "public",
+      "capabilityRefs": ["deterministic-scoring-uwr"],
+      "homeDistrictRef": "district-one",
+      "servedDistrictRefs": ["district-one"],
+      "repositoryRefs": ["repo-afi-core"],
+      "exposedInterfaceRefs": ["iface-uwr-profile-schema"],
+      "routingInterfaceRefs": [],
+      "evidence": [
+        { "kind": "repoPath", "ref": "afi-core:validators/UniversalWeightingRule.ts:78" },
+        { "kind": "governanceDecision", "ref": "uwr-profile-pin-v0.1 / uwr-runtime-consumption-v0.1" }
+      ]
+    },
+    {
+      "structureId": "afi-math-kernels",
+      "name": "afi-math deterministic kernels",
+      "kind": "mathKernel",
+      "purpose": "The governed sole-source deterministic off-chain math authority (math-authority-v0.1): decay/Greeks kernels consumed by afi-core scoring (District One) and the 86-billion emissions schedule consumed by the reserved settlement domain. Golden-vector pinned; a diff requires governance review.",
+      "maturity": "operational",
+      "visibility": "public",
+      "capabilityRefs": [],
+      "servedDistrictRefs": ["district-one", "chain-settlement"],
+      "repositoryRefs": ["repo-afi-math"],
+      "exposedInterfaceRefs": [],
+      "routingInterfaceRefs": [],
+      "evidence": [
+        { "kind": "governanceDecision", "ref": "math-authority-v0.1" },
+        { "kind": "repoPath", "ref": "afi-math:src/emissions/emissionsSchedule.ts", "note": "86B schedule, golden-pinned" }
+      ]
+    },
+    {
+      "structureId": "factory-authoring",
+      "name": "AFI Factory authoring system",
+      "kind": "authoringSystem",
+      "purpose": "The replaceable pipeline authoring system (SLOT-FCP-FACTORY, FCP-GOV D-FCP-4): 14 agent-facing operations over one dispatch, projected onto five surfaces (TypeScript SDK, CLI, capability catalog, tool definitions, MCP stdio adapter). It produces artifacts and executes no pipeline; it is not the API Atlas, not the Gateway, not the Reactor.",
+      "maturity": "operational",
+      "visibility": "internal",
+      "capabilityRefs": ["pipeline-composition-authoring"],
+      "servedDistrictRefs": ["district-one"],
+      "repositoryRefs": ["repo-afi-factory"],
+      "exposedInterfaceRefs": ["iface-factory-operations", "iface-factory-sdk", "iface-factory-cli", "iface-factory-mcp"],
+      "routingInterfaceRefs": [],
+      "evidence": [
+        { "kind": "repoPath", "ref": "afi-factory:src/index.ts:1", "note": "authoring system; nothing executes a pipeline" },
+        { "kind": "test", "ref": "afi-factory:tests/operations.test.ts:69", "note": "exactly the 14 operation ids" }
+      ]
+    },
+    {
+      "structureId": "gateway",
+      "name": "AFI Gateway",
+      "kind": "gateway",
+      "purpose": "The external submission boundary: authenticates the API key, resolves the tenant, rate-limits, does a presence-only check, stamps provenance (providerId=gateway:<tenantId>), forwards to the Reactor, and returns the answer verbatim. It routes; it never writes canonical evidence and does not own the signal-evaluation capability.",
+      "maturity": "operational",
+      "visibility": "public",
+      "capabilityRefs": [],
+      "servedDistrictRefs": ["district-one"],
+      "repositoryRefs": ["repo-afi-gateway"],
+      "exposedInterfaceRefs": ["iface-gateway-signals"],
+      "routingInterfaceRefs": ["iface-gateway-signals", "iface-reactor-webhook"],
+      "routesTrafficWithoutOwning": true,
+      "evidence": [
+        { "kind": "repoPath", "ref": "afi-gateway:src/http/app.ts", "note": "POST /api/v1/signals; routes-not-writes" },
+        { "kind": "test", "ref": "afi-gateway:tests/guardrails/no-canonical-evidence-writer.test.ts" }
+      ]
+    },
+    {
+      "structureId": "tiny-brains",
+      "name": "AFI Tiny Brains service",
+      "kind": "service",
+      "purpose": "The bounded first-party self-hosted aiMl orchestration + deterministic pattern kernel service serving District One's aiMl and pattern lanes. Runs the ProviderInstance-selected orchestration profile of approved experts through a deterministic resolver, fail-closed; its result is read-only context and does not affect UWR scoring.",
+      "maturity": "operational",
+      "visibility": "internal",
+      "capabilityRefs": ["five-category-enrichment"],
+      "servedDistrictRefs": ["district-one"],
+      "repositoryRefs": ["repo-afi-tiny-brains"],
+      "exposedInterfaceRefs": ["iface-tb-predict", "iface-tb-pattern"],
+      "routingInterfaceRefs": [],
+      "evidence": [
+        { "kind": "repoPath", "ref": "afi-tiny-brains:tiny_brains_service/service.py:257", "note": "POST /predict/froggy" },
+        { "kind": "test", "ref": "afi-tiny-brains:tests/test_tiny_brains_predict_froggy.py" }
+      ]
+    },
+    {
+      "structureId": "evidence-store",
+      "name": "afi-infra canonical evidence store",
+      "kind": "persistence",
+      "purpose": "The sole canonical evidence writer (MongoScoredSignalEvidenceStore): a typed library dependency (no HTTP/API surface), V3-only admission, recordHash/replayHash verified by recomputation before insert, unique signalId index, append-once/idempotent, transactional supersede refusing finalized records.",
+      "maturity": "operational",
+      "visibility": "internal",
+      "capabilityRefs": ["canonical-evidence-persistence"],
+      "homeDistrictRef": "district-two",
+      "servedDistrictRefs": ["district-two"],
+      "repositoryRefs": ["repo-afi-infra"],
+      "exposedInterfaceRefs": ["iface-evidence-persistence"],
+      "routingInterfaceRefs": [],
+      "evidence": [
+        { "kind": "repoPath", "ref": "afi-infra:src/evidence/index.ts:6", "note": "No HTTP/API surface is exported (ATLAS-GOV, out of scope)" },
+        { "kind": "test", "ref": "afi-infra:tests/evidence/MongoScoredSignalEvidenceStore.test.ts" }
+      ]
+    },
+    {
+      "structureId": "config-registry",
+      "name": "afi-config governed contracts and registries",
+      "kind": "registry",
+      "purpose": "The normative home of the governed schemas, registries, KATs, and conventions the runtime consumes -- including this Atlas registry. It is the canonical contract/schema authority where governance delegates it; it holds the schema boundaries the Districts own.",
+      "maturity": "operational",
+      "visibility": "public",
+      "capabilityRefs": [],
+      "servedDistrictRefs": ["district-one", "district-two"],
+      "repositoryRefs": ["repo-afi-config"],
+      "exposedInterfaceRefs": ["iface-uss-schema", "iface-cpj-schema", "iface-enrichment-schemas", "iface-provider-byok-schemas", "iface-uwr-profile-schema", "iface-evidence-v3-schema"],
+      "routingInterfaceRefs": [],
+      "evidence": [
+        { "kind": "repoPath", "ref": "afi-config:schemas/", "note": "governed JSON schema boundaries (schemas/) + the registries/" },
+        { "kind": "repoPath", "ref": "afi-config:registries/", "note": "governed registries incl. this Atlas registry" }
+      ]
+    },
+    {
+      "structureId": "governance-ledger",
+      "name": "afi-governance decision ledger",
+      "kind": "governance",
+      "purpose": "The canonical home of accepted protocol-development decisions. It defines authority and District boundaries; it holds the authority the Atlas describes. It is not runtime and has no CI (acceptance is owner merge).",
+      "maturity": "operational",
+      "visibility": "public",
+      "capabilityRefs": [],
+      "servedDistrictRefs": ["district-one", "district-two"],
+      "repositoryRefs": ["repo-afi-governance"],
+      "exposedInterfaceRefs": [],
+      "routingInterfaceRefs": [],
+      "evidence": [
+        { "kind": "repoPath", "ref": "afi-governance:decisions/", "note": "the accepted decision chain (18 decisions incl. ATLAS-GOV)" }
+      ]
+    },
+    {
+      "structureId": "docs-hub",
+      "name": "afi-docs documentation hub",
+      "kind": "documentation",
+      "purpose": "The single authoritative human-readable current architecture map (AFI_Full_Architecture.md) and the mechanically drift-checked Atlas summary. Documentation explains authority; it does not hold it.",
+      "maturity": "operational",
+      "visibility": "public",
+      "capabilityRefs": [],
+      "servedDistrictRefs": ["district-one", "district-two"],
+      "repositoryRefs": ["repo-afi-docs"],
+      "exposedInterfaceRefs": [],
+      "routingInterfaceRefs": [],
+      "evidence": [
+        { "kind": "repoPath", "ref": "afi-docs:AFI_Full_Architecture.md", "note": "the single current architecture map, guarded" }
+      ]
+    },
+    {
+      "structureId": "afi-token",
+      "name": "AFI on-chain token",
+      "kind": "smartContract",
+      "purpose": "The xERC20-based AFIToken with an on-chain 86-billion hard cap enforced in its sole role-gated emissions entrypoint, plus the signal-receipt and mint-coordinator contracts. Deployed on Base Sepolia testnet only (addresses documented, no committed broadcast artifacts); no mainnet. Serves the reserved settlement domain; its District/authority is reserved to CHAIN-GOV.",
+      "maturity": "partial",
+      "visibility": "public",
+      "capabilityRefs": [],
+      "servedDistrictRefs": ["chain-settlement"],
+      "repositoryRefs": ["repo-afi-token", "repo-afi-xerc20"],
+      "exposedInterfaceRefs": [],
+      "routingInterfaceRefs": [],
+      "evidence": [
+        { "kind": "repoPath", "ref": "afi-token:src/AFIToken.sol:92", "note": "mintEmissions; 86B cap enforced on-chain" },
+        { "kind": "test", "ref": "afi-token:test/AFITokenCap.t.sol", "note": "Foundry cap tests" }
+      ]
+    },
+    {
+      "structureId": "afi-mint",
+      "name": "afi-mint off-chain orchestration",
+      "kind": "service",
+      "purpose": "The off-chain TypeScript mint/emissions orchestration (signal-state, challenge-window, mint executor) parity-tested against the afi-math 86B schedule. On-chain execution is not wired (the executor targets an abstract interface; the Solidity contracts are empty stubs). Serves the reserved settlement domain; reserved to CHAIN-GOV.",
+      "maturity": "underConstruction",
+      "visibility": "internal",
+      "capabilityRefs": [],
+      "servedDistrictRefs": ["chain-settlement"],
+      "repositoryRefs": ["repo-afi-mint"],
+      "exposedInterfaceRefs": [],
+      "routingInterfaceRefs": [],
+      "evidence": [
+        { "kind": "repoPath", "ref": "afi-mint:src/orchestrator/MintExecutor.ts:32", "note": "abstract IMintCoordinatorContract; not wired on-chain" },
+        { "kind": "test", "ref": "afi-mint:test/emissions-schedule-parity.test.ts", "note": "86B parity vs afi-math" }
+      ]
+    },
+    {
+      "structureId": "afi-benchkit",
+      "name": "afi-benchkit benchmark harness",
+      "kind": "benchmark",
+      "purpose": "A standalone deterministic PoI/PoInsight benchmark and reproducibility harness over static CSV fixtures. Research surface: it has no live finalized-receipt feed and no protocol reputation or incentive integration; its composite reputation number is a local research computation, not protocol law.",
+      "maturity": "partial",
+      "visibility": "public",
+      "capabilityRefs": [],
+      "servedDistrictRefs": [],
+      "repositoryRefs": ["repo-afi-benchkit"],
+      "exposedInterfaceRefs": [],
+      "routingInterfaceRefs": [],
+      "evidence": [
+        { "kind": "repoPath", "ref": "afi-benchkit:src/afi_benchkit/cli.py", "note": "afi-bench CLI; two golden-plot tests fail pre-existing" }
+      ]
+    }
+  ],
+
+  "interfaces": [
+    {
+      "interfaceId": "iface-gateway-signals",
+      "name": "Gateway signal submission",
+      "kind": "httpApi",
+      "owningCapabilityRef": "signal-ingest-normalization",
+      "owningDistrictRef": "district-one",
+      "exposingStructureRef": "gateway",
+      "routingStructureRef": "gateway",
+      "direction": "inbound",
+      "transport": "HTTP/JSON",
+      "accessClass": "authenticated",
+      "inputContractRefs": ["afi.usignal.v1.1"],
+      "outputContractRefs": [],
+      "maturity": "operational",
+      "visibility": "public",
+      "addressOrOperation": "POST /api/v1/signals",
+      "evidence": [
+        { "kind": "repoPath", "ref": "afi-gateway:src/http/app.ts", "note": "authenticate, tenant, rate-limit, forward, verbatim" },
+        { "kind": "test", "ref": "afi-gateway:tests/reactor-submitter.test.ts" }
+      ]
+    },
+    {
+      "interfaceId": "iface-reactor-webhook",
+      "name": "Reactor TradingView webhook",
+      "kind": "httpApi",
+      "owningCapabilityRef": "signal-ingest-normalization",
+      "owningDistrictRef": "district-one",
+      "exposingStructureRef": "reactor-runtime",
+      "direction": "inbound",
+      "transport": "HTTP/JSON",
+      "accessClass": "internalTrusted",
+      "inputContractRefs": ["afi.usignal.v1.1"],
+      "outputContractRefs": [],
+      "maturity": "operational",
+      "visibility": "restricted",
+      "addressOrOperation": "POST /api/webhooks/tradingview",
+      "evidence": [
+        { "kind": "repoPath", "ref": "afi-reactor:src/server.ts:215", "note": "handler; optional WEBHOOK_SHARED_SECRET" },
+        { "kind": "test", "ref": "afi-reactor:test/froggyWebhookService.test.ts:58" }
+      ]
+    },
+    {
+      "interfaceId": "iface-reactor-cpj",
+      "name": "Reactor CPJ ingest (community provider journal)",
+      "kind": "httpApi",
+      "owningCapabilityRef": "signal-ingest-normalization",
+      "owningDistrictRef": "district-one",
+      "exposingStructureRef": "reactor-runtime",
+      "direction": "inbound",
+      "transport": "HTTP/JSON",
+      "accessClass": "internalTrusted",
+      "inputContractRefs": ["afi.cpj.v0.1"],
+      "outputContractRefs": [],
+      "maturity": "operational",
+      "visibility": "internal",
+      "addressOrOperation": "POST /api/ingest/cpj",
+      "evidence": [
+        { "kind": "governanceDecision", "ref": "research-institute-reference-services-v0.1 (INST-GOV D-INST-6 internal trusted boundary; public access reserved to the designated, not-deployed Institute oracle-ingress)" },
+        { "kind": "repoPath", "ref": "afi-reactor:src/server.ts:376" },
+        { "kind": "test", "ref": "afi-reactor:test/integration/cpj-ingestion.test.ts" }
+      ]
+    },
+    {
+      "interfaceId": "iface-uss-schema",
+      "name": "Universal Signal Schema boundary",
+      "kind": "schemaBoundary",
+      "owningCapabilityRef": "signal-ingest-normalization",
+      "owningDistrictRef": "district-one",
+      "exposingStructureRef": "config-registry",
+      "direction": "bidirectional",
+      "transport": "JSON Schema",
+      "accessClass": "public",
+      "inputContractRefs": ["afi.usignal.v1.1"],
+      "outputContractRefs": [],
+      "maturity": "operational",
+      "visibility": "public",
+      "addressOrOperation": "afi.usignal.v1.1",
+      "evidence": [ { "kind": "schemaId", "ref": "afi.usignal.v1.1", "note": "afi-config:schemas/usignal/" } ]
+    },
+    {
+      "interfaceId": "iface-cpj-schema",
+      "name": "Community Provider Journal schema boundary",
+      "kind": "schemaBoundary",
+      "owningCapabilityRef": "signal-ingest-normalization",
+      "owningDistrictRef": "district-one",
+      "exposingStructureRef": "config-registry",
+      "direction": "bidirectional",
+      "transport": "JSON Schema",
+      "accessClass": "public",
+      "inputContractRefs": ["afi.cpj.v0.1"],
+      "outputContractRefs": [],
+      "maturity": "operational",
+      "visibility": "public",
+      "addressOrOperation": "afi.cpj.v0.1",
+      "evidence": [ { "kind": "schemaId", "ref": "afi.cpj.v0.1", "note": "afi-config:schemas/cpj/v0_1" } ]
+    },
+    {
+      "interfaceId": "iface-enrichment-schemas",
+      "name": "Five governed enrichment-category schema boundaries",
+      "kind": "schemaBoundary",
+      "owningCapabilityRef": "five-category-enrichment",
+      "owningDistrictRef": "district-one",
+      "exposingStructureRef": "config-registry",
+      "direction": "bidirectional",
+      "transport": "JSON Schema",
+      "accessClass": "public",
+      "inputContractRefs": ["afi.enrichment.technical.v1", "afi.enrichment.pattern.v1", "afi.enrichment.sentiment.v1", "afi.enrichment.news.v1", "afi.enrichment.aiml.v1"],
+      "outputContractRefs": [],
+      "maturity": "operational",
+      "visibility": "public",
+      "addressOrOperation": "afi.enrichment.{technical,pattern,sentiment,news,aiml}.v1",
+      "evidence": [ { "kind": "repoPath", "ref": "afi-config:schemas/enrichment/", "note": "all five governed category contracts" } ]
+    },
+    {
+      "interfaceId": "iface-provider-byok-schemas",
+      "name": "Provider / BYOK non-secret contract boundary",
+      "kind": "schemaBoundary",
+      "owningCapabilityRef": "five-category-enrichment",
+      "owningDistrictRef": "district-one",
+      "exposingStructureRef": "config-registry",
+      "direction": "bidirectional",
+      "transport": "JSON Schema",
+      "accessClass": "public",
+      "inputContractRefs": ["afi.provider.v1", "afi.credential-ref.v1", "afi.provider-instance.v1"],
+      "outputContractRefs": [],
+      "maturity": "operational",
+      "visibility": "public",
+      "addressOrOperation": "afi.provider.v1 / afi.credential-ref.v1 / afi.provider-instance.v1",
+      "evidence": [ { "kind": "governanceDecision", "ref": "provider-byok-foundations-v0.1 (PBF-GOV)" } ]
+    },
+    {
+      "interfaceId": "iface-tb-predict",
+      "name": "Tiny Brains aiMl prediction endpoint",
+      "kind": "httpApi",
+      "owningCapabilityRef": "five-category-enrichment",
+      "owningDistrictRef": "district-one",
+      "exposingStructureRef": "tiny-brains",
+      "routingStructureRef": "reactor-runtime",
+      "direction": "inbound",
+      "transport": "HTTP/JSON (self-hosted, internal)",
+      "accessClass": "internal",
+      "inputContractRefs": ["afi.aiml-invocation-proof.v1"],
+      "outputContractRefs": ["afi.enrichment.aiml.v1"],
+      "maturity": "operational",
+      "visibility": "internal",
+      "addressOrOperation": "POST /predict/froggy",
+      "evidence": [
+        { "kind": "repoPath", "ref": "afi-tiny-brains:tiny_brains_service/service.py:257" },
+        { "kind": "test", "ref": "afi-tiny-brains:tests/test_tiny_brains_predict_froggy.py:126" }
+      ]
+    },
+    {
+      "interfaceId": "iface-tb-pattern",
+      "name": "Tiny Brains pattern-analysis endpoint",
+      "kind": "httpApi",
+      "owningCapabilityRef": "five-category-enrichment",
+      "owningDistrictRef": "district-one",
+      "exposingStructureRef": "tiny-brains",
+      "routingStructureRef": "reactor-runtime",
+      "direction": "inbound",
+      "transport": "HTTP/JSON (self-hosted, internal)",
+      "accessClass": "internal",
+      "inputContractRefs": [],
+      "outputContractRefs": ["afi.enrichment.pattern.v1"],
+      "maturity": "operational",
+      "visibility": "internal",
+      "addressOrOperation": "POST /analyze/pattern",
+      "evidence": [ { "kind": "repoPath", "ref": "afi-tiny-brains:tiny_brains_service/service.py:343" } ]
+    },
+    {
+      "interfaceId": "iface-uwr-profile-schema",
+      "name": "UWR profile contract boundary",
+      "kind": "schemaBoundary",
+      "owningCapabilityRef": "deterministic-scoring-uwr",
+      "owningDistrictRef": "district-one",
+      "exposingStructureRef": "config-registry",
+      "direction": "bidirectional",
+      "transport": "JSON Schema",
+      "accessClass": "public",
+      "inputContractRefs": ["afi.uwr-profile.v0"],
+      "outputContractRefs": [],
+      "maturity": "operational",
+      "visibility": "public",
+      "addressOrOperation": "afi.uwr-profile.v0",
+      "evidence": [ { "kind": "governanceDecision", "ref": "uwr-profile-pin-v0.1 (registered profile uwr-weighted-lifts-v0.1)" } ]
+    },
+    {
+      "interfaceId": "iface-factory-operations",
+      "name": "Factory agent operation registry",
+      "kind": "operationRegistry",
+      "owningCapabilityRef": "pipeline-composition-authoring",
+      "owningDistrictRef": "district-one",
+      "exposingStructureRef": "factory-authoring",
+      "direction": "bidirectional",
+      "transport": "in-process dispatch (invokeOperation)",
+      "accessClass": "internal",
+      "inputContractRefs": ["afi.pipeline.v1"],
+      "outputContractRefs": ["afi.pipeline.v1", "afi.composition-ref.v1"],
+      "maturity": "operational",
+      "visibility": "internal",
+      "addressOrOperation": "factory.capabilities.list, factory.plugins.list, factory.official.list, factory.template.create/validate/inspect/instantiate, factory.pipeline.validate/inspect, factory.analystConfig.create/validate, factory.plugin.scaffold, factory.artifact.hash/package (14; 12 read-only, 2 mutating)",
+      "evidence": [
+        { "kind": "operation", "ref": "factory.official.list", "note": "afi-factory:src/operations/handlers.ts:205" },
+        { "kind": "test", "ref": "afi-factory:tests/operations.test.ts:69" }
+      ]
+    },
+    {
+      "interfaceId": "iface-factory-sdk",
+      "name": "Factory TypeScript SDK",
+      "kind": "sdk",
+      "owningCapabilityRef": "pipeline-composition-authoring",
+      "owningDistrictRef": "district-one",
+      "exposingStructureRef": "factory-authoring",
+      "direction": "inbound",
+      "transport": "in-process library",
+      "accessClass": "internal",
+      "inputContractRefs": [],
+      "outputContractRefs": [],
+      "maturity": "operational",
+      "visibility": "internal",
+      "addressOrOperation": "@afi-protocol/afi-factory: invokeOperation / OPERATIONS",
+      "evidence": [ { "kind": "repoPath", "ref": "afi-factory:src/index.ts:100" } ]
+    },
+    {
+      "interfaceId": "iface-factory-cli",
+      "name": "Factory CLI",
+      "kind": "cli",
+      "owningCapabilityRef": "pipeline-composition-authoring",
+      "owningDistrictRef": "district-one",
+      "exposingStructureRef": "factory-authoring",
+      "direction": "inbound",
+      "transport": "process / argv+stdio",
+      "accessClass": "internal",
+      "inputContractRefs": [],
+      "outputContractRefs": [],
+      "maturity": "operational",
+      "visibility": "internal",
+      "addressOrOperation": "afi-factory (bin)",
+      "evidence": [ { "kind": "repoPath", "ref": "afi-factory:src/cli/index.ts:1" } ]
+    },
+    {
+      "interfaceId": "iface-factory-mcp",
+      "name": "Factory MCP stdio adapter",
+      "kind": "mcp",
+      "owningCapabilityRef": "pipeline-composition-authoring",
+      "owningDistrictRef": "district-one",
+      "exposingStructureRef": "factory-authoring",
+      "direction": "inbound",
+      "transport": "stdio JSON-RPC 2.0 (transport-only; no network listener)",
+      "accessClass": "internal",
+      "inputContractRefs": [],
+      "outputContractRefs": [],
+      "maturity": "operational",
+      "visibility": "internal",
+      "addressOrOperation": "afi-factory agent serve --transport stdio (initialize, tools/list, tools/call, ping)",
+      "evidence": [ { "kind": "repoPath", "ref": "afi-factory:src/agent/mcp.ts:1" } ]
+    },
+    {
+      "interfaceId": "iface-evidence-v3-schema",
+      "name": "Evidence V3 record contract boundary",
+      "kind": "schemaBoundary",
+      "owningCapabilityRef": "evidence-v3-construction",
+      "owningDistrictRef": "district-two",
+      "exposingStructureRef": "config-registry",
+      "direction": "bidirectional",
+      "transport": "JSON Schema",
+      "accessClass": "internal",
+      "inputContractRefs": ["afi.scored-signal-evidence.v3"],
+      "outputContractRefs": ["afi.scored-signal-evidence.v3"],
+      "maturity": "operational",
+      "visibility": "internal",
+      "addressOrOperation": "afi.scored-signal-evidence.v3",
+      "evidence": [ { "kind": "schemaId", "ref": "afi.scored-signal-evidence.v3", "note": "afi-config:schemas/scored-signal-evidence/v3/" } ]
+    },
+    {
+      "interfaceId": "iface-evidence-persistence",
+      "name": "Canonical evidence persistence admission boundary",
+      "kind": "persistenceBoundary",
+      "owningCapabilityRef": "canonical-evidence-persistence",
+      "owningDistrictRef": "district-two",
+      "exposingStructureRef": "evidence-store",
+      "direction": "inbound",
+      "transport": "in-process typed methods over the MongoDB driver (no HTTP surface)",
+      "accessClass": "internal",
+      "inputContractRefs": ["afi.scored-signal-evidence.v3"],
+      "outputContractRefs": [],
+      "maturity": "operational",
+      "visibility": "internal",
+      "addressOrOperation": "IScoredSignalEvidenceStore.submit / supersede / getBySignalId / getReplayBundle",
+      "evidence": [
+        { "kind": "repoPath", "ref": "afi-infra:src/evidence/IScoredSignalEvidenceStore.ts", "note": "the sole mutation boundary; not an HTTP surface" },
+        { "kind": "test", "ref": "afi-infra:tests/evidence/MongoEvidenceStore.integration.test.ts" }
+      ]
+    }
+  ],
+
+  "routes": [
+    {
+      "routeId": "route-signal-ingest",
+      "sourceRef": "iface-gateway-signals",
+      "targetRef": "reactor-runtime",
+      "flowType": "data",
+      "carriesContractRefs": ["afi.usignal.v1.1"],
+      "maturity": "operational",
+      "visibility": "public",
+      "isNetworkTransport": true,
+      "routingStructureRef": "gateway",
+      "evidence": [ { "kind": "repoPath", "ref": "afi-gateway:src/services/reactorSubmitter.ts:60", "note": "forwards to the Reactor webhook" } ]
+    },
+    {
+      "routeId": "route-cpj-ingest",
+      "sourceRef": "iface-reactor-cpj",
+      "targetRef": "reactor-runtime",
+      "flowType": "data",
+      "carriesContractRefs": ["afi.cpj.v0.1"],
+      "maturity": "operational",
+      "visibility": "internal",
+      "isNetworkTransport": true,
+      "evidence": [ { "kind": "repoPath", "ref": "afi-reactor:src/server.ts:376" } ]
+    },
+    {
+      "routeId": "route-enrichment-tb",
+      "sourceRef": "reactor-runtime",
+      "targetRef": "iface-tb-predict",
+      "flowType": "data",
+      "carriesContractRefs": [],
+      "maturity": "operational",
+      "visibility": "internal",
+      "isNetworkTransport": true,
+      "routingStructureRef": "reactor-runtime",
+      "evidence": [ { "kind": "repoPath", "ref": "afi-reactor:src/providers/clients/aimlServiceClient.ts:213", "note": "POST to TINY_BRAINS_URL/predict/froggy" } ]
+    },
+    {
+      "routeId": "route-credential-resolution",
+      "sourceRef": "reactor-runtime",
+      "targetRef": "five-category-enrichment",
+      "flowType": "identityTrust",
+      "carriesContractRefs": ["afi.credential-ref.v1"],
+      "maturity": "operational",
+      "visibility": "internal",
+      "isNetworkTransport": false,
+      "evidence": [ { "kind": "repoPath", "ref": "afi-reactor:src/providers/secretResolver.ts", "note": "least-privilege BYOK resolution; keyless lanes never touch the resolver" } ]
+    },
+    {
+      "routeId": "route-strategy-resolution",
+      "sourceRef": "reactor-runtime",
+      "targetRef": "config-registry",
+      "flowType": "control",
+      "carriesContractRefs": [],
+      "maturity": "operational",
+      "visibility": "internal",
+      "isNetworkTransport": false,
+      "evidence": [ { "kind": "repoPath", "ref": "afi-reactor:src/config/runtimeComposition.ts:125", "note": "boot-validated provider->strategy binding; honest 403 on absence" } ]
+    },
+    {
+      "routeId": "route-composition-authoring",
+      "sourceRef": "factory-authoring",
+      "targetRef": "config-registry",
+      "flowType": "buildArtifact",
+      "carriesContractRefs": ["afi.pipeline.v1", "afi.composition-ref.v1"],
+      "maturity": "operational",
+      "visibility": "internal",
+      "isNetworkTransport": false,
+      "evidence": [ { "kind": "repoPath", "ref": "afi-factory:official/froggy-trend-pullback/pipeline.manifest.json", "note": "authored composition; byte-identical to the afi-config registry record" } ]
+    },
+    {
+      "routeId": "route-scoring",
+      "sourceRef": "reactor-runtime",
+      "targetRef": "afi-core-scoring-lib",
+      "flowType": "data",
+      "carriesContractRefs": ["afi.uwr-profile.v0", "afi.scored-signal.v1"],
+      "maturity": "operational",
+      "visibility": "internal",
+      "isNetworkTransport": false,
+      "evidence": [ { "kind": "repoPath", "ref": "afi-reactor:src/pipeline/nodes/scorerFroggyTrendPullback.ts", "note": "wraps afi-core scorer, in-process" } ]
+    },
+    {
+      "routeId": "route-evidence-handoff",
+      "sourceRef": "reactor-runtime",
+      "targetRef": "evidence-store",
+      "flowType": "evidence",
+      "carriesContractRefs": ["afi.scored-signal-evidence.v3"],
+      "maturity": "operational",
+      "visibility": "internal",
+      "isNetworkTransport": false,
+      "evidence": [ { "kind": "repoPath", "ref": "afi-reactor:src/evidence/submitScoredSignalEvidence.ts:151", "note": "in-process typed submit to afi-infra; D1->D2 handoff" } ]
+    },
+    {
+      "routeId": "route-emissions-value",
+      "sourceRef": "afi-token",
+      "targetRef": "chain-settlement",
+      "flowType": "value",
+      "carriesContractRefs": [],
+      "maturity": "reserved",
+      "visibility": "public",
+      "isNetworkTransport": true,
+      "evidence": [ { "kind": "governanceDecision", "ref": "CHAIN-GOV (reserved); afi-token 86B emissions on Base Sepolia testnet only, no settlement wiring" } ]
+    }
+  ],
+
+  "contracts": [
+    { "contractId": "afi.usignal.v1.1", "version": "1.1", "canonicalPath": "afi-config/schemas/usignal/", "kind": "jsonSchema", "owningAuthority": "object-identity-v0.1 (OBJ-GOV)", "maturity": "operational", "consumerRefs": ["reactor-runtime", "gateway"] },
+    { "contractId": "afi.cpj.v0.1", "version": "0.1", "canonicalPath": "afi-config/schemas/cpj/v0_1", "kind": "jsonSchema", "owningAuthority": "research-institute-reference-services-v0.1 (INST-GOV)", "maturity": "operational", "consumerRefs": ["reactor-runtime"] },
+    { "contractId": "afi.enrichment.technical.v1", "version": "1", "canonicalPath": "afi-config/schemas/enrichment/technical/v1", "kind": "jsonSchema", "owningAuthority": "provider-byok-foundations-v0.1 (PBF-GOV)", "maturity": "operational", "consumerRefs": ["reactor-runtime"] },
+    { "contractId": "afi.enrichment.pattern.v1", "version": "1", "canonicalPath": "afi-config/schemas/enrichment/pattern/v1", "kind": "jsonSchema", "owningAuthority": "provider-byok-foundations-v0.1 (PBF-GOV) / five-lane-provider-runtime-v0.1 (FLPR-GOV D-FLPR-3 candlestick block)", "maturity": "operational", "consumerRefs": ["reactor-runtime", "tiny-brains"] },
+    { "contractId": "afi.enrichment.sentiment.v1", "version": "1", "canonicalPath": "afi-config/schemas/enrichment/sentiment/v1", "kind": "jsonSchema", "owningAuthority": "provider-byok-foundations-v0.1 (PBF-GOV)", "maturity": "operational", "consumerRefs": ["reactor-runtime"] },
+    { "contractId": "afi.enrichment.news.v1", "version": "1", "canonicalPath": "afi-config/schemas/enrichment/news/v1", "kind": "jsonSchema", "owningAuthority": "provider-byok-foundations-v0.1 (PBF-GOV)", "maturity": "operational", "consumerRefs": ["reactor-runtime"] },
+    { "contractId": "afi.enrichment.aiml.v1", "version": "1", "canonicalPath": "afi-config/schemas/enrichment/aiml/v1", "kind": "jsonSchema", "owningAuthority": "provider-byok-foundations-v0.1 (PBF-GOV)", "maturity": "operational", "consumerRefs": ["reactor-runtime", "tiny-brains"] },
+    { "contractId": "afi.scored-signal-evidence.v3", "version": "3", "canonicalPath": "afi-config/schemas/scored-signal-evidence/v3/", "kind": "jsonSchema", "owningAuthority": "evidence-v3-provider-provenance-v0.1 (EV3-GOV D-EV3-1)", "maturity": "operational", "consumerRefs": ["reactor-runtime", "evidence-store"] },
+    { "contractId": "afi.provider-invocation-proof.v1", "version": "1", "canonicalPath": "afi-config/schemas/provider-invocation-proof/v1", "kind": "jsonSchema", "owningAuthority": "evidence-v3-provider-provenance-v0.1 (EV3-GOV D-EV3-2)", "maturity": "operational", "consumerRefs": ["reactor-runtime"] },
+    { "contractId": "afi.aiml-invocation-proof.v1", "version": "1", "canonicalPath": "afi-config/schemas/aiml-invocation-proof/v1", "kind": "jsonSchema", "owningAuthority": "evidence-v3-provider-provenance-v0.1 (EV3-GOV D-EV3-3)", "maturity": "operational", "consumerRefs": ["reactor-runtime", "tiny-brains"] },
+    { "contractId": "afi.composition-ref.v1", "version": "1", "canonicalPath": "afi-config/schemas/composition-ref/v1", "kind": "jsonSchema", "owningAuthority": "factory-configurable-pipelines-v1 (FCP-GOV)", "maturity": "operational", "consumerRefs": ["reactor-runtime", "factory-authoring"] },
+    { "contractId": "afi.pipeline.v1", "version": "1", "canonicalPath": "afi-config/schemas/pipeline/ (registered manifest registries/pipelines/froggy-trend-pullback--v1.3.0.json)", "kind": "jsonSchema", "owningAuthority": "factory-configurable-pipelines-v1 (FCP-GOV)", "maturity": "operational", "consumerRefs": ["reactor-runtime", "factory-authoring"] },
+    { "contractId": "afi.provider.v1", "version": "1", "canonicalPath": "afi-config/schemas/provider/v1", "kind": "jsonSchema", "owningAuthority": "provider-byok-foundations-v0.1 (PBF-GOV)", "maturity": "operational", "consumerRefs": ["reactor-runtime"] },
+    { "contractId": "afi.credential-ref.v1", "version": "1", "canonicalPath": "afi-config/schemas/credential-ref/v1", "kind": "jsonSchema", "owningAuthority": "provider-byok-foundations-v0.1 (PBF-GOV)", "maturity": "operational", "consumerRefs": ["reactor-runtime"] },
+    { "contractId": "afi.provider-instance.v1", "version": "1", "canonicalPath": "afi-config/schemas/provider-instance/v1", "kind": "jsonSchema", "owningAuthority": "provider-byok-foundations-v0.1 (PBF-GOV)", "maturity": "operational", "consumerRefs": ["reactor-runtime"] },
+    { "contractId": "afi.uwr-profile.v0", "version": "0", "canonicalPath": "afi-config/schemas/uwr-profile/v0 (registered uwr-weighted-lifts-v0.1)", "kind": "jsonSchema", "owningAuthority": "uwr-profile-pin-v0.1 (testnet-provisional)", "maturity": "partial", "consumerRefs": ["afi-core-scoring-lib"] },
+    { "contractId": "afi.scored-signal.v1", "version": "1", "canonicalPath": "afi-config/schemas/provenance/v1/scored-signal.schema.json", "kind": "jsonSchema", "owningAuthority": "object-identity-v0.1 (OBJ-GOV D-OBJ-5)", "maturity": "operational", "consumerRefs": ["reactor-runtime", "evidence-store"] },
+    { "contractId": "afi.provenance-record.v1", "version": "1", "canonicalPath": "afi-config/schemas/provenance/v1/provenance-record.schema.json", "kind": "jsonSchema", "owningAuthority": "lifecycle-v0.1 (LIFE-GOV D-LIFE-6) / object-identity-v0.1", "maturity": "operational", "consumerRefs": ["reactor-runtime", "evidence-store"] },
+    { "contractId": "tiny-brains.hash.v1", "version": "1", "canonicalPath": "afi-tiny-brains/tiny_brains_service/orchestration/invocation_record.py (Python canonical-JSON law; 15 governed KATs)", "kind": "hashLaw", "owningAuthority": "evidence-v3-provider-provenance-v0.1 (EV3-GOV D-EV3-4(5))", "maturity": "operational", "consumerRefs": ["tiny-brains", "reactor-runtime"] },
+    { "contractId": "canonical-json-hashing.v1", "version": "1", "canonicalPath": "afi-config/schemas/hashing/ (afi.hash.v1 composition canonicalization law)", "kind": "hashLaw", "owningAuthority": "factory-configurable-pipelines-v1 (FCP-GOV) / evidence-v3-provider-provenance-v0.1 (EV3-GOV D-EV3-4)", "maturity": "operational", "consumerRefs": ["reactor-runtime", "evidence-store", "factory-authoring"] },
+    { "contractId": "afi.settlement.v1", "version": "1", "canonicalPath": "afi-docs/specs/AFI_SETTLEMENT_V1_DOCTRINE.md (governed doctrine; no contracts implemented)", "kind": "doctrine", "owningAuthority": "CHAIN-GOV (reserved)", "maturity": "reserved", "consumerRefs": [] }
+  ],
+
+  "repositories": [
+    { "repositoryId": "repo-afi-governance", "identity": "AFI-Protocol/afi-governance", "role": "Accepted protocol decisions (authority ledger); not runtime", "hostedStructureRefs": ["governance-ledger"], "implementedCapabilityRefs": [], "visibility": "public", "evidence": [ { "kind": "repoPath", "ref": "afi-governance:decisions/" } ] },
+    { "repositoryId": "repo-afi-config", "identity": "AFI-Protocol/afi-config", "role": "Canonical schemas, registries, KATs, conventions; hosts this Atlas registry", "hostedStructureRefs": ["config-registry"], "implementedCapabilityRefs": [], "visibility": "public", "evidence": [ { "kind": "repoPath", "ref": "afi-config:registries/afi-protocol-atlas.v1.json" } ] },
+    { "repositoryId": "repo-afi-math", "identity": "AFI-Protocol/afi-math", "role": "Governed deterministic math kernels + golden vectors (math authority)", "hostedStructureRefs": ["afi-math-kernels"], "implementedCapabilityRefs": [], "visibility": "public" },
+    { "repositoryId": "repo-afi-core", "identity": "AFI-Protocol/afi-core", "role": "Canonical scoring library (UWR engine, profile loader, decay)", "hostedStructureRefs": ["afi-core-scoring-lib"], "implementedCapabilityRefs": ["deterministic-scoring-uwr"], "visibility": "public" },
+    { "repositoryId": "repo-afi-reactor", "identity": "AFI-Protocol/afi-reactor", "role": "Signal-evaluation runtime (District One) + Evidence V3 construction (District Two law)", "hostedStructureRefs": ["reactor-runtime"], "implementedCapabilityRefs": ["signal-ingest-normalization", "five-category-enrichment", "deterministic-scoring-uwr", "evidence-v3-construction"], "visibility": "public" },
+    { "repositoryId": "repo-afi-infra", "identity": "AFI-Protocol/afi-infra", "role": "Canonical evidence store (sole writer, District Two)", "hostedStructureRefs": ["evidence-store"], "implementedCapabilityRefs": ["canonical-evidence-persistence"], "visibility": "public" },
+    { "repositoryId": "repo-afi-gateway", "identity": "AFI-Protocol/afi-gateway", "role": "External submission boundary (routes, never writes)", "hostedStructureRefs": ["gateway"], "implementedCapabilityRefs": [], "visibility": "public" },
+    { "repositoryId": "repo-afi-tiny-brains", "identity": "AFI-Protocol/afi-tiny-brains", "role": "Bounded first-party aiMl orchestration + pattern kernel service", "hostedStructureRefs": ["tiny-brains"], "implementedCapabilityRefs": [], "visibility": "internal", "evidence": [ { "kind": "repoPath", "ref": "afi-tiny-brains (private)" } ] },
+    { "repositoryId": "repo-afi-factory", "identity": "AFI-Protocol/afi-factory", "role": "Pipeline authoring system + agent capability layer (not an executor)", "hostedStructureRefs": ["factory-authoring"], "implementedCapabilityRefs": ["pipeline-composition-authoring"], "visibility": "public" },
+    { "repositoryId": "repo-afi-mint", "identity": "AFI-Protocol/afi-mint", "role": "Off-chain mint/emissions orchestration (on-chain not wired); reserved settlement domain", "hostedStructureRefs": ["afi-mint"], "implementedCapabilityRefs": [], "visibility": "public" },
+    { "repositoryId": "repo-afi-token", "identity": "AFI-Protocol/afi-token", "role": "On-chain token (86B hard cap xERC20); Base Sepolia testnet; reserved settlement domain", "hostedStructureRefs": ["afi-token"], "implementedCapabilityRefs": [], "visibility": "public" },
+    { "repositoryId": "repo-afi-xerc20", "identity": "AFI-Protocol/afi-xerc20", "role": "Vendored xERC20 standard (dependency of afi-token)", "hostedStructureRefs": [], "implementedCapabilityRefs": [], "visibility": "public" },
+    { "repositoryId": "repo-afi-econ", "identity": "AFI-Protocol/afi-econ", "role": "Economic research kit (non-canonical, placeholder)", "hostedStructureRefs": [], "implementedCapabilityRefs": [], "visibility": "public" },
+    { "repositoryId": "repo-afi-benchkit", "identity": "AFI-Protocol/afi-benchkit", "role": "PoI / PoInsight benchmark + reproducibility harness (research)", "hostedStructureRefs": ["afi-benchkit"], "implementedCapabilityRefs": [], "visibility": "public" },
+    { "repositoryId": "repo-afi-artifacts", "identity": "AFI-Protocol/afi-artifacts", "role": "Frozen, DOI-minted paper reproducibility bundle", "hostedStructureRefs": [], "implementedCapabilityRefs": [], "visibility": "public" },
+    { "repositoryId": "repo-afi-docs", "identity": "AFI-Protocol/afi-docs", "role": "Documentation hub; single authoritative current architecture map", "hostedStructureRefs": ["docs-hub"], "implementedCapabilityRefs": [], "visibility": "public" },
+    { "repositoryId": "repo-afi-protocol", "identity": "AFI-Protocol/afi-protocol", "role": "Public flagship repository/navigation map (start here)", "hostedStructureRefs": [], "implementedCapabilityRefs": [], "visibility": "public" },
+    { "repositoryId": "repo-github", "identity": "AFI-Protocol/.github", "role": "Organization profile and defaults", "hostedStructureRefs": [], "implementedCapabilityRefs": [], "visibility": "public" }
+  ],
+
+  "participantRoles": [
+    {
+      "roleId": "role-signal-provider",
+      "name": "Signal provider",
+      "purpose": "Submits trading signals to AFI via the authenticated Gateway boundary or the internal-trusted CPJ route; bound to a registered provider->strategy binding.",
+      "suppliesOrConsumes": "supplies",
+      "capabilityRefs": ["signal-ingest-normalization"],
+      "requiredContractRefs": ["afi.usignal.v1.1", "afi.cpj.v0.1"],
+      "interfaceRefs": ["iface-gateway-signals", "iface-reactor-cpj"],
+      "conformanceSuiteRefs": [],
+      "credentialClass": "byok",
+      "onboardingDescriptorRef": "onboarding-signal-provider",
+      "maturity": "operational",
+      "governanceBasis": "research-institute-reference-services-v0.1 (INST-GOV) + factory-configurable-pipelines-v1 (FCP-GOV D-FCP-5 registration)",
+      "evidence": [ { "kind": "repoPath", "ref": "afi-reactor:src/server.ts:266", "note": "provider->strategy resolution, honest 403" } ]
+    },
+    {
+      "roleId": "role-analyst-scorer",
+      "name": "Analyst / scorer",
+      "purpose": "Configures and registers analyst strategies (the analystId+strategyId+strategyVersion triple) and the compositions the Reactor executes; a conforming pipeline needs no bespoke permission.",
+      "suppliesOrConsumes": "supplies",
+      "capabilityRefs": ["deterministic-scoring-uwr", "pipeline-composition-authoring"],
+      "requiredContractRefs": ["afi.pipeline.v1", "afi.uwr-profile.v0"],
+      "interfaceRefs": ["iface-factory-operations"],
+      "conformanceSuiteRefs": [],
+      "credentialClass": "none",
+      "onboardingDescriptorRef": "onboarding-analyst-scorer",
+      "maturity": "operational",
+      "governanceBasis": "factory-configurable-pipelines-v1 (FCP-GOV D-FCP-5)",
+      "evidence": [ { "kind": "governanceDecision", "ref": "factory-configurable-pipelines-v1 (FCP-GOV)" } ]
+    },
+    {
+      "roleId": "role-data-enrichment-provider",
+      "name": "Data / enrichment provider",
+      "purpose": "Supplies a governed ProviderInstance/adapter for one of the five enrichment categories, optionally BYOK; the credential is never in an artifact.",
+      "suppliesOrConsumes": "supplies",
+      "capabilityRefs": ["five-category-enrichment"],
+      "requiredContractRefs": ["afi.provider.v1", "afi.provider-instance.v1", "afi.credential-ref.v1"],
+      "interfaceRefs": ["iface-provider-byok-schemas"],
+      "conformanceSuiteRefs": [],
+      "credentialClass": "opaqueCredentialRef",
+      "onboardingDescriptorRef": "onboarding-data-provider",
+      "maturity": "operational",
+      "governanceBasis": "provider-byok-foundations-v0.1 (PBF-GOV) + five-lane-provider-runtime-v0.1 (FLPR-GOV)",
+      "evidence": [ { "kind": "governanceDecision", "ref": "provider-byok-foundations-v0.1 (PBF-GOV)" } ]
+    },
+    {
+      "roleId": "role-validator",
+      "name": "Validator",
+      "purpose": "Validates scored-signal evidence and quality. A named Settlement-doctrine reward track, but no dedicated accepted role-definition decision exists; role weights and participant rights are reserved to CHAIN-GOV.",
+      "suppliesOrConsumes": "consumes",
+      "capabilityRefs": ["canonical-evidence-persistence"],
+      "requiredContractRefs": ["afi.scored-signal-evidence.v3"],
+      "interfaceRefs": [],
+      "conformanceSuiteRefs": [],
+      "credentialClass": "none",
+      "onboardingDescriptorRef": "onboarding-validator",
+      "maturity": "planned",
+      "governanceBasis": "reserved -- CHAIN-GOV (role weights / participant rights unfiled); Settlement v1 doctrine names a Validator reward track (draft closure)",
+      "evidence": [ { "kind": "governanceDecision", "ref": "authority-districts-v0.1 (Part H reserved: role weights)" } ]
+    },
+    {
+      "roleId": "role-operator",
+      "name": "Operator",
+      "purpose": "Operates reference services (the hosted Gateway and oracle-ingress/CPJ reference instances). The AFI Research Institute is the designated non-exclusive operator; operating confers no protocol, economic, or validator authority; independent conforming operators are permanently permitted.",
+      "suppliesOrConsumes": "both",
+      "capabilityRefs": ["signal-ingest-normalization"],
+      "requiredContractRefs": [],
+      "interfaceRefs": ["iface-gateway-signals", "iface-reactor-cpj"],
+      "conformanceSuiteRefs": [],
+      "credentialClass": "none",
+      "onboardingDescriptorRef": "onboarding-operator",
+      "maturity": "operational",
+      "governanceBasis": "research-institute-reference-services-v0.1 (INST-GOV, non-exclusive)",
+      "evidence": [ { "kind": "governanceDecision", "ref": "research-institute-reference-services-v0.1 (INST-GOV)" } ]
+    },
+    {
+      "roleId": "role-builder-developer",
+      "name": "Builder / developer",
+      "purpose": "Builds against the governed contracts and the Factory authoring surfaces; conformance is defined by the contracts, registries, and KATs -- no permission is required to build a conforming implementation.",
+      "suppliesOrConsumes": "both",
+      "capabilityRefs": ["pipeline-composition-authoring"],
+      "requiredContractRefs": ["afi.pipeline.v1"],
+      "interfaceRefs": ["iface-factory-sdk", "iface-factory-cli", "iface-factory-mcp"],
+      "conformanceSuiteRefs": [],
+      "credentialClass": "none",
+      "onboardingDescriptorRef": "onboarding-builder",
+      "maturity": "operational",
+      "governanceBasis": "factory-configurable-pipelines-v1 (FCP-GOV) -- conformance-by-contract",
+      "evidence": [ { "kind": "repoPath", "ref": "afi-factory:src/index.ts" } ]
+    },
+    {
+      "roleId": "role-application-integrator",
+      "name": "Application integrator",
+      "purpose": "Integrates AFI capabilities into an external application through the Gateway and/or SDK surfaces. A self-serve onboarding control plane does not yet exist; integration today is through the conforming contracts and reference interfaces.",
+      "suppliesOrConsumes": "consumes",
+      "capabilityRefs": ["signal-ingest-normalization"],
+      "requiredContractRefs": ["afi.usignal.v1.1"],
+      "interfaceRefs": ["iface-gateway-signals"],
+      "conformanceSuiteRefs": [],
+      "credentialClass": "byok",
+      "onboardingDescriptorRef": "onboarding-application-integrator",
+      "maturity": "planned",
+      "governanceBasis": "district-api-atlas-foundation-v0.1 (ATLAS-GOV) discoverability; no onboarding control plane exists",
+      "evidence": [ { "kind": "governanceDecision", "ref": "district-api-atlas-foundation-v0.1 (ATLAS-GOV D-ATLAS-10)" } ]
+    }
+  ],
+
+  "onboardingDescriptors": [
+    {
+      "onboardingId": "onboarding-signal-provider",
+      "participantRoleRef": "role-signal-provider",
+      "applicableCapabilityRefs": ["signal-ingest-normalization"],
+      "onboardingMaturity": "underConstruction",
+      "requiredContractRefs": ["afi.usignal.v1.1", "afi.cpj.v0.1"],
+      "conformanceSuiteRefs": [],
+      "credentialRequirementClass": "byok",
+      "operatorClass": "either",
+      "evidence": [ { "kind": "governanceDecision", "ref": "no onboarding control plane exists; binding is a registry update (FCP-GOV D-FCP-5)" } ]
+    },
+    {
+      "onboardingId": "onboarding-analyst-scorer",
+      "participantRoleRef": "role-analyst-scorer",
+      "applicableCapabilityRefs": ["deterministic-scoring-uwr", "pipeline-composition-authoring"],
+      "onboardingMaturity": "planned",
+      "requiredContractRefs": ["afi.pipeline.v1", "afi.uwr-profile.v0"],
+      "conformanceSuiteRefs": [],
+      "credentialRequirementClass": "none",
+      "operatorClass": "either"
+    },
+    {
+      "onboardingId": "onboarding-data-provider",
+      "participantRoleRef": "role-data-enrichment-provider",
+      "applicableCapabilityRefs": ["five-category-enrichment"],
+      "onboardingMaturity": "planned",
+      "requiredContractRefs": ["afi.provider.v1", "afi.provider-instance.v1"],
+      "conformanceSuiteRefs": [],
+      "credentialRequirementClass": "opaqueCredentialRef",
+      "operatorClass": "either"
+    },
+    {
+      "onboardingId": "onboarding-validator",
+      "participantRoleRef": "role-validator",
+      "applicableCapabilityRefs": [],
+      "onboardingMaturity": "reserved",
+      "requiredContractRefs": ["afi.scored-signal-evidence.v3"],
+      "conformanceSuiteRefs": [],
+      "credentialRequirementClass": "none",
+      "operatorClass": "afiReference",
+      "evidence": [ { "kind": "governanceDecision", "ref": "reserved -- CHAIN-GOV role weights unfiled" } ]
+    },
+    {
+      "onboardingId": "onboarding-operator",
+      "participantRoleRef": "role-operator",
+      "applicableCapabilityRefs": ["signal-ingest-normalization"],
+      "onboardingMaturity": "planned",
+      "requiredContractRefs": [],
+      "conformanceSuiteRefs": [],
+      "credentialRequirementClass": "none",
+      "operatorClass": "either",
+      "evidence": [ { "kind": "governanceDecision", "ref": "research-institute-reference-services-v0.1 (INST-GOV, non-exclusive)" } ]
+    },
+    {
+      "onboardingId": "onboarding-builder",
+      "participantRoleRef": "role-builder-developer",
+      "applicableCapabilityRefs": ["pipeline-composition-authoring"],
+      "onboardingMaturity": "underConstruction",
+      "requiredContractRefs": ["afi.pipeline.v1"],
+      "conformanceSuiteRefs": [],
+      "credentialRequirementClass": "none",
+      "operatorClass": "either"
+    },
+    {
+      "onboardingId": "onboarding-application-integrator",
+      "participantRoleRef": "role-application-integrator",
+      "applicableCapabilityRefs": ["signal-ingest-normalization"],
+      "onboardingMaturity": "planned",
+      "requiredContractRefs": ["afi.usignal.v1.1"],
+      "conformanceSuiteRefs": [],
+      "credentialRequirementClass": "byok",
+      "operatorClass": "either"
+    }
+  ],
+
+  "audienceDescriptors": [
+    { "audienceId": "audience-investor", "name": "Investor", "note": "A non-conformance audience descriptor only. 'Investor' is NOT an AFI protocol-conformance role and implies no protocol activation, validator/provider privilege, or economic authority (ATLAS-GOV D-ATLAS-10)." },
+    { "audienceId": "audience-researcher", "name": "Researcher", "note": "A non-conformance audience descriptor: consumes afi-benchkit, afi-artifacts, and afi-docs. Implies no protocol activation or conformance role." },
+    { "audienceId": "audience-observer", "name": "Ecosystem observer", "note": "A non-conformance audience descriptor for ecosystem observers; implies no protocol activation or conformance role." }
+  ]
+}

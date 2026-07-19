@@ -147,3 +147,47 @@ npm run test:run   # full suite, including tests/uwr-profile-schema-validation.t
 - Values in `uwr-weighted-lifts-v0.1.json` are **testnet-provisional**. Any value change requires a **new governance decision and a new profile version (a new id)** — never a mutation of `uwr-weighted-lifts-v0.1`.
 - Additional profiles require their own scoped governance authorization before being added to `uwr-profiles/` (the test suite pins the directory contents to the authorized set).
 - Registration does **not** authorize runtime consumption; every consuming PR (PR-UWR-KAT-EXEC, PR-UWR-STAMP, qualification wiring) needs its own authorization per the decision's §7.
+
+## District / API Atlas registry
+
+This directory also holds the **canonical, machine-readable AFI District / API Atlas** —
+the protocol's **discoverability and relationship layer** — delegated to `afi-config`
+by `afi-governance/decisions/district-api-atlas-foundation-v0.1.md` (**ATLAS-GOV**,
+D-ATLAS-9).
+
+- **Schema:** [`../schemas/atlas/v1/afi-protocol-atlas.schema.json`](../schemas/atlas/v1/afi-protocol-atlas.schema.json) (root contract `afi.protocol-atlas.v1`)
+- **Registry:** [`./afi-protocol-atlas.v1.json`](./afi-protocol-atlas.v1.json)
+- **Validation:** `tests/atlas-registry-validation.test.ts` (schema-validity, referential integrity, unique ids, exactly-one-owning-District, operational-status-requires-evidence, no-invented-address, no-secret-field, current-state residue absence, cross-repository contract-path existence)
+
+> **This registry is DESCRIPTIVE discoverability metadata. It executes, routes,
+> resolves secrets, activates participants, and persists nothing (ATLAS-GOV
+> D-ATLAS-1).** It records the current protocol — the two active Districts
+> (District 1 — Signal Evaluation, District 2 — Evidence and Provenance), their
+> capabilities, the structures that implement them, the real current interfaces,
+> typed routes, referenced contracts (never their schema content), repository
+> roles, participant roles, and onboarding descriptors — plus honestly-`reserved`
+> future space (the CHAIN-GOV settlement/rewards/on-chain domain). It defines no
+> District, changes no District scope, and creates no endpoint. Human and public
+> views (e.g. `afi-docs/AFI_Full_Architecture.md`) are derived from or mechanically
+> checked against it.
+
+The Atlas separates **maturity** (`operational` / `partial` / `underConstruction`
+/ `planned` / `reserved`) from **visibility** (`public` / `restricted` / `internal`);
+an entity is `operational` only with cited implementation + test evidence, and a
+non-`operational` interface carries no address/operation identifier (no invented
+APIs). Routes are typed by flow (`data`, `control`, `identityTrust`, `evidence`,
+`buildArtifact`, `value`).
+
+### Change control
+
+- The registry is versioned as the contract `afi.protocol-atlas.v1` with an internal
+  `registryVersion`. Entity IDs are stable and not reused; a structure may be
+  replaced without renaming the District/capability it implements (ATLAS-GOV
+  D-ATLAS-14). Additive changes keep the major version; an identity-meaning,
+  required-field, or invariant change is breaking and requires a new governance
+  decision and a new Atlas contract major version.
+- Removal is **forward-only** (no compatibility alias, archive copy, or tombstone
+  kept current); Git history is the archive.
+- A new District, or a District scope change, is **not** an Atlas edit — it requires
+  its own `afi-governance` decision (`authority-districts-v0.1.md` Part E.1); the
+  Atlas only describes what accepted governance already established.
