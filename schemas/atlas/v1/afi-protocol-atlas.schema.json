@@ -1,0 +1,298 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://afi-protocol.org/schemas/atlas/v1/afi-protocol-atlas.schema.json",
+  "title": "AFI District / API Atlas Registry Schema v1 (ATLAS-GOV — afi.protocol-atlas.v1)",
+  "description": "Canonical, machine-readable ontology + registry for the AFI District / API Atlas: the protocol's discoverability and relationship layer over Districts (enduring capability/authority domains), Structures (concrete systems/services/facilities/shared infrastructure), Capabilities, Interfaces (governed I/O boundaries; APIs are one interface class), Routes (typed flows), Contract references, Repository references, Participant roles, Onboarding descriptors, and Evidence references. It DESCRIBES protocol truth and does not replace runtime, schema, contract, or governance authority (ATLAS-GOV D-ATLAS-1). It executes nothing, routes nothing, resolves no secrets, activates no participant, and transfers no value. Maturity (lifecycle) is recorded independently of visibility (exposure), and no entity is 'operational' without cited implementation + test evidence (D-ATLAS-6).",
+  "$comment": "BOUNDARY: discoverability metadata only. No storage engine, no endpoint, no live route, no secret, no runtime configuration, and no execution semantics are defined here. Cross-object referential integrity (every *Ref resolves to a declared entity id; exactly one owning District per capability; no dangling District/capability/structure/interface/route/contract/repository/role/onboarding reference; no duplicate ids; no District whose identity is a bare repository name; operational status backed by evidence; no fabricated interface address on a non-operational interface; no secret-capable field) is enforced by the accompanying afi-config tests (tests/atlas-registry-validation.test.ts) and this decision's guards, NOT by draft-07 alone. Draft-07 enforces: shape, enums, required fields, additionalProperties:false on every object (structurally excluding secret-capable fields), and the conditional that forbids addressOrOperation on non-operational interfaces (D-ATLAS-7).",
+  "x-afiStatus": "governed-contract",
+  "x-afiPartOf": "AFI District / API Atlas Foundation v0.1 (ATLAS-GOV); the canonical machine-readable Atlas ontology delegated to afi-config by D-ATLAS-9",
+  "x-afiDoctrineRefs": [
+    "afi-governance/decisions/district-api-atlas-foundation-v0.1 (ATLAS-GOV) D-ATLAS-1 — the Atlas is the canonical discoverability/relationship layer; not runtime/schema/contract/governance authority",
+    "afi-governance/decisions/district-api-atlas-foundation-v0.1 (ATLAS-GOV) D-ATLAS-2 — Districts are enduring capability/authority domains, repository- and implementation-independent",
+    "afi-governance/decisions/district-api-atlas-foundation-v0.1 (ATLAS-GOV) D-ATLAS-3 — Structures are concrete systems/services/facilities/shared infrastructure; not automatically Districts",
+    "afi-governance/decisions/district-api-atlas-foundation-v0.1 (ATLAS-GOV) D-ATLAS-4 — interface ownership belongs to the capability-owning District; a routing structure may expose without owning",
+    "afi-governance/decisions/district-api-atlas-foundation-v0.1 (ATLAS-GOV) D-ATLAS-5 — routes are typed by flow (data|control|identityTrust|evidence|buildArtifact|value); no implied network transport for in-process/schema handoffs",
+    "afi-governance/decisions/district-api-atlas-foundation-v0.1 (ATLAS-GOV) D-ATLAS-6 — maturity (operational|partial|underConstruction|planned|reserved) is separate from visibility (public|restricted|internal); operational requires evidence",
+    "afi-governance/decisions/district-api-atlas-foundation-v0.1 (ATLAS-GOV) D-ATLAS-7 — no invented APIs: a non-operational interface carries no fabricated address/operation identifier",
+    "afi-governance/decisions/district-api-atlas-foundation-v0.1 (ATLAS-GOV) D-ATLAS-8 — repositories are implementation references; no District is defined by a repository name",
+    "afi-governance/decisions/district-api-atlas-foundation-v0.1 (ATLAS-GOV) D-ATLAS-9 — one canonical machine-readable Atlas registry in afi-config; human/public views derive from or are mechanically checked against it",
+    "afi-governance/decisions/district-api-atlas-foundation-v0.1 (ATLAS-GOV) D-ATLAS-10 — participant/onboarding discoverability only; the Atlas performs no onboarding/approval/identity/credential/activation and holds no secret",
+    "afi-governance/decisions/district-api-atlas-foundation-v0.1 (ATLAS-GOV) D-ATLAS-12 — current/future-only presentation; discarded implementations are not landmarks",
+    "afi-governance/decisions/district-api-atlas-foundation-v0.1 (ATLAS-GOV) D-ATLAS-14 — Atlas registry versioning, entity-ID stability, additive-vs-breaking, status transitions, forward-only removal, evidence-reference maintenance"
+  ],
+  "x-afiConstraints": {
+    "referentialIntegrity": "CROSS-OBJECT (test-enforced, not draft-07-enforceable): every ...Ref/...Refs value MUST resolve to a declared entity id of the correct type in this same registry (districtId/structureId/capabilityId/interfaceId/routeId/contractId/repositoryId/roleId/onboardingId). No dangling reference is admissible.",
+    "uniqueIds": "Every entity id MUST be unique within its type. No id is reused across a delete/re-create (D-ATLAS-14 entity-ID stability).",
+    "oneOwningDistrict": "Each capability MUST name exactly one owningDistrictRef (D-ATLAS-9/§9.3). A capability that is operational MUST have a resolved owning District; if ownership is unresolved the capability MUST NOT be operational.",
+    "districtNotRepository": "No District's districtId or name may be a bare repository name (afi-*), and no District may be defined solely by a repositoryRef (D-ATLAS-8).",
+    "operationalRequiresEvidence": "An entity with maturity 'operational' or 'partial' MUST carry at least one evidence reference of a verifiable kind (repoPath/commit/test/ci/schemaId/operation/contractAddress/registryRecord/manifest) — never prose-only (D-ATLAS-6/D-ATLAS-7).",
+    "noInventedAddress": "addressOrOperation is admissible ONLY on an interface whose maturity is 'operational' or 'partial' and is structurally forbidden otherwise (draft-07 if/then below). It MUST be a real current route/operation/method/contract identifier — never a fabricated path, URL, hostname, or credential (D-ATLAS-7).",
+    "noSecrets": "No object defines any secret-capable field, and additionalProperties:false everywhere forbids one from being added. Credential facts are recorded only as an opaque credentialClass/credentialRequirementClass enum — never a secret, token, header, or credentialed URL (D-ATLAS-10).",
+    "routingNotOwnership": "An interface's routingStructureRef (if present) records a structure that merely routes/exposes; it does NOT confer capability ownership, which stays with owningCapabilityRef/owningDistrictRef (D-ATLAS-4).",
+    "descriptiveOnly": "This registry is descriptive. It contains no runtime configuration, no live endpoint that it activates, no executor, and no router. It describes interfaces that other repositories implement; it implements none."
+  },
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "registryVersion",
+    "generatedDate",
+    "status",
+    "mode",
+    "authorityRef",
+    "sourceOfTruthOrder",
+    "districts",
+    "structures",
+    "capabilities",
+    "interfaces",
+    "routes",
+    "contracts",
+    "repositories",
+    "participantRoles",
+    "onboardingDescriptors"
+  ],
+  "properties": {
+    "schema": { "const": "afi.protocol-atlas.v1", "description": "Self-identifying root Atlas contract id." },
+    "registryVersion": { "type": "string", "description": "Semver-ish version of this registry document (e.g. '0.1.0')." },
+    "generatedDate": { "type": "string", "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$", "description": "ISO date (YYYY-MM-DD) this registry was authored." },
+    "status": { "type": "string", "enum": ["draft", "draft-owner-review", "canonical", "deprecated"], "description": "Lifecycle status of the registry document itself." },
+    "mode": { "const": "descriptive / read-only", "description": "The Atlas executes, routes, resolves, activates, and persists nothing (D-ATLAS-1)." },
+    "authorityRef": { "type": "string", "description": "The accepted governance decision that authorizes this registry (ATLAS-GOV)." },
+    "description": { "type": "string" },
+    "sourceOfTruthOrder": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "The authority order this Atlas is subordinate to: accepted governance -> canonical schemas/contracts -> current implementation/tests -> this Atlas registry -> human docs -> future Protocol City."
+    },
+    "flowTypes": { "type": "array", "items": { "$ref": "#/definitions/flowType" }, "description": "Declared route flow-type vocabulary (informational mirror of the enum)." },
+    "districts": { "type": "array", "items": { "$ref": "#/definitions/district" } },
+    "structures": { "type": "array", "items": { "$ref": "#/definitions/structure" } },
+    "capabilities": { "type": "array", "items": { "$ref": "#/definitions/capability" } },
+    "interfaces": { "type": "array", "items": { "$ref": "#/definitions/interface" } },
+    "routes": { "type": "array", "items": { "$ref": "#/definitions/route" } },
+    "contracts": { "type": "array", "items": { "$ref": "#/definitions/contractRef" } },
+    "repositories": { "type": "array", "items": { "$ref": "#/definitions/repositoryRef" } },
+    "participantRoles": { "type": "array", "items": { "$ref": "#/definitions/participantRole" } },
+    "onboardingDescriptors": { "type": "array", "items": { "$ref": "#/definitions/onboardingDescriptor" } },
+    "audienceDescriptors": {
+      "type": "array",
+      "description": "Non-conformance audience descriptors (e.g. investors, researchers, ecosystem observers) that imply NO protocol activation (D-ATLAS-10).",
+      "items": { "$ref": "#/definitions/audienceDescriptor" }
+    }
+  },
+  "definitions": {
+    "entityId": { "type": "string", "pattern": "^[a-z][a-z0-9-]{1,63}$", "description": "Stable lowercase-kebab id, unique within its entity type." },
+    "maturity": { "type": "string", "enum": ["operational", "partial", "underConstruction", "planned", "reserved"] },
+    "visibility": { "type": "string", "enum": ["public", "restricted", "internal"] },
+    "flowType": { "type": "string", "enum": ["data", "control", "identityTrust", "evidence", "buildArtifact", "value"] },
+    "structureKind": {
+      "type": "string",
+      "enum": ["runtime", "sharedInfrastructure", "authoringSystem", "gateway", "service", "registry", "persistence", "governance", "mathKernel", "smartContract", "vault", "treasury", "fund", "settlement", "documentation", "benchmark", "recordsArchive"]
+    },
+    "interfaceKind": {
+      "type": "string",
+      "enum": ["httpApi", "rpc", "sdk", "cli", "mcp", "event", "queue", "schemaBoundary", "internalService", "persistenceBoundary", "smartContract", "operationRegistry"]
+    },
+    "direction": { "type": "string", "enum": ["inbound", "outbound", "bidirectional"] },
+    "accessClass": { "type": "string", "enum": ["public", "authenticated", "internalTrusted", "keyless", "byok", "internal", "onChain"] },
+    "credentialClass": { "type": "string", "enum": ["keyless", "byok", "opaqueCredentialRef", "sharedSecret", "onChainRole", "none"] },
+    "operatorClass": { "type": "string", "enum": ["afiReference", "thirdParty", "either"] },
+    "suppliesOrConsumes": { "type": "string", "enum": ["supplies", "consumes", "both"] },
+    "contractKind": { "type": "string", "enum": ["jsonSchema", "registryRecord", "solidity", "hashLaw", "profile", "doctrine"] },
+    "evidenceKind": {
+      "type": "string",
+      "enum": ["governanceDecision", "schemaId", "repoPath", "commit", "test", "ci", "operation", "contractAddress", "registryRecord", "manifest"]
+    },
+    "evidenceRef": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "ref"],
+      "properties": {
+        "kind": { "$ref": "#/definitions/evidenceKind" },
+        "ref": { "type": "string", "description": "e.g. 'afi-reactor:src/pipeline/executor.ts', a commit sha, a schema $id, a test file path, or a governance decision slot. NEVER a secret." },
+        "note": { "type": "string" }
+      }
+    },
+    "district": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["districtId", "name", "purpose", "active", "authorityRefs", "maturity", "visibility", "evidence"],
+      "properties": {
+        "districtId": { "$ref": "#/definitions/entityId" },
+        "name": { "type": "string", "description": "Display name (e.g. 'Signal Evaluation'). MUST NOT be a bare repository name." },
+        "registryLongForm": { "type": "string", "description": "The accepted-governance registry long-form name, if different from name." },
+        "purpose": { "type": "string" },
+        "active": { "type": "boolean", "description": "true = an active created District (per accepted governance); false = a reserved capability-domain candidate (AD Part D.2), not a created District." },
+        "authorityRefs": { "type": "array", "minItems": 1, "items": { "type": "string" }, "description": "Accepted governance decisions establishing this District." },
+        "maturity": { "$ref": "#/definitions/maturity" },
+        "visibility": { "$ref": "#/definitions/visibility" },
+        "ownedCapabilityRefs": { "type": "array", "items": { "$ref": "#/definitions/entityId" } },
+        "servedStructureRefs": { "type": "array", "items": { "$ref": "#/definitions/entityId" } },
+        "incomingRouteRefs": { "type": "array", "items": { "$ref": "#/definitions/entityId" } },
+        "outgoingRouteRefs": { "type": "array", "items": { "$ref": "#/definitions/entityId" } },
+        "constructionSummary": { "type": "string", "description": "Optional: what is under construction / incomplete." },
+        "publicSummary": { "type": "string", "description": "Optional: bounded public-facing summary." },
+        "evidence": { "type": "array", "items": { "$ref": "#/definitions/evidenceRef" } }
+      }
+    },
+    "structure": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["structureId", "kind", "purpose", "maturity", "visibility", "evidence"],
+      "properties": {
+        "structureId": { "$ref": "#/definitions/entityId" },
+        "name": { "type": "string" },
+        "kind": { "$ref": "#/definitions/structureKind" },
+        "purpose": { "type": "string" },
+        "maturity": { "$ref": "#/definitions/maturity" },
+        "visibility": { "$ref": "#/definitions/visibility" },
+        "capabilityRefs": { "type": "array", "items": { "$ref": "#/definitions/entityId" } },
+        "homeDistrictRef": { "$ref": "#/definitions/entityId" },
+        "servedDistrictRefs": { "type": "array", "items": { "$ref": "#/definitions/entityId" } },
+        "repositoryRefs": { "type": "array", "items": { "$ref": "#/definitions/entityId" } },
+        "exposedInterfaceRefs": { "type": "array", "items": { "$ref": "#/definitions/entityId" } },
+        "routingInterfaceRefs": { "type": "array", "items": { "$ref": "#/definitions/entityId" } },
+        "routesTrafficWithoutOwning": { "type": "boolean", "description": "true for a routing structure that carries traffic without owning the capability (e.g. Gateway)." },
+        "evidence": { "type": "array", "items": { "$ref": "#/definitions/evidenceRef" } }
+      }
+    },
+    "capability": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["capabilityId", "name", "purpose", "owningDistrictRef", "maturity", "visibility", "evidence"],
+      "properties": {
+        "capabilityId": { "$ref": "#/definitions/entityId" },
+        "name": { "type": "string" },
+        "purpose": { "type": "string" },
+        "owningDistrictRef": { "$ref": "#/definitions/entityId", "description": "EXACTLY ONE current authority-owning District (D-ATLAS-9)." },
+        "implementingStructureRefs": { "type": "array", "items": { "$ref": "#/definitions/entityId" } },
+        "inputContractRefs": { "type": "array", "items": { "type": "string", "description": "a declared contractRef.contractId" } },
+        "outputContractRefs": { "type": "array", "items": { "type": "string", "description": "a declared contractRef.contractId" } },
+        "interfaceRefs": { "type": "array", "items": { "$ref": "#/definitions/entityId" } },
+        "participantRoleRefs": { "type": "array", "items": { "$ref": "#/definitions/entityId" } },
+        "maturity": { "$ref": "#/definitions/maturity" },
+        "visibility": { "$ref": "#/definitions/visibility" },
+        "evidence": { "type": "array", "items": { "$ref": "#/definitions/evidenceRef" } }
+      }
+    },
+    "interface": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["interfaceId", "kind", "owningCapabilityRef", "owningDistrictRef", "exposingStructureRef", "direction", "transport", "accessClass", "maturity", "visibility", "evidence"],
+      "properties": {
+        "interfaceId": { "$ref": "#/definitions/entityId" },
+        "name": { "type": "string" },
+        "kind": { "$ref": "#/definitions/interfaceKind" },
+        "owningCapabilityRef": { "$ref": "#/definitions/entityId" },
+        "owningDistrictRef": { "$ref": "#/definitions/entityId" },
+        "exposingStructureRef": { "$ref": "#/definitions/entityId" },
+        "routingStructureRef": { "$ref": "#/definitions/entityId", "description": "Optional routing/exposing structure that does NOT own the capability (D-ATLAS-4)." },
+        "direction": { "$ref": "#/definitions/direction" },
+        "transport": { "type": "string", "description": "e.g. HTTP, in-process, JSON-RPC stdio, Mongo driver, EVM. Not a URL." },
+        "accessClass": { "$ref": "#/definitions/accessClass" },
+        "inputContractRefs": { "type": "array", "items": { "type": "string", "description": "a declared contractRef.contractId" } },
+        "outputContractRefs": { "type": "array", "items": { "type": "string", "description": "a declared contractRef.contractId" } },
+        "maturity": { "$ref": "#/definitions/maturity" },
+        "visibility": { "$ref": "#/definitions/visibility" },
+        "addressOrOperation": { "type": "string", "description": "A REAL current route/operation/method/contract-function identifier (e.g. 'POST /api/v1/signals', 'factory.official.list', 'mintEmissions'). Admissible ONLY when operational/partial (D-ATLAS-7). NEVER a fabricated URL/host/credential." },
+        "evidence": { "type": "array", "items": { "$ref": "#/definitions/evidenceRef" } }
+      },
+      "if": { "properties": { "maturity": { "enum": ["planned", "underConstruction", "reserved"] } } },
+      "then": { "properties": { "addressOrOperation": false } }
+    },
+    "route": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["routeId", "sourceRef", "targetRef", "flowType", "maturity", "visibility", "isNetworkTransport", "evidence"],
+      "properties": {
+        "routeId": { "$ref": "#/definitions/entityId" },
+        "sourceRef": { "$ref": "#/definitions/entityId", "description": "Source entity id (district/structure/capability/interface)." },
+        "targetRef": { "$ref": "#/definitions/entityId" },
+        "flowType": { "$ref": "#/definitions/flowType" },
+        "carriesContractRefs": { "type": "array", "items": { "type": "string", "description": "a declared contractRef.contractId" } },
+        "maturity": { "$ref": "#/definitions/maturity" },
+        "visibility": { "$ref": "#/definitions/visibility" },
+        "isNetworkTransport": { "type": "boolean", "description": "false when the boundary is an in-process function call or a schema handoff (D-ATLAS-5)." },
+        "routingStructureRef": { "$ref": "#/definitions/entityId" },
+        "evidence": { "type": "array", "items": { "$ref": "#/definitions/evidenceRef" } }
+      }
+    },
+    "contractRef": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["contractId", "version", "canonicalPath", "kind", "owningAuthority", "maturity"],
+      "properties": {
+        "contractId": { "type": "string", "description": "e.g. 'afi.scored-signal-evidence.v3'. The Atlas REFERENCES contracts; it never duplicates their schema content." },
+        "version": { "type": "string" },
+        "canonicalPath": { "type": "string", "description": "repo-relative path or org-relative identity of the canonical contract." },
+        "kind": { "$ref": "#/definitions/contractKind" },
+        "owningAuthority": { "type": "string", "description": "The governance decision/authority that owns this contract." },
+        "maturity": { "$ref": "#/definitions/maturity" },
+        "consumerRefs": { "type": "array", "items": { "type": "string" }, "description": "Structures/repos that implement/consume this contract." }
+      }
+    },
+    "repositoryRef": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["repositoryId", "identity", "role", "visibility"],
+      "properties": {
+        "repositoryId": { "$ref": "#/definitions/entityId" },
+        "identity": { "type": "string", "description": "Org-relative identity or URL (e.g. 'AFI-Protocol/afi-reactor')." },
+        "role": { "type": "string", "description": "Current implementation role (NOT a District definition)." },
+        "implementedCapabilityRefs": { "type": "array", "items": { "$ref": "#/definitions/entityId" } },
+        "hostedStructureRefs": { "type": "array", "items": { "$ref": "#/definitions/entityId" } },
+        "visibility": { "$ref": "#/definitions/visibility" },
+        "evidence": { "type": "array", "items": { "$ref": "#/definitions/evidenceRef" } }
+      }
+    },
+    "participantRole": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["roleId", "name", "purpose", "suppliesOrConsumes", "maturity"],
+      "properties": {
+        "roleId": { "$ref": "#/definitions/entityId" },
+        "name": { "type": "string" },
+        "purpose": { "type": "string" },
+        "suppliesOrConsumes": { "$ref": "#/definitions/suppliesOrConsumes" },
+        "capabilityRefs": { "type": "array", "items": { "$ref": "#/definitions/entityId" } },
+        "requiredContractRefs": { "type": "array", "items": { "type": "string" } },
+        "interfaceRefs": { "type": "array", "items": { "$ref": "#/definitions/entityId" } },
+        "conformanceSuiteRefs": { "type": "array", "items": { "type": "string" }, "description": "Only real conformance suites; empty when none exists yet." },
+        "credentialClass": { "$ref": "#/definitions/credentialClass" },
+        "activationPolicyRef": { "type": "string", "description": "Only when a real activation policy exists." },
+        "onboardingDescriptorRef": { "$ref": "#/definitions/entityId" },
+        "maturity": { "$ref": "#/definitions/maturity" },
+        "governanceBasis": { "type": "string" },
+        "evidence": { "type": "array", "items": { "$ref": "#/definitions/evidenceRef" } }
+      }
+    },
+    "onboardingDescriptor": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["onboardingId", "participantRoleRef", "onboardingMaturity", "operatorClass", "credentialRequirementClass"],
+      "properties": {
+        "onboardingId": { "$ref": "#/definitions/entityId" },
+        "participantRoleRef": { "$ref": "#/definitions/entityId" },
+        "applicableCapabilityRefs": { "type": "array", "items": { "$ref": "#/definitions/entityId" } },
+        "onboardingMaturity": { "$ref": "#/definitions/maturity" },
+        "requiredContractRefs": { "type": "array", "items": { "type": "string" } },
+        "conformanceSuiteRefs": { "type": "array", "items": { "type": "string" } },
+        "activationPolicyRef": { "type": "string" },
+        "credentialRequirementClass": { "$ref": "#/definitions/credentialClass" },
+        "onboardingEntryRef": { "type": "string", "description": "A real onboarding entry identifier ONLY when one exists; otherwise absent. NEVER a fabricated URL." },
+        "operatorClass": { "$ref": "#/definitions/operatorClass" },
+        "evidence": { "type": "array", "items": { "$ref": "#/definitions/evidenceRef" } }
+      }
+    },
+    "audienceDescriptor": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["audienceId", "name", "note"],
+      "properties": {
+        "audienceId": { "$ref": "#/definitions/entityId" },
+        "name": { "type": "string" },
+        "note": { "type": "string", "description": "MUST state this audience implies no protocol-conformance role or activation." }
+      }
+    }
+  }
+}
