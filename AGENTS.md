@@ -67,7 +67,7 @@ This repo has no dev server. Typical workflow:
 
 ## Git Workflows
 
-- **Base branch**: `migration/multi-repo-reorg` (current working branch)
+- **Base branch**: `main`
 - **Branch naming**: `feat/`, `fix/`, `docs/`, `refactor/`
 - **Commit messages**: Conventional commits (e.g., `feat(schemas): add signal v2 schema`)
 - **Before committing**: Run `npm test && npm run validate`

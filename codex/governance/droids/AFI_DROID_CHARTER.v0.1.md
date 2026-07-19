@@ -37,10 +37,10 @@ Droids must follow this order of authority when deciding what to do:
 
 1. **AFI Protocol Maintainers & Governance Documents**
    - This Charter (`AFI_DROID_CHARTER.v0.1.md`)
-   - Other canonical governance docs (e.g., AFI Orchestrator Doctrine in `afi-reactor`, Token Architecture docs in `afi-token-finalized`).
+   - Other canonical governance docs (e.g., the governed pipeline manifests and registries in `afi-config`, Token Architecture docs in `afi-token-finalized`).
 2. **Repository-Level Canonical Docs**
    - `README.md` at the repo root.
-   - Repo-specific doctrine files (e.g., `AFI_ORCHESTRATOR_DOCTRINE.md`).
+   - Repo-specific doctrine or architecture docs (where a repo defines them).
 3. **`AGENTS.md` in Each Repo**
    - Droid-specific rules, constraints, and allowed tasks for that repository.
 4. **Codex Metadata**
@@ -74,7 +74,7 @@ The AFI metadata and provenance system. Codex describes modules, roles, schemas,
 **Repo Classes** (high-level):
 
 - **Config Layer** – e.g., `afi-config` (schemas, templates, registry).
-- **Orchestrator Layer** – e.g., `afi-reactor` (DAGs, pipelines, orchestration).
+- **Orchestrator Layer** – e.g., `afi-reactor` (the manifest-driven pipeline runtime / orchestration & execution layer).
 - **Runtime / Agent Layer** – e.g., `afi-core`.
 - **Infra / Ops Layer** – e.g., `afi-infra`.
 - **Token Layer** – e.g., `afi-token-finalized` and adjacent tokenomics repos.
@@ -139,7 +139,7 @@ Droids may **not**:
 
 - Change the **economic behavior** of AFI tokens (emissions, caps, reward curves) without explicit, repo-local human instruction.
 - Modify or rotate **production secrets**, keys, or on-chain addresses.
-- Rename or delete core architectural concepts (e.g., DAG node IDs, canonical schema names) unless explicitly requested.
+- Rename or delete core architectural concepts (e.g., registry-declared pipeline composition, canonical schema names) unless explicitly requested.
 - Move files **across repos** or rewrite repo topology.
 - Change **licenses**, authorship, or legal notices.
 - Introduce new **external services or dependencies** that materially affect cost, data privacy, or deployability without human design approval.
@@ -151,7 +151,7 @@ The following are allowed *only* when explicitly requested in that repo's contex
 - Framework- or runtime-level migrations (e.g., large-scale ESM migrations, major library swaps).
 - Broad codemods impacting large portions of a repo.
 - Changes to CI/CD pipelines that affect deployments or token-related flows.
-- Changes to DAG structure in `afi-reactor` (adding/removing nodes, altering edges).
+- Changes to pipeline composition in `afi-reactor` (lanes/nodes and provider selections declared in the governed registries/manifests).
 
 If the instruction is ambiguous, droids must treat it as **not authorized**.
 
@@ -175,13 +175,13 @@ If the instruction is ambiguous, droids must treat it as **not authorized**.
 ### 6.2 Orchestrator Layer (e.g., `afi-reactor`)
 
 - **May**:
-  - Add new DAG nodes, simulations, or tests that are clearly additive.
+  - Add new pipeline lanes/providers (via the governed registries/manifests), simulations, or tests that are clearly additive.
   - Improve logging, observability, and Codex replay artifacts.
 - **Must**:
-  - Respect the AFI Orchestrator Doctrine.
-  - Treat the DAG as the canonical expression of orchestration; no ad-hoc hidden flows.
+  - Respect the governed pipeline manifests and registries in `afi-config`.
+  - Treat the governed pipeline manifest + registries as the canonical expression of composition; no ad-hoc hidden flows.
 - **May not**:
-  - Rename or remove existing DAG nodes or edges without explicit instruction.
+  - Rename or remove existing pipeline lanes or registry-declared composition without explicit instruction.
   - Introduce tokenomics logic; emissions and rewards belong in token repos.
 
 ### 6.3 Runtime / Agent Layer (e.g., `afi-core`)

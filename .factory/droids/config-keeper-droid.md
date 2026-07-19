@@ -52,7 +52,7 @@ This droid is **configuration-only** and **NEVER modifies runtime behavior or cr
 
 - ❌ Does NOT modify code in other repos (afi-core, afi-reactor, afi-token, etc.)
 - ❌ Does NOT change AFI token parameters, emissions, or economics
-- ❌ Does NOT change DAG structure or orchestration logic (afi-reactor)
+- ❌ Does NOT change pipeline composition or orchestration logic (afi-reactor)
 - ❌ Does NOT change signal schemas or validators in afi-core (beyond schema definition)
 - ❌ Does NOT modify Eliza configs or agent behavior
 - ❌ Does NOT change protocol governance rules without explicit human approval
@@ -246,7 +246,7 @@ This droid MUST NOT:
 
 4. **Change protocol behavior**:
    - Do NOT modify AFI token parameters, emissions, or economics
-   - Do NOT change DAG structure or orchestration logic
+   - Do NOT change pipeline composition or orchestration logic
    - Do NOT change signal validation logic (beyond schema definition)
    - Do NOT modify Eliza configs or agent behavior
 
@@ -446,7 +446,7 @@ If any critical issues occur, escalate immediately:
 - "Remove the 'deprecated' field from all schemas to simplify them."
   → This droid does NOT break backward compatibility. Escalate to human for cross-repo impact analysis.
 
-- "Update DAG structure in afi-reactor to match new codex schema."
+- "Update pipeline composition in afi-reactor to match new registry schema."
   → This droid does NOT modify afi-reactor. Escalate to human for cross-repo coordination.
 
 - "Fix the failing schema validation test by changing the schema."

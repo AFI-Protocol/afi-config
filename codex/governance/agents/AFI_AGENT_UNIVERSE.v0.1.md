@@ -7,7 +7,6 @@
 This document maps the conceptual universe of AFI Protocol runtime agents—the intelligent actors that process signals, interact with humans, validate data, and govern the protocol. It serves as an orientation guide and design reference, not an executable specification.
 
 **Companion documents**:
-- **AFI_DROID_INDEX.v0.1.md** — Catalog of house droids (repo maintenance workers)
 - **AFI_DROID_CHARTER.v0.1.md** — Global rules for droids
 - **AFI_DROID_GLOSSARY.md** — Terminology (droids vs agents vs gateways)
 - **afi-gateway/docs/AFI_AGENT_PLAYBOOK.v0.1.md** — Runtime behavior for ElizaOS agents
@@ -34,7 +33,7 @@ In AFI Protocol, **agents** are runtime actors that:
 
 - Operate on **live data** (signals, proposals, logs, user queries)
 - Consume **schemas and types** defined in afi-core and afi-config
-- Interact with **humans** (via chat, voice, UI) or **systems** (via APIs, DAG nodes, batch jobs)
+- Interact with **humans** (via chat, voice, UI) or **systems** (via APIs, pipeline nodes, batch jobs)
 - Produce **outputs** (summaries, scores, alerts, recommendations, governance votes)
 
 Agents are **not** repo maintenance workers. They do not edit code, schemas, or configs. That is the role of droids.
@@ -43,10 +42,10 @@ Agents are **not** repo maintenance workers. They do not edit code, schemas, or 
 
 **Droids** (Factory.ai coding workers):
 - Operate on **Git repositories** (code, configs, tests, docs)
-- Maintain **schemas, DAGs, skills, contracts, and CI/CD**
+- Maintain **schemas, pipelines, skills, contracts, and CI/CD**
 - Follow **AFI Droid Charter v0.1** and repo-specific AGENTS.md files
 - Produce **commits and pull requests** for human review
-- Examples: dag-builder-droid, schema-validator-droid, contract-test-droid, config-keeper-droid
+- Examples: pipeline-composer-droid, schema-validator-droid, contract-test-droid, config-keeper-droid
 
 **Agents** (runtime actors):
 - Operate on **live data** (signals, proposals, logs, user queries)
@@ -70,7 +69,7 @@ This document covers:
 This document does NOT cover:
 
 - Executable agent specifications (those live in character configs, plugin code, and skill definitions)
-- Droid behavior (see AFI_DROID_INDEX.v0.1.md and AFI_DROID_CHARTER.v0.1.md)
+- Droid behavior (see AFI_DROID_CHARTER.v0.1.md)
 - Smart contract behavior or on-chain logic (see afi-token documentation)
 - Infrastructure deployment (see afi-infra documentation)
 
@@ -88,7 +87,7 @@ AFI agents can be categorized along four primary dimensions:
 - Characteristics: Natural language I/O, conversational context, user-specific state
 
 **System-facing**:
-- Agents that operate as DAG nodes, batch jobs, or background services
+- Agents that operate as pipeline nodes, batch jobs, or background services
 - Examples: Market Scout agents (data ingest), Pattern Analyst (signal enrichment), SignalScorer (scoring stage)
 - Characteristics: Structured I/O (JSON, typed signals), stateless or batch-oriented, API-driven
 
@@ -113,7 +112,7 @@ AFI agents typically fulfill one or more of these roles:
 
 Each agent class typically has a primary "home" repo or system:
 
-- **afi-reactor**: Pipeline agents (DAG nodes for signal processing)
+- **afi-reactor**: Pipeline agents (pipeline nodes for signal processing)
 - **afi-core**: Validator agents, scoring agents, registry curators
 - **afi-gateway**: Frontline persona agents (Phoenix, Mentor agents)
 - **afi-infra**: Ops agents (CI Explainer, Incident Triage, Deployment Dry-Run Advisor)
@@ -176,11 +175,11 @@ Frontline agents are human-facing personas that serve as the public face of AFI 
 
 ---
 
-### 3.2 Market Pipeline Agents (Reactor DAG)
+### 3.2 Market Pipeline Agents (Reactor Pipeline)
 
 **What they do**:
 
-Pipeline agents are system-facing actors that operate as nodes in the afi-reactor DAG. They process signals through the four lifecycle stages (Raw → Enriched → Analyzed → Scored), transforming raw market data into actionable intelligence.
+Pipeline agents are system-facing actors that operate as nodes in the afi-reactor pipeline. They process signals through the four lifecycle stages (Raw → Enriched → Analyzed → Scored), transforming raw market data into actionable intelligence.
 
 **Raw-stage "Scout" agents**:
 
@@ -189,7 +188,7 @@ Pipeline agents are system-facing actors that operate as nodes in the afi-reacto
 - **Anomaly Scout**: Detects statistical anomalies in price, volume, or volatility
 - **Interface**: System-facing (batch jobs, streaming data ingest)
 - **Role**: Scout (data discovery and ingestion)
-- **Home**: afi-reactor (DAG nodes)
+- **Home**: afi-reactor (pipeline nodes)
 - **Stage focus**: Raw (unprocessed data)
 - **Inputs**: External APIs (on-chain data, news feeds, market data)
 - **Outputs**: Raw signals (unvalidated, unscored)
@@ -200,9 +199,9 @@ Pipeline agents are system-facing actors that operate as nodes in the afi-reacto
 - **Volatility Enricher**: Adds realized/implied volatility metrics
 - **Liquidity Enricher**: Adds order book depth, bid-ask spreads, slippage estimates
 - **Cross-Asset Context Builder**: Adds correlations, regime indicators, macro context
-- **Interface**: System-facing (DAG nodes)
+- **Interface**: System-facing (pipeline nodes)
 - **Role**: Analyst (context addition)
-- **Home**: afi-reactor (DAG nodes)
+- **Home**: afi-reactor (pipeline nodes)
 - **Stage focus**: Enriched (contextualized data)
 - **Inputs**: Raw signals
 - **Outputs**: Enriched signals (with added context fields)
@@ -213,9 +212,9 @@ Pipeline agents are system-facing actors that operate as nodes in the afi-reacto
 - **Regime Detection Agent**: Classifies market regime (risk-on, risk-off, transition, crisis)
 - **Cross-Asset Analyst**: Analyzes correlations, factor exposures, contagion risks
 - **Macro Regime Analyst**: Analyzes central bank policy, liquidity cycles, inflation/deflation signals
-- **Interface**: System-facing (DAG nodes)
+- **Interface**: System-facing (pipeline nodes)
 - **Role**: Analyst (pattern detection, regime classification)
-- **Home**: afi-reactor (DAG nodes)
+- **Home**: afi-reactor (pipeline nodes)
 - **Stage focus**: Analyzed (interpreted data)
 - **Inputs**: Enriched signals
 - **Outputs**: Analyzed signals (with pattern labels, regime classifications, risk flags)
@@ -226,9 +225,9 @@ Pipeline agents are system-facing actors that operate as nodes in the afi-reacto
 - **Risk Tier Labeler**: Assigns risk tiers (low, medium, high, extreme)
 - **Strategy Fit Scorer**: Scores signals for fit with specific strategies (momentum, mean-reversion, carry, etc.)
 - **PoI/PoInsight Scorer**: Computes Proof of Intelligence and Proof of Insight scores for validators (validator-level traits, NOT signal fields)
-- **Interface**: System-facing (DAG nodes)
+- **Interface**: System-facing (pipeline nodes)
 - **Role**: Validator + Analyst (final scoring and validation)
-- **Home**: afi-reactor (DAG nodes) or afi-core (validator logic)
+- **Home**: afi-reactor (pipeline nodes) or afi-core (validator logic)
 - **Stage focus**: Scored (final intelligence output)
 - **Inputs**: Analyzed signals
 - **Outputs**: Scored signals (with final scores, risk tiers, strategy fit ratings)
@@ -278,7 +277,7 @@ Validator agents maintain the integrity of AFI's signal validation and reputatio
 
 **PoI/PoInsight Scoring Agents**:
 
-- **Interface**: System-facing (DAG nodes, batch jobs)
+- **Interface**: System-facing (pipeline nodes, batch jobs)
 - **Role**: Validator (reputation scoring)
 - **Home**: afi-core (validator logic)
 - **What they do**: Compute Proof of Intelligence (PoI) and Proof of Insight (PoInsight) scores for validators based on signal accuracy, timeliness, and uniqueness
@@ -292,7 +291,7 @@ Validator agents maintain the integrity of AFI's signal validation and reputatio
 - **Role**: Validator (audit and replay)
 - **Home**: afi-reactor (Codex replay logic)
 - **What it does**: Replays historical signals from Codex vault, validates determinism, detects discrepancies
-- **Inputs**: Codex vault entries, DAG configs, historical signal data
+- **Inputs**: Codex vault entries, pipeline configs, historical signal data
 - **Outputs**: Replay reports, determinism validation, discrepancy alerts
 
 **Registry Curator Agent** (aspirational):
@@ -348,10 +347,10 @@ Droids and agents are complementary but distinct:
 **Droids = Repo-level housekeepers**:
 
 - Operate on **Git repositories** (code, configs, tests, docs)
-- Maintain **DAGs, schemas, skills, configs, tests, CI/CD, contracts**
+- Maintain **pipelines, schemas, skills, configs, tests, CI/CD, contracts**
 - Follow **AFI Droid Charter v0.1** and repo-specific AGENTS.md files
 - Produce **commits and pull requests** for human review
-- Examples: dag-builder-droid (afi-reactor), schema-validator-droid (afi-core), contract-test-droid (afi-token), config-keeper-droid (afi-config)
+- Examples: pipeline-composer-droid (afi-reactor), schema-validator-droid (afi-core), contract-test-droid (afi-token), config-keeper-droid (afi-config)
 
 **Agents = Runtime actors using those structures**:
 
@@ -359,21 +358,21 @@ Droids and agents are complementary but distinct:
 - Consume **schemas** from afi-core/afi-config, use **Codex** for replay
 - Follow **AFI Agent Playbook v0.1** (for ElizaOS agents) and domain-specific guidelines
 - Produce **runtime outputs** (summaries, scores, alerts, recommendations)
-- Examples: Phoenix (afi-gateway), Market Scout agents (afi-reactor DAG), Governance Risk Sentinel (afi-governance)
+- Examples: Phoenix (afi-gateway), Market Scout agents (afi-reactor pipeline), Governance Risk Sentinel (afi-governance)
 
 **Key relationships**:
 
 - **Agents consume schemas and Codex; droids maintain them**: Schemas are maintained by schema-validator-droid (afi-core) and config-keeper-droid (afi-config). Agents use schemas to validate signals and parse data.
 - **Droids create safe playgrounds (guardrails); agents play inside that sandbox**: Droids enforce boundaries via AGENTS.md, Charter, and Playbook. Agents operate within those boundaries.
 
-**Droid roster** (for reference, see AFI_DROID_INDEX.v0.1.md):
+**Droid roster** (illustrative, for reference):
 
-- **dag-builder-droid** (afi-reactor): Scaffolds DAG nodes, wires nodes into pipeline
+- **pipeline-composer-droid** (afi-reactor): Authors and updates registry-declared pipeline composition (lanes/providers) additively via the governed afi-config registries/manifests
 - **schema-validator-droid** (afi-core): Extends signal schemas, creates validators
 - **contract-test-droid** (afi-token): Adds test coverage for smart contracts (test-only, HIGH RISK)
 - **config-keeper-droid** (afi-config): Validates codex structure, governance artifacts, schemas (MEDIUM RISK)
 
-**This document does not override the Droid Charter or Droid Index**. Droids and agents have separate governance documents and operate in separate domains (Git repos vs runtime data).
+**This document does not override the Droid Charter**. Droids and agents have separate governance documents and operate in separate domains (Git repos vs runtime data).
 
 ---
 
@@ -421,7 +420,7 @@ This section provides a prioritized conceptual roster of agents likely to appear
 **On-chain Flow Scout**:
 
 - **Role**: Scout (on-chain data ingestion)
-- **Home**: afi-reactor (DAG node, Raw stage)
+- **Home**: afi-reactor (pipeline node, Raw stage)
 - **Primary inputs**: On-chain APIs (whale movements, exchange flows, stablecoin minting)
 - **Primary outputs**: Raw signals (on-chain flow events)
 - **Status**: Aspirational (requires on-chain data provider integration)
@@ -430,7 +429,7 @@ This section provides a prioritized conceptual roster of agents likely to appear
 **News Sentiment Scout**:
 
 - **Role**: Scout (news and social media ingestion)
-- **Home**: afi-reactor (DAG node, Raw stage)
+- **Home**: afi-reactor (pipeline node, Raw stage)
 - **Primary inputs**: News feeds, social media APIs, sentiment analysis tools
 - **Primary outputs**: Raw signals (news sentiment events)
 - **Status**: Aspirational (requires news API integration and sentiment model)
@@ -439,7 +438,7 @@ This section provides a prioritized conceptual roster of agents likely to appear
 **Pattern Analyst**:
 
 - **Role**: Analyst (technical pattern detection)
-- **Home**: afi-reactor (DAG node, Analyzed stage)
+- **Home**: afi-reactor (pipeline node, Analyzed stage)
 - **Primary inputs**: Enriched signals (price, volume, volatility)
 - **Primary outputs**: Analyzed signals (pattern labels: breakout, reversal, divergence)
 - **Status**: Aspirational (requires pattern recognition models)
@@ -448,7 +447,7 @@ This section provides a prioritized conceptual roster of agents likely to appear
 **Regime Detection Agent**:
 
 - **Role**: Analyst (market regime classification)
-- **Home**: afi-reactor (DAG node, Analyzed stage)
+- **Home**: afi-reactor (pipeline node, Analyzed stage)
 - **Primary inputs**: Enriched signals (macro indicators, volatility, correlations)
 - **Primary outputs**: Analyzed signals (regime labels: risk-on, risk-off, transition, crisis)
 - **Status**: Aspirational (requires regime classification model)
@@ -550,12 +549,12 @@ When these concrete specs exist, they supersede the aspirational descriptions in
 
 This document (AFI_AGENT_UNIVERSE.v0.1.md) is an **orientation map**—a conceptual guide to the agent ecosystem. It describes aspirational agent classes and roles, not actual implemented agents.
 
-Once AFI Protocol has a stable set of **actual implemented agents**, a sibling document to AFI_DROID_INDEX.v0.1.md may be introduced:
+Once AFI Protocol has a stable set of **actual implemented agents**, a dedicated Agent Index document may be introduced:
 
 **AFI_AGENT_INDEX.v1.0** (future):
 
 - Lists **real, implemented agents** with names, homes, risk profiles, tool access, and usage guidance
-- Provides **when to use which agent** guidance (similar to AFI_DROID_INDEX.v0.1.md Section 5)
+- Provides **when to use which agent** guidance
 - Documents **agent boundaries** (what each agent can and cannot do)
 - Includes **escalation paths** (when to escalate to humans or specialized agents)
 
@@ -578,7 +577,7 @@ Once AFI Protocol has a stable set of **actual implemented agents**, a sibling d
 The transition from AFI_AGENT_UNIVERSE (design map) to AFI_AGENT_INDEX (live registry) will happen when:
 
 - **Phoenix is deployed**: The first frontline agent is live and serving users
-- **Pipeline agents are operational**: At least 3-5 DAG node agents are processing signals in production
+- **Pipeline agents are operational**: At least 3-5 pipeline node agents are processing signals in production
 - **Governance agents are tested**: At least one governance agent (e.g., Proposal Summarizer) is operational
 - **Agent boundaries are stable**: Each agent has clear AGENTS.md-style constraints and escalation paths
 

@@ -38,7 +38,7 @@ This taxonomy does not override, redefine, or replace any droid behavioral rules
 
 **Examples**:
 - `droid:schema-sync:v1` — Syncs JSON schemas across repos
-- `droid:dag-builder:v1` — Scaffolds DAG nodes in afi-reactor
+- `droid:pipeline-composer:v1` — Authors registry-declared pipeline composition (lanes/providers) additively via the governed afi-config registries/manifests
 
 **Key traits**:
 - Reads AFI Droid Charter and repo-level AGENTS.md
@@ -260,7 +260,7 @@ AFI uses a consistent naming convention for all agents:
 
 **For droids**: `droid:{name}:{version}`
 - `droid:schema-sync:v1`
-- `droid:dag-builder:v1`
+- `droid:pipeline-composer:v1`
 
 **For services**: `service:{name}:{version}`
 - `service:vault-indexer:v1`
