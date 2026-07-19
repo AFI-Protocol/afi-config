@@ -28,9 +28,12 @@ const rootDir = join(__dirname, '..');
  *      the pinned values, with the D-FCP-7 domain tags CARRIED (never hashed).
  */
 
-// --- pinned values (five-lane provider runtime, FLPR-GOV; recomputed and asserted below) ---
-const PINNED_MANIFEST_HASH = '095b55775cd32147bb29137278185d1c6a95512dfec827f4c98a3eb569b39883';
-const PINNED_ANALYST_CONFIG_HASH = '395fd7f9f3b924b033bf56e2f73f92d3567cdc2ba7e1c58de45e895afd89a6d7';
+// --- pinned values (five-lane provider runtime on the EV3-GOV D-EV3-5(1)
+// fail-fast manifest v1.3.0; recomputed and asserted below). manifestHash and
+// analystConfigHash moved through the governed composition-hash-movement
+// mechanism (D-FLPR-5(5) precedent); pluginSetHash is byte-identical. ---
+const PINNED_MANIFEST_HASH = 'df3372dadaca1595d0e6d2f6bad9464ccc9abb7106e9f5b7111df148a145bc4f';
+const PINNED_ANALYST_CONFIG_HASH = 'e34471dec8dd3b8fcf0e5576765e469aec1a89f77af6b693ef3c06fc4200bbad';
 const PINNED_PLUGIN_SET_HASH = '5384e1c08ce4bd7f533acc15487df81d7d37b6615d109d611bde968a81f2f386';
 
 // D-FCP-7 registered composition domain tags (canonical-json-hashing.v1 §3, amended).
@@ -51,7 +54,7 @@ const BINDINGS_DIR = 'registries/provider-bindings';
 
 const REGISTRATION_FILE = `${STRATEGIES_DIR}/froggy--trend_pullback_v1--1.0.0.json`;
 const CONFIG_FILE = `${STRATEGIES_DIR}/froggy--trend_pullback_v1--1.0.0.config.json`;
-const PIPELINE_FILE = `${PIPELINES_DIR}/froggy-trend-pullback--v1.2.0.json`;
+const PIPELINE_FILE = `${PIPELINES_DIR}/froggy-trend-pullback--v1.3.0.json`;
 
 const EXPECTED_PLUGIN_FILES = [
   'afi-analysis-aiml--2.0.0.json',
@@ -198,16 +201,32 @@ describe('W3a SEEDING — registries/analysis-plugins', () => {
   });
 });
 
-describe('SEEDING — registries/pipelines (froggy-trend-pullback v1.2.0, FLPR-GOV)', () => {
+describe('SEEDING — registries/pipelines (froggy-trend-pullback v1.3.0, FLPR-GOV + EV3-GOV)', () => {
   const pipeline = loadJSON(PIPELINE_FILE);
 
-  it('seeded manifest is schema-valid and self-identifies as froggy-trend-pullback v1.2.0', () => {
+  it('seeded manifest is schema-valid and self-identifies as froggy-trend-pullback v1.3.0', () => {
     const validate = createAjv().compile(loadJSON('schemas/pipeline/v1/pipeline.schema.json'));
     const valid = validate(pipeline);
     if (!valid) console.error('pipeline failure:', validate.errors);
     expect(valid).toBe(true);
     expect(pipeline.pipelineId).toBe('froggy-trend-pullback');
-    expect(pipeline.pipelineVersion).toBe('v1.2.0');
+    expect(pipeline.pipelineVersion).toBe('v1.3.0');
+  });
+
+  it('all five category lane nodes are FAIL-FAST under the governed default (EV3-GOV D-EV3-5(1))', () => {
+    const LANES = new Set(['technical', 'pattern', 'sentiment', 'news', 'aiMl']);
+    const laneNodes = pipeline.nodes.filter((n: any) => LANES.has(n.category));
+    expect(laneNodes).toHaveLength(5);
+    for (const n of laneNodes) {
+      // The v1.3.0 amendment REMOVED critical:false / failurePolicy:"degrade"
+      // from every lane node: critical defaults to true and 'degrade' is
+      // structurally allowed only when critical is explicitly false, so a
+      // failed lane now aborts the run — a scored evaluation requires all
+      // five lanes to succeed. Nothing else changed (same nodes/edges/join/
+      // providerInstanceRefs/plugins).
+      expect(n.critical, `lane '${n.id}' must not declare critical`).toBeUndefined();
+      expect(n.failurePolicy, `lane '${n.id}' must not declare a failurePolicy`).toBeUndefined();
+    }
   });
 
   it('graph-semantic layer: unique ids, known endpoints, acyclic, single scorer sink, joins declared', () => {

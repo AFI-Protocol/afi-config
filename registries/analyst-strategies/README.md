@@ -22,8 +22,9 @@ This directory holds the **canonical registry of registered analyst strategies**
 - Re-recording an entry's **composition pin** (its config's `pipelineRef` and the
   recomputed `analystConfigHash`) under the SAME strategy triple is an
   owner-authorized governance act, never a routine edit (FLPR-GOV D-FLPR-6 re-recorded
-  the froggy 1.0.0 registration onto the v1.1.0 five-lane pipeline, and the Mission D
-  owner authorization re-recorded it onto v1.2.0; the analyst's
+  the froggy 1.0.0 registration onto the v1.1.0 five-lane pipeline, the Mission D
+  owner authorization re-recorded it onto v1.2.0, and EV3-GOV D-EV3-5(1) re-recorded
+  it onto the fail-fast v1.3.0 successor; the analyst's
   scorer identity — and therefore the triple — is unchanged; git history is the archive).
 - The test suite pins this directory's contents to the authorized set (drift guard): adding an entry requires updating the pinned list in the same PR.
 
@@ -32,8 +33,8 @@ This directory holds the **canonical registry of registered analyst strategies**
 The production **froggy** registration (five-lane provider runtime, FLPR-GOV):
 
 - [`froggy--trend_pullback_v1--1.0.0.json`](./froggy--trend_pullback_v1--1.0.0.json) — the registration entry (`status: active`, `providerBindingPolicy: explicit` over the seeded [`provider-bindings`](../provider-bindings/)).
-- [`froggy--trend_pullback_v1--1.0.0.config.json`](./froggy--trend_pullback_v1--1.0.0.config.json) — the co-located registered `afi.analyst-strategy-config.v1` artifact the entry's `configRef` resolves to, pinning the [`froggy-trend-pullback--v1.2.0`](../pipelines/froggy-trend-pullback--v1.2.0.json) manifest by canonical hash. Its canonical hash (domain tag `afi.d2.analyst-config`) is
-  `395fd7f9f3b924b033bf56e2f73f92d3567cdc2ba7e1c58de45e895afd89a6d7`, recomputed and asserted by the test suite.
+- [`froggy--trend_pullback_v1--1.0.0.config.json`](./froggy--trend_pullback_v1--1.0.0.config.json) — the co-located registered `afi.analyst-strategy-config.v1` artifact the entry's `configRef` resolves to, pinning the [`froggy-trend-pullback--v1.3.0`](../pipelines/froggy-trend-pullback--v1.3.0.json) fail-fast manifest by canonical hash (EV3-GOV D-EV3-5(1)). Its canonical hash (domain tag `afi.d2.analyst-config`) is
+  `e34471dec8dd3b8fcf0e5576765e469aec1a89f77af6b693ef3c06fc4200bbad`, recomputed and asserted by the test suite.
 
 Co-located config artifacts are named `<analystId>--<strategyId>--<strategyVersion>.config.json` beside their registration entry.
 
