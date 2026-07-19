@@ -21,7 +21,7 @@
   "vectors": [
     {
       "vectorId": "uwr-score-d2m2-golden-anchor",
-      "description": "The D2 M2 golden replay anchor (afi-reactor/test/pipeheads/fixtures/golden.json @ 79c4a6f): uwrScore 0.1875 = mean(0.15, 0, 0.2, 0.4). Byte-stability of the D2 M2 goldens is an acceptance criterion (UP-5, UP-11).",
+      "description": "Canonical Signal Evaluation deterministic golden replay anchor: uwrScore 0.1875 = mean(0.15, 0, 0.2, 0.4). Byte-stability of the golden is an acceptance criterion (UP-5, UP-11).",
       "axes": { "structure": 0.15, "execution": 0, "risk": 0.2, "insight": 0.4 },
       "expected": { "uwrScore": 0.1875 }
     },

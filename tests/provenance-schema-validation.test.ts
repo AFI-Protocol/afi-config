@@ -13,7 +13,7 @@ const rootDir = join(__dirname, '..');
  * District 2 M1 — provenance schema draft validation.
  *
  * Covers the DRAFT schemas under schemas/provenance/v1/ (authorized by
- * District 2 D-17 as D2 M1: afi-config schema drafts and tests only).
+ * R1-GOV D-R1-5 as District Two M1: afi-config schema drafts and tests only).
  * Uses the same strict AJV conventions as tests/schema-validation.test.ts.
  */
 

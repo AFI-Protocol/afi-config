@@ -23,7 +23,7 @@ Positive and negative validation tests live in `tests/uwr-profile-schema-validat
 
 ## KAT/golden gate (UP-11)
 
-Profile `uwr-weighted-lifts-v0.1` may not back any **reward-qualified or mint-eligible flow** until KAT vectors exist for `computeUwrScore` (including the `0.1875` anchor) and `applyTimeDecay` over the pinned template set, and the D2 M2 goldens (`afi-reactor/test/pipeheads/fixtures/golden.json`) remain byte-stable. KAT **vectors** (pure data) live here; KAT **execution** against afi-core code is the separately-authorized **PR-UWR-KAT-EXEC**, following the vendored-golden-with-source-pin pattern.
+Profile `uwr-weighted-lifts-v0.1` may not back any **reward-qualified or mint-eligible flow** until KAT vectors exist for `computeUwrScore` (including the `0.1875` anchor) and `applyTimeDecay` over the pinned template set, and the D2 M2 goldens (`afi-reactor/test/evidence/provenance/fixtures/golden.json`) remain byte-stable. KAT **vectors** (pure data) live here; KAT **execution** against afi-core code is the separately-authorized **PR-UWR-KAT-EXEC**, following the vendored-golden-with-source-pin pattern.
 
 ## Boundaries (what these drafts deliberately do NOT do)
 

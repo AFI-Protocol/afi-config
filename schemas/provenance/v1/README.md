@@ -1,7 +1,7 @@
 # District 2 Provenance Schema Drafts (v1)
 
 **Status:** `draft-non-implementation` — schema/spec surface only.
-**Authorization:** District 2 **D-17**, which authorizes **D2 M1 only**: afi-config schema drafts and tests.
+**Authorization:** R1-GOV **D-R1-5**, which authorizes **District Two M1 only**: afi-config schema drafts and tests.
 **Part of:** AFI District 2 — Canonical Data & Provenance Boundary.
 
 These schemas are drafts for District 2 implementation. They are **not production wiring**: nothing in this directory deploys, persists, hashes, scores, settles, or rewards anything, and nothing here may be referenced by runtime configuration until a later District 2 phase authorizes it.
