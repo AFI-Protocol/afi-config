@@ -57,14 +57,15 @@ const PROVENANCE_DEPENDENCY_SCHEMAS = [
   `${PROVENANCE_SCHEMA_DIR}/canonical-hash.schema.json`,
   `${PROVENANCE_SCHEMA_DIR}/evidence-ref.schema.json`,
   `${PROVENANCE_SCHEMA_DIR}/source-disclosure-profile.schema.json`,
-  `${PROVENANCE_SCHEMA_DIR}/enrichment-provenance.schema.json`,
 ];
 
+// The D2 M1 draft family is EIGHT artifact kinds: the dormant per-lane
+// enrichment draft was subsumed by the governed afi.provider-invocation-proof.v1
+// and deleted under EV3-GOV D-EV3-8(2) (forward-only, no tombstones).
 const ALL_PROVENANCE_SCHEMAS = [
   `${PROVENANCE_SCHEMA_DIR}/canonical-hash.schema.json`,
   `${PROVENANCE_SCHEMA_DIR}/evidence-ref.schema.json`,
   `${PROVENANCE_SCHEMA_DIR}/source-disclosure-profile.schema.json`,
-  `${PROVENANCE_SCHEMA_DIR}/enrichment-provenance.schema.json`,
   `${PROVENANCE_SCHEMA_DIR}/analyst-input-envelope.schema.json`,
   `${PROVENANCE_SCHEMA_DIR}/scored-signal.schema.json`,
   `${PROVENANCE_SCHEMA_DIR}/provenance-record.schema.json`,
@@ -118,13 +119,6 @@ const VALID_SOURCE_DISCLOSURE_PROFILE = {
   sourceId: 'src-exchange-blofin-api',
   sourceClass: 'exchange-api',
   disclosureLevel: 'partial',
-  replayabilityLevel: 'pinned-inputs',
-};
-
-const VALID_ENRICHMENT_PROVENANCE = {
-  laneId: 'price-context',
-  engineId: 'enrich-engine-a',
-  laneVersion: 'v0.3.0',
   replayabilityLevel: 'pinned-inputs',
 };
 
@@ -211,7 +205,6 @@ describe('District 2 M1 Provenance Schema Drafts (v1)', () => {
       [`${PROVENANCE_SCHEMA_DIR}/canonical-hash.schema.json`, `${PROVENANCE_EXAMPLE_DIR}/canonical-hash.example.json`],
       [`${PROVENANCE_SCHEMA_DIR}/evidence-ref.schema.json`, `${PROVENANCE_EXAMPLE_DIR}/evidence-ref.example.json`],
       [`${PROVENANCE_SCHEMA_DIR}/source-disclosure-profile.schema.json`, `${PROVENANCE_EXAMPLE_DIR}/source-disclosure-profile.example.json`],
-      [`${PROVENANCE_SCHEMA_DIR}/enrichment-provenance.schema.json`, `${PROVENANCE_EXAMPLE_DIR}/enrichment-provenance.example.json`],
       [`${PROVENANCE_SCHEMA_DIR}/analyst-input-envelope.schema.json`, `${PROVENANCE_EXAMPLE_DIR}/analyst-input-envelope.example.json`],
       [`${PROVENANCE_SCHEMA_DIR}/scored-signal.schema.json`, `${PROVENANCE_EXAMPLE_DIR}/scored-signal.example.json`],
       [`${PROVENANCE_SCHEMA_DIR}/provenance-record.schema.json`, `${PROVENANCE_EXAMPLE_DIR}/provenance-record.example.json`],
@@ -238,13 +231,11 @@ describe('District 2 M1 Provenance Schema Drafts (v1)', () => {
   describe('Shared Enum Consistency', () => {
     it('replayabilityLevel enum should be identical across all schemas that use it', () => {
       const sourceDisclosure = loadJSON(`${PROVENANCE_SCHEMA_DIR}/source-disclosure-profile.schema.json`);
-      const enrichment = loadJSON(`${PROVENANCE_SCHEMA_DIR}/enrichment-provenance.schema.json`);
       const replay = loadJSON(`${PROVENANCE_SCHEMA_DIR}/replay-profile.schema.json`);
 
       const expected = ['deterministic', 'pinned-inputs', 'best-effort', 'non-replayable'];
 
       expect(sourceDisclosure.properties.replayabilityLevel.enum).toEqual(expected);
-      expect(enrichment.properties.replayabilityLevel.enum).toEqual(expected);
       expect(replay.properties.replayabilityLevel.enum).toEqual(expected);
     });
   });
@@ -407,56 +398,29 @@ describe('District 2 M1 Provenance Schema Drafts (v1)', () => {
     });
   });
 
-  describe('EnrichmentProvenance v1', () => {
-    const schemaFile = `${PROVENANCE_SCHEMA_DIR}/enrichment-provenance.schema.json`;
-
-    it('should accept a minimal valid lane record', () => {
-      const validate = compileProvenanceSchema(schemaFile);
-      expect(validate(clone(VALID_ENRICHMENT_PROVENANCE))).toBe(true);
-    });
-
-    it('should reject a missing laneId', () => {
-      const validate = compileProvenanceSchema(schemaFile);
-      const invalid: any = clone(VALID_ENRICHMENT_PROVENANCE);
-      delete invalid.laneId;
-
-      expect(validate(invalid)).toBe(false);
-      expect(validate.errors!.some(e => e.message?.includes('laneId'))).toBe(true);
-    });
-
-    it('should reject an invalid replayabilityLevel', () => {
-      const validate = compileProvenanceSchema(schemaFile);
-      const invalid: any = clone(VALID_ENRICHMENT_PROVENANCE);
-      invalid.replayabilityLevel = 'sometimes';
-
-      expect(validate(invalid)).toBe(false);
-    });
-
-    it('should reject an invalid status', () => {
-      const validate = compileProvenanceSchema(schemaFile);
-      const invalid: any = clone(VALID_ENRICHMENT_PROVENANCE);
-      invalid.status = 'in-flight';
-
-      expect(validate(invalid)).toBe(false);
-    });
-
-    it('should reject runtime/storage timestamps on the lane record', () => {
-      const validate = compileProvenanceSchema(schemaFile);
-
-      ['startedAt', 'finishedAt', 'storedAt'].forEach(forbiddenField => {
-        const invalid: any = clone(VALID_ENRICHMENT_PROVENANCE);
-        invalid[forbiddenField] = '2026-01-15T12:00:07Z';
-
-        expect(
-          validate(invalid),
-          `EnrichmentProvenance should reject runtime timestamp '${forbiddenField}'`
-        ).toBe(false);
-      });
-    });
-  });
-
   describe('AnalystInputEnvelope v1', () => {
     const schemaFile = `${PROVENANCE_SCHEMA_DIR}/analyst-input-envelope.schema.json`;
+
+    // The removed dormant per-lane draft member's name, built by concatenation
+    // so the Evidence-V3 residue grep over this tree stays empty (EV3-GOV
+    // D-EV3-8(2)); this is a negative-space guard asserting ABSENCE.
+    const REMOVED_PER_LANE_MEMBER = ['enrichment', 'Provenance'].join('');
+
+    it('declares NO per-lane provenance member (EV3-GOV D-EV3-8(2) envelope amendment)', () => {
+      const schema = loadJSON(schemaFile);
+      expect(Object.keys(schema.properties)).not.toContain(REMOVED_PER_LANE_MEMBER);
+      expect(schema.required).not.toContain(REMOVED_PER_LANE_MEMBER);
+      // No dangling $ref survives the deletion of the subsumed draft schema.
+      expect(JSON.stringify(schema)).not.toContain(['enrichment', '-provenance'].join(''));
+    });
+
+    it('rejects an envelope carrying the removed per-lane provenance member (structurally closed)', () => {
+      const validate = compileProvenanceSchema(schemaFile);
+      const invalid: any = clone(VALID_ANALYST_INPUT_ENVELOPE);
+      invalid[REMOVED_PER_LANE_MEMBER] = [{ laneId: 'price-context' }];
+
+      expect(validate(invalid)).toBe(false);
+    });
 
     it('should accept a declared opaque strategyLocalView with arbitrary contents', () => {
       const validate = compileProvenanceSchema(schemaFile);

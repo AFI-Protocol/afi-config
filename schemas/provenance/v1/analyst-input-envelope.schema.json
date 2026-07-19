@@ -84,11 +84,6 @@
       "description": "EvidenceRef v1 objects backing the enrichment carried by this envelope.",
       "items": { "$ref": "evidence-ref.schema.json" }
     },
-    "enrichmentProvenance": {
-      "type": "array",
-      "description": "Per-lane EnrichmentProvenance v1 records for the lanes that produced the enriched view.",
-      "items": { "$ref": "enrichment-provenance.schema.json" }
-    },
     "replayProfileRef": {
       "type": "string",
       "description": "OPTIONAL reference to a ReplayProfile v1 pinning the replay inputs for this envelope.",
