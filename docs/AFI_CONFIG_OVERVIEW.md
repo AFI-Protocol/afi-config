@@ -125,7 +125,7 @@ For detailed lens field documentation, see [USS_LENSES_REFERENCE.md](./USS_LENSE
 
 **Location:** `schemas/provenance/v1/` — **Status:** `draft-non-implementation`.
 
-Draft schemas for the District 2 canonical data/provenance boundary (authorized by District 2 D-17 as D2 M1: afi-config schema drafts and tests only): CanonicalHash v1, EvidenceRef v1, SourceDisclosureProfile v1, AnalystInputEnvelope v1, ScoredSignal v1 projection, ProvenanceRecord v1, ReplayProfile v1, and TradePlan v1 / SignalLevels v1 (eight artifact kinds; the dormant per-lane draft was subsumed by the governed `afi.provider-invocation-proof.v1` under EV3-GOV D-EV3-8).
+Draft schemas for the District 2 canonical data/provenance boundary (authorized by R1-GOV D-R1-5 as District Two M1: afi-config schema drafts and tests only): CanonicalHash v1, EvidenceRef v1, SourceDisclosureProfile v1, AnalystInputEnvelope v1, ScoredSignal v1 projection, ProvenanceRecord v1, ReplayProfile v1, and TradePlan v1 / SignalLevels v1 (eight artifact kinds; the dormant per-lane draft was subsumed by the governed `afi.provider-invocation-proof.v1` under EV3-GOV D-EV3-8).
 
 These are specification drafts, not production wiring. Valid examples live in `examples/provenance/v1/`; strict AJV tests live in `tests/provenance-schema-validation.test.ts`. See [`schemas/provenance/v1/README.md`](../schemas/provenance/v1/README.md) for scope, timestamp policy, and explicit boundaries (BenchKit owns weighting; storage is an implementation profile, not canon; no settlement/rewards/vault/validator-decision content).
 

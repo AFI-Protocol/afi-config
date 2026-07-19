@@ -68,11 +68,11 @@
     {
       "districtId": "chain-settlement",
       "name": "Settlement, Rewards, Reputation & On-Chain Value",
-      "purpose": "RESERVED capability-domain candidate (not an active District): the future domain of epoch settlement, reward tracks, reputation, and on-chain value. Recorded exactly as authority-districts-v0.1 Part D.2 and Addendum §13 already record it -- an unnumbered, uncreated candidate that requires its own governance (CHAIN-GOV) before it becomes a District. No current capability is owned here.",
+      "purpose": "RESERVED capability-domain candidate (not an active District): the future domain of epoch settlement, reward tracks, reputation, and on-chain value. Recorded exactly as authority-districts-v0.1 Part D.2 and R1-GOV D-R1-3 already record it -- an unnumbered, uncreated candidate that requires its own governance (CHAIN-GOV) before it becomes a District. No current capability is owned here.",
       "active": false,
       "authorityRefs": [
         "authority-districts-v0.1 (Part D.2 -- unnumbered uncreated candidate: settlement-readiness/reputation/contracts)",
-        "AFI_DROID_PIPEHEAD_ADDENDUM.v0.1 (§13 version-expansion roster)",
+        "R1-GOV D-R1-3 (future-districts version-expansion roster; re-records the former §13 roster authority)",
         "CHAIN-GOV (reserved, unfiled)"
       ],
       "maturity": "reserved",
