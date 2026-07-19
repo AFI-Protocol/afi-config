@@ -26,7 +26,7 @@ instances remain tenant configuration, not registry records.
 | `afi-instance-byok-sentiment-coinalyze` | `sentiment` | `afi-provider-sentiment-coinalyze` | `credential-coinalyze-reference` |
 | `afi-instance-reference-news-sec-edgar` | `news` | `afi-provider-news-sec-edgar` | keyless |
 | `afi-instance-byok-news-newsdata` | `news` | `afi-provider-news-http` | `credential-newsdata-reference` |
-| `afi-instance-reference-aiml-tiny-brains` | `aiMl` | `afi-provider-aiml-tiny-brains` | keyless |
+| `afi-instance-reference-aiml-tiny-brains` | `aiMl` | `afi-provider-aiml-tiny-brains` | keyless (`model: froggy-reference-v1` selects the Tiny Brains orchestration profile) |
 
 The five `afi-instance-reference-*` records for technical, pattern (candlestick),
 sentiment (CFTC COT), news (SEC EDGAR), and aiMl (Tiny Brains) form the committed
