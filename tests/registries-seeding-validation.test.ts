@@ -29,8 +29,8 @@ const rootDir = join(__dirname, '..');
  */
 
 // --- pinned values (five-lane provider runtime, FLPR-GOV; recomputed and asserted below) ---
-const PINNED_MANIFEST_HASH = '87bcb7ed752820994a5b4bdb72bd55d51c39a2c58daa36fe8d0df4778778ae57';
-const PINNED_ANALYST_CONFIG_HASH = '2274978afdffb798440ce08268dd4c0f06af2df94433d25d6f907335c9a3bc03';
+const PINNED_MANIFEST_HASH = '095b55775cd32147bb29137278185d1c6a95512dfec827f4c98a3eb569b39883';
+const PINNED_ANALYST_CONFIG_HASH = '395fd7f9f3b924b033bf56e2f73f92d3567cdc2ba7e1c58de45e895afd89a6d7';
 const PINNED_PLUGIN_SET_HASH = '5384e1c08ce4bd7f533acc15487df81d7d37b6615d109d611bde968a81f2f386';
 
 // D-FCP-7 registered composition domain tags (canonical-json-hashing.v1 §3, amended).
@@ -51,7 +51,7 @@ const BINDINGS_DIR = 'registries/provider-bindings';
 
 const REGISTRATION_FILE = `${STRATEGIES_DIR}/froggy--trend_pullback_v1--1.0.0.json`;
 const CONFIG_FILE = `${STRATEGIES_DIR}/froggy--trend_pullback_v1--1.0.0.config.json`;
-const PIPELINE_FILE = `${PIPELINES_DIR}/froggy-trend-pullback--v1.1.0.json`;
+const PIPELINE_FILE = `${PIPELINES_DIR}/froggy-trend-pullback--v1.2.0.json`;
 
 const EXPECTED_PLUGIN_FILES = [
   'afi-analysis-aiml--2.0.0.json',
@@ -198,16 +198,16 @@ describe('W3a SEEDING — registries/analysis-plugins', () => {
   });
 });
 
-describe('SEEDING — registries/pipelines (froggy-trend-pullback v1.1.0, FLPR-GOV)', () => {
+describe('SEEDING — registries/pipelines (froggy-trend-pullback v1.2.0, FLPR-GOV)', () => {
   const pipeline = loadJSON(PIPELINE_FILE);
 
-  it('seeded manifest is schema-valid and self-identifies as froggy-trend-pullback v1.1.0', () => {
+  it('seeded manifest is schema-valid and self-identifies as froggy-trend-pullback v1.2.0', () => {
     const validate = createAjv().compile(loadJSON('schemas/pipeline/v1/pipeline.schema.json'));
     const valid = validate(pipeline);
     if (!valid) console.error('pipeline failure:', validate.errors);
     expect(valid).toBe(true);
     expect(pipeline.pipelineId).toBe('froggy-trend-pullback');
-    expect(pipeline.pipelineVersion).toBe('v1.1.0');
+    expect(pipeline.pipelineVersion).toBe('v1.2.0');
   });
 
   it('graph-semantic layer: unique ids, known endpoints, acyclic, single scorer sink, joins declared', () => {

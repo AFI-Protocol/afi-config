@@ -479,7 +479,7 @@ describe('FACTORY-CONTRACT — afi.pipeline.v1', () => {
       // registration rule); validated in depth by
       // tests/registries-seeding-validation.test.ts.
       const files = readdirSync(join(rootDir, 'registries/pipelines')).sort();
-      expect(files).toEqual(['README.md', 'froggy-trend-pullback--v1.1.0.json']);
+      expect(files).toEqual(['README.md', 'froggy-trend-pullback--v1.2.0.json']);
     });
   });
 });

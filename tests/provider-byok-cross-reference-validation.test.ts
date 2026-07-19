@@ -31,7 +31,7 @@ function loadJSON(rel: string): any {
 
 const PROVIDERS_DIR = 'registries/providers';
 const EXPECTED_PROVIDER_FILES = [
-  'afi-provider-aiml-tiny-brains--1.0.0.json',
+  'afi-provider-aiml-tiny-brains--1.1.0.json',
   'afi-provider-news-http--1.0.0.json',
   'afi-provider-news-sec-edgar--1.0.0.json',
   'afi-provider-pattern-candlestick--1.0.0.json',
@@ -45,7 +45,7 @@ const INSTANCES_DIR = 'registries/provider-instances';
 const EXPECTED_INSTANCE_FILES = [
   'afi-instance-byok-news-newsdata--1.0.0.json',
   'afi-instance-byok-sentiment-coinalyze--1.0.0.json',
-  'afi-instance-reference-aiml-tiny-brains--1.0.0.json',
+  'afi-instance-reference-aiml-tiny-brains--1.1.0.json',
   'afi-instance-reference-news-sec-edgar--1.0.0.json',
   'afi-instance-reference-pattern-candlestick--1.0.0.json',
   'afi-instance-reference-pattern-tiny-brains--1.0.0.json',
@@ -214,11 +214,15 @@ describe('FLPR-GOV — registries/provider-instances seeding', () => {
 
   it('the five reference instances form the committed all-five KEYLESS profile (FLPR-GOV D-FLPR-7)', () => {
     Object.entries(REFERENCE_PROFILE).forEach(([lane, id]) => {
-      const inst = loadJSON(`${INSTANCES_DIR}/${id}--1.0.0.json`);
+      const instFile = EXPECTED_INSTANCE_FILES.find(f => f.startsWith(`${id}--`));
+      expect(instFile, `${id} must be a seeded instance record`).toBeDefined();
+      const inst = loadJSON(`${INSTANCES_DIR}/${instFile}`);
       expect(inst.category, `${id} lane`).toBe(lane);
       expect(inst.status).toBe('active');
       expect(inst.credentialRef, `${id} must be keyless`).toBeUndefined();
-      const provider = loadJSON(`${PROVIDERS_DIR}/${inst.providerId}--1.0.0.json`);
+      const providerFile = EXPECTED_PROVIDER_FILES.find(f => f.startsWith(`${inst.providerId}--`));
+      expect(providerFile, `${inst.providerId} must be a seeded provider record`).toBeDefined();
+      const provider = loadJSON(`${PROVIDERS_DIR}/${providerFile}`);
       expect(provider.requiresCredential, `${id} provider must be keyless`).toBe(false);
     });
   });

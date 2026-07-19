@@ -28,7 +28,7 @@ credential value (`additionalProperties:false`).
 | `afi-provider-sentiment-coinalyze` | `sentiment` | BYOK `apiKeyHeader` | `afi-adapter-sentiment-coinalyze` (remote, header-authenticated) |
 | `afi-provider-news-http` | `news` | BYOK `apiKeyHeader` | `afi-adapter-news-http` (remote, header-authenticated) |
 | `afi-provider-news-sec-edgar` | `news` | keyless | `afi-adapter-news-sec-edgar` (remote, US-government source) |
-| `afi-provider-aiml-tiny-brains` | `aiMl` | keyless | `afi-adapter-aiml-tiny-brains` (remote self-hosted) |
+| `afi-provider-aiml-tiny-brains` | `aiMl` | keyless | `afi-adapter-aiml-tiny-brains` (remote self-hosted; `supportedModels` names the governed Tiny Brains orchestration profiles, currently `froggy-reference-v1`) |
 
 Adding a conforming provider is an **administrative registry update** under FCP-GOV
 D-FCP-5 — not per-participant governance.
