@@ -476,10 +476,11 @@ describe('FACTORY-CONTRACT — afi.pipeline.v1', () => {
   describe('Pipeline Registry Scope Guard', () => {
     it('registries/pipelines should contain EXACTLY the seeded froggy manifest (drift guard)', () => {
       // Seeded under the FLPR-GOV five-lane provider runtime (D-FCP-5 generic
-      // registration rule); validated in depth by
+      // registration rule), amended to the EV3-GOV D-EV3-5(1) fail-fast
+      // successor v1.3.0; validated in depth by
       // tests/registries-seeding-validation.test.ts.
       const files = readdirSync(join(rootDir, 'registries/pipelines')).sort();
-      expect(files).toEqual(['README.md', 'froggy-trend-pullback--v1.2.0.json']);
+      expect(files).toEqual(['README.md', 'froggy-trend-pullback--v1.3.0.json']);
     });
   });
 });

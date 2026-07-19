@@ -167,6 +167,7 @@
           "allOf": [
             { "$ref": "https://afi-protocol.org/schemas/provider-invocation-proof/v1/provider-invocation-proof.schema.json" },
             {
+              "type": "object",
               "properties": { "category": { "const": "aiMl" } },
               "required": ["category"]
             }
@@ -176,6 +177,7 @@
           "allOf": [
             { "$ref": "https://afi-protocol.org/schemas/provider-invocation-proof/v1/provider-invocation-proof.schema.json" },
             {
+              "type": "object",
               "properties": { "category": { "const": "news" } },
               "required": ["category"]
             }
@@ -185,6 +187,7 @@
           "allOf": [
             { "$ref": "https://afi-protocol.org/schemas/provider-invocation-proof/v1/provider-invocation-proof.schema.json" },
             {
+              "type": "object",
               "properties": { "category": { "const": "pattern" } },
               "required": ["category"]
             }
@@ -194,6 +197,7 @@
           "allOf": [
             { "$ref": "https://afi-protocol.org/schemas/provider-invocation-proof/v1/provider-invocation-proof.schema.json" },
             {
+              "type": "object",
               "properties": { "category": { "const": "sentiment" } },
               "required": ["category"]
             }
@@ -203,6 +207,7 @@
           "allOf": [
             { "$ref": "https://afi-protocol.org/schemas/provider-invocation-proof/v1/provider-invocation-proof.schema.json" },
             {
+              "type": "object",
               "properties": { "category": { "const": "technical" } },
               "required": ["category"]
             }
@@ -214,14 +219,14 @@
       "description": "REQUIRED full-record integrity commitment (v3 addition, EV3-GOV D-EV3-4(6)): CanonicalHash v1, domain afi.d2.evidence-record, over the full record MINUS {recordHash, replayHash} under the composition canonicalization law (x-afiConstraints.recordHashLaw). Verified by recomputation before insert (D-EV3-7).",
       "allOf": [
         { "$ref": "https://afi-protocol.org/schemas/provenance/v1/canonical-hash.schema.json" },
-        { "properties": { "domainTag": { "const": "afi.d2.evidence-record" } } }
+        { "type": "object", "properties": { "domainTag": { "const": "afi.d2.evidence-record" } } }
       ]
     },
     "replayHash": {
       "description": "REQUIRED deterministic semantic/replay commitment (v3 addition, EV3-GOV D-EV3-4(6)/(7)): CanonicalHash v1, domain afi.d2.evidence-replay, over the replay projection — the record MINUS {recordHash, replayHash, lifecycleState, finalized, recordVersion, supersedesRecordHash} — under the composition canonicalization law (x-afiConstraints.replayHashLaw). Identical canonical inputs through the same composition yield identical values.",
       "allOf": [
         { "$ref": "https://afi-protocol.org/schemas/provenance/v1/canonical-hash.schema.json" },
-        { "properties": { "domainTag": { "const": "afi.d2.evidence-replay" } } }
+        { "type": "object", "properties": { "domainTag": { "const": "afi.d2.evidence-replay" } } }
       ]
     },
     "recordVersion": {

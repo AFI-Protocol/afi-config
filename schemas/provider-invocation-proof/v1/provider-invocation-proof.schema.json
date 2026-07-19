@@ -84,7 +84,7 @@
           "description": "CanonicalHash v1 content commitment to the resolved provider record, domain afi.d2.provider-record (D-EV3-4(1); composition law, tag carried not hashed).",
           "allOf": [
             { "$ref": "https://afi-protocol.org/schemas/provenance/v1/canonical-hash.schema.json" },
-            { "properties": { "domainTag": { "const": "afi.d2.provider-record" } } }
+            { "type": "object", "properties": { "domainTag": { "const": "afi.d2.provider-record" } } }
           ]
         },
         "executionClass": {
@@ -120,7 +120,7 @@
           "description": "CanonicalHash v1 content commitment to the resolved provider-instance record (the non-secret configuration commitment), domain afi.d2.provider-instance-record (D-EV3-4(1)).",
           "allOf": [
             { "$ref": "https://afi-protocol.org/schemas/provenance/v1/canonical-hash.schema.json" },
-            { "properties": { "domainTag": { "const": "afi.d2.provider-instance-record" } } }
+            { "type": "object", "properties": { "domainTag": { "const": "afi.d2.provider-instance-record" } } }
           ]
         },
         "model": {
@@ -211,21 +211,21 @@
       "description": "CanonicalHash v1 commitment to the normalized, non-secret invocation input projection (the adapter's resolved input facts; credential material, headers, and volatile fields structurally excluded by the projection's closed definition), domain afi.d2.provider-invocation-input (D-EV3-4(3)).",
       "allOf": [
         { "$ref": "https://afi-protocol.org/schemas/provenance/v1/canonical-hash.schema.json" },
-        { "properties": { "domainTag": { "const": "afi.d2.provider-invocation-input" } } }
+        { "type": "object", "properties": { "domainTag": { "const": "afi.d2.provider-invocation-input" } } }
       ]
     },
     "providerResultHash": {
       "description": "CanonicalHash v1 commitment to the validated category result MINUS its category property (the provider's normalized payload), domain afi.d2.provider-result (D-EV3-4(3)).",
       "allOf": [
         { "$ref": "https://afi-protocol.org/schemas/provenance/v1/canonical-hash.schema.json" },
-        { "properties": { "domainTag": { "const": "afi.d2.provider-result" } } }
+        { "type": "object", "properties": { "domainTag": { "const": "afi.d2.provider-result" } } }
       ]
     },
     "categoryResultHash": {
       "description": "CanonicalHash v1 commitment to the FULL category result consumed by the join — the exact result that entered scoring — domain afi.d2.lane-output (the re-homed reservation, D-EV3-4(1)/(3)). Cross-checked by recomputation, fail-closed (x-afiConstraints.categoryResultAgreement).",
       "allOf": [
         { "$ref": "https://afi-protocol.org/schemas/provenance/v1/canonical-hash.schema.json" },
-        { "properties": { "domainTag": { "const": "afi.d2.lane-output" } } }
+        { "type": "object", "properties": { "domainTag": { "const": "afi.d2.lane-output" } } }
       ]
     },
     "priceSource": {
