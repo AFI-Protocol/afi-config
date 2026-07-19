@@ -132,7 +132,7 @@
             "type": "string"
           },
           "examples": [
-            ["afi-reactor:src/dags", "afi-reactor:config"],
+            ["afi-reactor:src/providers", "afi-reactor:config"],
             ["afi-core:read-only"],
             ["vault:read", "vault:write"]
           ]

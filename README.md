@@ -7,7 +7,6 @@ This repository is the **single source of truth** for all AFI Protocol configura
 ## Quick Links
 
 📖 **[AFI Config Overview](./docs/AFI_CONFIG_OVERVIEW.md)** - Comprehensive guide to schemas and usage
-📋 **[Migration Notes](./MIGRATION_NOTES.md)** - Schema and config consolidation history
 
 ## Contents
 
@@ -33,7 +32,7 @@ This repository is the **single source of truth** for all AFI Protocol configura
 Other AFI repos consume these schemas for configuration validation:
 
 - **afi-core**: Character and agent configurations
-- **afi-reactor**: Pipeline and DAG orchestration
+- **afi-reactor**: Manifest-driven pipeline orchestration
 - **afi-infra**: T.S.S.D. Vault and infrastructure
 - **afi-token**: Smart contract configurations
 
@@ -67,4 +66,3 @@ npm run build
 ## Migration Note
 
 **2025-11-14:** Consolidated schema and configuration content into this repo.
-See [MIGRATION_NOTES.md](./MIGRATION_NOTES.md) for details.

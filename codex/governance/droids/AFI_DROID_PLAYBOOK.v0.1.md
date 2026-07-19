@@ -38,7 +38,7 @@ If there is ever a conflict:
 3. **No surprise architecture**
 
    - Refine and extend existing patterns.
-   - Do not invent new core patterns (DAG engines, tokenomics, governance primitives) without an explicit spec and permission in AGENTS.md.
+   - Do not invent new core patterns (pipeline/executor engines, tokenomics, governance primitives) without an explicit spec and permission in AGENTS.md.
 
 4. **No live secrets or live trading**
 
@@ -122,7 +122,7 @@ In these cases:
 1. **Declare all repos up front**
 
    - Explicitly list the repos involved and their roles.
-   - Example: "This mission touches `afi-config` (schemas) and `afi-reactor` (DAG nodes)."
+   - Example: "This mission touches `afi-config` (schemas) and `afi-reactor` (pipeline composition)."
 
 2. **Read AGENTS.md for each repo**
 
@@ -132,7 +132,7 @@ In these cases:
 3. **Respect dependency direction**
 
    - Never invert established relationships, such as:
-     - `afi-reactor` orchestrates DAGs and exposes APIs; it does not depend on Eliza.
+     - `afi-reactor` orchestrates pipelines and exposes APIs; it does not depend on Eliza.
      - `afi-core` provides shared types and validators; it is not a client of Eliza.
      - `afi-gateway` is a client of AFI; AFI core repositories never depend on it.
 
@@ -155,10 +155,10 @@ This section gives high-level guidance for common AFI repos, from a droid's poin
 
 ### afi-reactor
 
-- DAG orchestration and signal pipelines.
+- Manifest-driven pipeline orchestration and signal pipelines.
 - Exposes HTTP/WS APIs for gateways and external clients.
 - Focus on:
-  - Deterministic DAG behavior.
+  - Deterministic pipeline/executor behavior.
   - Clear boundaries between stages.
   - Stable APIs for gateways.
 

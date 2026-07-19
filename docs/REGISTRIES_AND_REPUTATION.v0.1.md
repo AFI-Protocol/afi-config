@@ -80,7 +80,7 @@ Reputation **DOES** influence:
 
 **Eligibility**:
 - Which agents are eligible to serve as validators or governance participants
-- Which agents can participate in specific workflows or DAG nodes
+- Which agents can participate in specific workflows or pipeline nodes
 - Minimum reputation thresholds for certain roles
 
 **Selection & Allocation**:

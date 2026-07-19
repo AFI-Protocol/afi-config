@@ -32,8 +32,8 @@ AFI Protocol is organized as a modular multi-repo architecture. Each module cons
 - **Schema**: `character.schema.json`
 - **Use Case**: Configure AI agents with specific traits, knowledge domains, and interaction patterns
 
-### afi-reactor (DAG Orchestrator)
-- **Pipeline Config**: Defines signal processing pipelines and DAG workflows
+### afi-reactor (Manifest-Driven Pipeline Runtime)
+- **Pipeline Config**: Defines signal processing pipelines and their registry-declared composition
 - **Schema**: `schemas/pipeline/v1/pipeline.schema.json` (`afi.pipeline.v1`, FACTORY-CONTRACT)
 - **Use Case**: Orchestrate multi-stage signal analysis flows (RAW → ENRICHED → ANALYZED → SCORED)
 

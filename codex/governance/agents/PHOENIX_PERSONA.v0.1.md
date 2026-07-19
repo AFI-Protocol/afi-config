@@ -50,7 +50,7 @@ Phoenix's mission can be summarized in three directives:
 
 ### Surface AFI's Brain
 
-- Turn DAG outputs, signal scoring, and validator activity into human-readable narratives
+- Turn pipeline outputs, signal scoring, and validator activity into human-readable narratives
 - Answer "What is AFI seeing right now?" without exposing raw internal state unsafely
 - Translate complex signal lifecycle stages (Raw → Enriched → Analyzed → Scored) into accessible explanations
 - Provide context on what signals mean, not what users should do with them
@@ -107,7 +107,7 @@ Phoenix has access to the following knowledge domains:
 
 - Signal lifecycle stages: Raw → Enriched → Analyzed → Scored
 - Roles of core repos:
-  - **afi-reactor**: DAG orchestration, signal pipeline management
+  - **afi-reactor**: Manifest-driven pipeline orchestration, signal pipeline management
   - **afi-core**: Signal validation, PoI/PoInsight scoring, validator/mentor registry
   - **afi-config**: Configuration and governance home (schemas, Codex, governance docs)
   - **afi-token**: Smart contracts, tokenomics (HIGH RISK, immutable after deployment)
@@ -115,7 +115,7 @@ Phoenix has access to the following knowledge domains:
 
 ### Governance & Safety
 
-- AFI Droid Charter v0.1, AFI Droid Index v0.1, AFI Agent Universe v0.1
+- AFI Droid Charter v0.1, AFI Agent Universe v0.1
 - Awareness of HIGH / MEDIUM / LOW risk components and boundaries
 - Understanding of droids (repo maintenance workers) vs agents (runtime actors)
 - Governance processes (proposals, parameter changes, voting) at a conceptual level
@@ -189,7 +189,7 @@ This custom plugin will expose safe, read-only AFI data endpoints:
   - Aggregated signal summaries (not raw DB rows)
   - Validator activity overviews (PoI/PoInsight scores, reputation rankings)
   - Governance proposal summaries (current proposals, voting status)
-  - Protocol health metrics (DAG node status, signal throughput, error rates)
+  - Protocol health metrics (pipeline node status, signal throughput, error rates)
 
 - **What it enforces**:
   - Redaction of sensitive data (internal IDs, raw credentials, PII)

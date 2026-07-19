@@ -3,7 +3,7 @@
 **Status:** Proposed  
 **Canonical Location:** `afi-config/codex/governance/droids/AFI_DROID_PIPEHEAD_ADDENDUM.v0.1.md`  
 **Authority:** Subordinate to `AFI_DROID_CHARTER.v0.1.md`  
-**Scope:** Non-production Droid-operated AFI pipeline / DAG proof-of-concept  
+**Scope:** Non-production Droid-operated AFI pipeline proof-of-concept  
 **Last Updated:** 2026-06-29
 
 ---
@@ -12,7 +12,7 @@
 
 This addendum extends the AFI Droid Charter to explicitly authorize a new Droid role:
 
-**Droids as pipeheads across AFI DAG nodes.**
+**Droids as operators of AFI pipeline lanes / provider surfaces.**
 
 A Droid-operated pipehead is a Droid-managed operational layer assigned to an AFI pipeline node. The Droid may build, maintain, operate, test, monitor, repair, and report on that node’s execution surface, while the trust-critical AFI logic invoked by that node remains deterministic, auditable, and governed by explicit protocol rules.
 
@@ -40,7 +40,7 @@ In short:
 
 ### Pipehead
 
-A pipehead is an AFI DAG / pipeline node interface responsible for moving state through a defined stage of the AFI pipeline.
+A pipehead is an AFI pipeline lane / node interface responsible for moving state through a defined stage of the AFI pipeline.
 
 ### Droid-Operated Pipehead
 
@@ -82,7 +82,7 @@ A Droid may invoke deterministic kernel logic, but may not silently alter, repla
 
 A Droid-operated pipehead may:
 
-- operate a DAG node in an authorized non-production harness
+- operate a pipeline lane / provider surface (declared in the governed registries) in an authorized non-production harness
 - manage APIs and adapters
 - validate schemas
 - normalize and route inputs
@@ -120,13 +120,13 @@ A Droid-operated pipehead may not:
 - deploy to production without explicit authorization
 - introduce live external dependencies without approval
 - rename or redefine core AFI concepts without approval
-- choose canonical scoring, DAG, or settlement paths without human instruction
+- choose canonical scoring, pipeline, or settlement paths without human instruction
 - claim production-truth results from placeholder, mock, or unapproved configurations
 - hide missing analysis lanes behind vague AI-generated explanations
 
 ---
 
-## 6. AFI Analysis DAG Requirement
+## 6. AFI Analysis Pipeline Requirement
 
 The initial Droid pipehead architecture must preserve AFI’s original multi-category analysis design.
 
@@ -152,7 +152,7 @@ The outputs of these lanes should be normalized into an analysis bundle consumed
 
 ## 7. Analysis Fan-Out / Fan-In Model
 
-The intended evaluation DAG may follow this general shape:
+The intended evaluation pipeline may follow this general shape:
 
 ```text
 Signal ingestion
@@ -169,7 +169,7 @@ Signal ingestion
 → audit / report emission
 ```
 
-Droids may operate pipeheads at each stage of this DAG.
+Droids may operate pipeheads at each stage of this pipeline.
 
 This includes:
 
@@ -208,7 +208,7 @@ This addendum authorizes the first non-production Factory/Droid mission:
 
 **AFI Signal Evaluation Pipehead System**
 
-The initial mission may build a Droid-operated AFI evaluation DAG slice:
+The initial mission may build a Droid-operated AFI evaluation pipeline slice:
 
 1. Signal input
 2. Schema validation
@@ -235,7 +235,7 @@ Acceptable first-mission scope:
 
 Unacceptable first-mission scope:
 
-- build a one-off linear pipeline that cannot expand into the five-category AFI analysis DAG
+- build a one-off linear pipeline that cannot expand into the five-category AFI analysis pipeline
 - treat scoring as the only meaningful analysis stage
 - let a Droid subjectively decide the final score
 - hide missing analysis lanes behind vague AI-generated explanations
@@ -259,7 +259,7 @@ The initial POC excludes:
 
 Before a Droid or Factory Mission begins implementation, a human maintainer must explicitly pin:
 
-- the DAG / pipeline path used for the POC
+- the pipeline path used for the POC
 - the analyst or scorer path used for the POC
 - the UWR config or scoring config used for the POC
 - whether the POC is a truth-scoring demo or only a determinism / plumbing demo
@@ -294,7 +294,7 @@ Any change touching scoring, reputation, rewards, settlement, contracts, treasur
 
 The first Factory Mission should be framed as:
 
-> Build the first Droid-operated AFI pipehead factory district: a non-production Signal Evaluation Pipehead System where Droids operate the DAG nodes around AFI’s five analysis lanes, deterministic scoring, validation, and audit logic.
+> Build the first Droid-operated AFI pipehead factory district: a non-production Signal Evaluation Pipehead System where Droids operate the pipeline lanes / provider surfaces (declared in the governed registries) around AFI’s five analysis lanes, deterministic scoring, validation, and audit logic.
 
 The mission proves that AFI can become Droid-operable without making Droids the source of financial truth.
 
@@ -313,7 +313,7 @@ Future Droid factory districts — including provenance, reputation, contracts, 
 
 ## 14. Summary Statement
 
-Droids may operate AFI’s evaluation DAG as pipeheads.
+Droids may operate AFI’s evaluation pipeline as pipeheads.
 
 Droids may operate the five analysis lanes.
 
