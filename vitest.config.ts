@@ -9,6 +9,18 @@ export default defineConfig({
       '**/{karma,rollup,webpack,vite,vitest,jest,ava,babel,nyc,cypress,tsup,build}.config.*',
     ],
     include: ['tests/**/*.test.ts'],
+    // Run each test file in an isolated worker thread and randomize order so
+    // hidden inter-test/order dependencies surface early.
+    pool: 'threads',
+    isolate: true,
+    poolOptions: {
+      threads: {
+        isolate: true,
+      },
+    },
+    sequence: {
+      shuffle: true,
+    },
     coverage: {
       provider: 'v8',
       reporter: ['text', 'json-summary', 'lcov'],
