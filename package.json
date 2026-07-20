@@ -14,6 +14,7 @@
     "lint:fix": "eslint . --fix",
     "format": "prettier . --write",
     "format:check": "prettier . --check",
+    "check:file-size": "node scripts/check-file-size.mjs",
     "validate": "vitest run tests/schema-validation.test.ts",
     "typecheck": "tsc --noEmit",
     "clean": "rm -rf dist"
@@ -25,6 +26,9 @@
     ],
     "*.{json,md,yml,yaml}": [
       "prettier --write --ignore-unknown"
+    ],
+    "*": [
+      "node scripts/check-file-size.mjs"
     ]
   },
   "keywords": [
