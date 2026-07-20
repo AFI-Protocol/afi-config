@@ -1,4 +1,40 @@
-.DS_Store
-node_modules
+# Dependencies
+node_modules/
+.npm
+.eslintcache
+
+# Environment / secrets (keep the committed template)
 .env
+.env.*
+!.env.example
+!.env.*.example
+
+# Build artifacts / caches
 dist/tests/
+coverage/
+*.tsbuildinfo
+.cache/
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# IDE / editor configs
+.idea/
+.vscode/
+*.swp
+*.swo
+*.sublime-workspace
+*.sublime-project
+
+# OS files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+Desktop.ini
