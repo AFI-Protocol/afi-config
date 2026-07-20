@@ -19,6 +19,7 @@
     "deps:check": "knip --dependencies --no-config-hints",
     "duplicates": "jscpd",
     "check:tech-debt": "node scripts/check-tech-debt.mjs",
+    "check:agents-doc": "node scripts/check-agents-doc.mjs",
     "validate": "vitest run tests/schema-validation.test.ts",
     "typecheck": "tsc --noEmit",
     "clean": "rm -rf dist"
@@ -31,6 +32,9 @@
     ],
     "*.{json,md,yml,yaml}": [
       "prettier --write --ignore-unknown"
+    ],
+    "AGENTS.md": [
+      "node scripts/check-agents-doc.mjs"
     ],
     "*": [
       "node scripts/check-file-size.mjs"
