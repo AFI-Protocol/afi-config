@@ -36,6 +36,8 @@ jobs:
         run: npm run check:agents-doc
       - name: Run vitest pin guards
         run: npm run test:run
+      - name: Enforce test coverage thresholds
+        run: npm run test:coverage
       - name: Validate configs
         run: npm run validate:config --if-present || echo "No validation script"
       - name: Build
