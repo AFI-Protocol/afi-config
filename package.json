@@ -17,6 +17,7 @@
     "check:file-size": "node scripts/check-file-size.mjs",
     "dead-code": "knip --no-config-hints",
     "duplicates": "jscpd",
+    "check:tech-debt": "node scripts/check-tech-debt.mjs",
     "validate": "vitest run tests/schema-validation.test.ts",
     "typecheck": "tsc --noEmit",
     "clean": "rm -rf dist"
@@ -24,7 +25,8 @@
   "lint-staged": {
     "*.{ts,js,mjs,cjs}": [
       "eslint --fix",
-      "prettier --write"
+      "prettier --write",
+      "node scripts/check-tech-debt.mjs"
     ],
     "*.{json,md,yml,yaml}": [
       "prettier --write --ignore-unknown"

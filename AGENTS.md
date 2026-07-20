@@ -82,6 +82,7 @@ This repo has no dev server. Typical workflow:
 - **Schema naming**: kebab-case (e.g., `signal-schema.json`)
 - **Type naming**: PascalCase (e.g., `SignalConfig`)
 - **Tests**: Vitest, located in `tests/` or co-located with source
+- **Technical debt**: Every `TODO`/`FIXME`/`HACK`/`XXX` comment must link to a tracking issue, e.g. `// TODO(#123): ...` or `// FIXME(AFI-42): ...`. CI (`npm run check:tech-debt`) fails on unlinked markers and prints an inventory of tracked debt.
 
 ---
 
