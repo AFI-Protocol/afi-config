@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: AFI Droid Charter (governance)
+    url: https://github.com/AFI-Protocol/afi-config/blob/main/codex/governance/droids/AFI_DROID_CHARTER.v0.1.md
+    about: Read the binding governance rules before proposing changes to codex/governance.
+  - name: Agent onboarding (AGENTS.md)
+    url: https://github.com/AFI-Protocol/afi-config/blob/main/AGENTS.md
+    about: Build, test, and workflow conventions for autonomous agents.

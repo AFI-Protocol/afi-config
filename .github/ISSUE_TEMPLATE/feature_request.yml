@@ -1,0 +1,56 @@
+name: Feature / schema change request
+description: Propose a new schema, non-breaking extension, or tooling improvement.
+title: '[feat]: '
+labels:
+  - enhancement
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Schema changes cascade to downstream AFI repos. Please describe the change and its compatibility impact.
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem / motivation
+      description: What need does this address?
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed change
+      description: Describe the new schema/field/tooling and its shape.
+    validations:
+      required: true
+  - type: dropdown
+    id: area
+    attributes:
+      label: Affected area
+      options:
+        - schemas
+        - registries
+        - templates
+        - codex / governance
+        - cli_utils / validation
+        - CI / tooling
+        - docs
+        - other
+    validations:
+      required: true
+  - type: dropdown
+    id: compatibility
+    attributes:
+      label: Backward compatibility
+      description: Removing or renaming fields breaks contracts; prefer additive changes.
+      options:
+        - Additive / backward compatible
+        - Breaking change (requires cross-repo coordination)
+        - Unsure
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+    validations:
+      required: false
