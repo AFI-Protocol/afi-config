@@ -50,17 +50,19 @@ function canonicalize(v) {
     '{' +
     Object.keys(v)
       .sort()
-      .map(k => JSON.stringify(k) + ':' + canonicalize(v[k]))
+      .map((k) => JSON.stringify(k) + ':' + canonicalize(v[k]))
       .join(',') +
     '}'
   );
 }
 function canonicalSha256(obj, excluded = []) {
   const stripped = {};
-  Object.keys(obj).forEach(k => {
+  Object.keys(obj).forEach((k) => {
     if (!excluded.includes(k)) stripped[k] = obj[k];
   });
-  return createHash('sha256').update(Buffer.from(canonicalize(stripped), 'utf-8')).digest('hex');
+  return createHash('sha256')
+    .update(Buffer.from(canonicalize(stripped), 'utf-8'))
+    .digest('hex');
 }
 function placeholderHex(label) {
   return createHash('sha256')
@@ -119,13 +121,13 @@ function fillRecord(record, { realLaneHashes }) {
   for (const proof of record.providerInvocations) {
     const category = proof.category;
     proof.provider.recordFingerprint.value = placeholderHex(
-      `provider-record:${proof.provider.providerId}@${proof.provider.recordVersion}`
+      `provider-record:${proof.provider.providerId}@${proof.provider.recordVersion}`,
     );
     proof.providerInstance.recordFingerprint.value = placeholderHex(
-      `provider-instance-record:${proof.providerInstance.providerInstanceId}@${proof.providerInstance.recordVersion}`
+      `provider-instance-record:${proof.providerInstance.providerInstanceId}@${proof.providerInstance.recordVersion}`,
     );
     proof.invocationInputHash.value = placeholderHex(
-      `provider-invocation-input:${signalId}:${category}`
+      `provider-invocation-input:${signalId}:${category}`,
     );
     if (realLaneHashes) {
       proof.providerResultHash.value = laneDigests[category].providerResultSha256;
@@ -137,18 +139,18 @@ function fillRecord(record, { realLaneHashes }) {
     if (proof.aimlInvocation) {
       const inv = proof.aimlInvocation;
       inv.codeConfigFingerprint = placeholderHex(
-        `tiny-brains:code-config:${inv.profileId}@${inv.profileVersion}`
+        `tiny-brains:code-config:${inv.profileId}@${inv.profileVersion}`,
       );
       inv.inputHash = placeholderHex(`tiny-brains:input:${signalId}`);
       inv.outputHash = placeholderHex(`tiny-brains:output:${signalId}`);
       for (const expert of inv.experts) {
         expert.outputHash = placeholderHex(
-          `tiny-brains:expert-output:${expert.expertId}@${expert.expertVersion}:${signalId}`
+          `tiny-brains:expert-output:${expert.expertId}@${expert.expertVersion}:${signalId}`,
         );
         if (expert.artifactFingerprints) {
           for (const artifact of Object.keys(expert.artifactFingerprints)) {
             expert.artifactFingerprints[artifact] = placeholderHex(
-              `tiny-brains:artifact:${artifact}`
+              `tiny-brains:artifact:${artifact}`,
             );
           }
         }

@@ -105,7 +105,7 @@ describe('Schema Validation Tests', () => {
         'schemas/provider-invocation-proof/v1/provider-invocation-proof.schema.json',
       ];
       const preloadedSchemaFiles = new Set<string>();
-      preloadSchemaFiles.forEach(schemaFile => {
+      preloadSchemaFiles.forEach((schemaFile) => {
         try {
           const schema = loadJSON(schemaFile);
           ajv.addSchema(schema);
@@ -115,7 +115,7 @@ describe('Schema Validation Tests', () => {
         }
       });
 
-      schemaFiles.forEach(schemaFile => {
+      schemaFiles.forEach((schemaFile) => {
         // Skip schemas that were already preloaded above
         if (preloadedSchemaFiles.has(schemaFile)) {
           return;
@@ -133,18 +133,18 @@ describe('Schema Validation Tests', () => {
   describe('Schema Structure', () => {
     it('all schemas should have required JSON Schema fields', () => {
       const schemaFiles = ['.afi-codex.schema.json', ...getAllSchemaFiles()];
-      
-      schemaFiles.forEach(schemaFile => {
+
+      schemaFiles.forEach((schemaFile) => {
         const schema = loadJSON(schemaFile);
-        
+
         // Check for $schema field
         expect(schema.$schema, `${schemaFile} should have $schema field`).toBeDefined();
         expect(schema.$schema).toContain('json-schema.org');
-        
+
         // Check for title
         expect(schema.title, `${schemaFile} should have title field`).toBeDefined();
         expect(typeof schema.title).toBe('string');
-        
+
         // Check for type
         expect(schema.type, `${schemaFile} should have type field`).toBeDefined();
       });
@@ -152,10 +152,10 @@ describe('Schema Validation Tests', () => {
 
     it('all schemas should have $id field for proper referencing', () => {
       const schemaFiles = getAllSchemaFiles();
-      
-      schemaFiles.forEach(schemaFile => {
+
+      schemaFiles.forEach((schemaFile) => {
         const schema = loadJSON(schemaFile);
-        
+
         // $id is recommended for schema referencing
         if (schema.$id) {
           expect(typeof schema.$id).toBe('string');
@@ -178,12 +178,14 @@ describe('Schema Validation Tests', () => {
         console.error('Validation errors:', validate.errors);
       }
 
-      expect(valid, '.afi-codex.json should be valid according to repo-metadata.schema.json').toBe(true);
+      expect(valid, '.afi-codex.json should be valid according to repo-metadata.schema.json').toBe(
+        true,
+      );
     });
 
     it('.afi-codex.json should have required AFI metadata fields', () => {
       const codex = loadJSON('.afi-codex.json');
-      
+
       expect(codex.module).toBeDefined();
       expect(codex.module.name).toBe('afi-config');
       expect(codex.module.role).toBeDefined();
@@ -199,7 +201,7 @@ describe('Schema Validation Tests', () => {
   describe('Schema Content Validation', () => {
     it('character.schema.json should define required character fields', () => {
       const schema = loadJSON('schemas/character.schema.json');
-      
+
       expect(schema.properties).toBeDefined();
       expect(schema.properties.id).toBeDefined();
       expect(schema.properties.name).toBeDefined();
@@ -211,7 +213,7 @@ describe('Schema Validation Tests', () => {
 
     it('plugin-manifest.schema.json should define required plugin fields', () => {
       const schema = loadJSON('schemas/plugin-manifest.schema.json');
-      
+
       expect(schema.properties).toBeDefined();
       expect(schema.properties.id).toBeDefined();
       expect(schema.properties.type).toBeDefined();
@@ -269,7 +271,7 @@ describe('Schema Validation Tests', () => {
         'schemas/usignal/v1/lenses/onchain.lens.schema.json',
       ];
 
-      lensSchemas.forEach(schemaFile => {
+      lensSchemas.forEach((schemaFile) => {
         const schema = loadJSON(schemaFile);
 
         expect(() => {
@@ -470,15 +472,15 @@ describe('Schema Validation Tests', () => {
         schema: 'afi.usignal.v1.1',
         provenance: {
           source: 'test',
-          signalId: 'test-123'
+          signalId: 'test-123',
           // Missing providerId
-        }
+        },
       };
 
       const valid = validate(invalidPayload);
       expect(valid).toBe(false);
       expect(validate.errors).toBeDefined();
-      expect(validate.errors!.some(e => e.message?.includes('providerId'))).toBe(true);
+      expect(validate.errors!.some((e) => e.message?.includes('providerId'))).toBe(true);
     });
 
     it('should reject USS v1.1 payload missing signalId', () => {
@@ -493,15 +495,15 @@ describe('Schema Validation Tests', () => {
         schema: 'afi.usignal.v1.1',
         provenance: {
           source: 'test',
-          providerId: 'provider-123'
+          providerId: 'provider-123',
           // Missing signalId
-        }
+        },
       };
 
       const valid = validate(invalidPayload);
       expect(valid).toBe(false);
       expect(validate.errors).toBeDefined();
-      expect(validate.errors!.some(e => e.message?.includes('signalId'))).toBe(true);
+      expect(validate.errors!.some((e) => e.message?.includes('signalId'))).toBe(true);
     });
   });
 
@@ -611,13 +613,13 @@ describe('Schema Validation Tests', () => {
         },
         extracted: {
           symbolRaw: 'BTCUSDT',
-          side: 'long'
+          side: 'long',
         },
         parse: {
           parserId: 'test-parser',
           parserVersion: '1.0.0',
-          confidence: 0.9
-        }
+          confidence: 0.9,
+        },
       };
 
       const valid = validate(invalidPayload);
@@ -639,17 +641,17 @@ describe('Schema Validation Tests', () => {
           providerType: 'telegram',
           providerId: 'test-channel',
           messageId: 'msg-123',
-          postedAt: '2024-12-16T10:00:00Z'
+          postedAt: '2024-12-16T10:00:00Z',
         },
         extracted: {
           symbolRaw: 'BTCUSDT',
-          side: 'invalid-side' // Invalid value
+          side: 'invalid-side', // Invalid value
         },
         parse: {
           parserId: 'test-parser',
           parserVersion: '1.0.0',
-          confidence: 0.9
-        }
+          confidence: 0.9,
+        },
       };
 
       const valid = validate(invalidPayload);
@@ -658,4 +660,3 @@ describe('Schema Validation Tests', () => {
     });
   });
 });
-

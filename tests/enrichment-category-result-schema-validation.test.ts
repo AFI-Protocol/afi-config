@@ -20,16 +20,31 @@ const rootDir = join(__dirname, '..');
  */
 
 function createAjv(): Ajv {
-  const ajv = new Ajv({ strict: true, allowUnionTypes: true, strictRequired: false, allErrors: true, verbose: true });
+  const ajv = new Ajv({
+    strict: true,
+    allowUnionTypes: true,
+    strictRequired: false,
+    allErrors: true,
+    verbose: true,
+  });
   addFormats(ajv);
-  ajv.addVocabulary(['x-afiStatus', 'x-afiPartOf', 'x-afiDoctrineRefs', 'x-afiOpenItems', 'x-afiProposedNotAccepted', 'x-afiConstraints']);
+  ajv.addVocabulary([
+    'x-afiStatus',
+    'x-afiPartOf',
+    'x-afiDoctrineRefs',
+    'x-afiOpenItems',
+    'x-afiProposedNotAccepted',
+    'x-afiConstraints',
+  ]);
   return ajv;
 }
 function loadJSON(rel: string): any {
   return JSON.parse(readFileSync(join(rootDir, rel), 'utf-8'));
 }
 function listJSON(dir: string): string[] {
-  return readdirSync(join(rootDir, dir)).filter(f => f.endsWith('.json')).sort();
+  return readdirSync(join(rootDir, dir))
+    .filter((f) => f.endsWith('.json'))
+    .sort();
 }
 
 const FAMILIES = [
@@ -131,14 +146,16 @@ describe('PBF-GOV — afi.enrichment.*.v1 category-result contracts', () => {
         expect(schema.additionalProperties).toBe(false);
         expect(schema.properties.category.const).toBe(fam.lane);
         expect(schema.required).toContain('category');
-        expect(JSON.stringify(schema['x-afiDoctrineRefs'])).toContain('provider-byok-foundations-v0.1');
+        expect(JSON.stringify(schema['x-afiDoctrineRefs'])).toContain(
+          'provider-byok-foundations-v0.1',
+        );
       });
 
       it('the canonical example and every valid vector validate (drift-guarded)', () => {
         const validate = compile();
         expect(validate(loadJSON(fam.example))).toBe(true);
         expect(listJSON(fam.validDir)).toEqual([...fam.valid].sort());
-        fam.valid.forEach(f => {
+        fam.valid.forEach((f) => {
           const ok = validate(loadJSON(`${fam.validDir}/${f}`));
           if (!ok) console.error(`${fam.lane}/${f}:`, validate.errors);
           expect(ok, `${fam.lane} valid ${f}`).toBe(true);
@@ -148,8 +165,11 @@ describe('PBF-GOV — afi.enrichment.*.v1 category-result contracts', () => {
       it('every invalid vector is rejected — including a leaked credentialed-URL field (drift-guarded)', () => {
         const validate = compile();
         expect(listJSON(fam.invalidDir)).toEqual([...fam.invalid].sort());
-        fam.invalid.forEach(f => {
-          expect(validate(loadJSON(`${fam.invalidDir}/${f}`)), `${fam.lane} invalid ${f} must be rejected`).toBe(false);
+        fam.invalid.forEach((f) => {
+          expect(
+            validate(loadJSON(`${fam.invalidDir}/${f}`)),
+            `${fam.lane} invalid ${f} must be rejected`,
+          ).toBe(false);
         });
       });
 

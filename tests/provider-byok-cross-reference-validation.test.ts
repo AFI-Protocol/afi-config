@@ -20,9 +20,22 @@ const rootDir = join(__dirname, '..');
  */
 
 function createAjv(): Ajv {
-  const ajv = new Ajv({ strict: true, allowUnionTypes: true, strictRequired: false, allErrors: true, verbose: true });
+  const ajv = new Ajv({
+    strict: true,
+    allowUnionTypes: true,
+    strictRequired: false,
+    allErrors: true,
+    verbose: true,
+  });
   addFormats(ajv);
-  ajv.addVocabulary(['x-afiStatus', 'x-afiPartOf', 'x-afiDoctrineRefs', 'x-afiOpenItems', 'x-afiProposedNotAccepted', 'x-afiConstraints']);
+  ajv.addVocabulary([
+    'x-afiStatus',
+    'x-afiPartOf',
+    'x-afiDoctrineRefs',
+    'x-afiOpenItems',
+    'x-afiProposedNotAccepted',
+    'x-afiConstraints',
+  ]);
   return ajv;
 }
 function loadJSON(rel: string): any {
@@ -74,9 +87,23 @@ const REFERENCE_PROFILE = {
 // like credentialRef / credentialKind are never flagged.
 // -----------------------------------------------------------------------------
 const SECRET_NAME_DENYLIST = new Set([
-  'apikey', 'token', 'accesstoken', 'secret', 'secretvalue', 'password', 'authorization',
-  'privatekey', 'refreshtoken', 'oauthrefreshtoken', 'oauth', 'cookie', 'sessiontoken',
-  'bearer', 'headervalue', 'credential', 'credentials',
+  'apikey',
+  'token',
+  'accesstoken',
+  'secret',
+  'secretvalue',
+  'password',
+  'authorization',
+  'privatekey',
+  'refreshtoken',
+  'oauthrefreshtoken',
+  'oauth',
+  'cookie',
+  'sessiontoken',
+  'bearer',
+  'headervalue',
+  'credential',
+  'credentials',
 ]);
 function normalizeKey(k: string): string {
   return k.toLowerCase().replace(/[-_]/g, '');
@@ -128,7 +155,10 @@ function providerInstanceViolations(inst: any, ctx: Ctx): string[] {
     v.push('unauthorized-credential-on-keyless-provider');
   }
   if (inst.model !== undefined) {
-    if (!Array.isArray(provider.supportedModels) || !provider.supportedModels.includes(inst.model)) {
+    if (
+      !Array.isArray(provider.supportedModels) ||
+      !provider.supportedModels.includes(inst.model)
+    ) {
       v.push('unsupported-model');
     }
   }
@@ -143,7 +173,7 @@ describe('PBF-GOV/FLPR-GOV — registries/providers seeding', () => {
 
   it('every seeded provider is schema-valid and filename matches providerId--recordVersion', () => {
     const validate = createAjv().compile(loadJSON('schemas/provider/v1/provider.schema.json'));
-    EXPECTED_PROVIDER_FILES.forEach(f => {
+    EXPECTED_PROVIDER_FILES.forEach((f) => {
       const p = loadJSON(`${PROVIDERS_DIR}/${f}`);
       const ok = validate(p);
       if (!ok) console.error(`${f} failure:`, validate.errors);
@@ -164,15 +194,18 @@ describe('PBF-GOV/FLPR-GOV — registries/providers seeding', () => {
   });
 
   it('the seeded portfolio covers all five lanes with a keyless provider, plus the two BYOK providers', () => {
-    const all = EXPECTED_PROVIDER_FILES.map(f => loadJSON(`${PROVIDERS_DIR}/${f}`));
+    const all = EXPECTED_PROVIDER_FILES.map((f) => loadJSON(`${PROVIDERS_DIR}/${f}`));
     const keylessLanes = new Set(
-      all.filter(p => !p.requiresCredential).flatMap(p => p.supportedCategories)
+      all.filter((p) => !p.requiresCredential).flatMap((p) => p.supportedCategories),
     );
     expect([...keylessLanes].sort()).toEqual(['aiMl', 'news', 'pattern', 'sentiment', 'technical']);
-    const byok = all.filter(p => p.requiresCredential).map(p => p.providerId).sort();
+    const byok = all
+      .filter((p) => p.requiresCredential)
+      .map((p) => p.providerId)
+      .sort();
     expect(byok).toEqual(['afi-provider-news-http', 'afi-provider-sentiment-coinalyze']);
-    byok.forEach(id => {
-      const p = all.find(x => x.providerId === id)!;
+    byok.forEach((id) => {
+      const p = all.find((x) => x.providerId === id)!;
       expect(p.credentialKind, `${id} must be header-key`).toBe('apiKeyHeader');
     });
   });
@@ -185,8 +218,10 @@ describe('FLPR-GOV — registries/provider-instances seeding', () => {
   });
 
   it('every seeded instance is schema-valid and filename matches providerInstanceId--recordVersion', () => {
-    const validate = createAjv().compile(loadJSON('schemas/provider-instance/v1/provider-instance.schema.json'));
-    EXPECTED_INSTANCE_FILES.forEach(f => {
+    const validate = createAjv().compile(
+      loadJSON('schemas/provider-instance/v1/provider-instance.schema.json'),
+    );
+    EXPECTED_INSTANCE_FILES.forEach((f) => {
       const inst = loadJSON(`${INSTANCES_DIR}/${f}`);
       const ok = validate(inst);
       if (!ok) console.error(`${f} failure:`, validate.errors);
@@ -197,30 +232,35 @@ describe('FLPR-GOV — registries/provider-instances seeding', () => {
 
   it('every seeded instance cross-resolves against the seeded providers + credential-refs with ZERO violations', () => {
     const providers: Record<string, any> = {};
-    EXPECTED_PROVIDER_FILES.forEach(f => {
+    EXPECTED_PROVIDER_FILES.forEach((f) => {
       const p = loadJSON(`${PROVIDERS_DIR}/${f}`);
       providers[p.providerId] = p;
     });
     const credRefs: Record<string, any> = {};
-    EXPECTED_CREDREF_FILES.forEach(f => {
+    EXPECTED_CREDREF_FILES.forEach((f) => {
       const c = loadJSON(`${CREDREFS_DIR}/${f}`);
       credRefs[c.credentialRef] = c;
     });
-    EXPECTED_INSTANCE_FILES.forEach(f => {
+    EXPECTED_INSTANCE_FILES.forEach((f) => {
       const inst = loadJSON(`${INSTANCES_DIR}/${f}`);
-      expect(providerInstanceViolations(inst, { providers, credRefs }), `${f} must cross-resolve`).toEqual([]);
+      expect(
+        providerInstanceViolations(inst, { providers, credRefs }),
+        `${f} must cross-resolve`,
+      ).toEqual([]);
     });
   });
 
   it('the five reference instances form the committed all-five KEYLESS profile (FLPR-GOV D-FLPR-7)', () => {
     Object.entries(REFERENCE_PROFILE).forEach(([lane, id]) => {
-      const instFile = EXPECTED_INSTANCE_FILES.find(f => f.startsWith(`${id}--`));
+      const instFile = EXPECTED_INSTANCE_FILES.find((f) => f.startsWith(`${id}--`));
       expect(instFile, `${id} must be a seeded instance record`).toBeDefined();
       const inst = loadJSON(`${INSTANCES_DIR}/${instFile}`);
       expect(inst.category, `${id} lane`).toBe(lane);
       expect(inst.status).toBe('active');
       expect(inst.credentialRef, `${id} must be keyless`).toBeUndefined();
-      const providerFile = EXPECTED_PROVIDER_FILES.find(f => f.startsWith(`${inst.providerId}--`));
+      const providerFile = EXPECTED_PROVIDER_FILES.find((f) =>
+        f.startsWith(`${inst.providerId}--`),
+      );
       expect(providerFile, `${inst.providerId} must be a seeded provider record`).toBeDefined();
       const provider = loadJSON(`${PROVIDERS_DIR}/${providerFile}`);
       expect(provider.requiresCredential, `${id} provider must be keyless`).toBe(false);
@@ -235,8 +275,10 @@ describe('FLPR-GOV — registries/credential-refs seeding', () => {
   });
 
   it('every seeded credential-ref is schema-valid, filename matches, and points at a credentialed provider', () => {
-    const validate = createAjv().compile(loadJSON('schemas/credential-ref/v1/credential-ref.schema.json'));
-    EXPECTED_CREDREF_FILES.forEach(f => {
+    const validate = createAjv().compile(
+      loadJSON('schemas/credential-ref/v1/credential-ref.schema.json'),
+    );
+    EXPECTED_CREDREF_FILES.forEach((f) => {
       const c = loadJSON(`${CREDREFS_DIR}/${f}`);
       const ok = validate(c);
       if (!ok) console.error(`${f} failure:`, validate.errors);
@@ -255,44 +297,57 @@ describe('PBF-GOV — secret-name denylist (defense in depth)', () => {
     expect(secretFieldViolations({ nested: { authorization: 'Bearer x' } })).toHaveLength(1);
     expect(secretFieldViolations({ api_key: 'x', token: 'y' })).toHaveLength(2);
     // legitimate BYOK fields are NOT secrets
-    expect(secretFieldViolations({ credentialRef: 'ref-1', credentialKind: 'apiKeyHeader' })).toEqual([]);
+    expect(
+      secretFieldViolations({ credentialRef: 'ref-1', credentialKind: 'apiKeyHeader' }),
+    ).toEqual([]);
   });
 
   it('no seeded provider/instance/credential-ref record or fixture contains a secret-named field', () => {
     const registryFiles = [
-      ...EXPECTED_PROVIDER_FILES.map(f => `${PROVIDERS_DIR}/${f}`),
-      ...EXPECTED_INSTANCE_FILES.map(f => `${INSTANCES_DIR}/${f}`),
-      ...EXPECTED_CREDREF_FILES.map(f => `${CREDREFS_DIR}/${f}`),
+      ...EXPECTED_PROVIDER_FILES.map((f) => `${PROVIDERS_DIR}/${f}`),
+      ...EXPECTED_INSTANCE_FILES.map((f) => `${INSTANCES_DIR}/${f}`),
+      ...EXPECTED_CREDREF_FILES.map((f) => `${CREDREFS_DIR}/${f}`),
     ];
     const fixtureDirs = [
       'examples/provider/v1/vectors/valid',
       'examples/credential-ref/v1/vectors/valid',
       'examples/provider-instance/v1/vectors/valid',
     ];
-    const fixtureFiles = fixtureDirs.flatMap(d =>
-      readdirSync(join(rootDir, d)).filter(f => f.endsWith('.json')).map(f => `${d}/${f}`)
+    const fixtureFiles = fixtureDirs.flatMap((d) =>
+      readdirSync(join(rootDir, d))
+        .filter((f) => f.endsWith('.json'))
+        .map((f) => `${d}/${f}`),
     );
-    [...registryFiles, ...fixtureFiles].forEach(rel => {
-      expect(secretFieldViolations(loadJSON(rel)), `${rel} must carry no secret-named field`).toEqual([]);
+    [...registryFiles, ...fixtureFiles].forEach((rel) => {
+      expect(
+        secretFieldViolations(loadJSON(rel)),
+        `${rel} must carry no secret-named field`,
+      ).toEqual([]);
     });
   });
 });
 
 describe('PBF-GOV — provider-instance cross-reference (D-PBF-4/D-PBF-5/D-PBF-7)', () => {
   const providers: Record<string, any> = {};
-  ['afi-provider-technical-local--1.0.0.json', 'afi-provider-news-http--1.0.0.json'].forEach(f => {
-    const p = loadJSON(`${PROVIDERS_DIR}/${f}`);
-    providers[p.providerId] = p;
-  });
+  ['afi-provider-technical-local--1.0.0.json', 'afi-provider-news-http--1.0.0.json'].forEach(
+    (f) => {
+      const p = loadJSON(`${PROVIDERS_DIR}/${f}`);
+      providers[p.providerId] = p;
+    },
+  );
   const credRefs: Record<string, any> = {};
-  ['news-key-tenant-a.json', 'news-key-tenant-b.json', 'disabled-rotated.json'].forEach(f => {
+  ['news-key-tenant-a.json', 'news-key-tenant-b.json', 'disabled-rotated.json'].forEach((f) => {
     const c = loadJSON(`examples/credential-ref/v1/vectors/valid/${f}`);
     credRefs[c.credentialRef] = c;
   });
   const ctx: Ctx = { providers, credRefs };
 
-  const techInstance = loadJSON('examples/provider-instance/v1/vectors/valid/technical-local-tenant-a.json');
-  const newsInstance = loadJSON('examples/provider-instance/v1/vectors/valid/news-http-tenant-a.json');
+  const techInstance = loadJSON(
+    'examples/provider-instance/v1/vectors/valid/technical-local-tenant-a.json',
+  );
+  const newsInstance = loadJSON(
+    'examples/provider-instance/v1/vectors/valid/news-http-tenant-a.json',
+  );
 
   it('keyless technical instance resolves with ZERO violations and no credential', () => {
     expect(providerInstanceViolations(techInstance, ctx)).toEqual([]);
@@ -308,15 +363,21 @@ describe('PBF-GOV — provider-instance cross-reference (D-PBF-4/D-PBF-5/D-PBF-7
   });
 
   it('rejects an unknown provider', () => {
-    expect(providerInstanceViolations({ ...techInstance, providerId: 'afi-provider-nope' }, ctx)).toContain('unknown-provider');
+    expect(
+      providerInstanceViolations({ ...techInstance, providerId: 'afi-provider-nope' }, ctx),
+    ).toContain('unknown-provider');
   });
 
   it('rejects a category the provider does not support', () => {
-    expect(providerInstanceViolations({ ...techInstance, category: 'news' }, ctx)).toContain('category-not-supported');
+    expect(providerInstanceViolations({ ...techInstance, category: 'news' }, ctx)).toContain(
+      'category-not-supported',
+    );
   });
 
   it('rejects an adapter that is not the provider adapter', () => {
-    expect(providerInstanceViolations({ ...techInstance, adapterId: 'afi-adapter-wrong' }, ctx)).toContain('adapter-mismatch');
+    expect(
+      providerInstanceViolations({ ...techInstance, adapterId: 'afi-adapter-wrong' }, ctx),
+    ).toContain('adapter-mismatch');
   });
 
   it('rejects a credentialed provider with NO credentialRef (fail closed)', () => {
@@ -325,24 +386,37 @@ describe('PBF-GOV — provider-instance cross-reference (D-PBF-4/D-PBF-5/D-PBF-7
   });
 
   it('rejects a KEYLESS provider that carries an (unauthorized) credentialRef', () => {
-    expect(providerInstanceViolations({ ...techInstance, credentialRef: 'newsdata-key-tenant-a' }, ctx)).toContain('unauthorized-credential-on-keyless-provider');
+    expect(
+      providerInstanceViolations({ ...techInstance, credentialRef: 'newsdata-key-tenant-a' }, ctx),
+    ).toContain('unauthorized-credential-on-keyless-provider');
   });
 
   it('rejects a cross-tenant credential reference (tenant isolation)', () => {
     // tenant-a instance referencing tenant-b's credential ref
-    expect(providerInstanceViolations({ ...newsInstance, credentialRef: 'newsdata-key-tenant-b' }, ctx)).toContain('credential-ref-tenant-mismatch');
+    expect(
+      providerInstanceViolations({ ...newsInstance, credentialRef: 'newsdata-key-tenant-b' }, ctx),
+    ).toContain('credential-ref-tenant-mismatch');
   });
 
   it('rejects a disabled credential reference', () => {
-    expect(providerInstanceViolations({ ...newsInstance, credentialRef: 'newsdata-key-tenant-a-old' }, ctx)).toContain('credential-ref-disabled');
+    expect(
+      providerInstanceViolations(
+        { ...newsInstance, credentialRef: 'newsdata-key-tenant-a-old' },
+        ctx,
+      ),
+    ).toContain('credential-ref-disabled');
   });
 
   it('rejects an unknown credential reference', () => {
-    expect(providerInstanceViolations({ ...newsInstance, credentialRef: 'does-not-exist' }, ctx)).toContain('unknown-credential-ref');
+    expect(
+      providerInstanceViolations({ ...newsInstance, credentialRef: 'does-not-exist' }, ctx),
+    ).toContain('unknown-credential-ref');
   });
 
   it('rejects an unsupported model on a provider that declares none', () => {
-    expect(providerInstanceViolations({ ...techInstance, model: 'gpt-99' }, ctx)).toContain('unsupported-model');
+    expect(providerInstanceViolations({ ...techInstance, model: 'gpt-99' }, ctx)).toContain(
+      'unsupported-model',
+    );
   });
 });
 
@@ -356,26 +430,66 @@ describe('PBF-GOV — pipeline node providerInstanceRef (non-secret, optional)',
       pipelineVersion: 'v1.0.0',
       entry: 'enrich',
       nodes: [
-        { id: 'enrich', category: 'technical', pluginId: 'afi-analysis-technical', pluginVersion: '1.0.0', ...node },
-        { id: 'scorer', category: 'scorer', pluginId: 'afi-scorer-froggy-trend-pullback', pluginVersion: '1.0.0' },
+        {
+          id: 'enrich',
+          category: 'technical',
+          pluginId: 'afi-analysis-technical',
+          pluginVersion: '1.0.0',
+          ...node,
+        },
+        {
+          id: 'scorer',
+          category: 'scorer',
+          pluginId: 'afi-scorer-froggy-trend-pullback',
+          pluginVersion: '1.0.0',
+        },
       ],
       edges: [{ from: 'enrich', to: 'scorer' }],
     };
   }
 
   it('a node may carry a versioned providerInstanceRef and still validate', () => {
-    const ok = validate(pipelineWithNode({ providerInstanceRef: { providerInstanceId: 'pi-technical-local-tenant-a', recordVersion: '1.0.0' } }));
+    const ok = validate(
+      pipelineWithNode({
+        providerInstanceRef: {
+          providerInstanceId: 'pi-technical-local-tenant-a',
+          recordVersion: '1.0.0',
+        },
+      }),
+    );
     if (!ok) console.error('providerInstanceRef pipeline failure:', validate.errors);
     expect(ok).toBe(true);
   });
 
   it('rejects a providerInstanceRef carrying any credential/secret field (additionalProperties:false)', () => {
-    expect(validate(pipelineWithNode({ providerInstanceRef: { providerInstanceId: 'pi-x', recordVersion: '1.0.0', apiKey: 'zzTOPSECRETzz' } }))).toBe(false);
-    expect(validate(pipelineWithNode({ providerInstanceRef: { providerInstanceId: 'pi-x', recordVersion: '1.0.0', credentialRef: 'ref-1' } }))).toBe(false);
+    expect(
+      validate(
+        pipelineWithNode({
+          providerInstanceRef: {
+            providerInstanceId: 'pi-x',
+            recordVersion: '1.0.0',
+            apiKey: 'zzTOPSECRETzz',
+          },
+        }),
+      ),
+    ).toBe(false);
+    expect(
+      validate(
+        pipelineWithNode({
+          providerInstanceRef: {
+            providerInstanceId: 'pi-x',
+            recordVersion: '1.0.0',
+            credentialRef: 'ref-1',
+          },
+        }),
+      ),
+    ).toBe(false);
   });
 
   it('rejects a providerInstanceRef missing its version pin', () => {
-    expect(validate(pipelineWithNode({ providerInstanceRef: { providerInstanceId: 'pi-x' } }))).toBe(false);
+    expect(
+      validate(pipelineWithNode({ providerInstanceRef: { providerInstanceId: 'pi-x' } })),
+    ).toBe(false);
   });
 
   it('the froggy-shaped node WITHOUT a providerInstanceRef still validates (optional; backward compatible)', () => {

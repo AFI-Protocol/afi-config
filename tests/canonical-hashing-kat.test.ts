@@ -38,14 +38,14 @@ function canonicalize(v: unknown): string {
     '{' +
     Object.keys(v as object)
       .sort()
-      .map(k => JSON.stringify(k) + ':' + canonicalize((v as any)[k]))
+      .map((k) => JSON.stringify(k) + ':' + canonicalize((v as any)[k]))
       .join(',') +
     '}'
   );
 }
 function stripExcluded(obj: any, excluded: string[]): any {
   const out: any = {};
-  Object.keys(obj).forEach(k => {
+  Object.keys(obj).forEach((k) => {
     if (!excluded.includes(k)) out[k] = obj[k];
   });
   return out;
@@ -106,7 +106,11 @@ describe('FACTORY-CONTRACT — canonical-json-hashing.v1 KATs', () => {
   it('excluded/annotational fields can NEVER perturb a hash', () => {
     const manifest = loadJSON('examples/pipeline/v1/pipeline.example.json');
     const base = sha256hex(canonicalize(stripExcluded(manifest, ['description', 'metadata'])));
-    const mutated = { ...manifest, description: 'totally different annotation', metadata: { x: 1 } };
+    const mutated = {
+      ...manifest,
+      description: 'totally different annotation',
+      metadata: { x: 1 },
+    };
     expect(sha256hex(canonicalize(stripExcluded(mutated, ['description', 'metadata'])))).toBe(base);
   });
 
@@ -115,7 +119,9 @@ describe('FACTORY-CONTRACT — canonical-json-hashing.v1 KATs', () => {
       const vector = kat.vectors.find((v: any) => v.name === 'pipeline-manifest-excludes');
       expect(vector).toBeDefined();
       expect(vector.input).toEqual(loadJSON('examples/pipeline/v1/pipeline.example.json'));
-      const config = loadJSON('examples/analyst-strategy-config/v1/analyst-strategy-config.example.json');
+      const config = loadJSON(
+        'examples/analyst-strategy-config/v1/analyst-strategy-config.example.json',
+      );
       const composition = loadJSON('examples/composition-ref/v1/composition-ref.example.json');
       expect(config.pipelineRef.manifestHash.value).toBe(vector.expectedSha256);
       expect(composition.manifestHash.value).toBe(vector.expectedSha256);
@@ -125,10 +131,10 @@ describe('FACTORY-CONTRACT — canonical-json-hashing.v1 KATs', () => {
       const vector = kat.vectors.find((v: any) => v.name === 'analyst-config-excludes');
       expect(vector).toBeDefined();
       expect(vector.input).toEqual(
-        loadJSON('examples/analyst-strategy-config/v1/analyst-strategy-config.example.json')
+        loadJSON('examples/analyst-strategy-config/v1/analyst-strategy-config.example.json'),
       );
       const registration = loadJSON(
-        'examples/analyst-strategy-registration/v1/analyst-strategy-registration.example.json'
+        'examples/analyst-strategy-registration/v1/analyst-strategy-registration.example.json',
       );
       const composition = loadJSON('examples/composition-ref/v1/composition-ref.example.json');
       expect(registration.analystConfigHash.value).toBe(vector.expectedSha256);

@@ -53,7 +53,9 @@ function clone<T>(value: T): T {
 }
 
 function listJSON(relativeDir: string): string[] {
-  return readdirSync(join(rootDir, relativeDir)).filter(f => f.endsWith('.json')).sort();
+  return readdirSync(join(rootDir, relativeDir))
+    .filter((f) => f.endsWith('.json'))
+    .sort();
 }
 
 interface Family {
@@ -76,7 +78,11 @@ const FAMILIES: Family[] = [
     example: 'examples/provider/v1/provider.example.json',
     validDir: 'examples/provider/v1/vectors/valid',
     invalidDir: 'examples/provider/v1/vectors/invalid',
-    validFiles: ['aiml-probabilistic-with-models.json', 'news-credentialed.json', 'technical-keyless.json'],
+    validFiles: [
+      'aiml-probabilistic-with-models.json',
+      'news-credentialed.json',
+      'technical-keyless.json',
+    ],
     invalidFiles: [
       'adapter-path.json',
       'bad-version.json',
@@ -86,8 +92,16 @@ const FAMILIES: Family[] = [
       'secret-inline.json',
     ],
     required: [
-      'schema', 'providerId', 'recordVersion', 'displayName', 'supportedCategories',
-      'executionClass', 'deterministic', 'adapterId', 'requiresCredential', 'status',
+      'schema',
+      'providerId',
+      'recordVersion',
+      'displayName',
+      'supportedCategories',
+      'executionClass',
+      'deterministic',
+      'adapterId',
+      'requiresCredential',
+      'status',
     ],
   },
   {
@@ -106,7 +120,15 @@ const FAMILIES: Family[] = [
       'missing-tenant.json',
       'ref-is-backend-path.json',
     ],
-    required: ['schema', 'credentialRef', 'recordVersion', 'tenant', 'providerId', 'credentialKind', 'status'],
+    required: [
+      'schema',
+      'credentialRef',
+      'recordVersion',
+      'tenant',
+      'providerId',
+      'credentialKind',
+      'status',
+    ],
   },
   {
     name: 'afi.provider-instance.v1',
@@ -115,7 +137,11 @@ const FAMILIES: Family[] = [
     example: 'examples/provider-instance/v1/provider-instance.example.json',
     validDir: 'examples/provider-instance/v1/vectors/valid',
     invalidDir: 'examples/provider-instance/v1/vectors/invalid',
-    validFiles: ['news-http-tenant-a-tuned.json', 'news-http-tenant-a.json', 'technical-local-tenant-a.json'],
+    validFiles: [
+      'news-http-tenant-a-tuned.json',
+      'news-http-tenant-a.json',
+      'technical-local-tenant-a.json',
+    ],
     invalidFiles: [
       'bad-adapter-version.json',
       'bad-category.json',
@@ -125,8 +151,15 @@ const FAMILIES: Family[] = [
       'secret-inline.json',
     ],
     required: [
-      'schema', 'providerInstanceId', 'recordVersion', 'tenant', 'category',
-      'providerId', 'adapterId', 'adapterVersion', 'status',
+      'schema',
+      'providerInstanceId',
+      'recordVersion',
+      'tenant',
+      'category',
+      'providerId',
+      'adapterId',
+      'adapterVersion',
+      'status',
     ],
   },
 ];
@@ -150,10 +183,15 @@ describe('PBF-GOV — provider / credential-ref / provider-instance schemas', ()
         expect(schema.properties.schema.const).toBe(fam.const);
         expect([...schema.required].sort()).toEqual([...fam.required].sort());
         // Every governed object cites the PBF-GOV decision.
-        expect(JSON.stringify(schema['x-afiDoctrineRefs'])).toContain('provider-byok-foundations-v0.1');
+        expect(JSON.stringify(schema['x-afiDoctrineRefs'])).toContain(
+          'provider-byok-foundations-v0.1',
+        );
         // No filesystem/code-binding surface exists.
-        ['entrypoint', 'path', 'module', 'file', 'main', 'endpoint', 'url'].forEach(p =>
-          expect(Object.keys(schema.properties), `${fam.name} must not define '${p}'`).not.toContain(p)
+        ['entrypoint', 'path', 'module', 'file', 'main', 'endpoint', 'url'].forEach((p) =>
+          expect(
+            Object.keys(schema.properties),
+            `${fam.name} must not define '${p}'`,
+          ).not.toContain(p),
         );
       });
 
@@ -167,7 +205,7 @@ describe('PBF-GOV — provider / credential-ref / provider-instance schemas', ()
       it('every valid vector validates (drift-guarded)', () => {
         expect(listJSON(fam.validDir)).toEqual([...fam.validFiles].sort());
         const validate = compile();
-        fam.validFiles.forEach(f => {
+        fam.validFiles.forEach((f) => {
           const ok = validate(loadJSON(`${fam.validDir}/${f}`));
           if (!ok) console.error(`${fam.name}/${f} failure:`, validate.errors);
           expect(ok, `${fam.name} valid vector ${f}`).toBe(true);
@@ -177,15 +215,18 @@ describe('PBF-GOV — provider / credential-ref / provider-instance schemas', ()
       it('every invalid vector is rejected (drift-guarded)', () => {
         expect(listJSON(fam.invalidDir)).toEqual([...fam.invalidFiles].sort());
         const validate = compile();
-        fam.invalidFiles.forEach(f => {
-          expect(validate(loadJSON(`${fam.invalidDir}/${f}`)), `${fam.name} invalid vector ${f} must be rejected`).toBe(false);
+        fam.invalidFiles.forEach((f) => {
+          expect(
+            validate(loadJSON(`${fam.invalidDir}/${f}`)),
+            `${fam.name} invalid vector ${f} must be rejected`,
+          ).toBe(false);
         });
       });
 
       it('rejects any missing required field (clone-and-delete)', () => {
         const validate = compile();
         const base = loadJSON(fam.example);
-        fam.required.forEach(field => {
+        fam.required.forEach((field) => {
           const invalid: any = clone(base);
           delete invalid[field];
           expect(validate(invalid), `${fam.name} missing ${field} must be rejected`).toBe(false);
@@ -194,10 +235,22 @@ describe('PBF-GOV — provider / credential-ref / provider-instance schemas', ()
 
       it('rejects an inline secret-named field (additionalProperties:false)', () => {
         const validate = compile();
-        ['apiKey', 'api_key', 'apikey', 'token', 'accessToken', 'secret', 'password', 'authorization', 'privateKey'].forEach(secretField => {
+        [
+          'apiKey',
+          'api_key',
+          'apikey',
+          'token',
+          'accessToken',
+          'secret',
+          'password',
+          'authorization',
+          'privateKey',
+        ].forEach((secretField) => {
           const invalid: any = clone(loadJSON(fam.example));
           invalid[secretField] = 'zzTOPSECRETzz-do-not-log';
-          expect(validate(invalid), `${fam.name} inline '${secretField}' must be rejected`).toBe(false);
+          expect(validate(invalid), `${fam.name} inline '${secretField}' must be rejected`).toBe(
+            false,
+          );
         });
       });
     });
@@ -221,15 +274,21 @@ describe('PBF-GOV — provider / credential-ref / provider-instance schemas', ()
   });
 
   describe('afi.provider-instance.v1 — anti-SSRF endpoint discipline (structural)', () => {
-    const validate = createAjv().compile(loadJSON('schemas/provider-instance/v1/provider-instance.schema.json'));
+    const validate = createAjv().compile(
+      loadJSON('schemas/provider-instance/v1/provider-instance.schema.json'),
+    );
     const base = loadJSON('examples/provider-instance/v1/vectors/valid/news-http-tenant-a.json');
 
     it('accepts the named allow-listed endpointProfile "default" but rejects any raw URL / arbitrary endpoint', () => {
       expect(validate({ ...base, invocation: { endpointProfile: 'default' } })).toBe(true);
       // Raw endpoint field is not allowed (additionalProperties:false on invocation).
-      expect(validate({ ...base, invocation: { endpoint: 'http://169.254.169.254/' } })).toBe(false);
+      expect(validate({ ...base, invocation: { endpoint: 'http://169.254.169.254/' } })).toBe(
+        false,
+      );
       // endpointProfile is an enum — a URL value is rejected.
-      expect(validate({ ...base, invocation: { endpointProfile: 'http://evil.example' } })).toBe(false);
+      expect(validate({ ...base, invocation: { endpointProfile: 'http://evil.example' } })).toBe(
+        false,
+      );
     });
   });
 });

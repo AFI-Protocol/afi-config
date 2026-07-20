@@ -5,6 +5,7 @@
 **afi-config** is the canonical configuration and JSON Schema library for AFI Protocol. It serves as the single source of truth for all configuration schemas, templates, and validation utilities used across the AFI ecosystem.
 
 This repository provides:
+
 - **JSON Schemas** for validating configuration files
 - **Configuration templates** for common use cases
 - **Validation utilities** for ensuring config correctness
@@ -14,12 +15,12 @@ This repository provides:
 
 AFI is a **portable protocol** (HTTP-like): schemas and invariants here are **normative** (protocol law). Concrete repos such as `afi-reactor`, `afi-infra`, and Mongo-backed vault adapters are **reference implementations**—demonstration spines, not mandatory stacks for external validators.
 
-| Document | Purpose |
-|----------|---------|
+| Document                                                                                                                             | Purpose                                                    |
+| ------------------------------------------------------------------------------------------------------------------------------------ | ---------------------------------------------------------- |
 | [AFI Portable Protocol Surface v0.1](https://github.com/AFI-Protocol/afi-docs/blob/main/specs/AFI_PORTABLE_PROTOCOL_SURFACE.v0.1.md) | Direction, layer model, normative vs reference distinction |
-| [AFI Audit Checkpoint](https://github.com/AFI-Protocol/afi-docs/blob/main/specs/audit/AFI_AUDIT_CHECKPOINT.md) | Investigation status; Phase 1 complete |
-| [AFI Audit Resume Prompt](https://github.com/AFI-Protocol/afi-docs/blob/main/specs/audit/AFI_AUDIT_RESUME_PROMPT.md) | Agent prompt for Phases 2–4 |
-| [AFI Protocol Investigation Prompt](https://github.com/AFI-Protocol/afi-docs/blob/main/specs/AFI_PROTOCOL_INVESTIGATION_PROMPT.md) | Full-org audit prompt (all phases) |
+| [AFI Audit Checkpoint](https://github.com/AFI-Protocol/afi-docs/blob/main/specs/audit/AFI_AUDIT_CHECKPOINT.md)                       | Investigation status; Phase 1 complete                     |
+| [AFI Audit Resume Prompt](https://github.com/AFI-Protocol/afi-docs/blob/main/specs/audit/AFI_AUDIT_RESUME_PROMPT.md)                 | Agent prompt for Phases 2–4                                |
+| [AFI Protocol Investigation Prompt](https://github.com/AFI-Protocol/afi-docs/blob/main/specs/AFI_PROTOCOL_INVESTIGATION_PROMPT.md)   | Full-org audit prompt (all phases)                         |
 
 Monorepo local paths: `../afi-docs/specs/AFI_PORTABLE_PROTOCOL_SURFACE.v0.1.md`, `../afi-docs/specs/audit/AFI_AUDIT_CHECKPOINT.md`, `../afi-docs/specs/audit/AFI_AUDIT_RESUME_PROMPT.md`.
 
@@ -28,21 +29,25 @@ Monorepo local paths: `../afi-docs/specs/AFI_PORTABLE_PROTOCOL_SURFACE.v0.1.md`,
 AFI Protocol is organized as a modular multi-repo architecture. Each module consumes schemas from afi-config:
 
 ### afi-core (ElizaOS Runtime)
+
 - **Character/Agent Config**: Defines agent personas, abilities, and behaviors
 - **Schema**: `character.schema.json`
 - **Use Case**: Configure AI agents with specific traits, knowledge domains, and interaction patterns
 
 ### afi-reactor (Manifest-Driven Pipeline Runtime)
+
 - **Pipeline Config**: Defines signal processing pipelines and their registry-declared composition
 - **Schema**: `schemas/pipeline/v1/pipeline.schema.json` (`afi.pipeline.v1`, FACTORY-CONTRACT)
 - **Use Case**: Orchestrate multi-stage signal analysis flows (RAW → ENRICHED → ANALYZED → SCORED)
 
 ### afi-infra (Infrastructure Layer)
+
 - **T.S.S.D. Vault Config**: Configures Time-Series Signal Data storage
 - **Schema**: `vault.schema.json`
 - **Use Case**: Define database connections, collection names, retention policies
 
 ### afi-token (Smart Contracts)
+
 - **Token Config**: Defines contract deployment parameters and governance settings
 - **Schema**: `token-config.schema.json` (future)
 - **Use Case**: Configure AFI token emissions, roles, and supply caps
@@ -54,6 +59,7 @@ AFI Protocol is organized as a modular multi-repo architecture. Each module cons
 ### What is USS?
 
 USS defines:
+
 - **Core envelope**: Cross-cutting fields for cash proxy, measurement windows, frictions, capacity constraints, telemetry, and decay models
 - **Lens system**: Optional structured extensions for domain-specific data (equity, strategy, macro, on-chain)
 - **Provenance tracking**: Required metadata for signal lineage and reproducibility
@@ -95,12 +101,14 @@ USS defines:
 ### Provider Flow
 
 **Preferred approach:**
+
 1. Set the `lens` field to indicate signal type (`equity`, `strategy`, `macro`, `onchain`)
 2. Include the matching lens object with domain-specific data
 3. Include `core` telemetry fields (especially `decay` for signal half-life)
 4. Include optional `greeks` if applicable (cross-cutting sensitivities)
 
 **Fallback approach:**
+
 - Omit `lens` field; intake will auto-detect based on present fields
 - Ambiguous signals default to `generic` with core-only validation
 
@@ -114,6 +122,7 @@ USS defines:
 ### Examples
 
 See `examples/usignal/` for complete examples:
+
 - `basic-core-only.example.json` - Minimal signal with core fields only
 - `equity-lens.example.json` - Equity signal with fundamental analysis
 - `strategy-lens.example.json` - Strategy signal with greeks and hedging policy
@@ -142,6 +151,7 @@ Every value is **testnet-provisional, not production scoring law**. SS-O1/SS-O2/
 ### JSON Schema as Canonical Format
 
 afi-config uses **JSON Schema (Draft 7+)** as the standard for all configuration validation. This provides:
+
 - **Type safety**: Catch config errors before runtime
 - **Documentation**: Schemas serve as living documentation
 - **Tooling support**: IDE autocomplete, validation, and linting
@@ -179,6 +189,7 @@ examples/
 1. **Create the schema file** in `schemas/` with naming convention: `<name>.schema.json`
 
 2. **Use JSON Schema Draft 7+** structure:
+
    ```json
    {
      "$schema": "http://json-schema.org/draft-07/schema#",
@@ -227,6 +238,7 @@ The `tests/` directory contains automated schema validation using **AJV (Another
 - **Example validation**: Validate example configs against their schemas
 
 Run validation with:
+
 ```bash
 npm test                    # Run all tests
 npm run validate            # Run schema validation only
@@ -248,6 +260,7 @@ Schemas follow semantic versioning principles:
 - **Patch version**: Documentation/description updates
 
 Schema versions are tracked in:
+
 - The `$id` field (e.g., `v1/character.schema.json`)
 - The top-level `version` field in the schema
 - Git tags in this repository
@@ -272,4 +285,3 @@ afi-config (foundational)
 - **Visual schema editor**: GUI for creating and editing schemas
 - **Config linting**: Style and best practice enforcement
 - **Template generator**: CLI tool to scaffold new configs from templates
-

@@ -28,9 +28,21 @@ const rootDir = join(__dirname, '..');
  */
 
 function createAjv(): Ajv {
-  const ajv = new Ajv({ strict: true, allowUnionTypes: true, strictRequired: false, allErrors: true });
+  const ajv = new Ajv({
+    strict: true,
+    allowUnionTypes: true,
+    strictRequired: false,
+    allErrors: true,
+  });
   addFormats(ajv);
-  ajv.addVocabulary(['x-afiStatus', 'x-afiPartOf', 'x-afiDoctrineRefs', 'x-afiConstraints', 'x-afiOpenItems', 'x-afiProposedNotAccepted']);
+  ajv.addVocabulary([
+    'x-afiStatus',
+    'x-afiPartOf',
+    'x-afiDoctrineRefs',
+    'x-afiConstraints',
+    'x-afiOpenItems',
+    'x-afiProposedNotAccepted',
+  ]);
   return ajv;
 }
 
@@ -58,7 +70,13 @@ const contractIds = idSet(reg.contracts, 'contractId');
 const repositoryIds = idSet(reg.repositories, 'repositoryId');
 const roleIds = idSet(reg.participantRoles, 'roleId');
 const onboardingIds = idSet(reg.onboardingDescriptors, 'onboardingId');
-const anyEntityId = new Set<string>([...districtIds, ...structureIds, ...capabilityIds, ...interfaceIds, ...routeIds]);
+const anyEntityId = new Set<string>([
+  ...districtIds,
+  ...structureIds,
+  ...capabilityIds,
+  ...interfaceIds,
+  ...routeIds,
+]);
 
 function resolvesIn(set: Set<string>, val: string | undefined): boolean {
   return val == null || set.has(val);
@@ -110,82 +128,185 @@ describe('ATLAS-GOV — afi.protocol-atlas.v1 schema + registry', () => {
   describe('Referential integrity — no dangling reference (D-ATLAS-9)', () => {
     it('district references resolve', () => {
       for (const d of reg.districts) {
-        d.ownedCapabilityRefs?.forEach((r: string) => expect(resolvesIn(capabilityIds, r), `${d.districtId} ownedCapabilityRef ${r}`).toBe(true));
-        d.servedStructureRefs?.forEach((r: string) => expect(resolvesIn(structureIds, r), `${d.districtId} servedStructureRef ${r}`).toBe(true));
-        d.incomingRouteRefs?.forEach((r: string) => expect(resolvesIn(routeIds, r), `${d.districtId} incomingRouteRef ${r}`).toBe(true));
-        d.outgoingRouteRefs?.forEach((r: string) => expect(resolvesIn(routeIds, r), `${d.districtId} outgoingRouteRef ${r}`).toBe(true));
+        d.ownedCapabilityRefs?.forEach((r: string) =>
+          expect(resolvesIn(capabilityIds, r), `${d.districtId} ownedCapabilityRef ${r}`).toBe(
+            true,
+          ),
+        );
+        d.servedStructureRefs?.forEach((r: string) =>
+          expect(resolvesIn(structureIds, r), `${d.districtId} servedStructureRef ${r}`).toBe(true),
+        );
+        d.incomingRouteRefs?.forEach((r: string) =>
+          expect(resolvesIn(routeIds, r), `${d.districtId} incomingRouteRef ${r}`).toBe(true),
+        );
+        d.outgoingRouteRefs?.forEach((r: string) =>
+          expect(resolvesIn(routeIds, r), `${d.districtId} outgoingRouteRef ${r}`).toBe(true),
+        );
       }
     });
     it('structure references resolve', () => {
       for (const s of reg.structures) {
-        s.capabilityRefs?.forEach((r: string) => expect(resolvesIn(capabilityIds, r), `${s.structureId} capabilityRef ${r}`).toBe(true));
-        expect(resolvesIn(districtIds, s.homeDistrictRef), `${s.structureId} homeDistrictRef`).toBe(true);
-        s.servedDistrictRefs?.forEach((r: string) => expect(resolvesIn(districtIds, r), `${s.structureId} servedDistrictRef ${r}`).toBe(true));
-        s.repositoryRefs?.forEach((r: string) => expect(resolvesIn(repositoryIds, r), `${s.structureId} repositoryRef ${r}`).toBe(true));
-        s.exposedInterfaceRefs?.forEach((r: string) => expect(resolvesIn(interfaceIds, r), `${s.structureId} exposedInterfaceRef ${r}`).toBe(true));
-        s.routingInterfaceRefs?.forEach((r: string) => expect(resolvesIn(interfaceIds, r), `${s.structureId} routingInterfaceRef ${r}`).toBe(true));
+        s.capabilityRefs?.forEach((r: string) =>
+          expect(resolvesIn(capabilityIds, r), `${s.structureId} capabilityRef ${r}`).toBe(true),
+        );
+        expect(resolvesIn(districtIds, s.homeDistrictRef), `${s.structureId} homeDistrictRef`).toBe(
+          true,
+        );
+        s.servedDistrictRefs?.forEach((r: string) =>
+          expect(resolvesIn(districtIds, r), `${s.structureId} servedDistrictRef ${r}`).toBe(true),
+        );
+        s.repositoryRefs?.forEach((r: string) =>
+          expect(resolvesIn(repositoryIds, r), `${s.structureId} repositoryRef ${r}`).toBe(true),
+        );
+        s.exposedInterfaceRefs?.forEach((r: string) =>
+          expect(resolvesIn(interfaceIds, r), `${s.structureId} exposedInterfaceRef ${r}`).toBe(
+            true,
+          ),
+        );
+        s.routingInterfaceRefs?.forEach((r: string) =>
+          expect(resolvesIn(interfaceIds, r), `${s.structureId} routingInterfaceRef ${r}`).toBe(
+            true,
+          ),
+        );
       }
     });
     it('capability references resolve', () => {
       for (const c of reg.capabilities) {
-        expect(resolvesIn(districtIds, c.owningDistrictRef), `${c.capabilityId} owningDistrictRef`).toBe(true);
-        c.implementingStructureRefs?.forEach((r: string) => expect(resolvesIn(structureIds, r), `${c.capabilityId} implementingStructureRef ${r}`).toBe(true));
-        c.interfaceRefs?.forEach((r: string) => expect(resolvesIn(interfaceIds, r), `${c.capabilityId} interfaceRef ${r}`).toBe(true));
-        c.participantRoleRefs?.forEach((r: string) => expect(resolvesIn(roleIds, r), `${c.capabilityId} participantRoleRef ${r}`).toBe(true));
-        [...(c.inputContractRefs || []), ...(c.outputContractRefs || [])].forEach((r: string) => expect(resolvesIn(contractIds, r), `${c.capabilityId} contractRef ${r}`).toBe(true));
+        expect(
+          resolvesIn(districtIds, c.owningDistrictRef),
+          `${c.capabilityId} owningDistrictRef`,
+        ).toBe(true);
+        c.implementingStructureRefs?.forEach((r: string) =>
+          expect(
+            resolvesIn(structureIds, r),
+            `${c.capabilityId} implementingStructureRef ${r}`,
+          ).toBe(true),
+        );
+        c.interfaceRefs?.forEach((r: string) =>
+          expect(resolvesIn(interfaceIds, r), `${c.capabilityId} interfaceRef ${r}`).toBe(true),
+        );
+        c.participantRoleRefs?.forEach((r: string) =>
+          expect(resolvesIn(roleIds, r), `${c.capabilityId} participantRoleRef ${r}`).toBe(true),
+        );
+        [...(c.inputContractRefs || []), ...(c.outputContractRefs || [])].forEach((r: string) =>
+          expect(resolvesIn(contractIds, r), `${c.capabilityId} contractRef ${r}`).toBe(true),
+        );
       }
     });
     it('interface references resolve', () => {
       for (const i of reg.interfaces) {
-        expect(resolvesIn(capabilityIds, i.owningCapabilityRef), `${i.interfaceId} owningCapabilityRef`).toBe(true);
-        expect(resolvesIn(districtIds, i.owningDistrictRef), `${i.interfaceId} owningDistrictRef`).toBe(true);
-        expect(resolvesIn(structureIds, i.exposingStructureRef), `${i.interfaceId} exposingStructureRef`).toBe(true);
-        expect(resolvesIn(structureIds, i.routingStructureRef), `${i.interfaceId} routingStructureRef`).toBe(true);
-        [...(i.inputContractRefs || []), ...(i.outputContractRefs || [])].forEach((r: string) => expect(resolvesIn(contractIds, r), `${i.interfaceId} contractRef ${r}`).toBe(true));
+        expect(
+          resolvesIn(capabilityIds, i.owningCapabilityRef),
+          `${i.interfaceId} owningCapabilityRef`,
+        ).toBe(true);
+        expect(
+          resolvesIn(districtIds, i.owningDistrictRef),
+          `${i.interfaceId} owningDistrictRef`,
+        ).toBe(true);
+        expect(
+          resolvesIn(structureIds, i.exposingStructureRef),
+          `${i.interfaceId} exposingStructureRef`,
+        ).toBe(true);
+        expect(
+          resolvesIn(structureIds, i.routingStructureRef),
+          `${i.interfaceId} routingStructureRef`,
+        ).toBe(true);
+        [...(i.inputContractRefs || []), ...(i.outputContractRefs || [])].forEach((r: string) =>
+          expect(resolvesIn(contractIds, r), `${i.interfaceId} contractRef ${r}`).toBe(true),
+        );
       }
     });
     it('route source/target/contract references resolve', () => {
       for (const r of reg.routes) {
         expect(anyEntityId.has(r.sourceRef), `${r.routeId} sourceRef ${r.sourceRef}`).toBe(true);
         expect(anyEntityId.has(r.targetRef), `${r.routeId} targetRef ${r.targetRef}`).toBe(true);
-        expect(resolvesIn(structureIds, r.routingStructureRef), `${r.routeId} routingStructureRef`).toBe(true);
-        r.carriesContractRefs?.forEach((c: string) => expect(resolvesIn(contractIds, c), `${r.routeId} contractRef ${c}`).toBe(true));
+        expect(
+          resolvesIn(structureIds, r.routingStructureRef),
+          `${r.routeId} routingStructureRef`,
+        ).toBe(true);
+        r.carriesContractRefs?.forEach((c: string) =>
+          expect(resolvesIn(contractIds, c), `${r.routeId} contractRef ${c}`).toBe(true),
+        );
       }
     });
     it('repository, role, and onboarding references resolve', () => {
       for (const rr of reg.repositories) {
-        rr.hostedStructureRefs?.forEach((r: string) => expect(resolvesIn(structureIds, r), `${rr.repositoryId} hostedStructureRef ${r}`).toBe(true));
-        rr.implementedCapabilityRefs?.forEach((r: string) => expect(resolvesIn(capabilityIds, r), `${rr.repositoryId} implementedCapabilityRef ${r}`).toBe(true));
+        rr.hostedStructureRefs?.forEach((r: string) =>
+          expect(resolvesIn(structureIds, r), `${rr.repositoryId} hostedStructureRef ${r}`).toBe(
+            true,
+          ),
+        );
+        rr.implementedCapabilityRefs?.forEach((r: string) =>
+          expect(
+            resolvesIn(capabilityIds, r),
+            `${rr.repositoryId} implementedCapabilityRef ${r}`,
+          ).toBe(true),
+        );
       }
       for (const role of reg.participantRoles) {
-        role.capabilityRefs?.forEach((r: string) => expect(resolvesIn(capabilityIds, r), `${role.roleId} capabilityRef ${r}`).toBe(true));
-        role.interfaceRefs?.forEach((r: string) => expect(resolvesIn(interfaceIds, r), `${role.roleId} interfaceRef ${r}`).toBe(true));
-        role.requiredContractRefs?.forEach((r: string) => expect(resolvesIn(contractIds, r), `${role.roleId} requiredContractRef ${r}`).toBe(true));
-        expect(resolvesIn(onboardingIds, role.onboardingDescriptorRef), `${role.roleId} onboardingDescriptorRef`).toBe(true);
+        role.capabilityRefs?.forEach((r: string) =>
+          expect(resolvesIn(capabilityIds, r), `${role.roleId} capabilityRef ${r}`).toBe(true),
+        );
+        role.interfaceRefs?.forEach((r: string) =>
+          expect(resolvesIn(interfaceIds, r), `${role.roleId} interfaceRef ${r}`).toBe(true),
+        );
+        role.requiredContractRefs?.forEach((r: string) =>
+          expect(resolvesIn(contractIds, r), `${role.roleId} requiredContractRef ${r}`).toBe(true),
+        );
+        expect(
+          resolvesIn(onboardingIds, role.onboardingDescriptorRef),
+          `${role.roleId} onboardingDescriptorRef`,
+        ).toBe(true);
       }
       for (const o of reg.onboardingDescriptors) {
-        expect(resolvesIn(roleIds, o.participantRoleRef), `${o.onboardingId} participantRoleRef`).toBe(true);
-        o.applicableCapabilityRefs?.forEach((r: string) => expect(resolvesIn(capabilityIds, r), `${o.onboardingId} applicableCapabilityRef ${r}`).toBe(true));
-        o.requiredContractRefs?.forEach((r: string) => expect(resolvesIn(contractIds, r), `${o.onboardingId} requiredContractRef ${r}`).toBe(true));
+        expect(
+          resolvesIn(roleIds, o.participantRoleRef),
+          `${o.onboardingId} participantRoleRef`,
+        ).toBe(true);
+        o.applicableCapabilityRefs?.forEach((r: string) =>
+          expect(
+            resolvesIn(capabilityIds, r),
+            `${o.onboardingId} applicableCapabilityRef ${r}`,
+          ).toBe(true),
+        );
+        o.requiredContractRefs?.forEach((r: string) =>
+          expect(resolvesIn(contractIds, r), `${o.onboardingId} requiredContractRef ${r}`).toBe(
+            true,
+          ),
+        );
       }
       for (const c of reg.contracts) {
-        c.consumerRefs?.forEach((r: string) => expect(structureIds.has(r) || repositoryIds.has(r), `${c.contractId} consumerRef ${r}`).toBe(true));
+        c.consumerRefs?.forEach((r: string) =>
+          expect(
+            structureIds.has(r) || repositoryIds.has(r),
+            `${c.contractId} consumerRef ${r}`,
+          ).toBe(true),
+        );
       }
     });
   });
 
   describe('District / Structure / Capability invariants (D-ATLAS-2/3/8/9)', () => {
     it('exactly two active Districts (D1 Signal Evaluation, D2 Evidence and Provenance)', () => {
-      const active = reg.districts.filter((d: any) => d.active === true).map((d: any) => d.districtId);
+      const active = reg.districts
+        .filter((d: any) => d.active === true)
+        .map((d: any) => d.districtId);
       expect(active.sort()).toEqual(['district-one', 'district-two']);
-      expect(reg.districts.find((d: any) => d.districtId === 'district-one').name).toBe('Signal Evaluation');
-      expect(reg.districts.find((d: any) => d.districtId === 'district-two').name).toBe('Evidence and Provenance');
+      expect(reg.districts.find((d: any) => d.districtId === 'district-one').name).toBe(
+        'Signal Evaluation',
+      );
+      expect(reg.districts.find((d: any) => d.districtId === 'district-two').name).toBe(
+        'Evidence and Provenance',
+      );
     });
 
     it('no District identity is a bare repository name (D-ATLAS-8)', () => {
       for (const d of reg.districts) {
         expect(/^afi-/.test(d.districtId), `${d.districtId} id looks like a repo`).toBe(false);
-        expect(/^afi-[a-z]+$/.test(d.name.toLowerCase().replace(/\s+/g, '-')), `${d.districtId} name looks like a repo`).toBe(false);
+        expect(
+          /^afi-[a-z]+$/.test(d.name.toLowerCase().replace(/\s+/g, '-')),
+          `${d.districtId} name looks like a repo`,
+        ).toBe(false);
       }
     });
 
@@ -195,24 +316,39 @@ describe('ATLAS-GOV — afi.protocol-atlas.v1 schema + registry', () => {
         const od = reg.districts.find((d: any) => d.districtId === c.owningDistrictRef);
         expect(od, `${c.capabilityId} owning district exists`).toBeDefined();
         if (c.maturity === 'operational' || c.maturity === 'partial') {
-          expect(od.active, `${c.capabilityId} is ${c.maturity} but owning District is reserved`).toBe(true);
+          expect(
+            od.active,
+            `${c.capabilityId} is ${c.maturity} but owning District is reserved`,
+          ).toBe(true);
         }
       }
     });
 
     it('a reserved (active:false) District owns no capabilities', () => {
       for (const d of reg.districts) {
-        if (d.active === false) expect(d.ownedCapabilityRefs || [], `${d.districtId} reserved district owns capabilities`).toHaveLength(0);
+        if (d.active === false)
+          expect(
+            d.ownedCapabilityRefs || [],
+            `${d.districtId} reserved district owns capabilities`,
+          ).toHaveLength(0);
       }
     });
   });
 
   describe('Honest maturity + no invented APIs (D-ATLAS-6/7)', () => {
     it('every operational/partial entity cites at least one evidence reference', () => {
-      const withMaturity = [...reg.districts, ...reg.capabilities, ...reg.structures, ...reg.interfaces];
+      const withMaturity = [
+        ...reg.districts,
+        ...reg.capabilities,
+        ...reg.structures,
+        ...reg.interfaces,
+      ];
       for (const e of withMaturity) {
         if (e.maturity === 'operational' || e.maturity === 'partial') {
-          expect((e.evidence || []).length, `${JSON.stringify(e.name || e.districtId || e.interfaceId)} operational/partial without evidence`).toBeGreaterThan(0);
+          expect(
+            (e.evidence || []).length,
+            `${JSON.stringify(e.name || e.districtId || e.interfaceId)} operational/partial without evidence`,
+          ).toBeGreaterThan(0);
         }
       }
     });
@@ -220,7 +356,10 @@ describe('ATLAS-GOV — afi.protocol-atlas.v1 schema + registry', () => {
     it('a non-operational interface carries no addressOrOperation (no invented API)', () => {
       for (const i of reg.interfaces) {
         if (['planned', 'underConstruction', 'reserved'].includes(i.maturity)) {
-          expect(i.addressOrOperation, `${i.interfaceId} non-operational with an address`).toBeUndefined();
+          expect(
+            i.addressOrOperation,
+            `${i.interfaceId} non-operational with an address`,
+          ).toBeUndefined();
         }
       }
     });
@@ -252,13 +391,15 @@ describe('ATLAS-GOV — afi.protocol-atlas.v1 schema + registry', () => {
 
   describe('No secrets, no residue (D-ATLAS-10 / D-ATLAS-12)', () => {
     it('no secret-capable field name appears anywhere in the registry', () => {
-      const SECRET_KEYS = /^(secret|password|passphrase|apikey|api_key|privatekey|private_key|bearer|authorization|token|mnemonic|seedphrase)$/i;
+      const SECRET_KEYS =
+        /^(secret|password|passphrase|apikey|api_key|privatekey|private_key|bearer|authorization|token|mnemonic|seedphrase)$/i;
       const ALLOWED = new Set(['credentialClass', 'credentialRequirementClass']);
       const walk = (node: any) => {
         if (Array.isArray(node)) return node.forEach(walk);
         if (node && typeof node === 'object') {
           for (const k of Object.keys(node)) {
-            if (!ALLOWED.has(k)) expect(SECRET_KEYS.test(k), `secret-capable field '${k}'`).toBe(false);
+            if (!ALLOWED.has(k))
+              expect(SECRET_KEYS.test(k), `secret-capable field '${k}'`).toBe(false);
             walk(node[k]);
           }
         }
@@ -268,7 +409,12 @@ describe('ATLAS-GOV — afi.protocol-atlas.v1 schema + registry', () => {
 
     it('no retired / current-state residue token appears in current-facing Atlas surfaces', () => {
       // Removed-machinery tokens (outside this program's terminology scope) stay literal:
-      const BANNED = ['tssdVaultService', 'vaultFactory', 'reactor_scored_signals_v1', 'factory.templates.list'];
+      const BANNED = [
+        'tssdVaultService',
+        'vaultFactory',
+        'reactor_scored_signals_v1',
+        'factory.templates.list',
+      ];
       for (const tok of BANNED) {
         expect(rawRegistry.includes(tok), `banned residue token '${tok}' present`).toBe(false);
       }
@@ -289,16 +435,25 @@ describe('ATLAS-GOV — afi.protocol-atlas.v1 schema + registry', () => {
     it('the five governed categories are exact and no superseded category identity appears', () => {
       const enrich = reg.interfaces.find((i: any) => i.interfaceId === 'iface-enrichment-schemas');
       expect(enrich.inputContractRefs.sort()).toEqual([
-        'afi.enrichment.aiml.v1', 'afi.enrichment.news.v1', 'afi.enrichment.pattern.v1', 'afi.enrichment.sentiment.v1', 'afi.enrichment.technical.v1',
+        'afi.enrichment.aiml.v1',
+        'afi.enrichment.news.v1',
+        'afi.enrichment.pattern.v1',
+        'afi.enrichment.sentiment.v1',
+        'afi.enrichment.technical.v1',
       ]);
       // The superseded fifth-category identity is caught as an out-of-set value without being spelled:
       const retiredCategory = ['soc', 'ial'].join('');
-      expect(rawRegistry.toLowerCase().includes(retiredCategory), 'the superseded category identity must not appear').toBe(false);
+      expect(
+        rawRegistry.toLowerCase().includes(retiredCategory),
+        'the superseded category identity must not appear',
+      ).toBe(false);
     });
 
     it('the current pipeline, evidence contract, and Factory operation are current, not retired', () => {
       expect(contractIds.has('afi.scored-signal-evidence.v3')).toBe(true);
-      const factoryOps = reg.interfaces.find((i: any) => i.interfaceId === 'iface-factory-operations');
+      const factoryOps = reg.interfaces.find(
+        (i: any) => i.interfaceId === 'iface-factory-operations',
+      );
       expect(factoryOps.addressOrOperation).toContain('factory.official.list');
       expect(factoryOps.addressOrOperation).not.toContain('factory.templates.list');
     });
@@ -311,7 +466,9 @@ describe('ATLAS-GOV — afi.protocol-atlas.v1 schema + registry', () => {
         const m = /afi-config\/([^\s()]+)/.exec(c.canonicalPath);
         if (!m) continue;
         const p = m[1].replace(/\/$/, '');
-        expect(existsSync(join(rootDir, p)), `${c.contractId} canonicalPath ${p} missing`).toBe(true);
+        expect(existsSync(join(rootDir, p)), `${c.contractId} canonicalPath ${p} missing`).toBe(
+          true,
+        );
       }
     });
   });

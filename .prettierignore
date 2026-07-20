@@ -1,0 +1,16 @@
+node_modules
+dist
+package-lock.json
+
+# Canonical / hash-governed JSON artifacts — formatting is significant for
+# provenance and known-answer tests, so these must never be reformatted.
+schemas/
+examples/
+kats/
+registries/
+templates/
+codex/
+afi-uss-pr-v2p1/
+*.schema.json
+.afi-codex.json
+docs/*.json

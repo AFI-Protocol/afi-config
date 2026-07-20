@@ -98,7 +98,7 @@ function pipelineGraphViolations(p: any): string[] {
 
   const out = new Map<string, string[]>();
   const parents = new Map<string, string[]>();
-  uniqueIds.forEach(id => {
+  uniqueIds.forEach((id) => {
     out.set(id, []);
     parents.set(id, []);
   });
@@ -111,8 +111,8 @@ function pipelineGraphViolations(p: any): string[] {
 
   // Acyclicity (Kahn)
   const indeg = new Map<string, number>();
-  uniqueIds.forEach(id => indeg.set(id, parents.get(id)!.length));
-  const queue = uniqueIds.filter(id => indeg.get(id) === 0);
+  uniqueIds.forEach((id) => indeg.set(id, parents.get(id)!.length));
+  const queue = uniqueIds.filter((id) => indeg.get(id) === 0);
   let visited = 0;
   while (queue.length) {
     const n = queue.shift()!;
@@ -141,7 +141,7 @@ function pipelineGraphViolations(p: any): string[] {
         }
       }
     }
-    uniqueIds.forEach(id => {
+    uniqueIds.forEach((id) => {
       if (!reachable.has(id)) v.push(`node '${id}' unreachable from entry`);
     });
     if (scorers.length === 1) {
@@ -149,9 +149,10 @@ function pipelineGraphViolations(p: any): string[] {
       if ((out.get(scorerId) ?? []).length > 0) v.push('scorer is not a sink');
       if (!reachable.has(scorerId)) v.push('scorer not reachable from entry');
       [...reachable]
-        .filter(id => (out.get(id) ?? []).length === 0)
-        .forEach(sink => {
-          if (sink !== scorerId) v.push(`non-scorer sink '${sink}' reachable from entry (scorer bypass)`);
+        .filter((id) => (out.get(id) ?? []).length === 0)
+        .forEach((sink) => {
+          if (sink !== scorerId)
+            v.push(`non-scorer sink '${sink}' reachable from entry (scorer bypass)`);
         });
     }
   }
@@ -159,7 +160,8 @@ function pipelineGraphViolations(p: any): string[] {
   // Join declaration rules: in-degree > 1 <=> join declared; prefer: names a parent
   for (const n of nodes) {
     const indegree = (parents.get(n.id) ?? []).length;
-    if (indegree > 1 && !n.join) v.push(`node '${n.id}' has ${indegree} parents but declares no join`);
+    if (indegree > 1 && !n.join)
+      v.push(`node '${n.id}' has ${indegree} parents but declares no join`);
     if (indegree <= 1 && n.join) v.push(`node '${n.id}' declares join with ${indegree} parent(s)`);
     const rule = n.join?.merge?.conflictRule;
     if (typeof rule === 'string' && rule.startsWith('prefer:')) {
@@ -176,7 +178,12 @@ function pipelineGraphViolations(p: any): string[] {
 function admit(validate: any, manifest: any) {
   const schemaValid = validate(manifest) as boolean;
   const violations = pipelineGraphViolations(manifest);
-  return { schemaValid, graphOk: violations.length === 0, violations, ok: schemaValid && violations.length === 0 };
+  return {
+    schemaValid,
+    graphOk: violations.length === 0,
+    violations,
+    ok: schemaValid && violations.length === 0,
+  };
 }
 
 // ---------------------------------------------------------------------------
@@ -185,7 +192,7 @@ function admit(validate: any, manifest: any) {
 // ---------------------------------------------------------------------------
 function collectSlots(x: any, found: string[] = []): string[] {
   if (Array.isArray(x)) {
-    x.forEach(item => collectSlots(item, found));
+    x.forEach((item) => collectSlots(item, found));
     return found;
   }
   if (x && typeof x === 'object') {
@@ -194,7 +201,7 @@ function collectSlots(x: any, found: string[] = []): string[] {
       found.push(x.$param);
       return found;
     }
-    keys.forEach(k => collectSlots(x[k], found));
+    keys.forEach((k) => collectSlots(x[k], found));
   }
   return found;
 }
@@ -202,10 +209,12 @@ function collectSlots(x: any, found: string[] = []): string[] {
 function templateViolations(t: any): string[] {
   const v: string[] = [];
   if (!t || typeof t !== 'object') return ['template is not structurally readable'];
-  const names: string[] = (Array.isArray(t.parameters) ? t.parameters : []).map((p: any) => p?.name);
+  const names: string[] = (Array.isArray(t.parameters) ? t.parameters : []).map(
+    (p: any) => p?.name,
+  );
   if (new Set(names).size !== names.length) v.push('duplicate parameter names');
   const declared = new Set(names);
-  collectSlots({ nodes: t.nodes, edges: t.edges }).forEach(slot => {
+  collectSlots({ nodes: t.nodes, edges: t.edges }).forEach((slot) => {
     if (!declared.has(slot)) v.push(`slot references undeclared parameter '${slot}'`);
   });
   return v;
@@ -214,7 +223,12 @@ function templateViolations(t: any): string[] {
 function admitTemplate(validate: any, template: any) {
   const schemaValid = validate(template) as boolean;
   const violations = templateViolations(template);
-  return { schemaValid, slotsOk: violations.length === 0, violations, ok: schemaValid && violations.length === 0 };
+  return {
+    schemaValid,
+    slotsOk: violations.length === 0,
+    violations,
+    ok: schemaValid && violations.length === 0,
+  };
 }
 
 /** The Factory instantiation contract, executable (pipeline-template README). */
@@ -240,7 +254,7 @@ function instantiateTemplate(template: any, supplied: Record<string, unknown>): 
         return resolved[x.$param];
       }
       const outObj: any = {};
-      keys.forEach(k => (outObj[k] = substitute(x[k])));
+      keys.forEach((k) => (outObj[k] = substitute(x[k])));
       return outObj;
     }
     return x;
@@ -290,7 +304,7 @@ describe('FACTORY-CONTRACT — afi.pipeline.v1', () => {
       expect(Object.keys(schema.properties)).not.toContain('enrichmentNodes');
       expect(Object.keys(schema.properties)).not.toContain('requiredNodes');
       expect([...schema.required].sort()).toEqual(
-        ['schema', 'pipelineId', 'pipelineVersion', 'entry', 'nodes', 'edges'].sort()
+        ['schema', 'pipelineId', 'pipelineVersion', 'entry', 'nodes', 'edges'].sort(),
       );
     });
 
@@ -315,7 +329,7 @@ describe('FACTORY-CONTRACT — afi.pipeline.v1', () => {
         'configValidatedDownstream',
         'pluginBinding',
         'oneRepresentation',
-      ].forEach(k => expect(keys, `x-afiConstraints.${k} must be present`).toContain(k));
+      ].forEach((k) => expect(keys, `x-afiConstraints.${k} must be present`).toContain(k));
     });
   });
 
@@ -330,8 +344,8 @@ describe('FACTORY-CONTRACT — afi.pipeline.v1', () => {
     it('every valid vector should be admissible', () => {
       const validate = compilePipelineSchema();
       readdirSync(join(rootDir, P_VALID))
-        .filter(f => f.endsWith('.json'))
-        .forEach(f => {
+        .filter((f) => f.endsWith('.json'))
+        .forEach((f) => {
           const result = admit(validate, loadJSON(`${P_VALID}/${f}`));
           if (!result.ok) console.error(`${f} failure:`, validate.errors, result.violations);
           expect(result.ok, `${f} should be admissible`).toBe(true);
@@ -339,7 +353,9 @@ describe('FACTORY-CONTRACT — afi.pipeline.v1', () => {
     });
 
     it('valid vector set should be exactly the authorized files (drift guard)', () => {
-      const files = readdirSync(join(rootDir, P_VALID)).filter(f => f.endsWith('.json')).sort();
+      const files = readdirSync(join(rootDir, P_VALID))
+        .filter((f) => f.endsWith('.json'))
+        .sort();
       expect(files).toEqual([
         'conditional-branch.json',
         'full-surface.json',
@@ -350,14 +366,17 @@ describe('FACTORY-CONTRACT — afi.pipeline.v1', () => {
 
     it('every valid vector has exactly one scorer, and it is the only reachable sink', () => {
       readdirSync(join(rootDir, P_VALID))
-        .filter(f => f.endsWith('.json'))
-        .forEach(f => {
+        .filter((f) => f.endsWith('.json'))
+        .forEach((f) => {
           const p = loadJSON(`${P_VALID}/${f}`);
           const scorers = p.nodes.filter((n: any) => n.category === 'scorer');
           expect(scorers.length, `${f} scorer count`).toBe(1);
           const outs = new Set(p.edges.map((e: any) => e.from));
           const sinks = p.nodes.filter((n: any) => !outs.has(n.id));
-          expect(sinks.map((n: any) => n.id), `${f} sinks`).toEqual([scorers[0].id]);
+          expect(
+            sinks.map((n: any) => n.id),
+            `${f} sinks`,
+          ).toEqual([scorers[0].id]);
         });
     });
   });
@@ -387,7 +406,9 @@ describe('FACTORY-CONTRACT — afi.pipeline.v1', () => {
     };
 
     it('invalid vector set should be exactly the authorized files (drift guard)', () => {
-      const files = readdirSync(join(rootDir, P_INVALID)).filter(f => f.endsWith('.json')).sort();
+      const files = readdirSync(join(rootDir, P_INVALID))
+        .filter((f) => f.endsWith('.json'))
+        .sort();
       expect(files).toEqual(Object.keys(EXPECTED).sort());
     });
 
@@ -407,7 +428,7 @@ describe('FACTORY-CONTRACT — afi.pipeline.v1', () => {
 
     it('should reject a missing required field', () => {
       const validate = compilePipelineSchema();
-      ['schema', 'pipelineId', 'pipelineVersion', 'entry', 'nodes', 'edges'].forEach(field => {
+      ['schema', 'pipelineId', 'pipelineVersion', 'entry', 'nodes', 'edges'].forEach((field) => {
         const invalid: any = clone(BASE);
         delete invalid[field];
         expect(validate(invalid), `missing ${field} should be rejected`).toBe(false);
@@ -433,9 +454,14 @@ describe('FACTORY-CONTRACT — afi.pipeline.v1', () => {
         { lte: { path: '/context/spreadBps', value: 20 } },
         { in: { path: '/context/timeframe', values: ['1h', '4h'] } },
         { not: { exists: '/context/halted' } },
-        { all: [{ exists: '/context/symbol' }, { any: [{ eq: { path: '/context/tf', value: '1h' } }] }] },
+        {
+          all: [
+            { exists: '/context/symbol' },
+            { any: [{ eq: { path: '/context/tf', value: '1h' } }] },
+          ],
+        },
       ];
-      goodConditions.forEach(condition => {
+      goodConditions.forEach((condition) => {
         const record: any = clone(BASE);
         record.edges[0] = { ...record.edges[0], condition };
         expect(validate(record), `${JSON.stringify(condition)} should be accepted`).toBe(true);
@@ -447,7 +473,7 @@ describe('FACTORY-CONTRACT — afi.pipeline.v1', () => {
         { all: [] }, // empty conjunction
         { exists: '/context/symbol', eq: { path: '/x', value: 1 } }, // two operators in one predicate
       ];
-      badConditions.forEach(condition => {
+      badConditions.forEach((condition) => {
         const record: any = clone(BASE);
         record.edges[0] = { ...record.edges[0], condition };
         expect(validate(record), `${JSON.stringify(condition)} should be rejected`).toBe(false);
@@ -459,7 +485,9 @@ describe('FACTORY-CONTRACT — afi.pipeline.v1', () => {
       const degradeWithoutCritical: any = clone(BASE);
       const news = degradeWithoutCritical.nodes.find((n: any) => n.id === 'market-news');
       delete news.critical; // default true => degrade must be rejected
-      expect(validate(degradeWithoutCritical), 'degrade without explicit critical:false').toBe(false);
+      expect(validate(degradeWithoutCritical), 'degrade without explicit critical:false').toBe(
+        false,
+      );
     });
 
     it('should reject unknown node/edge properties (additionalProperties:false everywhere)', () => {
@@ -496,8 +524,8 @@ describe('FACTORY-CONTRACT — afi.pipeline-template.v1', () => {
       expect(schema['x-afiStatus']).toBe('governed-contract');
       expect(schema.properties.schema.const).toBe('afi.pipeline-template.v1');
       expect(schema.additionalProperties).toBe(false);
-      ['templateId', 'templateVersion', 'parameters'].forEach(f =>
-        expect(schema.required, `${f} must be required`).toContain(f)
+      ['templateId', 'templateVersion', 'parameters'].forEach((f) =>
+        expect(schema.required, `${f} must be required`).toContain(f),
       );
     });
 
@@ -513,15 +541,18 @@ describe('FACTORY-CONTRACT — afi.pipeline-template.v1', () => {
     it('canonical template example should be admissible (schema-valid + slots declared)', () => {
       const validate = compileTemplateSchema();
       const result = admitTemplate(validate, loadJSON(TEMPLATE_EXAMPLE));
-      if (!result.ok) console.error('template example failure:', validate.errors, result.violations);
+      if (!result.ok)
+        console.error('template example failure:', validate.errors, result.violations);
       expect(result.ok).toBe(true);
     });
 
     it('every valid vector should be admissible (drift-guarded)', () => {
       const validate = compileTemplateSchema();
-      const files = readdirSync(join(rootDir, T_VALID)).filter(f => f.endsWith('.json')).sort();
+      const files = readdirSync(join(rootDir, T_VALID))
+        .filter((f) => f.endsWith('.json'))
+        .sort();
       expect(files).toEqual(['no-parameters.json', 'parameterized-full.json']);
-      files.forEach(f => {
+      files.forEach((f) => {
         const result = admitTemplate(validate, loadJSON(`${T_VALID}/${f}`));
         if (!result.ok) console.error(`${f} failure:`, validate.errors, result.violations);
         expect(result.ok, `${f} should be admissible`).toBe(true);
@@ -537,7 +568,9 @@ describe('FACTORY-CONTRACT — afi.pipeline-template.v1', () => {
         'wrong-schema-const.json': { schemaValid: false, slotsOk: true },
         'duplicate-param-names.json': { schemaValid: true, slotsOk: false },
       };
-      const files = readdirSync(join(rootDir, T_INVALID)).filter(f => f.endsWith('.json')).sort();
+      const files = readdirSync(join(rootDir, T_INVALID))
+        .filter((f) => f.endsWith('.json'))
+        .sort();
       expect(files).toEqual(Object.keys(EXPECTED).sort());
       const validate = compileTemplateSchema();
       Object.entries(EXPECTED).forEach(([file, expected]) => {
@@ -569,7 +602,7 @@ describe('FACTORY-CONTRACT — afi.pipeline-template.v1', () => {
 
     it('fails closed when a supplied value violates its parameter schema fragment', () => {
       expect(() => instantiateTemplate(loadJSON(TEMPLATE_EXAMPLE), { aiMlTimeoutMs: 0 })).toThrow(
-        /aiMlTimeoutMs/
+        /aiMlTimeoutMs/,
       );
     });
 
