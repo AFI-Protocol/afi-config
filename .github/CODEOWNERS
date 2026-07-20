@@ -1,0 +1,32 @@
+# CODEOWNERS for AFI Protocol — afi-config
+# Owners are requested for review automatically when matching files change.
+# Later matches take precedence over earlier ones.
+# See: https://docs.github.com/articles/about-code-owners
+
+# Default owner for everything in the repo.
+*                               @Gio2050
+
+# Canonical governance artifacts — binding, require explicit human approval.
+/codex/governance/              @Gio2050
+
+# JSON schemas & contracts — changes cascade to all downstream AFI repos.
+/schemas/                       @Gio2050
+/registries/                    @Gio2050
+/templates/                     @Gio2050
+
+# Validation utilities and guard scripts that gate CI.
+/cli_utils/                     @Gio2050
+/scripts/                       @Gio2050
+
+# CI, tooling, and repo configuration.
+/.github/                       @Gio2050
+/package.json                   @Gio2050
+/package-lock.json              @Gio2050
+/tsconfig.json                  @Gio2050
+/eslint.config.js               @Gio2050
+/knip.json                      @Gio2050
+/.jscpd.json                    @Gio2050
+
+# Agent-facing documentation.
+/AGENTS.md                      @Gio2050
+/README.md                      @Gio2050
