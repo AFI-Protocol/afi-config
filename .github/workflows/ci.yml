@@ -26,6 +26,8 @@ jobs:
         run: npm run lint
       - name: Detect dead code
         run: npm run dead-code
+      - name: Check unused dependencies
+        run: npm run deps:check
       - name: Detect duplicate code
         run: npm run duplicates
       - name: Track technical debt

@@ -16,6 +16,7 @@
     "format:check": "prettier . --check",
     "check:file-size": "node scripts/check-file-size.mjs",
     "dead-code": "knip --no-config-hints",
+    "deps:check": "knip --dependencies --no-config-hints",
     "duplicates": "jscpd",
     "check:tech-debt": "node scripts/check-tech-debt.mjs",
     "validate": "vitest run tests/schema-validation.test.ts",
