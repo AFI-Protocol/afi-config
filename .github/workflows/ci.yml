@@ -28,6 +28,8 @@ jobs:
         run: npm run dead-code
       - name: Detect duplicate code
         run: npm run duplicates
+      - name: Track technical debt
+        run: npm run check:tech-debt
       - name: Run vitest pin guards
         run: npm run test:run
       - name: Validate configs
