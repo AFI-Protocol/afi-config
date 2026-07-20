@@ -1,0 +1,11 @@
+{
+  "path": ["cli_utils", "scripts", "afi-uss-pr-v2p1"],
+  "formats": ["typescript", "javascript"],
+  "minLines": 5,
+  "minTokens": 50,
+  "threshold": 3,
+  "gitignore": true,
+  "absolute": true,
+  "reporters": ["console"],
+  "ignore": ["**/node_modules/**", "**/dist/**", "**/*.d.ts"]
+}

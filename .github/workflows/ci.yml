@@ -26,6 +26,8 @@ jobs:
         run: npm run lint
       - name: Detect dead code
         run: npm run dead-code
+      - name: Detect duplicate code
+        run: npm run duplicates
       - name: Run vitest pin guards
         run: npm run test:run
       - name: Validate configs
