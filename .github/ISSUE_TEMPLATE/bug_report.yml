@@ -1,0 +1,58 @@
+name: Bug report
+description: Report an incorrect schema, validation error, or broken tooling in afi-config.
+title: '[bug]: '
+labels:
+  - bug
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for filing a bug. Please provide enough detail for an agent or maintainer to reproduce it.
+  - type: textarea
+    id: summary
+    attributes:
+      label: Summary
+      description: What went wrong?
+      placeholder: e.g. signal-v2 schema rejects a valid payload.
+    validations:
+      required: true
+  - type: dropdown
+    id: area
+    attributes:
+      label: Affected area
+      description: Which part of the repo is involved?
+      options:
+        - schemas
+        - registries
+        - templates
+        - codex / governance
+        - cli_utils / validation
+        - CI / tooling
+        - docs
+        - other
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Steps to reproduce
+      description: Commands, input payloads, or files needed to reproduce.
+      placeholder: |
+        1. Run `npm run validate`
+        2. Provide payload X
+        3. Observe error Y
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected vs actual behavior
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Version / commit
+      description: Commit SHA or tag where you observed the bug.
+    validations:
+      required: false
