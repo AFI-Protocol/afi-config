@@ -10,6 +10,7 @@
     "prepare": "husky && npm run build",
     "test": "vitest",
     "test:run": "vitest run",
+    "test:ci": "vitest run --reporter=verbose --reporter=junit --outputFile=test-results/junit.xml",
     "test:coverage": "vitest run --coverage",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",

@@ -12,6 +12,7 @@ node_modules/
 # Build artifacts / caches
 dist/tests/
 coverage/
+test-results/
 *.tsbuildinfo
 .cache/
 

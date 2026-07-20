@@ -34,8 +34,15 @@ jobs:
         run: npm run check:tech-debt
       - name: Validate AGENTS.md
         run: npm run check:agents-doc
-      - name: Run vitest pin guards
-        run: npm run test:run
+      - name: Run tests with timing + JUnit report
+        run: npm run test:ci
+      - name: Upload test report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results
+          path: test-results/
+          retention-days: 14
       - name: Enforce test coverage thresholds
         run: npm run test:coverage
       - name: Validate configs
