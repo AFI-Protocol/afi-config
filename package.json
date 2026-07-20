@@ -7,7 +7,7 @@
   "types": "dist/index.d.ts",
   "scripts": {
     "build": "tsc -p tsconfig.json",
-    "prepare": "npm run build",
+    "prepare": "husky && npm run build",
     "test": "vitest",
     "test:run": "vitest run",
     "lint": "eslint .",
@@ -17,6 +17,15 @@
     "validate": "vitest run tests/schema-validation.test.ts",
     "typecheck": "tsc --noEmit",
     "clean": "rm -rf dist"
+  },
+  "lint-staged": {
+    "*.{ts,js,mjs,cjs}": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "*.{json,md,yml,yaml}": [
+      "prettier --write --ignore-unknown"
+    ]
   },
   "keywords": [
     "afi-protocol",
@@ -36,6 +45,8 @@
     "ajv": "^8.12.0",
     "ajv-formats": "^3.0.1",
     "eslint": "^9.39.5",
+    "husky": "^9.1.7",
+    "lint-staged": "^15.5.2",
     "prettier": "^3.9.5",
     "typescript": "^5.4.0",
     "typescript-eslint": "^8.64.0",
