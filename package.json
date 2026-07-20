@@ -22,6 +22,7 @@
     "duplicates": "jscpd",
     "check:tech-debt": "node scripts/check-tech-debt.mjs",
     "check:agents-doc": "node scripts/check-agents-doc.mjs",
+    "check:dep-release-age": "node scripts/check-dep-release-age.mjs",
     "validate": "vitest run tests/schema-validation.test.ts",
     "typecheck": "tsc --noEmit",
     "clean": "rm -rf dist"

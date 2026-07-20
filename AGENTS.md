@@ -63,6 +63,7 @@ This repo has no dev server. Typical workflow:
 - **No secrets in code**: Use environment variables for sensitive data.
 - **Governance artifacts are binding**: Do not modify `codex/governance/` without explicit human approval.
 - **Backward compatibility**: Removing or renaming schema fields breaks contracts. Add new fields instead.
+- **Minimum dependency release age**: Dependency version bumps must target a release that is at least **7 days** old. CI (`npm run check:dep-release-age`, `AFI_MIN_RELEASE_AGE_DAYS`) diffs `package-lock.json` against `origin/main`, queries the npm registry for each bumped version's publish date, and fails the PR if any target is younger than the threshold. This mitigates supply-chain risk from freshly published packages.
 
 ---
 
