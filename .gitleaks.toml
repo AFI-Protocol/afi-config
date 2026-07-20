@@ -1,0 +1,12 @@
+title = "AFI Config secret-scanning policy"
+
+# Build on gitleaks' maintained ruleset (AWS keys, GitHub/GitLab tokens,
+# private keys, generic high-entropy API keys, etc.).
+[extend]
+useDefault = true
+
+[allowlist]
+description = "Committed templates hold placeholder values, not real secrets"
+paths = [
+  '''(^|/)\.env\.example$''',
+]
