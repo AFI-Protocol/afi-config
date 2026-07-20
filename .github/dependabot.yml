@@ -24,6 +24,14 @@ updates:
         update-types:
           - 'minor'
           - 'patch'
+    ignore:
+      # typescript-eslint 8.x peer-requires typescript <6.1.0 (via
+      # typescript-estree / ts-api-utils), so a TypeScript major bump (7.x)
+      # breaks `npm ci` with ERESOLVE. Hold TS majors until typescript-eslint
+      # ships support; minor/patch within the current major still flow through.
+      - dependency-name: 'typescript'
+        update-types:
+          - 'version-update:semver-major'
 
   # GitHub Actions used by CI / secret-scan workflows.
   - package-ecosystem: 'github-actions'
