@@ -50,14 +50,14 @@ function canonicalize(v: unknown): string {
     '{' +
     Object.keys(v as object)
       .sort()
-      .map(k => JSON.stringify(k) + ':' + canonicalize((v as any)[k]))
+      .map((k) => JSON.stringify(k) + ':' + canonicalize((v as any)[k]))
       .join(',') +
     '}'
   );
 }
 function stripExcluded(obj: any, excluded: string[]): any {
   const out: any = {};
-  Object.keys(obj).forEach(k => {
+  Object.keys(obj).forEach((k) => {
     if (!excluded.includes(k)) out[k] = obj[k];
   });
   return out;
@@ -121,7 +121,7 @@ describe('EV3-CONTRACT — Evidence V3 hash-projection KATs', () => {
   });
 
   it('every record-level vector reproduces its expected digest byte-exactly', () => {
-    ['record-hash-full-record', 'replay-hash-projection'].forEach(name => {
+    ['record-hash-full-record', 'replay-hash-projection'].forEach((name) => {
       const vector = kat.vectors.find((v: any) => v.name === name);
       expect(vector, `${name} must exist`).toBeDefined();
       expect(vector.expectedSha256).toMatch(/^[a-f0-9]{64}$/);
@@ -130,17 +130,17 @@ describe('EV3-CONTRACT — Evidence V3 hash-projection KATs', () => {
   });
 
   it('every lane vector reproduces BOTH expected digests byte-exactly', () => {
-    Object.keys(CATEGORY_FIXTURE_FILES).forEach(category => {
+    Object.keys(CATEGORY_FIXTURE_FILES).forEach((category) => {
       const vector = kat.vectors.find((v: any) => v.name === `category-result-${category}`);
       expect(vector, `category-result-${category} must exist`).toBeDefined();
       expect(vector.categoryResultDomainTag).toBe('afi.d2.lane-output');
       expect(vector.providerResultDomainTag).toBe('afi.d2.provider-result');
       expect(vector.providerResultExcludedFields).toEqual(['category']);
       expect(digestOf(vector.input), `${category} full result`).toBe(
-        vector.expectedCategoryResultSha256
+        vector.expectedCategoryResultSha256,
       );
       expect(digestOf(vector.input, ['category']), `${category} minus category`).toBe(
-        vector.expectedProviderResultSha256
+        vector.expectedProviderResultSha256,
       );
     });
   });
@@ -179,22 +179,22 @@ describe('EV3-CONTRACT — Evidence V3 hash-projection KATs', () => {
         const proof = example.providerInvocations[position];
         expect(proof.category, `position ${position}`).toBe(category);
         expect(proof.categoryResultHash.value, `${category} categoryResultHash`).toBe(
-          vector.expectedCategoryResultSha256
+          vector.expectedCategoryResultSha256,
         );
         expect(proof.providerResultHash.value, `${category} providerResultHash`).toBe(
-          vector.expectedProviderResultSha256
+          vector.expectedProviderResultSha256,
         );
       });
     });
 
     it('every committed valid vector ALSO recomputes its record/replay hashes (D-EV3-7)', () => {
-      ['minimal-scored.json', 'credential-bound-news-lane.json'].forEach(f => {
+      ['minimal-scored.json', 'credential-bound-news-lane.json'].forEach((f) => {
         const record = loadJSON(`${VALID_DIR}/${f}`);
         expect(record.recordHash.value, `${f} recordHash`).toBe(
-          digestOf(record, RECORD_HASH_EXCLUDED)
+          digestOf(record, RECORD_HASH_EXCLUDED),
         );
         expect(record.replayHash.value, `${f} replayHash`).toBe(
-          digestOf(record, REPLAY_HASH_EXCLUDED)
+          digestOf(record, REPLAY_HASH_EXCLUDED),
         );
       });
     });
@@ -231,11 +231,9 @@ describe('EV3-CONTRACT — Evidence V3 hash-projection KATs', () => {
         const fixture: any = clone(loadJSON(file));
         const vector = kat.vectors.find((v: any) => v.name === `category-result-${category}`);
         fixture.syntheticMutation = 1;
-        expect(digestOf(fixture), `${category} full`).not.toBe(
-          vector.expectedCategoryResultSha256
-        );
+        expect(digestOf(fixture), `${category} full`).not.toBe(vector.expectedCategoryResultSha256);
         expect(digestOf(fixture, ['category']), `${category} minus category`).not.toBe(
-          vector.expectedProviderResultSha256
+          vector.expectedProviderResultSha256,
         );
       });
     });

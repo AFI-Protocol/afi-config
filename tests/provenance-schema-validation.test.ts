@@ -80,7 +80,7 @@ const ALL_PROVENANCE_SCHEMAS = [
  */
 function compileProvenanceSchema(schemaFile: string) {
   const ajv = createAjv();
-  PROVENANCE_DEPENDENCY_SCHEMAS.forEach(depFile => {
+  PROVENANCE_DEPENDENCY_SCHEMAS.forEach((depFile) => {
     if (depFile !== schemaFile) {
       ajv.addSchema(loadJSON(depFile));
     }
@@ -177,7 +177,7 @@ const VALID_TRADE_PLAN = {
 
 describe('District 2 M1 Provenance Schema Drafts (v1)', () => {
   describe('Schema Compilation', () => {
-    ALL_PROVENANCE_SCHEMAS.forEach(schemaFile => {
+    ALL_PROVENANCE_SCHEMAS.forEach((schemaFile) => {
       it(`should compile ${schemaFile} without errors`, () => {
         expect(() => {
           compileProvenanceSchema(schemaFile);
@@ -190,26 +190,49 @@ describe('District 2 M1 Provenance Schema Drafts (v1)', () => {
     });
 
     it('all provenance draft schemas should be marked draft-non-implementation', () => {
-      ALL_PROVENANCE_SCHEMAS.forEach(schemaFile => {
+      ALL_PROVENANCE_SCHEMAS.forEach((schemaFile) => {
         const schema = loadJSON(schemaFile);
-        expect(
-          schema['x-afiStatus'],
-          `${schemaFile} should carry x-afiStatus draft marker`
-        ).toBe('draft-non-implementation');
+        expect(schema['x-afiStatus'], `${schemaFile} should carry x-afiStatus draft marker`).toBe(
+          'draft-non-implementation',
+        );
       });
     });
   });
 
   describe('Example Validation', () => {
     const examplePairs: Array<[string, string]> = [
-      [`${PROVENANCE_SCHEMA_DIR}/canonical-hash.schema.json`, `${PROVENANCE_EXAMPLE_DIR}/canonical-hash.example.json`],
-      [`${PROVENANCE_SCHEMA_DIR}/evidence-ref.schema.json`, `${PROVENANCE_EXAMPLE_DIR}/evidence-ref.example.json`],
-      [`${PROVENANCE_SCHEMA_DIR}/source-disclosure-profile.schema.json`, `${PROVENANCE_EXAMPLE_DIR}/source-disclosure-profile.example.json`],
-      [`${PROVENANCE_SCHEMA_DIR}/analyst-input-envelope.schema.json`, `${PROVENANCE_EXAMPLE_DIR}/analyst-input-envelope.example.json`],
-      [`${PROVENANCE_SCHEMA_DIR}/scored-signal.schema.json`, `${PROVENANCE_EXAMPLE_DIR}/scored-signal.example.json`],
-      [`${PROVENANCE_SCHEMA_DIR}/provenance-record.schema.json`, `${PROVENANCE_EXAMPLE_DIR}/provenance-record.example.json`],
-      [`${PROVENANCE_SCHEMA_DIR}/replay-profile.schema.json`, `${PROVENANCE_EXAMPLE_DIR}/replay-profile.example.json`],
-      [`${PROVENANCE_SCHEMA_DIR}/trade-plan.schema.json`, `${PROVENANCE_EXAMPLE_DIR}/trade-plan.example.json`],
+      [
+        `${PROVENANCE_SCHEMA_DIR}/canonical-hash.schema.json`,
+        `${PROVENANCE_EXAMPLE_DIR}/canonical-hash.example.json`,
+      ],
+      [
+        `${PROVENANCE_SCHEMA_DIR}/evidence-ref.schema.json`,
+        `${PROVENANCE_EXAMPLE_DIR}/evidence-ref.example.json`,
+      ],
+      [
+        `${PROVENANCE_SCHEMA_DIR}/source-disclosure-profile.schema.json`,
+        `${PROVENANCE_EXAMPLE_DIR}/source-disclosure-profile.example.json`,
+      ],
+      [
+        `${PROVENANCE_SCHEMA_DIR}/analyst-input-envelope.schema.json`,
+        `${PROVENANCE_EXAMPLE_DIR}/analyst-input-envelope.example.json`,
+      ],
+      [
+        `${PROVENANCE_SCHEMA_DIR}/scored-signal.schema.json`,
+        `${PROVENANCE_EXAMPLE_DIR}/scored-signal.example.json`,
+      ],
+      [
+        `${PROVENANCE_SCHEMA_DIR}/provenance-record.schema.json`,
+        `${PROVENANCE_EXAMPLE_DIR}/provenance-record.example.json`,
+      ],
+      [
+        `${PROVENANCE_SCHEMA_DIR}/replay-profile.schema.json`,
+        `${PROVENANCE_EXAMPLE_DIR}/replay-profile.example.json`,
+      ],
+      [
+        `${PROVENANCE_SCHEMA_DIR}/trade-plan.schema.json`,
+        `${PROVENANCE_EXAMPLE_DIR}/trade-plan.example.json`,
+      ],
     ];
 
     examplePairs.forEach(([schemaFile, exampleFile]) => {
@@ -230,7 +253,9 @@ describe('District 2 M1 Provenance Schema Drafts (v1)', () => {
 
   describe('Shared Enum Consistency', () => {
     it('replayabilityLevel enum should be identical across all schemas that use it', () => {
-      const sourceDisclosure = loadJSON(`${PROVENANCE_SCHEMA_DIR}/source-disclosure-profile.schema.json`);
+      const sourceDisclosure = loadJSON(
+        `${PROVENANCE_SCHEMA_DIR}/source-disclosure-profile.schema.json`,
+      );
       const replay = loadJSON(`${PROVENANCE_SCHEMA_DIR}/replay-profile.schema.json`);
 
       const expected = ['deterministic', 'pinned-inputs', 'best-effort', 'non-replayable'];
@@ -255,7 +280,7 @@ describe('District 2 M1 Provenance Schema Drafts (v1)', () => {
 
       expect(validate(invalid)).toBe(false);
       expect(validate.errors).toBeDefined();
-      expect(validate.errors!.some(e => e.instancePath === '/algorithm')).toBe(true);
+      expect(validate.errors!.some((e) => e.instancePath === '/algorithm')).toBe(true);
     });
 
     it('should reject a domain tag outside the afi.* namespace', () => {
@@ -264,7 +289,7 @@ describe('District 2 M1 Provenance Schema Drafts (v1)', () => {
       invalid.domainTag = 'keccak.settlement.claims';
 
       expect(validate(invalid)).toBe(false);
-      expect(validate.errors!.some(e => e.instancePath === '/domainTag')).toBe(true);
+      expect(validate.errors!.some((e) => e.instancePath === '/domainTag')).toBe(true);
     });
 
     it('should reject a malformed (uppercase) domain tag', () => {
@@ -273,7 +298,7 @@ describe('District 2 M1 Provenance Schema Drafts (v1)', () => {
       invalid.domainTag = 'afi.D2.SignalInput';
 
       expect(validate(invalid)).toBe(false);
-      expect(validate.errors!.some(e => e.instancePath === '/domainTag')).toBe(true);
+      expect(validate.errors!.some((e) => e.instancePath === '/domainTag')).toBe(true);
     });
 
     it('should reject a missing canonicalizationVersion', () => {
@@ -282,7 +307,9 @@ describe('District 2 M1 Provenance Schema Drafts (v1)', () => {
       delete invalid.canonicalizationVersion;
 
       expect(validate(invalid)).toBe(false);
-      expect(validate.errors!.some(e => e.message?.includes('canonicalizationVersion'))).toBe(true);
+      expect(validate.errors!.some((e) => e.message?.includes('canonicalizationVersion'))).toBe(
+        true,
+      );
     });
 
     it('should reject an invalid canonicalizationVersion format', () => {
@@ -291,7 +318,9 @@ describe('District 2 M1 Provenance Schema Drafts (v1)', () => {
       invalid.canonicalizationVersion = 'sha256-canonical-v1';
 
       expect(validate(invalid)).toBe(false);
-      expect(validate.errors!.some(e => e.instancePath === '/canonicalizationVersion')).toBe(true);
+      expect(validate.errors!.some((e) => e.instancePath === '/canonicalizationVersion')).toBe(
+        true,
+      );
     });
 
     it('should reject a digest that is not 64 lowercase hex characters', () => {
@@ -318,13 +347,13 @@ describe('District 2 M1 Provenance Schema Drafts (v1)', () => {
     it('should reject inline raw payload fields (no raw payload disclosure)', () => {
       const validate = compileProvenanceSchema(schemaFile);
 
-      ['rawPayload', 'payload', 'rawText'].forEach(forbiddenField => {
+      ['rawPayload', 'payload', 'rawText'].forEach((forbiddenField) => {
         const invalid: any = clone(VALID_EVIDENCE_REF);
         invalid[forbiddenField] = '{"open":42000,"close":42100}';
 
         expect(
           validate(invalid),
-          `EvidenceRef should reject inline '${forbiddenField}' field`
+          `EvidenceRef should reject inline '${forbiddenField}' field`,
         ).toBe(false);
       });
     });
@@ -335,7 +364,7 @@ describe('District 2 M1 Provenance Schema Drafts (v1)', () => {
       delete invalid.evidenceHash;
 
       expect(validate(invalid)).toBe(false);
-      expect(validate.errors!.some(e => e.message?.includes('evidenceHash'))).toBe(true);
+      expect(validate.errors!.some((e) => e.message?.includes('evidenceHash'))).toBe(true);
     });
 
     it('should reject an invalid redactionStatus', () => {
@@ -361,7 +390,7 @@ describe('District 2 M1 Provenance Schema Drafts (v1)', () => {
       invalid.disclosureLevel = 'everything';
 
       expect(validate(invalid)).toBe(false);
-      expect(validate.errors!.some(e => e.instancePath === '/disclosureLevel')).toBe(true);
+      expect(validate.errors!.some((e) => e.instancePath === '/disclosureLevel')).toBe(true);
     });
 
     it('should reject an invalid replayabilityLevel', () => {
@@ -370,7 +399,7 @@ describe('District 2 M1 Provenance Schema Drafts (v1)', () => {
       invalid.replayabilityLevel = 'sometimes';
 
       expect(validate(invalid)).toBe(false);
-      expect(validate.errors!.some(e => e.instancePath === '/replayabilityLevel')).toBe(true);
+      expect(validate.errors!.some((e) => e.instancePath === '/replayabilityLevel')).toBe(true);
     });
 
     it('should reject an invalid withheldReason', () => {
@@ -385,15 +414,15 @@ describe('District 2 M1 Provenance Schema Drafts (v1)', () => {
       const validate = compileProvenanceSchema(schemaFile);
 
       ['rewardWeight', 'transparencyBonus', 'payoutMultiplier', 'reputationBoost'].forEach(
-        forbiddenField => {
+        (forbiddenField) => {
           const invalid: any = clone(VALID_SOURCE_DISCLOSURE_PROFILE);
           invalid[forbiddenField] = 1.5;
 
           expect(
             validate(invalid),
-            `SourceDisclosureProfile should reject '${forbiddenField}' field`
+            `SourceDisclosureProfile should reject '${forbiddenField}' field`,
           ).toBe(false);
-        }
+        },
       );
     });
   });
@@ -458,7 +487,7 @@ describe('District 2 M1 Provenance Schema Drafts (v1)', () => {
       delete invalid.schema;
 
       expect(validate(invalid)).toBe(false);
-      expect(validate.errors!.some(e => e.message?.includes('schema'))).toBe(true);
+      expect(validate.errors!.some((e) => e.message?.includes('schema'))).toBe(true);
     });
 
     it('should reject a wrong schema version const', () => {
@@ -467,7 +496,7 @@ describe('District 2 M1 Provenance Schema Drafts (v1)', () => {
       invalid.schema = 'afi.analyst-input-envelope.v2';
 
       expect(validate(invalid)).toBe(false);
-      expect(validate.errors!.some(e => e.instancePath === '/schema')).toBe(true);
+      expect(validate.errors!.some((e) => e.instancePath === '/schema')).toBe(true);
     });
 
     it('should reject a missing signalId', () => {
@@ -476,7 +505,7 @@ describe('District 2 M1 Provenance Schema Drafts (v1)', () => {
       delete invalid.signalId;
 
       expect(validate(invalid)).toBe(false);
-      expect(validate.errors!.some(e => e.message?.includes('signalId'))).toBe(true);
+      expect(validate.errors!.some((e) => e.message?.includes('signalId'))).toBe(true);
     });
 
     it('should reject unknown envelope-level fields (opacity is confined to strategyLocalView)', () => {
@@ -508,15 +537,15 @@ describe('District 2 M1 Provenance Schema Drafts (v1)', () => {
       const validate = compileProvenanceSchema(schemaFile);
 
       ['scoredAt', 'createdAt', 'updatedAt', 'storedAt', 'processedAt', 'ingestedAt'].forEach(
-        forbiddenField => {
+        (forbiddenField) => {
           const invalid: any = clone(VALID_SCORED_SIGNAL);
           invalid[forbiddenField] = '2026-01-15T12:00:07Z';
 
           expect(
             validate(invalid),
-            `ScoredSignal should reject runtime/storage timestamp '${forbiddenField}'`
+            `ScoredSignal should reject runtime/storage timestamp '${forbiddenField}'`,
           ).toBe(false);
-        }
+        },
       );
     });
 
@@ -537,10 +566,9 @@ describe('District 2 M1 Provenance Schema Drafts (v1)', () => {
         const invalid: any = clone(VALID_SCORED_SIGNAL);
         invalid[field] = value;
 
-        expect(
-          validate(invalid),
-          `ScoredSignal should reject forbidden field '${field}'`
-        ).toBe(false);
+        expect(validate(invalid), `ScoredSignal should reject forbidden field '${field}'`).toBe(
+          false,
+        );
       });
     });
 
@@ -581,7 +609,7 @@ describe('District 2 M1 Provenance Schema Drafts (v1)', () => {
       invalid.direction = 'sideways';
 
       expect(validate(invalid)).toBe(false);
-      expect(validate.errors!.some(e => e.instancePath === '/direction')).toBe(true);
+      expect(validate.errors!.some((e) => e.instancePath === '/direction')).toBe(true);
     });
 
     it('should reject conviction outside [0, 1]', () => {
@@ -619,23 +647,22 @@ describe('District 2 M1 Provenance Schema Drafts (v1)', () => {
         const invalid: any = clone(VALID_PROVENANCE_RECORD);
         invalid[field] = value;
 
-        expect(
-          validate(invalid),
-          `ProvenanceRecord should reject forbidden field '${field}'`
-        ).toBe(false);
+        expect(validate(invalid), `ProvenanceRecord should reject forbidden field '${field}'`).toBe(
+          false,
+        );
       });
     });
 
     it('should reject runtime/storage timestamps on the record', () => {
       const validate = compileProvenanceSchema(schemaFile);
 
-      ['createdAt', 'storedAt', 'updatedAt'].forEach(forbiddenField => {
+      ['createdAt', 'storedAt', 'updatedAt'].forEach((forbiddenField) => {
         const invalid: any = clone(VALID_PROVENANCE_RECORD);
         invalid[forbiddenField] = '2026-01-15T12:00:07Z';
 
         expect(
           validate(invalid),
-          `ProvenanceRecord should reject runtime timestamp '${forbiddenField}'`
+          `ProvenanceRecord should reject runtime timestamp '${forbiddenField}'`,
         ).toBe(false);
       });
     });
@@ -646,7 +673,9 @@ describe('District 2 M1 Provenance Schema Drafts (v1)', () => {
       delete invalid.canonicalizationVersion;
 
       expect(validate(invalid)).toBe(false);
-      expect(validate.errors!.some(e => e.message?.includes('canonicalizationVersion'))).toBe(true);
+      expect(validate.errors!.some((e) => e.message?.includes('canonicalizationVersion'))).toBe(
+        true,
+      );
     });
 
     it('should reject an invalid canonicalizationVersion format', () => {
@@ -688,7 +717,7 @@ describe('District 2 M1 Provenance Schema Drafts (v1)', () => {
       invalid.replayabilityLevel = 'sometimes';
 
       expect(validate(invalid)).toBe(false);
-      expect(validate.errors!.some(e => e.instancePath === '/replayabilityLevel')).toBe(true);
+      expect(validate.errors!.some((e) => e.instancePath === '/replayabilityLevel')).toBe(true);
     });
 
     it('should reject a missing factsRequired flag', () => {
@@ -697,7 +726,7 @@ describe('District 2 M1 Provenance Schema Drafts (v1)', () => {
       delete invalid.factsRequired;
 
       expect(validate(invalid)).toBe(false);
-      expect(validate.errors!.some(e => e.message?.includes('factsRequired'))).toBe(true);
+      expect(validate.errors!.some((e) => e.message?.includes('factsRequired'))).toBe(true);
     });
 
     it('should reject a missing schema version field', () => {
@@ -712,7 +741,7 @@ describe('District 2 M1 Provenance Schema Drafts (v1)', () => {
       const validate = compileProvenanceSchema(schemaFile);
 
       const seeds: Array<string | number | null> = ['42', 42, null];
-      seeds.forEach(seed => {
+      seeds.forEach((seed) => {
         const profile: any = clone(VALID_REPLAY_PROFILE);
         profile.seed = seed;
 
@@ -780,13 +809,13 @@ describe('District 2 M1 Provenance Schema Drafts (v1)', () => {
     it('should reject malformed decimal strings', () => {
       const validate = compileProvenanceSchema(schemaFile);
 
-      ['42_000', '42,000', '-100', '.5', '42.', 'fortytwo'].forEach(badDecimal => {
+      ['42_000', '42,000', '-100', '.5', '42.', 'fortytwo'].forEach((badDecimal) => {
         const invalid: any = clone(VALID_TRADE_PLAN);
         invalid.levels.stopLoss = badDecimal;
 
         expect(
           validate(invalid),
-          `TradePlan should reject malformed decimal string '${badDecimal}'`
+          `TradePlan should reject malformed decimal string '${badDecimal}'`,
         ).toBe(false);
       });
     });
@@ -805,7 +834,7 @@ describe('District 2 M1 Provenance Schema Drafts (v1)', () => {
       delete invalid.levels;
 
       expect(validate(invalid)).toBe(false);
-      expect(validate.errors!.some(e => e.message?.includes('levels'))).toBe(true);
+      expect(validate.errors!.some((e) => e.message?.includes('levels'))).toBe(true);
     });
 
     it('should reject an invalid marketTypeHint', () => {

@@ -46,6 +46,7 @@ This repo has no dev server. Typical workflow:
 **Purpose**: Define configuration contracts consumed by all AFI repos.
 
 **Key directories**:
+
 - `schemas/` — JSON schemas for signals, configs, Codex metadata
 - `src/types/` — TypeScript type definitions
 - `templates/` — Config file templates
@@ -87,12 +88,14 @@ This repo has no dev server. Typical workflow:
 ## Scope & Boundaries for Agents
 
 **Allowed**:
+
 - Propose new schemas and non-breaking extensions
 - Add examples, tests, and documentation
 - Update `.afi-codex.json` metadata when capabilities change
 - Maintain `codex/governance/` directory (governance artifacts)
 
 **Forbidden**:
+
 - Remove schema fields or change types (breaks backward compatibility)
 - Change schema semantics without coordination across repos
 - Modify AFI Droid Charter without explicit human approval

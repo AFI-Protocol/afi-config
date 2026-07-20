@@ -87,7 +87,7 @@ const DEP_SCHEMAS = [
 /** Compile the v3 evidence contract, preloading the reused governed shapes. */
 function compileEvidenceSchema() {
   const ajv = createAjv();
-  DEP_SCHEMAS.forEach(depFile => ajv.addSchema(loadJSON(depFile)));
+  DEP_SCHEMAS.forEach((depFile) => ajv.addSchema(loadJSON(depFile)));
   return ajv.compile(loadJSON(EVIDENCE_SCHEMA));
 }
 
@@ -119,17 +119,19 @@ function canonicalize(v: unknown): string {
     '{' +
     Object.keys(v as object)
       .sort()
-      .map(k => JSON.stringify(k) + ':' + canonicalize((v as any)[k]))
+      .map((k) => JSON.stringify(k) + ':' + canonicalize((v as any)[k]))
       .join(',') +
     '}'
   );
 }
 function canonicalSha256(obj: any, excluded: string[] = []): string {
   const stripped: any = {};
-  Object.keys(obj).forEach(k => {
+  Object.keys(obj).forEach((k) => {
     if (!excluded.includes(k)) stripped[k] = obj[k];
   });
-  return createHash('sha256').update(Buffer.from(canonicalize(stripped), 'utf-8')).digest('hex');
+  return createHash('sha256')
+    .update(Buffer.from(canonicalize(stripped), 'utf-8'))
+    .digest('hex');
 }
 const RECORD_HASH_EXCLUDED = ['recordHash', 'replayHash'];
 const REPLAY_HASH_EXCLUDED = [
@@ -259,7 +261,7 @@ const CATEGORY_TO_RESULT_SCHEMA: Record<string, string> = {
 // EV3-GOV D-EV3-8 residue grep over this tree stays empty. Rejecting them is a
 // NEGATIVE-SPACE guard (assertion of absence), expressly carved out by
 // D-EV3-8(3) — the tokens themselves never appear literally in the tree.
-const SUPERSEDED_SCHEMA_CONSTS = ['1', '2'].map(n => 'afi.scored-signal-evidence.v' + n);
+const SUPERSEDED_SCHEMA_CONSTS = ['1', '2'].map((n) => 'afi.scored-signal-evidence.v' + n);
 
 // The governed UWR profile stamp shape (PR-UWR-STAMP §7) + its RC-6 source
 // discriminator values (PR-UWR-STAMP-SEMANTICS), reused VERBATIM.
@@ -271,9 +273,9 @@ const STRATEGY_TRIPLE = ['analystId', 'strategyId', 'strategyVersion'];
 const SECRET_KEY_PATTERN =
   /^(apiKey|api_key|apikey|token|accessToken|secret|password|passphrase|authorization|privateKey|refreshToken|cookie|bearer|headerValue|headerName)$/i;
 function collectKeys(value: any, out: string[] = []): string[] {
-  if (Array.isArray(value)) value.forEach(item => collectKeys(item, out));
+  if (Array.isArray(value)) value.forEach((item) => collectKeys(item, out));
   else if (value && typeof value === 'object') {
-    Object.keys(value).forEach(k => {
+    Object.keys(value).forEach((k) => {
       out.push(k);
       collectKeys(value[k], out);
     });
@@ -284,8 +286,8 @@ function collectKeys(value: any, out: string[] = []): string[] {
 const ALL_COMMITTED_RECORDS = () => [
   CANONICAL_EXAMPLE,
   ...readdirSync(join(rootDir, VALID_DIR))
-    .filter(f => f.endsWith('.json'))
-    .map(f => `${VALID_DIR}/${f}`),
+    .filter((f) => f.endsWith('.json'))
+    .map((f) => `${VALID_DIR}/${f}`),
 ];
 
 describe('EV3-CONTRACT — afi.scored-signal-evidence.v3', () => {
@@ -297,8 +299,8 @@ describe('EV3-CONTRACT — afi.scored-signal-evidence.v3', () => {
     });
 
     it('should carry the governed-contract status marker on all three EV3 schemas', () => {
-      [EVIDENCE_SCHEMA, PROOF_SCHEMA, AIML_PROOF_SCHEMA].forEach(f =>
-        expect(loadJSON(f)['x-afiStatus'], f).toBe('governed-contract')
+      [EVIDENCE_SCHEMA, PROOF_SCHEMA, AIML_PROOF_SCHEMA].forEach((f) =>
+        expect(loadJSON(f)['x-afiStatus'], f).toBe('governed-contract'),
       );
     });
 
@@ -325,8 +327,8 @@ describe('EV3-CONTRACT — afi.scored-signal-evidence.v3', () => {
 
     it('should REQUIRE the complete canonical strategy identity triple incl. strategyVersion (OBJ-GOV D-OBJ-3)', () => {
       const schema = loadJSON(EVIDENCE_SCHEMA);
-      STRATEGY_TRIPLE.forEach(member =>
-        expect(schema.required, `triple member '${member}' must be required`).toContain(member)
+      STRATEGY_TRIPLE.forEach((member) =>
+        expect(schema.required, `triple member '${member}' must be required`).toContain(member),
       );
       expect(schema.properties.strategyVersion.pattern).toBeUndefined();
       expect(schema.properties.strategyVersion.type).toBe('string');
@@ -335,22 +337,22 @@ describe('EV3-CONTRACT — afi.scored-signal-evidence.v3', () => {
     it('should reuse the governed shapes by $ref (not redefine them)', () => {
       const schema = loadJSON(EVIDENCE_SCHEMA);
       expect(schema.properties.scoredSignal.$ref).toBe(
-        'https://afi-protocol.org/schemas/provenance/v1/scored-signal.schema.json'
+        'https://afi-protocol.org/schemas/provenance/v1/scored-signal.schema.json',
       );
       expect(schema.properties.provenanceRecord.$ref).toBe(
-        'https://afi-protocol.org/schemas/provenance/v1/provenance-record.schema.json'
+        'https://afi-protocol.org/schemas/provenance/v1/provenance-record.schema.json',
       );
       expect(schema.properties.composition.$ref).toBe(
-        'https://afi-protocol.org/schemas/composition-ref/v1/composition-ref.schema.json'
+        'https://afi-protocol.org/schemas/composition-ref/v1/composition-ref.schema.json',
       );
       expect(schema.properties.supersedesRecordHash.$ref).toBe(
-        'https://afi-protocol.org/schemas/provenance/v1/canonical-hash.schema.json'
+        'https://afi-protocol.org/schemas/provenance/v1/canonical-hash.schema.json',
       );
       expect(schema.properties.recordHash.allOf[0].$ref).toBe(
-        'https://afi-protocol.org/schemas/provenance/v1/canonical-hash.schema.json'
+        'https://afi-protocol.org/schemas/provenance/v1/canonical-hash.schema.json',
       );
       expect(schema.properties.replayHash.allOf[0].$ref).toBe(
-        'https://afi-protocol.org/schemas/provenance/v1/canonical-hash.schema.json'
+        'https://afi-protocol.org/schemas/provenance/v1/canonical-hash.schema.json',
       );
     });
 
@@ -375,7 +377,7 @@ describe('EV3-CONTRACT — afi.scored-signal-evidence.v3', () => {
         'recordHashLaw',
         'replayHashLaw',
         'crossCheckLaws',
-      ].forEach(k => expect(keys, `x-afiConstraints.${k} must be present`).toContain(k));
+      ].forEach((k) => expect(keys, `x-afiConstraints.${k} must be present`).toContain(k));
     });
 
     it('should cite EV3-GOV D-EV3-1..8 and the consumed decisions (x-afiDoctrineRefs)', () => {
@@ -402,20 +404,20 @@ describe('EV3-CONTRACT — afi.scored-signal-evidence.v3', () => {
         'PR-UWR-STAMP',
         'PR-UWR-STAMP-SEMANTICS',
         'RC-6',
-      ].forEach(clause => expect(refs, `should cite ${clause}`).toContain(clause));
+      ].forEach((clause) => expect(refs, `should cite ${clause}`).toContain(clause));
     });
 
     it('should pin the recordHash/replayHash domains and preimage exclusion sets (D-EV3-4(6))', () => {
       const schema = loadJSON(EVIDENCE_SCHEMA);
       expect(schema.properties.recordHash.allOf[1].properties.domainTag.const).toBe(
-        'afi.d2.evidence-record'
+        'afi.d2.evidence-record',
       );
       expect(schema.properties.replayHash.allOf[1].properties.domainTag.const).toBe(
-        'afi.d2.evidence-replay'
+        'afi.d2.evidence-replay',
       );
       const constraints = schema['x-afiConstraints'];
-      RECORD_HASH_EXCLUDED.forEach(f => expect(constraints.recordHashLaw).toContain(f));
-      REPLAY_HASH_EXCLUDED.forEach(f => expect(constraints.replayHashLaw).toContain(f));
+      RECORD_HASH_EXCLUDED.forEach((f) => expect(constraints.recordHashLaw).toContain(f));
+      REPLAY_HASH_EXCLUDED.forEach((f) => expect(constraints.replayHashLaw).toContain(f));
       expect(constraints.recordHashLaw).toContain('canonical-json-hashing.v1');
       expect(constraints.replayHashLaw).toContain('canonical-json-hashing.v1');
     });
@@ -436,10 +438,10 @@ describe('EV3-CONTRACT — afi.scored-signal-evidence.v3', () => {
     it('every position $refs the governed proof and pins its category const', () => {
       invocations.items.forEach((item: any, i: number) => {
         expect(item.allOf[0].$ref, `position ${i}`).toBe(
-          'https://afi-protocol.org/schemas/provider-invocation-proof/v1/provider-invocation-proof.schema.json'
+          'https://afi-protocol.org/schemas/provider-invocation-proof/v1/provider-invocation-proof.schema.json',
         );
         expect(item.allOf[1].properties.category.const, `position ${i}`).toBe(
-          GOVERNED_PROOF_ORDER[i]
+          GOVERNED_PROOF_ORDER[i],
         );
         expect(item.allOf[1].required).toEqual(['category']);
       });
@@ -468,8 +470,8 @@ describe('EV3-CONTRACT — afi.scored-signal-evidence.v3', () => {
     it('every valid vector should be admissible at all three layers (D-EV3-7 recomputation-verified)', () => {
       const validate = compileEvidenceSchema();
       readdirSync(join(rootDir, VALID_DIR))
-        .filter(f => f.endsWith('.json'))
-        .forEach(f => {
+        .filter((f) => f.endsWith('.json'))
+        .forEach((f) => {
           const record = loadJSON(`${VALID_DIR}/${f}`);
           const result = admit(validate, record);
           const hashProblems = hashViolations(record);
@@ -482,21 +484,23 @@ describe('EV3-CONTRACT — afi.scored-signal-evidence.v3', () => {
     });
 
     it('valid vector set should be exactly the authorized files (drift guard)', () => {
-      const files = readdirSync(join(rootDir, VALID_DIR)).filter(f => f.endsWith('.json')).sort();
+      const files = readdirSync(join(rootDir, VALID_DIR))
+        .filter((f) => f.endsWith('.json'))
+        .sort();
       expect(files).toEqual(['credential-bound-news-lane.json', 'minimal-scored.json']);
     });
 
     it('every committed record carries five proofs in the governed order with bound result schemas', () => {
-      ALL_COMMITTED_RECORDS().forEach(rel => {
+      ALL_COMMITTED_RECORDS().forEach((rel) => {
         const r = loadJSON(rel);
         expect(r.providerInvocations, `${rel} proof count`).toHaveLength(5);
         expect(
           r.providerInvocations.map((p: any) => p.category),
-          `${rel} proof order`
+          `${rel} proof order`,
         ).toEqual(GOVERNED_PROOF_ORDER);
         r.providerInvocations.forEach((p: any) => {
           expect(p.resultSchema, `${rel} ${p.category} resultSchema`).toBe(
-            CATEGORY_TO_RESULT_SCHEMA[p.category]
+            CATEGORY_TO_RESULT_SCHEMA[p.category],
           );
           expect(p.status, `${rel} ${p.category} status`).toBe('succeeded');
         });
@@ -522,7 +526,9 @@ describe('EV3-CONTRACT — afi.scored-signal-evidence.v3', () => {
         status: 'active',
       });
       // The identity facts agree with the governed registry records.
-      const credRecord = loadJSON('registries/credential-refs/credential-newsdata-reference--1.0.0.json');
+      const credRecord = loadJSON(
+        'registries/credential-refs/credential-newsdata-reference--1.0.0.json',
+      );
       expect(newsProof.credential.credentialRef).toBe(credRecord.credentialRef);
       expect(newsProof.credential.credentialKind).toBe(credRecord.credentialKind);
       expect(newsProof.credential.status).toBe(credRecord.status);
@@ -530,7 +536,7 @@ describe('EV3-CONTRACT — afi.scored-signal-evidence.v3', () => {
     });
 
     it('every keyless proof declares the explicit keyless posture (D-EV3-6)', () => {
-      ALL_COMMITTED_RECORDS().forEach(rel => {
+      ALL_COMMITTED_RECORDS().forEach((rel) => {
         loadJSON(rel).providerInvocations.forEach((p: any) => {
           if (p.credential.mode === 'keyless') {
             expect(Object.keys(p.credential), `${rel} ${p.category}`).toEqual(['mode']);
@@ -540,7 +546,7 @@ describe('EV3-CONTRACT — afi.scored-signal-evidence.v3', () => {
     });
 
     it('finalized valid records carry finalized:true iff lifecycleState is a finalized state', () => {
-      ALL_COMMITTED_RECORDS().forEach(rel => {
+      ALL_COMMITTED_RECORDS().forEach((rel) => {
         const r = loadJSON(rel);
         expect(r.finalized, rel).toBe(FINALIZED_STATES.includes(r.lifecycleState));
       });
@@ -567,7 +573,9 @@ describe('EV3-CONTRACT — afi.scored-signal-evidence.v3', () => {
     };
 
     it('invalid vector set should be exactly the authorized files (drift guard)', () => {
-      const files = readdirSync(join(rootDir, INVALID_DIR)).filter(f => f.endsWith('.json')).sort();
+      const files = readdirSync(join(rootDir, INVALID_DIR))
+        .filter((f) => f.endsWith('.json'))
+        .sort();
       expect(files).toEqual(Object.keys(EXPECTED).sort());
     });
 
@@ -587,7 +595,7 @@ describe('EV3-CONTRACT — afi.scored-signal-evidence.v3', () => {
 
     it('should reject a missing required field — including the three v3 additions', () => {
       const validate = compileEvidenceSchema();
-      EXPECTED_REQUIRED.forEach(field => {
+      EXPECTED_REQUIRED.forEach((field) => {
         const invalid: any = clone(BASE);
         delete invalid[field];
         expect(validate(invalid), `missing ${field} should be rejected`).toBe(false);
@@ -596,11 +604,11 @@ describe('EV3-CONTRACT — afi.scored-signal-evidence.v3', () => {
 
     it('should reject BOTH superseded prior-version schema consts (no dual-write shape, D-EV3-1)', () => {
       const validate = compileEvidenceSchema();
-      SUPERSEDED_SCHEMA_CONSTS.forEach(superseded => {
+      SUPERSEDED_SCHEMA_CONSTS.forEach((superseded) => {
         const invalid: any = clone(BASE);
         invalid.schema = superseded;
         expect(validate(invalid), `${superseded} must be rejected`).toBe(false);
-        expect(validate.errors!.some(e => e.instancePath === '/schema')).toBe(true);
+        expect(validate.errors!.some((e) => e.instancePath === '/schema')).toBe(true);
       });
     });
 
@@ -609,12 +617,14 @@ describe('EV3-CONTRACT — afi.scored-signal-evidence.v3', () => {
       const invalid: any = clone(BASE);
       invalid.canonicalizationVersion = 'v1';
       expect(validate(invalid)).toBe(false);
-      expect(validate.errors!.some(e => e.instancePath === '/canonicalizationVersion')).toBe(true);
+      expect(validate.errors!.some((e) => e.instancePath === '/canonicalizationVersion')).toBe(
+        true,
+      );
     });
 
     it('should reject pre-scoring lifecycle states (not persistable per D-LIFE-6)', () => {
       const validate = compileEvidenceSchema();
-      PRE_SCORING_STATES.forEach(state => {
+      PRE_SCORING_STATES.forEach((state) => {
         const invalid: any = clone(BASE);
         invalid.lifecycleState = state;
         invalid.finalized = false;
@@ -624,7 +634,7 @@ describe('EV3-CONTRACT — afi.scored-signal-evidence.v3', () => {
 
     it('should accept every persistable canonical state with a consistent finality marker', () => {
       const validate = compileEvidenceSchema();
-      PERSISTABLE_STATES.forEach(state => {
+      PERSISTABLE_STATES.forEach((state) => {
         const record: any = clone(BASE);
         record.lifecycleState = state;
         record.finalized = FINALIZED_STATES.includes(state);
@@ -645,7 +655,7 @@ describe('EV3-CONTRACT — afi.scored-signal-evidence.v3', () => {
 
     it('should reject a heavy ReactorScoredSignalDocument substituted for the thin projection', () => {
       const validate = compileEvidenceSchema();
-      ['rawUss', 'lenses', '_priceFeedMetadata', 'rawPayload'].forEach(heavyField => {
+      ['rawUss', 'lenses', '_priceFeedMetadata', 'rawPayload'].forEach((heavyField) => {
         const invalid: any = clone(BASE);
         invalid.scoredSignal[heavyField] = heavyField === 'lenses' ? [{ lens: 'x' }] : { any: 1 };
         expect(validate(invalid), `scoredSignal.${heavyField} should be rejected`).toBe(false);
@@ -654,11 +664,13 @@ describe('EV3-CONTRACT — afi.scored-signal-evidence.v3', () => {
 
     it('should reject volatile processing/storage timestamps at top level (D-EV3-4(7))', () => {
       const validate = compileEvidenceSchema();
-      ['createdAt', 'storedAt', 'updatedAt', 'scoredAt', 'processedAt', 'ingestedAt'].forEach(ts => {
-        const invalid: any = clone(BASE);
-        invalid[ts] = '2026-01-15T12:00:07Z';
-        expect(validate(invalid), `top-level ${ts} should be rejected`).toBe(false);
-      });
+      ['createdAt', 'storedAt', 'updatedAt', 'scoredAt', 'processedAt', 'ingestedAt'].forEach(
+        (ts) => {
+          const invalid: any = clone(BASE);
+          invalid[ts] = '2026-01-15T12:00:07Z';
+          expect(validate(invalid), `top-level ${ts} should be rejected`).toBe(false);
+        },
+      );
     });
 
     it('should reject a SIXTH proof (additionalItems:false)', () => {
@@ -685,11 +697,11 @@ describe('EV3-CONTRACT — afi.scored-signal-evidence.v3', () => {
     it('should reject wrong domain tags on the proof fingerprints and lane hashes', () => {
       const validate = compileEvidenceSchema();
       const cases: Array<[string, (p: any) => any]> = [
-        ['provider.recordFingerprint', p => p.provider.recordFingerprint],
-        ['providerInstance.recordFingerprint', p => p.providerInstance.recordFingerprint],
-        ['invocationInputHash', p => p.invocationInputHash],
-        ['providerResultHash', p => p.providerResultHash],
-        ['categoryResultHash', p => p.categoryResultHash],
+        ['provider.recordFingerprint', (p) => p.provider.recordFingerprint],
+        ['providerInstance.recordFingerprint', (p) => p.providerInstance.recordFingerprint],
+        ['invocationInputHash', (p) => p.invocationInputHash],
+        ['providerResultHash', (p) => p.providerResultHash],
+        ['categoryResultHash', (p) => p.categoryResultHash],
       ];
       cases.forEach(([label, pick]) => {
         const invalid: any = clone(BASE);
@@ -748,7 +760,7 @@ describe('EV3-CONTRACT — afi.scored-signal-evidence.v3', () => {
       const schema = loadJSON(AIML_PROOF_SCHEMA);
       expect(schema.properties.schema.const).toBe('afi.aiml-invocation-proof.v1');
       expect(schema.properties.hashLaw.const).toBe('tiny-brains.hash.v1');
-      ['codeConfigFingerprint', 'inputHash', 'outputHash'].forEach(f => {
+      ['codeConfigFingerprint', 'inputHash', 'outputHash'].forEach((f) => {
         expect(schema.properties[f].type, f).toBe('string');
         expect(schema.properties[f].pattern, f).toBe('^[a-f0-9]{64}$');
         expect(schema.properties[f].$ref, `${f} must NOT be a CanonicalHash $ref`).toBeUndefined();
@@ -795,7 +807,7 @@ describe('EV3-CONTRACT — afi.scored-signal-evidence.v3', () => {
 
     it('structurally excludes volatile timing facts at both levels (D-EV3-3)', () => {
       const validateAiml = compileAimlProofSchema();
-      ['startedAt', 'endedAt', 'durationMs'].forEach(field => {
+      ['startedAt', 'endedAt', 'durationMs'].forEach((field) => {
         const atInvocation: any = clone(BASE.providerInvocations[0].aimlInvocation);
         atInvocation[field] = field === 'durationMs' ? 812 : '2026-01-15T12:00:07Z';
         expect(validateAiml(atInvocation), `invocation-level ${field}`).toBe(false);
@@ -814,8 +826,7 @@ describe('EV3-CONTRACT — afi.scored-signal-evidence.v3', () => {
       badArtifact.experts[0].artifactFingerprints['chronos-bolt-tiny'] = 'DEADBEEF';
       expect(validateAiml(badArtifact)).toBe(false);
       const emptyArtifactName: any = clone(BASE.providerInvocations[0].aimlInvocation);
-      emptyArtifactName.experts[0].artifactFingerprints[''] =
-        'a'.repeat(64);
+      emptyArtifactName.experts[0].artifactFingerprints[''] = 'a'.repeat(64);
       expect(validateAiml(emptyArtifactName), 'empty artifact name (propertyNames)').toBe(false);
     });
   });
@@ -831,23 +842,23 @@ describe('EV3-CONTRACT — afi.scored-signal-evidence.v3', () => {
 
     it('category enum == the governed five-category namespace (D-FCP-1, casing exact)', () => {
       expect(proofSchema.properties.category.enum).toEqual(
-        providerSchema.properties.supportedCategories.items.enum
+        providerSchema.properties.supportedCategories.items.enum,
       );
     });
 
     it('executionClass enum mirrors afi.provider.v1 exactly', () => {
       expect(proofSchema.properties.provider.properties.executionClass.enum).toEqual(
-        providerSchema.properties.executionClass.enum
+        providerSchema.properties.executionClass.enum,
       );
     });
 
     it('credential binding mirrors afi.credential-ref.v1 kind/status vocabularies exactly', () => {
       const credentialRefBranch = proofSchema.properties.credential.oneOf[1];
       expect(credentialRefBranch.properties.credentialKind.enum).toEqual(
-        credentialRefSchema.properties.credentialKind.enum
+        credentialRefSchema.properties.credentialKind.enum,
       );
       expect(credentialRefBranch.properties.status.enum).toEqual(
-        credentialRefSchema.properties.status.enum
+        credentialRefSchema.properties.status.enum,
       );
       // Both branches are closed; the keyless branch carries ONLY the mode.
       const keylessBranch = proofSchema.properties.credential.oneOf[0];
@@ -858,20 +869,20 @@ describe('EV3-CONTRACT — afi.scored-signal-evidence.v3', () => {
 
     it('resultSchema enumerates exactly the five lowercase governed enrichment contract ids', () => {
       expect([...proofSchema.properties.resultSchema.enum].sort()).toEqual(
-        [...GOVERNED_RESULT_SCHEMAS].sort()
+        [...GOVERNED_RESULT_SCHEMAS].sort(),
       );
     });
 
     it('proof hashes pin the six D-EV3-4 domains (tags carried, never hashed)', () => {
       const tagOf = (node: any) => node.allOf[1].properties.domainTag.const;
       expect(tagOf(proofSchema.properties.provider.properties.recordFingerprint)).toBe(
-        'afi.d2.provider-record'
+        'afi.d2.provider-record',
       );
       expect(tagOf(proofSchema.properties.providerInstance.properties.recordFingerprint)).toBe(
-        'afi.d2.provider-instance-record'
+        'afi.d2.provider-instance-record',
       );
       expect(tagOf(proofSchema.properties.invocationInputHash)).toBe(
-        'afi.d2.provider-invocation-input'
+        'afi.d2.provider-invocation-input',
       );
       expect(tagOf(proofSchema.properties.providerResultHash)).toBe('afi.d2.provider-result');
       expect(tagOf(proofSchema.properties.categoryResultHash)).toBe('afi.d2.lane-output');
@@ -884,13 +895,16 @@ describe('EV3-CONTRACT — afi.scored-signal-evidence.v3', () => {
       expect(validateProof(technical), 'technical WITH priceSource').toBe(true);
       const technicalWithout = clone(BASE.providerInvocations[4]);
       delete technicalWithout.priceSource;
-      expect(validateProof(technicalWithout), 'technical WITHOUT priceSource (admitted, optional)').toBe(
-        true
-      );
-      [0, 1, 2, 3].forEach(i => {
+      expect(
+        validateProof(technicalWithout),
+        'technical WITHOUT priceSource (admitted, optional)',
+      ).toBe(true);
+      [0, 1, 2, 3].forEach((i) => {
         const other: any = clone(BASE.providerInvocations[i]);
         other.priceSource = 'blofin';
-        expect(validateProof(other), `${other.category} with priceSource must be rejected`).toBe(false);
+        expect(validateProof(other), `${other.category} with priceSource must be rejected`).toBe(
+          false,
+        );
       });
     });
   });
@@ -910,14 +924,17 @@ describe('EV3-CONTRACT — afi.scored-signal-evidence.v3', () => {
     it('should stay analyst-/strategy-/profile-NEUTRAL: no identity is pinned as the only admissible value', () => {
       const schema = loadJSON(EVIDENCE_SCHEMA);
       const stamp = schema.properties.uwrProfile;
-      ['analystId', 'strategyId', 'strategyVersion'].forEach(f => {
+      ['analystId', 'strategyId', 'strategyVersion'].forEach((f) => {
         expect(schema.properties[f].const, `${f} must not be const-pinned`).toBeUndefined();
         expect(schema.properties[f].enum, `${f} must not be enum-pinned`).toBeUndefined();
         expect(schema.properties[f].pattern, `${f} must not be pattern-pinned`).toBeUndefined();
       });
-      ['profileId', 'status', 'decisionRef'].forEach(f => {
+      ['profileId', 'status', 'decisionRef'].forEach((f) => {
         expect(stamp.properties[f].type, `uwrProfile.${f} type`).toBe('string');
-        expect(stamp.properties[f].const, `uwrProfile.${f} must not be const-pinned`).toBeUndefined();
+        expect(
+          stamp.properties[f].const,
+          `uwrProfile.${f} must not be const-pinned`,
+        ).toBeUndefined();
         expect(stamp.properties[f].enum, `uwrProfile.${f} must not be enum-pinned`).toBeUndefined();
       });
     });
@@ -930,7 +947,7 @@ describe('EV3-CONTRACT — afi.scored-signal-evidence.v3', () => {
       const missingSource: any = clone(BASE);
       delete missingSource.uwrProfile.source;
       expect(validate(missingSource)).toBe(false);
-      ['registry', 'builtin', 'unknown', '', 'REGISTRY-CONSUMED', null].forEach(bad => {
+      ['registry', 'builtin', 'unknown', '', 'REGISTRY-CONSUMED', null].forEach((bad) => {
         const invalid: any = clone(BASE);
         invalid.uwrProfile.source = bad;
         expect(validate(invalid), `source ${JSON.stringify(bad)} must be rejected`).toBe(false);
@@ -939,14 +956,14 @@ describe('EV3-CONTRACT — afi.scored-signal-evidence.v3', () => {
 
     it('should ADMIT both governed sources, and the committed records exercise BOTH', () => {
       const validate = compileEvidenceSchema();
-      GOVERNED_STAMP_SOURCES.forEach(source => {
+      GOVERNED_STAMP_SOURCES.forEach((source) => {
         const record: any = clone(BASE);
         record.uwrProfile.source = source;
         expect(admit(validate, record).ok, `source '${source}' must be admissible`).toBe(true);
       });
-      const sources = ALL_COMMITTED_RECORDS().map(rel => loadJSON(rel).uwrProfile.source);
-      GOVERNED_STAMP_SOURCES.forEach(s =>
-        expect(sources, `committed records must exercise '${s}'`).toContain(s)
+      const sources = ALL_COMMITTED_RECORDS().map((rel) => loadJSON(rel).uwrProfile.source);
+      GOVERNED_STAMP_SOURCES.forEach((s) =>
+        expect(sources, `committed records must exercise '${s}'`).toContain(s),
       );
     });
 
@@ -967,7 +984,10 @@ describe('EV3-CONTRACT — afi.scored-signal-evidence.v3', () => {
       };
       const result = admit(validate, other);
       if (!result.ok) console.error('neutrality failure:', validate.errors, result.violations);
-      expect(result.ok, 'a non-Froggy analyst with its own conforming profile must be admissible').toBe(true);
+      expect(
+        result.ok,
+        'a non-Froggy analyst with its own conforming profile must be admissible',
+      ).toBe(true);
     });
   });
 
@@ -976,18 +996,18 @@ describe('EV3-CONTRACT — afi.scored-signal-evidence.v3', () => {
       const surfaces = [
         ...ALL_COMMITTED_RECORDS(),
         ...readdirSync(join(rootDir, INVALID_DIR))
-          .filter(f => f.endsWith('.json'))
-          .map(f => `${INVALID_DIR}/${f}`),
+          .filter((f) => f.endsWith('.json'))
+          .map((f) => `${INVALID_DIR}/${f}`),
         'kats/evidence/v3/evidence-v3-hashes.kat.json',
       ];
-      surfaces.forEach(rel => {
-        const offenders = collectKeys(loadJSON(rel)).filter(k => SECRET_KEY_PATTERN.test(k));
+      surfaces.forEach((rel) => {
+        const offenders = collectKeys(loadJSON(rel)).filter((k) => SECRET_KEY_PATTERN.test(k));
         expect(offenders, `${rel} must carry no secret-named key`).toEqual([]);
       });
     });
 
     it('no committed v3 record carries a credentialed URL or authorization-header shape', () => {
-      ALL_COMMITTED_RECORDS().forEach(rel => {
+      ALL_COMMITTED_RECORDS().forEach((rel) => {
         const raw = readFileSync(join(rootDir, rel), 'utf-8');
         expect(raw, `${rel} must carry no URL`).not.toMatch(/https?:\/\//);
         expect(raw, `${rel} must carry no Bearer material`).not.toMatch(/Bearer\s/);
@@ -1015,8 +1035,8 @@ describe('EV3-CONTRACT — afi.scored-signal-evidence.v3', () => {
         'shardKey',
         '_id',
       ];
-      forbiddenProps.forEach(p =>
-        expect(Object.keys(schema.properties), `must not define '${p}'`).not.toContain(p)
+      forbiddenProps.forEach((p) =>
+        expect(Object.keys(schema.properties), `must not define '${p}'`).not.toContain(p),
       );
     });
 
@@ -1028,11 +1048,11 @@ describe('EV3-CONTRACT — afi.scored-signal-evidence.v3', () => {
         '/schemas/provider-invocation-proof/v1/',
         '/schemas/aiml-invocation-proof/v1/',
       ];
-      refs.forEach(ref =>
+      refs.forEach((ref) =>
         expect(
-          ALLOWED.some(prefix => ref.includes(prefix)),
-          `unexpected $ref ${ref}`
-        ).toBe(true)
+          ALLOWED.some((prefix) => ref.includes(prefix)),
+          `unexpected $ref ${ref}`,
+        ).toBe(true),
       );
     });
   });

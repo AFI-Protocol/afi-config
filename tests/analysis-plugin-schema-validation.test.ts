@@ -83,7 +83,9 @@ describe('FACTORY-CONTRACT — afi.analysis-plugin.v1', () => {
     it('should carry the governed-contract status and required surface fields', () => {
       const schema = loadJSON(PLUGIN_SCHEMA);
       expect(schema['x-afiStatus']).toBe('governed-contract');
-      expect(schema.$id).toBe('https://afi-protocol.org/schemas/analysis-plugin/v1/analysis-plugin.schema.json');
+      expect(schema.$id).toBe(
+        'https://afi-protocol.org/schemas/analysis-plugin/v1/analysis-plugin.schema.json',
+      );
       expect(schema.type).toBe('object');
       expect(schema.additionalProperties).toBe(false);
       expect(schema.properties.schema.const).toBe('afi.analysis-plugin.v1');
@@ -93,15 +95,15 @@ describe('FACTORY-CONTRACT — afi.analysis-plugin.v1', () => {
     it('should fix the category vocabulary EXACTLY (matching the pipeline node categories)', () => {
       const schema = loadJSON(PLUGIN_SCHEMA);
       expect(schema.properties.category.enum).toEqual(CATEGORIES);
-      const pipelineCategories = loadJSON('schemas/pipeline/v1/pipeline.schema.json').definitions.node
-        .properties.category.enum;
+      const pipelineCategories = loadJSON('schemas/pipeline/v1/pipeline.schema.json').definitions
+        .node.properties.category.enum;
       expect(schema.properties.category.enum).toEqual(pipelineCategories);
     });
 
     it('should expose NO filesystem/code-binding surface (build-time registry binding)', () => {
       const schema = loadJSON(PLUGIN_SCHEMA);
-      ['entrypoint', 'path', 'module', 'file', 'main', 'dist', 'src'].forEach(p =>
-        expect(Object.keys(schema.properties), `must not define '${p}'`).not.toContain(p)
+      ['entrypoint', 'path', 'module', 'file', 'main', 'dist', 'src'].forEach((p) =>
+        expect(Object.keys(schema.properties), `must not define '${p}'`).not.toContain(p),
       );
       expect(Object.keys(schema['x-afiConstraints'])).toContain('buildTimeBinding');
     });
@@ -116,7 +118,9 @@ describe('FACTORY-CONTRACT — afi.analysis-plugin.v1', () => {
     });
 
     it('every valid vector should validate (drift-guarded), covering analysis, merge, and scorer categories', () => {
-      const files = readdirSync(join(rootDir, VALID_DIR)).filter(f => f.endsWith('.json')).sort();
+      const files = readdirSync(join(rootDir, VALID_DIR))
+        .filter((f) => f.endsWith('.json'))
+        .sort();
       expect(files).toEqual([
         'merge-plugin.json',
         'provider-sentiment.json',
@@ -125,15 +129,15 @@ describe('FACTORY-CONTRACT — afi.analysis-plugin.v1', () => {
       ]);
       const validate = compilePluginSchema();
       const categories: string[] = [];
-      files.forEach(f => {
+      files.forEach((f) => {
         const manifest = loadJSON(`${VALID_DIR}/${f}`);
         const valid = validate(manifest);
         if (!valid) console.error(`${f} failure:`, validate.errors);
         expect(valid, `${f} should validate`).toBe(true);
         categories.push(manifest.category);
       });
-      ['sentiment', 'technical', 'merge', 'scorer'].forEach(c =>
-        expect(categories, `vectors must exercise category '${c}'`).toContain(c)
+      ['sentiment', 'technical', 'merge', 'scorer'].forEach((c) =>
+        expect(categories, `vectors must exercise category '${c}'`).toContain(c),
       );
     });
 
@@ -154,14 +158,18 @@ describe('FACTORY-CONTRACT — afi.analysis-plugin.v1', () => {
     ];
 
     it('invalid vector set should be exactly the authorized files (drift guard)', () => {
-      const files = readdirSync(join(rootDir, INVALID_DIR)).filter(f => f.endsWith('.json')).sort();
+      const files = readdirSync(join(rootDir, INVALID_DIR))
+        .filter((f) => f.endsWith('.json'))
+        .sort();
       expect(files).toEqual(EXPECTED_FILES);
     });
 
     it('every invalid vector should be rejected by the schema', () => {
       const validate = compilePluginSchema();
-      EXPECTED_FILES.forEach(file => {
-        expect(validate(loadJSON(`${INVALID_DIR}/${file}`)), `${file} must be rejected`).toBe(false);
+      EXPECTED_FILES.forEach((file) => {
+        expect(validate(loadJSON(`${INVALID_DIR}/${file}`)), `${file} must be rejected`).toBe(
+          false,
+        );
       });
     });
   });
@@ -171,7 +179,7 @@ describe('FACTORY-CONTRACT — afi.analysis-plugin.v1', () => {
 
     it('should reject a missing required field', () => {
       const validate = compilePluginSchema();
-      EXPECTED_REQUIRED.forEach(field => {
+      EXPECTED_REQUIRED.forEach((field) => {
         const invalid: any = clone(BASE);
         delete invalid[field];
         expect(validate(invalid), `missing ${field} should be rejected`).toBe(false);
@@ -180,12 +188,22 @@ describe('FACTORY-CONTRACT — afi.analysis-plugin.v1', () => {
 
     it('should reject filesystem-path-like schema refs and accept governed identifiers', () => {
       const validate = compilePluginSchema();
-      ['./dist/plugin.js', 'src/plugins/x.ts', '../afi-core/analysts/froggy.ts', 'file:///etc/passwd', 'C:\\plugins\\x.dll'].forEach(bad => {
+      [
+        './dist/plugin.js',
+        'src/plugins/x.ts',
+        '../afi-core/analysts/froggy.ts',
+        'file:///etc/passwd',
+        'C:\\plugins\\x.dll',
+      ].forEach((bad) => {
         const invalid: any = clone(BASE);
         invalid.outputSchemaRef = bad;
         expect(validate(invalid), `outputSchemaRef ${bad} must be rejected`).toBe(false);
       });
-      ['afi.usignal.v1.1', 'afi.enrichment-bundle.v1', 'https://afi-protocol.org/schemas/provenance/v1/scored-signal.schema.json'].forEach(good => {
+      [
+        'afi.usignal.v1.1',
+        'afi.enrichment-bundle.v1',
+        'https://afi-protocol.org/schemas/provenance/v1/scored-signal.schema.json',
+      ].forEach((good) => {
         const record: any = clone(BASE);
         record.outputSchemaRef = good;
         expect(validate(record), `outputSchemaRef ${good} must be accepted`).toBe(true);

@@ -82,10 +82,12 @@ The caller should provide, in natural language or structured form:
   - `all` — Run all checks
 
 Optional:
+
 - **filters**: Specific files or patterns to validate (e.g., `schemas/pipeline/v1/pipeline.schema.json`)
 - **report_format**: Output format (`summary`, `detailed`, `json`)
 
 If no inputs are provided, use conservative defaults:
+
 - **scope**: `full`
 - **checks**: `all`
 - **report_format**: `summary`
@@ -114,24 +116,30 @@ This summary should be short and precise, so humans can quickly confirm the inte
 Navigate to `afi-config/` and list files based on scope:
 
 **Full validation** (default):
+
 - Codex files: `find codex -type f \( -name "*.md" -o -name "*.json" -o -name "*.yaml" \)`
 - Schema files: `find schemas -type f -name "*.json"`
 - Governance files: `find codex/governance -type f -name "*.md"`
 - Metadata: `.afi-codex.json`
 
 **Codex only**:
+
 - `find codex -type f \( -name "*.md" -o -name "*.json" -o -name "*.yaml" \)`
 
 **Schemas only**:
+
 - `find schemas -type f -name "*.json"`
 
 **Governance only**:
+
 - `find codex/governance -type f -name "*.md"`
 
 **Metadata only**:
+
 - `.afi-codex.json`
 
 **Filtered**:
+
 - Use provided file patterns or paths
 
 ---
@@ -143,18 +151,21 @@ Based on the `checks` input, run the following:
 #### Check 1: JSON/YAML Syntax Validation
 
 For each JSON file:
+
 ```bash
 # Validate JSON syntax
 node -e "JSON.parse(require('fs').readFileSync('path/to/file.json', 'utf8'))"
 ```
 
 For each YAML file (if any):
+
 ```bash
 # Validate YAML syntax (requires js-yaml or similar)
 # Or use a simple parser check
 ```
 
 **Capture**:
+
 - Files with syntax errors
 - Error messages and line numbers
 
@@ -172,6 +183,7 @@ For each codex file and governance doc:
    - If file doesn't exist, record as broken reference
 
 **Capture**:
+
 - Broken file references (file path, source file, line number)
 - Missing files
 
@@ -191,6 +203,7 @@ For each schema file in `schemas/`:
    - Check for circular references
 
 **Capture**:
+
 - Invalid schemas (file path, error message)
 - Missing required fields
 - Unresolvable references
@@ -200,34 +213,40 @@ For each schema file in `schemas/`:
 Execute validation commands defined in `package.json`:
 
 **npm run validate**:
+
 ```bash
 cd afi-config
 npm run validate
 ```
 
 **Capture**:
+
 - Exit code (0 = pass, non-zero = fail)
 - stdout and stderr output
 - Number of tests passed/failed
 
 **npm test**:
+
 ```bash
 cd afi-config
 npm test
 ```
 
 **Capture**:
+
 - Exit code (0 = pass, non-zero = fail)
 - Test results (passed/failed/total)
 - Error messages for failed tests
 
 **npm run typecheck** (optional):
+
 ```bash
 cd afi-config
 npm run typecheck
 ```
 
 **Capture**:
+
 - Exit code (0 = pass, non-zero = fail)
 - TypeScript errors (if any)
 
@@ -257,6 +276,7 @@ Read `.afi-codex.json` and validate:
      - Valid: `afi-core`, `afi-reactor`, `afi-token`, etc.
 
 **Capture**:
+
 - Missing required fields
 - Inconsistencies between metadata and actual files
 - Invalid consumer names
@@ -268,6 +288,7 @@ Read `.afi-codex.json` and validate:
 Organize findings by severity:
 
 **ERRORS** (must fix):
+
 - JSON/YAML syntax errors
 - Broken file references in critical paths
 - Invalid schemas (fail JSON Schema meta-schema validation)
@@ -275,12 +296,14 @@ Organize findings by severity:
 - Missing required fields in `.afi-codex.json`
 
 **WARNINGS** (should fix):
+
 - Broken file references in documentation
 - Missing optional fields in schemas
 - Inconsistencies in `.afi-codex.json` metadata
 - TypeScript type errors (if not critical)
 
 **INFO** (nice to have):
+
 - Formatting inconsistencies
 - Typos in comments
 - Outdated documentation
@@ -300,12 +323,14 @@ Generate a concise, human-readable report:
 **Timestamp**: 2025-11-28 14:30:00 UTC
 
 **Files Scanned**:
+
 - Codex files: 4 (codex/governance/droids/*.md, codex/governance/README.md)
-- Schema files: 7 (schemas/*.json, schemas/usignal/v1/*.json)
+- Schema files: 7 (schemas/_.json, schemas/usignal/v1/_.json)
 - Governance files: 3 (codex/governance/droids/*.md)
 - Metadata: 1 (.afi-codex.json)
 
 **Validation Results**:
+
 - ✅ JSON/YAML syntax: PASS (12/12 files valid)
 - ✅ File references: PASS (0 broken references)
 - ✅ Schema compliance: PASS (7/7 schemas valid)
@@ -352,18 +377,22 @@ Include full list of files scanned, detailed error messages, and suggested fixes
 If validation reveals critical issues, escalate:
 
 **Schema breaking changes**:
+
 - Tag @afi-core-team for cross-repo coordination
 - Explain which schemas are affected and which repos consume them
 
 **Governance inconsistencies**:
+
 - Tag @afi-governance-team for review
 - Explain which governance artifacts are affected
 
 **Systemic validation failures**:
+
 - Tag @afi-core-team for architecture review
 - Provide full validation output and error messages
 
 **Unclear requirements**:
+
 - Ask for clarification on validation scope or expected behavior
 
 ---
@@ -402,16 +431,19 @@ If a request forces you towards any of the above, STOP and escalate.
 At the end of a successful `validate-codex-config` operation, produce a summary that includes:
 
 **Validation Scope**:
+
 - Which files or directories were validated
 - Which validation checks were run
 
 **Files Scanned**:
+
 - Number of codex files
 - Number of schema files
 - Number of governance files
 - Number of metadata files
 
 **Validation Results**:
+
 - JSON/YAML syntax: PASS/FAIL (number of files with errors)
 - File references: PASS/FAIL (number of broken references)
 - Schema compliance: PASS/FAIL (number of invalid schemas)
@@ -419,16 +451,19 @@ At the end of a successful `validate-codex-config` operation, produce a summary 
 - Metadata: PASS/FAIL (consistency check results)
 
 **Issues Found**:
+
 - List of errors (critical issues)
 - List of warnings (should fix)
 - List of info items (nice to have)
 
 **Overall Status**:
+
 - ✅ CLEAN — No issues found
 - ⚠️ WARNINGS — Some warnings, no errors
 - ❌ ERRORS — Critical issues found
 
 **Next Steps**:
+
 - Action items (e.g., "Fix broken reference in codex/governance/README.md")
 - Escalation recommendations (if needed)
 
@@ -439,9 +474,11 @@ At the end of a successful `validate-codex-config` operation, produce a summary 
 ### Example A: Full Validation
 
 **Request**:
+
 > "Validate the entire afi-config codex to make sure there are no broken references or invalid schemas."
 
 **Inputs**:
+
 - **scope**: `full`
 - **checks**: `all`
 - **report_format**: `summary`
@@ -469,12 +506,14 @@ At the end of a successful `validate-codex-config` operation, produce a summary 
 **Scope**: Full validation (codex/, schemas/, governance/, metadata)
 
 **Files Scanned**: 15 total
+
 - Codex files: 4
 - Schema files: 7
 - Governance files: 3
 - Metadata: 1
 
 **Validation Results**:
+
 - ✅ JSON/YAML syntax: PASS (15/15 files valid)
 - ✅ File references: PASS (0 broken references)
 - ✅ Schema compliance: PASS (7/7 schemas valid)
@@ -494,9 +533,11 @@ At the end of a successful `validate-codex-config` operation, produce a summary 
 ### Example B: Schema-Only Validation
 
 **Request**:
+
 > "Check that all schemas in `schemas/` are valid JSON Schema Draft 2020-12."
 
 **Inputs**:
+
 - **scope**: `schemas`
 - **checks**: `schema-compliance`
 - **report_format**: `summary`
@@ -517,6 +558,7 @@ At the end of a successful `validate-codex-config` operation, produce a summary 
 **Scope**: Schema validation only (schemas/)
 
 **Files Scanned**: 7 schemas
+
 - character.schema.json
 - pipeline/v1/pipeline.schema.json
 - plugin-manifest.schema.json
@@ -525,6 +567,7 @@ At the end of a successful `validate-codex-config` operation, produce a summary 
 - usignal/v1/*.json
 
 **Validation Results**:
+
 - ✅ Schema compliance: PASS (7/7 schemas valid JSON Schema Draft 2020-12)
 
 **Issues Found**: None
@@ -539,9 +582,11 @@ At the end of a successful `validate-codex-config` operation, produce a summary 
 ### Example C: Validation with Errors
 
 **Request**:
+
 > "Validate codex and report any broken file references."
 
 **Inputs**:
+
 - **scope**: `codex`
 - **checks**: `references`
 - **report_format**: `detailed`
@@ -566,6 +611,7 @@ At the end of a successful `validate-codex-config` operation, produce a summary 
 **Files Scanned**: 4 codex files
 
 **Validation Results**:
+
 - ❌ File references: FAIL (1 broken reference)
 
 **Issues Found**:
@@ -581,6 +627,7 @@ At the end of a successful `validate-codex-config` operation, produce a summary 
 **Overall Status**: ❌ ERRORS
 
 **Next Steps**:
+
 1. Fix broken reference in `codex/governance/README.md` line 15
 2. Re-run validation to confirm fix
 ```

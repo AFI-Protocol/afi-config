@@ -54,12 +54,15 @@ function clone<T>(value: T): T {
 
 const CANONICAL_HASH_SCHEMA = 'schemas/provenance/v1/canonical-hash.schema.json';
 const CONFIG_SCHEMA = 'schemas/analyst-strategy-config/v1/analyst-strategy-config.schema.json';
-const REGISTRATION_SCHEMA = 'schemas/analyst-strategy-registration/v1/analyst-strategy-registration.schema.json';
+const REGISTRATION_SCHEMA =
+  'schemas/analyst-strategy-registration/v1/analyst-strategy-registration.schema.json';
 const BINDING_SCHEMA = 'schemas/provider-strategy-binding/v1/provider-strategy-binding.schema.json';
 
 const CONFIG_EXAMPLE = 'examples/analyst-strategy-config/v1/analyst-strategy-config.example.json';
-const REGISTRATION_EXAMPLE = 'examples/analyst-strategy-registration/v1/analyst-strategy-registration.example.json';
-const BINDING_EXAMPLE = 'examples/provider-strategy-binding/v1/provider-strategy-binding.example.json';
+const REGISTRATION_EXAMPLE =
+  'examples/analyst-strategy-registration/v1/analyst-strategy-registration.example.json';
+const BINDING_EXAMPLE =
+  'examples/provider-strategy-binding/v1/provider-strategy-binding.example.json';
 
 function compileWithHash(schemaFile: string) {
   const ajv = createAjv();
@@ -72,13 +75,16 @@ function compileWithHash(schemaFile: string) {
 // ---------------------------------------------------------------------------
 
 /** D-OBJ-3: strategyId's embedded major (trailing _v<major>) == strategyVersion major. */
-function majorAgreementViolations(triple: { strategyId?: string; strategyVersion?: string }): string[] {
+function majorAgreementViolations(triple: {
+  strategyId?: string;
+  strategyVersion?: string;
+}): string[] {
   const v: string[] = [];
   const idMajor = /_v(\d+)$/.exec(triple.strategyId ?? '')?.[1];
   const versionMajor = /^(\d+)\./.exec(triple.strategyVersion ?? '')?.[1];
   if (idMajor === undefined || versionMajor === undefined || idMajor !== versionMajor) {
     v.push(
-      `strategyId embedded major (${idMajor ?? 'none'}) != strategyVersion major (${versionMajor ?? 'none'})`
+      `strategyId embedded major (${idMajor ?? 'none'}) != strategyVersion major (${versionMajor ?? 'none'})`,
     );
   }
   return v;
@@ -93,7 +99,7 @@ function bindingViolations(b: any): string[] {
       (t: any) =>
         t.analystId === b.defaultStrategy.analystId &&
         t.strategyId === b.defaultStrategy.strategyId &&
-        t.strategyVersion === b.defaultStrategy.strategyVersion
+        t.strategyVersion === b.defaultStrategy.strategyVersion,
     );
     if (!member) v.push('defaultStrategy is not a member of allowedStrategies');
   }
@@ -118,17 +124,19 @@ function canonicalize(v: unknown): string {
     '{' +
     Object.keys(v as object)
       .sort()
-      .map(k => JSON.stringify(k) + ':' + canonicalize((v as any)[k]))
+      .map((k) => JSON.stringify(k) + ':' + canonicalize((v as any)[k]))
       .join(',') +
     '}'
   );
 }
 function canonicalSha256(obj: any, excluded: string[]): string {
   const stripped: any = {};
-  Object.keys(obj).forEach(k => {
+  Object.keys(obj).forEach((k) => {
     if (!excluded.includes(k)) stripped[k] = obj[k];
   });
-  return createHash('sha256').update(Buffer.from(canonicalize(stripped), 'utf-8')).digest('hex');
+  return createHash('sha256')
+    .update(Buffer.from(canonicalize(stripped), 'utf-8'))
+    .digest('hex');
 }
 
 describe('FACTORY-CONTRACT — afi.analyst-strategy-config.v1', () => {
@@ -145,20 +153,31 @@ describe('FACTORY-CONTRACT — afi.analyst-strategy-config.v1', () => {
       expect(schema['x-afiStatus']).toBe('governed-contract');
       expect(schema.properties.schema.const).toBe('afi.analyst-strategy-config.v1');
       expect(schema.properties.analystId.pattern).toBe('^[a-z0-9-]+$');
-      expect(schema.properties.strategyId.pattern).toBe('^[a-z][a-z0-9]*(_[a-z0-9]+)*_v(0|[1-9]\\d*)$');
+      expect(schema.properties.strategyId.pattern).toBe(
+        '^[a-z][a-z0-9]*(_[a-z0-9]+)*_v(0|[1-9]\\d*)$',
+      );
       // semver WITHOUT v prefix — the D-OBJ-3 format, unlike pipelineVersion.
       expect(schema.properties.strategyVersion.pattern).toBe(
-        '^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)$'
+        '^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)$',
       );
     });
 
     it('should require the full selection surface and reuse CanonicalHash by $ref', () => {
       const schema = loadJSON(CONFIG_SCHEMA);
       expect([...schema.required].sort()).toEqual(
-        ['schema', 'analystId', 'strategyId', 'strategyVersion', 'pipelineRef', 'scorerRef', 'uwrProfileRef', 'decayConfig'].sort()
+        [
+          'schema',
+          'analystId',
+          'strategyId',
+          'strategyVersion',
+          'pipelineRef',
+          'scorerRef',
+          'uwrProfileRef',
+          'decayConfig',
+        ].sort(),
       );
       expect(schema.properties.pipelineRef.properties.manifestHash.$ref).toBe(
-        'https://afi-protocol.org/schemas/provenance/v1/canonical-hash.schema.json'
+        'https://afi-protocol.org/schemas/provenance/v1/canonical-hash.schema.json',
       );
       expect(Object.keys(schema['x-afiConstraints'])).toContain('strategyIdMajorAgreement');
       expect(Object.keys(schema['x-afiConstraints'])).toContain('boundedOverrides');
@@ -176,7 +195,7 @@ describe('FACTORY-CONTRACT — afi.analyst-strategy-config.v1', () => {
       // (canonical-json-hashing.v1: description/metadata excluded).
       const pipeline = loadJSON('examples/pipeline/v1/pipeline.example.json');
       expect(config.pipelineRef.manifestHash.value).toBe(
-        canonicalSha256(pipeline, ['description', 'metadata'])
+        canonicalSha256(pipeline, ['description', 'metadata']),
       );
       // Scorer agreement with the referenced pipeline's single scorer node.
       const scorerNode = pipeline.nodes.find((n: any) => n.category === 'scorer');
@@ -185,11 +204,13 @@ describe('FACTORY-CONTRACT — afi.analyst-strategy-config.v1', () => {
     });
 
     it('every valid vector should be admissible (drift-guarded), covering BOTH decayConfig forms', () => {
-      const files = readdirSync(join(rootDir, VALID_DIR)).filter(f => f.endsWith('.json')).sort();
+      const files = readdirSync(join(rootDir, VALID_DIR))
+        .filter((f) => f.endsWith('.json'))
+        .sort();
       expect(files).toEqual(['inline-decay.json', 'ref-decay.json']);
       const validate = compileWithHash(CONFIG_SCHEMA);
       const forms: string[] = [];
-      files.forEach(f => {
+      files.forEach((f) => {
         const config = loadJSON(`${VALID_DIR}/${f}`);
         const result = admit(validate, config, majorAgreementViolations(config));
         if (!result.ok) console.error(`${f} failure:`, validate.errors, result.violations);
@@ -211,7 +232,9 @@ describe('FACTORY-CONTRACT — afi.analyst-strategy-config.v1', () => {
         'node-override-bad-shape.json': { schemaValid: false, semanticOk: true },
         'extra-properties.json': { schemaValid: false, semanticOk: true },
       };
-      const files = readdirSync(join(rootDir, INVALID_DIR)).filter(f => f.endsWith('.json')).sort();
+      const files = readdirSync(join(rootDir, INVALID_DIR))
+        .filter((f) => f.endsWith('.json'))
+        .sort();
       expect(files).toEqual(Object.keys(EXPECTED).sort());
       const validate = compileWithHash(CONFIG_SCHEMA);
       Object.entries(EXPECTED).forEach(([file, expected]) => {
@@ -257,7 +280,7 @@ describe('FACTORY-CONTRACT — afi.analyst-strategy-registration.v1', () => {
           'status',
           'registeredAt',
           'registrationRef',
-        ].sort()
+        ].sort(),
       );
       expect(schema.properties.status.enum).toEqual(['active', 'inactive']);
       expect(schema.properties.providerBindingPolicy.properties.mode.enum).toEqual([
@@ -278,7 +301,8 @@ describe('FACTORY-CONTRACT — afi.analyst-strategy-registration.v1', () => {
       const validate = compileWithHash(REGISTRATION_SCHEMA);
       const reg = loadJSON(REGISTRATION_EXAMPLE);
       const result = admit(validate, reg, majorAgreementViolations(reg));
-      if (!result.ok) console.error('registration example failure:', validate.errors, result.violations);
+      if (!result.ok)
+        console.error('registration example failure:', validate.errors, result.violations);
       expect(result.ok).toBe(true);
       // configRef resolution (x-afiConstraints.configResolution), realized here:
       // the referenced config artifact's canonical hash (metadata excluded) must
@@ -292,18 +316,22 @@ describe('FACTORY-CONTRACT — afi.analyst-strategy-registration.v1', () => {
     });
 
     it('every valid vector should be admissible (drift-guarded), covering BOTH binding-policy modes, with resolving configRefs', () => {
-      const files = readdirSync(join(rootDir, VALID_DIR)).filter(f => f.endsWith('.json')).sort();
+      const files = readdirSync(join(rootDir, VALID_DIR))
+        .filter((f) => f.endsWith('.json'))
+        .sort();
       expect(files).toEqual(['any-authenticated.json', 'explicit-bindings.json']);
       const validate = compileWithHash(REGISTRATION_SCHEMA);
       const modes: string[] = [];
-      files.forEach(f => {
+      files.forEach((f) => {
         const reg = loadJSON(`${VALID_DIR}/${f}`);
         const result = admit(validate, reg, majorAgreementViolations(reg));
         if (!result.ok) console.error(`${f} failure:`, validate.errors, result.violations);
         expect(result.ok, `${f} should be admissible`).toBe(true);
         modes.push(reg.providerBindingPolicy.mode);
         const config = loadJSON(reg.configRef.replace(/^afi-config\//, ''));
-        expect(reg.analystConfigHash.value, `${f} hash pin`).toBe(canonicalSha256(config, ['metadata']));
+        expect(reg.analystConfigHash.value, `${f} hash pin`).toBe(
+          canonicalSha256(config, ['metadata']),
+        );
       });
       expect(modes.sort()).toEqual(['any-authenticated', 'explicit']);
     });
@@ -317,7 +345,9 @@ describe('FACTORY-CONTRACT — afi.analyst-strategy-registration.v1', () => {
         'strategy-id-major-mismatch.json': { schemaValid: true, semanticOk: false },
         'extra-properties.json': { schemaValid: false, semanticOk: true },
       };
-      const files = readdirSync(join(rootDir, INVALID_DIR)).filter(f => f.endsWith('.json')).sort();
+      const files = readdirSync(join(rootDir, INVALID_DIR))
+        .filter((f) => f.endsWith('.json'))
+        .sort();
       expect(files).toEqual(Object.keys(EXPECTED).sort());
       const validate = compileWithHash(REGISTRATION_SCHEMA);
       Object.entries(EXPECTED).forEach(([file, expected]) => {
@@ -382,16 +412,18 @@ describe('FACTORY-CONTRACT — afi.provider-strategy-binding.v1', () => {
           (t: any) =>
             t.analystId === reg.analystId &&
             t.strategyId === reg.strategyId &&
-            t.strategyVersion === reg.strategyVersion
-        )
+            t.strategyVersion === reg.strategyVersion,
+        ),
       ).toBe(true);
     });
 
     it('every valid vector should be admissible (drift-guarded), with and without defaultStrategy', () => {
-      const files = readdirSync(join(rootDir, VALID_DIR)).filter(f => f.endsWith('.json')).sort();
+      const files = readdirSync(join(rootDir, VALID_DIR))
+        .filter((f) => f.endsWith('.json'))
+        .sort();
       expect(files).toEqual(['gateway-no-default.json', 'webhook-default.json']);
       const validate = compileWithHash(BINDING_SCHEMA);
-      files.forEach(f => {
+      files.forEach((f) => {
         const binding = loadJSON(`${VALID_DIR}/${f}`);
         const result = admit(validate, binding, bindingViolations(binding));
         if (!result.ok) console.error(`${f} failure:`, validate.errors, result.violations);
@@ -410,7 +442,9 @@ describe('FACTORY-CONTRACT — afi.provider-strategy-binding.v1', () => {
         'bad-triple-version.json': { schemaValid: false, semanticOk: false },
         'secret-material-extra-property.json': { schemaValid: false, semanticOk: true },
       };
-      const files = readdirSync(join(rootDir, INVALID_DIR)).filter(f => f.endsWith('.json')).sort();
+      const files = readdirSync(join(rootDir, INVALID_DIR))
+        .filter((f) => f.endsWith('.json'))
+        .sort();
       expect(files).toEqual(Object.keys(EXPECTED).sort());
       const validate = compileWithHash(BINDING_SCHEMA);
       Object.entries(EXPECTED).forEach(([file, expected]) => {

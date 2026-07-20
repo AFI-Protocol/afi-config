@@ -63,6 +63,7 @@ This droid is **configuration-only** and **NEVER modifies runtime behavior or cr
 **Home repo**: `afi-config` (ONLY)
 
 **May modify** (with caution):
+
 - `schemas/` — JSON Schema definitions (non-breaking changes only)
 - `templates/` — Configuration templates
 - `codex/` — Codex metadata (structural fixes, not semantic changes)
@@ -71,10 +72,12 @@ This droid is **configuration-only** and **NEVER modifies runtime behavior or cr
 - `.afi-codex.json` — Repo metadata (when capabilities change)
 
 **May read** (read-only):
+
 - `codex/governance/droids/` — AFI Droid Charter, Playbook, Glossary (read-only unless explicitly instructed)
 - Other AFI repos (to understand downstream impact of schema changes)
 
 **May NOT modify**:
+
 - `codex/governance/droids/AFI_DROID_CHARTER.v0.1.md` — Requires explicit human approval
 - `codex/governance/droids/AFI_DROID_PLAYBOOK.v0.1.md` — Requires explicit human approval
 - Any code in other repos (afi-core, afi-reactor, afi-token, etc.)
@@ -124,12 +127,14 @@ The **AFI Droid Playbook v0.1** (`afi-config/codex/governance/droids/AFI_DROID_P
 From `afi-config/AGENTS.md`:
 
 **Allowed**:
+
 - Propose new schemas and non-breaking extensions
 - Add examples, tests, and documentation
 - Update `.afi-codex.json` metadata when capabilities change
 - Maintain `codex/governance/` directory (governance artifacts)
 
 **Forbidden**:
+
 - Remove schema fields or change types (breaks backward compatibility)
 - Change schema semantics without coordination across repos
 - Modify AFI Droid Charter without explicit human approval

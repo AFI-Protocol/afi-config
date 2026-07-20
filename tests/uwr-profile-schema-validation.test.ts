@@ -96,7 +96,7 @@ function compileUwrSchema(schemaFile: string) {
 
 describe('Version-Pinned UWR Profile v0 (PR-UWR-CONFIG)', () => {
   describe('Schema Compilation', () => {
-    ALL_UWR_SCHEMAS.forEach(schemaFile => {
+    ALL_UWR_SCHEMAS.forEach((schemaFile) => {
       it(`should compile ${schemaFile} without errors`, () => {
         expect(() => {
           compileUwrSchema(schemaFile);
@@ -109,12 +109,11 @@ describe('Version-Pinned UWR Profile v0 (PR-UWR-CONFIG)', () => {
     });
 
     it('all uwr-profile draft schemas should be marked draft-non-implementation', () => {
-      ALL_UWR_SCHEMAS.forEach(schemaFile => {
+      ALL_UWR_SCHEMAS.forEach((schemaFile) => {
         const schema = loadJSON(schemaFile);
-        expect(
-          schema['x-afiStatus'],
-          `${schemaFile} should carry x-afiStatus draft marker`
-        ).toBe('draft-non-implementation');
+        expect(schema['x-afiStatus'], `${schemaFile} should carry x-afiStatus draft marker`).toBe(
+          'draft-non-implementation',
+        );
       });
     });
   });
@@ -216,7 +215,7 @@ describe('Version-Pinned UWR Profile v0 (PR-UWR-CONFIG)', () => {
         'riskWeight',
         'insightWeight',
       ]);
-      Object.values(registry.weights).forEach(weight => {
+      Object.values(registry.weights).forEach((weight) => {
         expect(weight).toBe(0.25);
       });
     });
@@ -281,7 +280,7 @@ describe('Version-Pinned UWR Profile v0 (PR-UWR-CONFIG)', () => {
 
     it('should contain the D2 M2 golden anchor verbatim (uwrScore 0.1875)', () => {
       const golden = scoreKat.vectors.find(
-        (v: any) => v.vectorId === 'uwr-score-d2m2-golden-anchor'
+        (v: any) => v.vectorId === 'uwr-score-d2m2-golden-anchor',
       );
 
       expect(golden).toBeDefined();
@@ -292,17 +291,16 @@ describe('Version-Pinned UWR Profile v0 (PR-UWR-CONFIG)', () => {
     it('should cover every mandated uwrScore anchor', () => {
       const expectedScores = scoreKat.vectors.map((v: any) => v.expected.uwrScore);
 
-      MANDATED_SCORE_ANCHORS.forEach(anchor => {
+      MANDATED_SCORE_ANCHORS.forEach((anchor) => {
         expect(expectedScores, `anchor ${anchor} must be present`).toContain(anchor);
       });
     });
 
     it('every score vector should serialize axes in the pinned order (UP-4)', () => {
       scoreKat.vectors.forEach((v: any) => {
-        expect(
-          Object.keys(v.axes),
-          `vector ${v.vectorId} axes must be in pinned order`
-        ).toEqual(PINNED_AXES);
+        expect(Object.keys(v.axes), `vector ${v.vectorId} axes must be in pinned order`).toEqual(
+          PINNED_AXES,
+        );
       });
     });
 
@@ -311,13 +309,13 @@ describe('Version-Pinned UWR Profile v0 (PR-UWR-CONFIG)', () => {
       expect([...halfLives].sort((a: any, b: any) => a - b)).toEqual([8, 60, 720, 5040]);
       expect(decayKat.vectors.length).toBe(32);
 
-      PINNED_TEMPLATES.forEach(template => {
+      PINNED_TEMPLATES.forEach((template) => {
         const templateVectors = decayKat.vectors.filter(
-          (v: any) => v.templateId === template.templateId
+          (v: any) => v.templateId === template.templateId,
         );
         expect(
           templateVectors.length,
-          `${template.templateId} should carry 8 vectors (2 bases x 4 grid points)`
+          `${template.templateId} should carry 8 vectors (2 bases x 4 grid points)`,
         ).toBe(8);
       });
     });
@@ -341,7 +339,7 @@ describe('Version-Pinned UWR Profile v0 (PR-UWR-CONFIG)', () => {
       invalid.profileId = 'uwr-default-stub';
 
       expect(validate(invalid)).toBe(false);
-      expect(validate.errors!.some(e => e.instancePath === '/profileId')).toBe(true);
+      expect(validate.errors!.some((e) => e.instancePath === '/profileId')).toBe(true);
     });
 
     it('should reject the human alias used as an identifier (UP-1)', () => {
@@ -350,7 +348,7 @@ describe('Version-Pinned UWR Profile v0 (PR-UWR-CONFIG)', () => {
       invalid.profileId = HUMAN_ALIAS;
 
       expect(validate(invalid)).toBe(false);
-      expect(validate.errors!.some(e => e.instancePath === '/profileId')).toBe(true);
+      expect(validate.errors!.some((e) => e.instancePath === '/profileId')).toBe(true);
     });
 
     it('should reject a missing profileId (UP-2)', () => {
@@ -359,7 +357,7 @@ describe('Version-Pinned UWR Profile v0 (PR-UWR-CONFIG)', () => {
       delete invalid.profileId;
 
       expect(validate(invalid)).toBe(false);
-      expect(validate.errors!.some(e => e.message?.includes('profileId'))).toBe(true);
+      expect(validate.errors!.some((e) => e.message?.includes('profileId'))).toBe(true);
     });
 
     it('should reject a wrong schema format version', () => {
@@ -368,7 +366,7 @@ describe('Version-Pinned UWR Profile v0 (PR-UWR-CONFIG)', () => {
       invalid.schema = 'afi.uwr-profile.v1';
 
       expect(validate(invalid)).toBe(false);
-      expect(validate.errors!.some(e => e.instancePath === '/schema')).toBe(true);
+      expect(validate.errors!.some((e) => e.instancePath === '/schema')).toBe(true);
     });
 
     it('should reject a wrong or missing x-afiStatus marker (UP-12)', () => {
@@ -389,21 +387,18 @@ describe('Version-Pinned UWR Profile v0 (PR-UWR-CONFIG)', () => {
       invalid.status = 'production';
 
       expect(validate(invalid)).toBe(false);
-      expect(validate.errors!.some(e => e.instancePath === '/status')).toBe(true);
+      expect(validate.errors!.some((e) => e.instancePath === '/status')).toBe(true);
     });
 
     it('should reject any weight other than 0.25, including near-misses (UP-5)', () => {
       const validate = compileUwrSchema(PROFILE_SCHEMA);
 
-      ['structureWeight', 'executionWeight', 'riskWeight', 'insightWeight'].forEach(weightKey => {
+      ['structureWeight', 'executionWeight', 'riskWeight', 'insightWeight'].forEach((weightKey) => {
         const invalid: any = clone(VALID_PROFILE);
         invalid.weights[weightKey] = 0.3;
 
-        expect(
-          validate(invalid),
-          `weights.${weightKey} = 0.3 should be rejected`
-        ).toBe(false);
-        expect(validate.errors!.some(e => e.instancePath === `/weights/${weightKey}`)).toBe(true);
+        expect(validate(invalid), `weights.${weightKey} = 0.3 should be rejected`).toBe(false);
+        expect(validate.errors!.some((e) => e.instancePath === `/weights/${weightKey}`)).toBe(true);
       });
 
       const nearMiss: any = clone(VALID_PROFILE);
@@ -417,7 +412,7 @@ describe('Version-Pinned UWR Profile v0 (PR-UWR-CONFIG)', () => {
       delete invalid.weights.insightWeight;
 
       expect(validate(invalid)).toBe(false);
-      expect(validate.errors!.some(e => e.message?.includes('insightWeight'))).toBe(true);
+      expect(validate.errors!.some((e) => e.message?.includes('insightWeight'))).toBe(true);
     });
 
     it('should reject an added fifth weight (UP-4 closed axis set)', () => {
@@ -433,7 +428,7 @@ describe('Version-Pinned UWR Profile v0 (PR-UWR-CONFIG)', () => {
 
       const mutations: Record<string, string[]> = {
         'dropped insight': ['structure', 'execution', 'risk'],
-        'reordered': ['execution', 'structure', 'risk', 'insight'],
+        reordered: ['execution', 'structure', 'risk', 'insight'],
         'afi-gateway drift': ['utility', 'workQuality', 'rarity', 'insight'],
         'appended fifth axis': ['structure', 'execution', 'risk', 'insight', 'momentum'],
       };
@@ -443,7 +438,7 @@ describe('Version-Pinned UWR Profile v0 (PR-UWR-CONFIG)', () => {
         invalid.axes = axes;
 
         expect(validate(invalid), `axes mutation '${label}' should be rejected`).toBe(false);
-        expect(validate.errors!.some(e => e.instancePath === '/axes')).toBe(true);
+        expect(validate.errors!.some((e) => e.instancePath === '/axes')).toBe(true);
       });
     });
 
@@ -452,7 +447,9 @@ describe('Version-Pinned UWR Profile v0 (PR-UWR-CONFIG)', () => {
 
       const withModerate: any = clone(VALID_PROFILE);
       withModerate.outputSurface.riskBucketTaxonomy = ['low', 'moderate', 'high', 'extreme'];
-      expect(validate(withModerate), `taxonomy containing 'moderate' should be rejected`).toBe(false);
+      expect(validate(withModerate), `taxonomy containing 'moderate' should be rejected`).toBe(
+        false,
+      );
 
       const extended: any = clone(VALID_PROFILE);
       extended.outputSurface.riskBucketTaxonomy = [...PINNED_TAXONOMY, 'extreme-plus'];
@@ -466,7 +463,7 @@ describe('Version-Pinned UWR Profile v0 (PR-UWR-CONFIG)', () => {
       badScoreMax.outputSurface.uwrScoreRange.max = 2;
       expect(validate(badScoreMax)).toBe(false);
       expect(
-        validate.errors!.some(e => e.instancePath === '/outputSurface/uwrScoreRange/max')
+        validate.errors!.some((e) => e.instancePath === '/outputSurface/uwrScoreRange/max'),
       ).toBe(true);
 
       const badConvictionMin: any = clone(VALID_PROFILE);
@@ -480,7 +477,7 @@ describe('Version-Pinned UWR Profile v0 (PR-UWR-CONFIG)', () => {
       invalid.engine.function = 'whitepaperCombiner';
 
       expect(validate(invalid)).toBe(false);
-      expect(validate.errors!.some(e => e.instancePath === '/engine/function')).toBe(true);
+      expect(validate.errors!.some((e) => e.instancePath === '/engine/function')).toBe(true);
     });
 
     it('should reject decay template mutations: half-life, id, thetaBias (UP-7)', () => {
@@ -498,9 +495,11 @@ describe('Version-Pinned UWR Profile v0 (PR-UWR-CONFIG)', () => {
 
         expect(
           validate(invalid),
-          `templates[${index}].halfLifeMinutes = ${halfLife} should be rejected`
+          `templates[${index}].halfLifeMinutes = ${halfLife} should be rejected`,
         ).toBe(false);
-        expect(validate.errors!.some(e => e.instancePath === '/decaySurface/templates')).toBe(true);
+        expect(validate.errors!.some((e) => e.instancePath === '/decaySurface/templates')).toBe(
+          true,
+        );
       });
 
       const badId: any = clone(VALID_PROFILE);
@@ -515,18 +514,22 @@ describe('Version-Pinned UWR Profile v0 (PR-UWR-CONFIG)', () => {
     it('should reject non-pinned decay models and unit drift (UP-7)', () => {
       const validate = compileUwrSchema(PROFILE_SCHEMA);
 
-      ['linear', 'cliff'].forEach(model => {
+      ['linear', 'cliff'].forEach((model) => {
         const invalid: any = clone(VALID_PROFILE);
         invalid.decaySurface.decayModel = model;
 
         expect(validate(invalid), `decayModel '${model}' should be rejected`).toBe(false);
-        expect(validate.errors!.some(e => e.instancePath === '/decaySurface/decayModel')).toBe(true);
+        expect(validate.errors!.some((e) => e.instancePath === '/decaySurface/decayModel')).toBe(
+          true,
+        );
       });
 
       const hours: any = clone(VALID_PROFILE);
       hours.decaySurface.unit = 'hours';
-      expect(validate(hours), `unit 'hours' should be rejected (pinned unit is minutes)`).toBe(false);
-      expect(validate.errors!.some(e => e.instancePath === '/decaySurface/unit')).toBe(true);
+      expect(validate(hours), `unit 'hours' should be rejected (pinned unit is minutes)`).toBe(
+        false,
+      );
+      expect(validate.errors!.some((e) => e.instancePath === '/decaySurface/unit')).toBe(true);
     });
 
     it('should reject horizon-selection mutations (UP-7)', () => {
@@ -536,7 +539,7 @@ describe('Version-Pinned UWR Profile v0 (PR-UWR-CONFIG)', () => {
       badLongTerm.decaySurface.horizonSelection.longTerm = 'decay-swing-v1';
       expect(validate(badLongTerm)).toBe(false);
       expect(
-        validate.errors!.some(e => e.instancePath === '/decaySurface/horizonSelection/longTerm')
+        validate.errors!.some((e) => e.instancePath === '/decaySurface/horizonSelection/longTerm'),
       ).toBe(true);
 
       const badUnknown: any = clone(VALID_PROFILE);
@@ -551,7 +554,7 @@ describe('Version-Pinned UWR Profile v0 (PR-UWR-CONFIG)', () => {
       badThreshold.qualification.minDecayScoreThreshold = 0.6;
       expect(validate(badThreshold)).toBe(false);
       expect(
-        validate.errors!.some(e => e.instancePath === '/qualification/minDecayScoreThreshold')
+        validate.errors!.some((e) => e.instancePath === '/qualification/minDecayScoreThreshold'),
       ).toBe(true);
 
       const badWindow: any = clone(VALID_PROFILE);
@@ -573,7 +576,9 @@ describe('Version-Pinned UWR Profile v0 (PR-UWR-CONFIG)', () => {
       const badAnalyst: any = clone(VALID_PROFILE);
       badAnalyst.scorerIdentity.analystId = 'kermit';
       expect(validate(badAnalyst)).toBe(false);
-      expect(validate.errors!.some(e => e.instancePath === '/scorerIdentity/analystId')).toBe(true);
+      expect(validate.errors!.some((e) => e.instancePath === '/scorerIdentity/analystId')).toBe(
+        true,
+      );
 
       const badStrategy: any = clone(VALID_PROFILE);
       badStrategy.scorerIdentity.strategyId = 'trend_pullback_v2';
@@ -596,10 +601,7 @@ describe('Version-Pinned UWR Profile v0 (PR-UWR-CONFIG)', () => {
         const invalid: any = clone(VALID_PROFILE);
         invalid[field] = value;
 
-        expect(
-          validate(invalid),
-          `profile should reject forbidden field '${field}'`
-        ).toBe(false);
+        expect(validate(invalid), `profile should reject forbidden field '${field}'`).toBe(false);
       });
     });
 
@@ -609,7 +611,7 @@ describe('Version-Pinned UWR Profile v0 (PR-UWR-CONFIG)', () => {
       delete invalid.katRefs;
 
       expect(validate(invalid)).toBe(false);
-      expect(validate.errors!.some(e => e.message?.includes('katRefs'))).toBe(true);
+      expect(validate.errors!.some((e) => e.message?.includes('katRefs'))).toBe(true);
     });
   });
 
@@ -623,7 +625,7 @@ describe('Version-Pinned UWR Profile v0 (PR-UWR-CONFIG)', () => {
       invalid.profileId = HUMAN_ALIAS;
 
       expect(validate(invalid)).toBe(false);
-      expect(validate.errors!.some(e => e.instancePath === '/profileId')).toBe(true);
+      expect(validate.errors!.some((e) => e.instancePath === '/profileId')).toBe(true);
     });
 
     it('should reject score vectors with a missing or extra axis (UP-4)', () => {
@@ -704,7 +706,7 @@ describe('Version-Pinned UWR Profile v0 (PR-UWR-CONFIG)', () => {
       invalid.engine.decayModel = 'linear';
 
       expect(validate(invalid)).toBe(false);
-      expect(validate.errors!.some(e => e.instancePath === '/engine/decayModel')).toBe(true);
+      expect(validate.errors!.some((e) => e.instancePath === '/engine/decayModel')).toBe(true);
     });
 
     it('should reject a thetaBias-consumed claim (UP-7: declared-but-not-consumed)', () => {
@@ -713,7 +715,7 @@ describe('Version-Pinned UWR Profile v0 (PR-UWR-CONFIG)', () => {
       invalid.templates[0].thetaBiasConsumed = true;
 
       expect(validate(invalid)).toBe(false);
-      expect(validate.errors!.some(e => e.instancePath === '/templates')).toBe(true);
+      expect(validate.errors!.some((e) => e.instancePath === '/templates')).toBe(true);
     });
   });
 

@@ -101,7 +101,7 @@ function compileCompositionSchema() {
 
 function compileEvidenceV3Schema() {
   const ajv = createAjv();
-  DEP_SCHEMAS.forEach(dep => ajv.addSchema(loadJSON(dep)));
+  DEP_SCHEMAS.forEach((dep) => ajv.addSchema(loadJSON(dep)));
   return ajv.compile(loadJSON(V3_SCHEMA));
 }
 
@@ -153,9 +153,9 @@ describe('FACTORY-CONTRACT — afi.composition-ref.v1', () => {
 
     it('every hash field should $ref the governed CanonicalHash v1 (never redefined)', () => {
       const schema = loadJSON(COMPOSITION_SCHEMA);
-      COMPOSITION_HASH_FIELDS.forEach(field => {
+      COMPOSITION_HASH_FIELDS.forEach((field) => {
         expect(schema.properties[field].$ref, `${field} $ref`).toBe(
-          'https://afi-protocol.org/schemas/provenance/v1/canonical-hash.schema.json'
+          'https://afi-protocol.org/schemas/provenance/v1/canonical-hash.schema.json',
         );
       });
     });
@@ -177,7 +177,9 @@ describe('FACTORY-CONTRACT — afi.composition-ref.v1', () => {
 
     it('the example agrees with the analyst-strategy-config example (x-afiConstraints.agreementWithConfig)', () => {
       const example = loadJSON(COMPOSITION_EXAMPLE);
-      const config = loadJSON('examples/analyst-strategy-config/v1/analyst-strategy-config.example.json');
+      const config = loadJSON(
+        'examples/analyst-strategy-config/v1/analyst-strategy-config.example.json',
+      );
       expect(example.pipelineId).toBe(config.pipelineRef.pipelineId);
       expect(example.pipelineVersion).toBe(config.pipelineRef.pipelineVersion);
       expect(example.manifestHash.value).toBe(config.pipelineRef.manifestHash.value);
@@ -186,10 +188,12 @@ describe('FACTORY-CONTRACT — afi.composition-ref.v1', () => {
     });
 
     it('every valid vector should validate (drift-guarded)', () => {
-      const files = readdirSync(join(rootDir, C_VALID)).filter(f => f.endsWith('.json')).sort();
+      const files = readdirSync(join(rootDir, C_VALID))
+        .filter((f) => f.endsWith('.json'))
+        .sort();
       expect(files).toEqual(['alternate-pipeline.json', 'complete.json']);
       const validate = compileCompositionSchema();
-      files.forEach(f => {
+      files.forEach((f) => {
         const valid = validate(loadJSON(`${C_VALID}/${f}`));
         if (!valid) console.error(`${f} failure:`, validate.errors);
         expect(valid, `${f} should validate`).toBe(true);
@@ -204,10 +208,12 @@ describe('FACTORY-CONTRACT — afi.composition-ref.v1', () => {
         'missing-execution-summary-hash.json',
         'wrong-schema-const.json',
       ];
-      const files = readdirSync(join(rootDir, C_INVALID)).filter(f => f.endsWith('.json')).sort();
+      const files = readdirSync(join(rootDir, C_INVALID))
+        .filter((f) => f.endsWith('.json'))
+        .sort();
       expect(files).toEqual(EXPECTED_FILES);
       const validate = compileCompositionSchema();
-      EXPECTED_FILES.forEach(file => {
+      EXPECTED_FILES.forEach((file) => {
         expect(validate(loadJSON(`${C_INVALID}/${file}`)), `${file} must be rejected`).toBe(false);
       });
     });
@@ -215,7 +221,7 @@ describe('FACTORY-CONTRACT — afi.composition-ref.v1', () => {
     it('should reject a record missing ANY hash field (all-or-nothing, clone-and-mutate)', () => {
       const validate = compileCompositionSchema();
       const BASE = loadJSON(COMPOSITION_EXAMPLE);
-      COMPOSITION_REQUIRED.forEach(field => {
+      COMPOSITION_REQUIRED.forEach((field) => {
         const invalid: any = clone(BASE);
         delete invalid[field];
         expect(validate(invalid), `missing ${field} should be rejected`).toBe(false);
@@ -233,7 +239,7 @@ describe('EV3-CONTRACT — the composition binding on afi.scored-signal-evidence
     it('composition is carried BY REUSE of afi.composition-ref.v1, REQUIRED, with the binding constraint', () => {
       const v3 = loadJSON(V3_SCHEMA);
       expect(v3.properties.composition.$ref).toBe(
-        'https://afi-protocol.org/schemas/composition-ref/v1/composition-ref.schema.json'
+        'https://afi-protocol.org/schemas/composition-ref/v1/composition-ref.schema.json',
       );
       expect(v3.required).toContain('composition');
       expect(Object.keys(v3['x-afiConstraints'])).toContain('compositionBinding');
@@ -259,7 +265,7 @@ describe('EV3-CONTRACT — the composition binding on afi.scored-signal-evidence
 
     it('should reject a composition whose hashes are malformed', () => {
       const validate = compileEvidenceV3Schema();
-      COMPOSITION_HASH_FIELDS.forEach(field => {
+      COMPOSITION_HASH_FIELDS.forEach((field) => {
         const invalid: any = clone(BASE);
         invalid.composition[field].value = 'DEADBEEF';
         expect(validate(invalid), `composition.${field} bad digest must be rejected`).toBe(false);
@@ -268,7 +274,7 @@ describe('EV3-CONTRACT — the composition binding on afi.scored-signal-evidence
 
     it('should reject a composition missing ANY member (all-or-nothing rides into v3)', () => {
       const validate = compileEvidenceV3Schema();
-      COMPOSITION_REQUIRED.forEach(field => {
+      COMPOSITION_REQUIRED.forEach((field) => {
         const invalid: any = clone(BASE);
         delete invalid.composition[field];
         expect(validate(invalid), `composition missing ${field} must be rejected`).toBe(false);
