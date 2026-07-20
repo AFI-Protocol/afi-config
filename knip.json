@@ -1,0 +1,5 @@
+{
+  "$schema": "https://unpkg.com/knip@5/schema.json",
+  "entry": ["cli_utils/codex_validator.ts", "scripts/**/*.{mjs,js}", "tests/**/*.test.ts"],
+  "project": ["cli_utils/**/*.ts", "scripts/**/*.{mjs,js}", "tests/**/*.ts"]
+}
