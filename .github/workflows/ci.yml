@@ -32,6 +32,8 @@ jobs:
         run: npm run duplicates
       - name: Track technical debt
         run: npm run check:tech-debt
+      - name: Validate AGENTS.md
+        run: npm run check:agents-doc
       - name: Run vitest pin guards
         run: npm run test:run
       - name: Validate configs
