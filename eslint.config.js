@@ -39,6 +39,18 @@ export default tseslint.config(
           ignoreRestSiblings: true,
         },
       ],
+      // Complexity is analyzed and surfaced on every lint run / CI so overly
+      // branchy functions are visible and can be refactored before they grow.
+      complexity: ['warn', 15],
+      'max-depth': ['warn', 4],
+    },
+  },
+  {
+    // Actively-maintained source is held to a hard complexity ceiling so CI
+    // fails if a function here becomes excessively branchy.
+    files: ['cli_utils/**/*.ts', 'scripts/**/*.{js,mjs,cjs}'],
+    rules: {
+      complexity: ['error', 20],
     },
   },
 );
