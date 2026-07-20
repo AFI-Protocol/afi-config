@@ -63,6 +63,15 @@ npm run validate
 npm run build
 ```
 
+### Environment Variables
+
+This repo has no runtime server and needs no secrets to build or test. The only
+supported variable tunes a tooling threshold; see `.env.example`.
+
+| Variable          | Default | Purpose                                                                                |
+| ----------------- | ------- | -------------------------------------------------------------------------------------- |
+| `AFI_MAX_FILE_KB` | `1024`  | Max size (KB) for any tracked file before the large-file guard fails in CI/pre-commit. |
+
 ## Migration Note
 
 **2025-11-14:** Consolidated schema and configuration content into this repo.
