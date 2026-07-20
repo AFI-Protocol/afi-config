@@ -84,6 +84,16 @@ This repo has no dev server. Typical workflow:
 - **Tests**: Vitest, located in `tests/` or co-located with source
 - **Technical debt**: Every `TODO`/`FIXME`/`HACK`/`XXX` comment must link to a tracking issue, e.g. `// TODO(#123): ...` or `// FIXME(AFI-42): ...`. CI (`npm run check:tech-debt`) fails on unlinked markers and prints an inventory of tracked debt.
 
+## Issue & PR Labels
+
+The canonical label taxonomy is defined in `.github/labels.yml` and synced to the repo by the **Sync Labels** workflow (`sync-labels.yml`). Three categories:
+
+- **Priority**: `P0` (critical), `P1` (high), `P2` (medium), `P3` (low).
+- **Type**: `bug`, `enhancement`, `documentation`, `chore`, `refactor`, `test`, `dependencies`.
+- **Area**: `area:schemas`, `area:registries`, `area:templates`, `area:codex`, `area:cli-utils`, `area:ci`, `area:docs`, `area:security`.
+
+Agents should apply one priority, one type, and one area label to every issue they create. To change the taxonomy, edit `.github/labels.yml` and merge to `main`; the workflow keeps the repo's labels in sync.
+
 ---
 
 ## Scope & Boundaries for Agents
