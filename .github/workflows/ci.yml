@@ -28,6 +28,13 @@ jobs:
         run: npm run dead-code
       - name: Check unused dependencies
         run: npm run deps:check
+      - name: Enforce minimum dependency release age
+        if: github.event_name == 'pull_request'
+        env:
+          AFI_MIN_RELEASE_AGE_DAYS: '7'
+        run: |
+          git fetch origin main --depth=1
+          npm run check:dep-release-age
       - name: Detect duplicate code
         run: npm run duplicates
       - name: Track technical debt
