@@ -110,7 +110,7 @@ describe('Schema Validation Tests', () => {
           const schema = loadJSON(schemaFile);
           ajv.addSchema(schema);
           preloadedSchemaFiles.add(schemaFile);
-        } catch (error) {
+        } catch {
           // Schema might not exist yet, that's okay
         }
       });

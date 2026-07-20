@@ -10,6 +10,8 @@
     "prepare": "npm run build",
     "test": "vitest",
     "test:run": "vitest run",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
     "validate": "vitest run tests/schema-validation.test.ts",
     "typecheck": "tsc --noEmit",
     "clean": "rm -rf dist"
@@ -27,10 +29,13 @@
   },
   "license": "MIT",
   "devDependencies": {
+    "@eslint/js": "^9.39.5",
     "@types/node": "^20.11.0",
     "ajv": "^8.12.0",
     "ajv-formats": "^3.0.1",
+    "eslint": "^9.39.5",
     "typescript": "^5.4.0",
+    "typescript-eslint": "^8.64.0",
     "vitest": "^4.0.14"
   },
   "engines": {

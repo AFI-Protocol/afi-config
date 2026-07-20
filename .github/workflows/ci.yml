@@ -18,6 +18,8 @@ jobs:
           cache: 'npm'
       - name: Install dependencies
         run: npm ci
+      - name: Lint
+        run: npm run lint
       - name: Run vitest pin guards
         run: npm run test:run
       - name: Validate configs
