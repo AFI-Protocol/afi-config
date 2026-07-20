@@ -15,6 +15,7 @@
     "format": "prettier . --write",
     "format:check": "prettier . --check",
     "check:file-size": "node scripts/check-file-size.mjs",
+    "dead-code": "knip --no-config-hints",
     "validate": "vitest run tests/schema-validation.test.ts",
     "typecheck": "tsc --noEmit",
     "clean": "rm -rf dist"
@@ -50,6 +51,7 @@
     "ajv-formats": "^3.0.1",
     "eslint": "^9.39.5",
     "husky": "^9.1.7",
+    "knip": "^5.88.1",
     "lint-staged": "^15.5.2",
     "prettier": "^3.9.5",
     "typescript": "^5.4.0",
