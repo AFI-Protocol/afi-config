@@ -73,6 +73,7 @@ const EXPECTED_BINDING_FILES = [
   'cpj-oracle-telegram-channel-2.json',
   'example-inactive-webhook.json',
   'gateway-tenant-a.json',
+  'giovanni-tradingview-staging.json',
   'tradingview-default-webhook.json',
 ];
 
@@ -425,7 +426,7 @@ describe('FLPR-GOV SEEDING — manifest providerInstanceRefs cross-resolve', () 
 describe('W3a SEEDING — registries/provider-bindings', () => {
   const registration = loadJSON(REGISTRATION_FILE);
 
-  it('directory contains EXACTLY the five seeded bindings + README (drift guard)', () => {
+  it('directory contains EXACTLY the seven seeded bindings + README (drift guard)', () => {
     const files = readdirSync(join(rootDir, BINDINGS_DIR)).sort();
     expect(files).toEqual(['README.md', ...EXPECTED_BINDING_FILES]);
   });
@@ -492,6 +493,7 @@ describe('W3a SEEDING — registries/provider-bindings', () => {
       'cpj-oracle-telegram-channel-1',
       'cpj-oracle-telegram-channel-2',
       'gateway-tenant-a',
+      'giovanni-tradingview-staging',
       'tradingview-default-webhook',
     ]);
     allowed.forEach((bindingId) => {
