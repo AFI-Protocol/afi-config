@@ -35,6 +35,8 @@ W3a administrative seeding — all bindings route (only) the registered froggy t
 | bindingId | providerType | providerId | status |
 |---|---|---|---|
 | `tradingview-default-webhook` | webhook | `tradingview-default` | active |
+| `giovanni-tradingview-staging` | webhook | `giovanni_tradingview_staging` | active (TradingView / MarkitTick low-latency origin staging) |
+| `gateway-tenant-a` | webhook | `gateway:tenant-a` | active |
 | `cpj-oracle-telegram-channel-1` | cpj | `oracle-telegram-channel-1` | active |
 | `cpj-oracle-telegram-channel-2` | cpj | `oracle-telegram-channel-2` | active |
 | `cpj-oracle-discord-guild-3` | cpj | `oracle-discord-guild-3` | active |
