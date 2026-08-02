@@ -28,6 +28,12 @@ This directory holds the **canonical registry of analysis plugin manifests** —
   five 1.0.0 lane manifests and the 1.0.0 merge manifest when the five-lane provider
   runtime superseded them; git history is the archive).
 - The test suite pins this directory's contents to the authorized set (drift guard): adding a manifest requires updating the pinned list in the same PR.
+- Moving a manifest's `implementationVersion` in place (the contract-preserving
+  code axis, `analysis-plugin.schema.json` §`implementationVersion`) is an
+  owner-authorized governance act, never a routine edit (EQ-GOV D-EQ-3(2) moved
+  the scorer's `implementationVersion` `1.0.0 → 1.1.0` for the execution-axis
+  trigger-quantisation rubric era; the identity axes and contract surface are
+  untouched; git history is the archive).
 
 ## Current contents
 
@@ -44,8 +50,10 @@ The **seven official froggy-trend-pullback plugin manifests** (five-lane provide
 | `afi-scorer-froggy-trend-pullback` | 1.0.0 | scorer |
 
 Their canonical plugin-set hash (`afi.d2.plugin-set`) is
-`5384e1c08ce4bd7f533acc15487df81d7d37b6615d109d611bde968a81f2f386`, recomputed
-and asserted by the test suite.
+`e10cf9eeaa0b1878e970dddfcccce7371a946bd0a4079141ed70a857815bfb9f`, recomputed
+and asserted by the test suite (EQ-GOV rubric era: the scorer's
+`implementationVersion` is `1.1.0`; the prior value under `1.0.0` was
+`5384e1c08ce4bd7f533acc15487df81d7d37b6615d109d611bde968a81f2f386`).
 
 Worked examples (schema-valid vectors, including negatives) live under
 [`examples/analysis-plugin/v1/`](../../examples/analysis-plugin/v1/).

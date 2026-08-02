@@ -39,4 +39,4 @@ Canonical example + governed vectors: [`../../../examples/analysis-plugin/v1/`](
 
 ## Change control
 
-Versioned contract — shape changes require a new decision + `.v2`. Individual plugins version through `pluginVersion` (contract) and `implementationVersion` (code); both are immutable per published manifest.
+Versioned contract — shape changes require a new decision + `.v2`. Individual plugins version through `pluginVersion` (contract) and `implementationVersion` (code); `pluginVersion` is immutable per published manifest, and `implementationVersion` moves only under an owner-authorized governance act — never a routine edit (first exercised by EQ-GOV D-EQ-3(2), the schema's own axis definition governing: "an implementation fix that preserves the contract bumps only this").
