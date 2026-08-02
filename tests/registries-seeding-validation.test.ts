@@ -31,13 +31,13 @@ const rootDir = join(__dirname, '..');
 // --- pinned values (five-lane provider runtime on the EV3-GOV D-EV3-5(1)
 // fail-fast manifest v1.3.0; recomputed and asserted below). manifestHash and
 // analystConfigHash moved through the governed composition-hash-movement
-// mechanism (D-FLPR-5(5) precedent); pluginSetHash moved under EQ-GOV
-// D-EQ-3(2) (scorer implementationVersion 1.0.0 -> 1.1.0, the execution-axis
-// trigger-quantisation rubric era). ---
+// mechanism (D-FLPR-5(5) precedent); pluginSetHash moved under AR-GOV
+// D-AR-4(2) (scorer implementationVersion 1.1.0 -> 1.2.0, the ATR-regime
+// rubric era; prior move: EQ-GOV D-EQ-3(2), 1.0.0 -> 1.1.0). ---
 const PINNED_MANIFEST_HASH = 'df3372dadaca1595d0e6d2f6bad9464ccc9abb7106e9f5b7111df148a145bc4f';
 const PINNED_ANALYST_CONFIG_HASH =
   'e34471dec8dd3b8fcf0e5576765e469aec1a89f77af6b693ef3c06fc4200bbad';
-const PINNED_PLUGIN_SET_HASH = 'e10cf9eeaa0b1878e970dddfcccce7371a946bd0a4079141ed70a857815bfb9f';
+const PINNED_PLUGIN_SET_HASH = 'f63c6f21beb20834c76bc392373746db520828802e7797e84085a831572629d5';
 
 // D-FCP-7 registered composition domain tags (canonical-json-hashing.v1 §3, amended).
 const TAG_COMPOSITION_MANIFEST = 'afi.d2.composition-manifest';
