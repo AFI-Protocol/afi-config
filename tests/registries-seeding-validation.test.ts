@@ -31,14 +31,15 @@ const rootDir = join(__dirname, '..');
 // --- pinned values (five-lane provider runtime on the EV3-GOV D-EV3-5(1)
 // fail-fast manifest v1.3.0; recomputed and asserted below). manifestHash and
 // analystConfigHash moved through the governed composition-hash-movement
-// mechanism (D-FLPR-5(5) precedent); analystConfigHash moved again under
-// DH-GOV D-DH-1 (decay-swing-v1 -> decay-intraday-v1, the analyst-decay
-// correction); pluginSetHash moved under AR-GOV D-AR-4(2) (scorer
-// implementationVersion 1.1.0 -> 1.2.0, the ATR-regime rubric era; prior
-// move: EQ-GOV D-EQ-3(2), 1.0.0 -> 1.1.0). ---
+// mechanism (D-FLPR-5(5) precedent); analystConfigHash moved under DH-GOV
+// D-DH-1 (decay-swing-v1 -> decay-intraday-v1) and again under TDR-GOV
+// D-TDR-4 (the per-signal ratio decay law: barsPerHalfLife 12,
+// unknownTimeframeMinutes 5); pluginSetHash moved under AR-GOV D-AR-4(2)
+// (scorer implementationVersion 1.1.0 -> 1.2.0, the ATR-regime rubric era;
+// prior move: EQ-GOV D-EQ-3(2), 1.0.0 -> 1.1.0). ---
 const PINNED_MANIFEST_HASH = 'df3372dadaca1595d0e6d2f6bad9464ccc9abb7106e9f5b7111df148a145bc4f';
 const PINNED_ANALYST_CONFIG_HASH =
-  '8ab167066132dbff48dc958afb51d93284fbf54f11b921a83092bec8b236749d';
+  '1172e5da91dfd9ac6e65a060b628c5a4f1bbdd41545904a7a6a59e15fc0fe705';
 const PINNED_PLUGIN_SET_HASH = 'f63c6f21beb20834c76bc392373746db520828802e7797e84085a831572629d5';
 
 // D-FCP-7 registered composition domain tags (canonical-json-hashing.v1 §3, amended).
@@ -400,11 +401,13 @@ describe('W3a SEEDING — registries/analyst-strategies (froggy registration)', 
     expect(scorerManifest.mayFeedScorer).toBe(false);
   });
 
-  it('uwrProfileRef resolves to the registered UWR profile; decayConfig pins the decay-intraday-v1 ref (DH-GOV D-DH-1)', () => {
+  it('uwrProfileRef resolves to the registered UWR profile; decayConfig declares the ratio law (TDR-GOV D-TDR-4)', () => {
     expect(config.uwrProfileRef.profileId).toBe('uwr-weighted-lifts-v0.1');
     const profile = loadJSON('registries/uwr-profiles/uwr-weighted-lifts-v0.1.json');
     expect(profile.profileId).toBe(config.uwrProfileRef.profileId);
-    expect(config.decayConfig).toEqual({ ref: { templateId: 'decay-intraday-v1' } });
+    expect(config.decayConfig).toEqual({
+      ratio: { barsPerHalfLife: 12, unknownTimeframeMinutes: 5 },
+    });
   });
 });
 
