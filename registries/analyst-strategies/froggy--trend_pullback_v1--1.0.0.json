@@ -7,7 +7,7 @@
     "algorithm": "sha256",
     "canonicalizationVersion": "afi.hash.v1",
     "domainTag": "afi.d2.analyst-config",
-    "value": "8ab167066132dbff48dc958afb51d93284fbf54f11b921a83092bec8b236749d"
+    "value": "1172e5da91dfd9ac6e65a060b628c5a4f1bbdd41545904a7a6a59e15fc0fe705"
   },
   "configRef": "afi-config/registries/analyst-strategies/froggy--trend_pullback_v1--1.0.0.config.json",
   "providerBindingPolicy": {
@@ -23,5 +23,5 @@
   },
   "status": "active",
   "registeredAt": "2026-07-18",
-  "registrationRef": "AFI-Protocol/afi-config PR (branch mission/decay-horizon-alignment-v0.1): owner-authorized analyst-decay correction decay-swing-v1 -> decay-intraday-v1 per decay-horizon-alignment-v0.1 D-DH-1 (analystConfigHash rotation e34471de... -> 8ab16706...). Prior: composition-pin re-record onto pipeline v1.3.0 per evidence-v3-provider-provenance-v0.1 D-EV3-5(1), five-lane-provider-runtime-v0.1 D-FLPR-5(5), factory-configurable-pipelines-v1 D-FCP-5"
+  "registrationRef": "AFI-Protocol/afi-config PR (branch mission/timeframe-decay-resolution-v0.1): owner-authorized per-signal ratio decay law (barsPerHalfLife 12, unknownTimeframeMinutes 5) per timeframe-decay-resolution-v0.1 D-TDR-4 (analystConfigHash rotation 8ab16706... -> 1172e5da...). Prior: DH-GOV D-DH-1 decay correction (e34471de... -> 8ab16706...); composition-pin re-record onto pipeline v1.3.0 per D-EV3-5(1), D-FLPR-5(5), factory-configurable-pipelines-v1 D-FCP-5"
 }

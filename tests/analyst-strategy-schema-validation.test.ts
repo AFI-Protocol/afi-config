@@ -203,11 +203,11 @@ describe('FACTORY-CONTRACT — afi.analyst-strategy-config.v1', () => {
       expect(config.scorerRef.pluginVersion).toBe(scorerNode.pluginVersion);
     });
 
-    it('every valid vector should be admissible (drift-guarded), covering BOTH decayConfig forms', () => {
+    it('every valid vector should be admissible (drift-guarded), covering ALL THREE decayConfig forms', () => {
       const files = readdirSync(join(rootDir, VALID_DIR))
         .filter((f) => f.endsWith('.json'))
         .sort();
-      expect(files).toEqual(['inline-decay.json', 'ref-decay.json']);
+      expect(files).toEqual(['inline-decay.json', 'ratio-decay.json', 'ref-decay.json']);
       const validate = compileWithHash(CONFIG_SCHEMA);
       const forms: string[] = [];
       files.forEach((f) => {
@@ -217,7 +217,7 @@ describe('FACTORY-CONTRACT — afi.analyst-strategy-config.v1', () => {
         expect(result.ok, `${f} should be admissible`).toBe(true);
         forms.push(Object.keys(config.decayConfig)[0]);
       });
-      expect(forms.sort()).toEqual(['inline', 'ref']);
+      expect(forms.sort()).toEqual(['inline', 'ratio', 'ref']);
     });
 
     it('every invalid vector should be inadmissible, at the expected layer', () => {
@@ -228,6 +228,8 @@ describe('FACTORY-CONTRACT — afi.analyst-strategy-config.v1', () => {
         'bad-strategy-id-format.json': { schemaValid: false, semanticOk: false },
         'decay-both-forms.json': { schemaValid: false, semanticOk: true },
         'decay-bad-halflife.json': { schemaValid: false, semanticOk: true },
+        'ratio-bad-bars.json': { schemaValid: false, semanticOk: true },
+        'ratio-extra-prop.json': { schemaValid: false, semanticOk: true },
         'missing-manifest-hash.json': { schemaValid: false, semanticOk: true },
         'node-override-bad-shape.json': { schemaValid: false, semanticOk: true },
         'extra-properties.json': { schemaValid: false, semanticOk: true },
