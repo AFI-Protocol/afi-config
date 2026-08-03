@@ -33,8 +33,8 @@ This directory holds the **canonical registry of registered analyst strategies**
 The production **froggy** registration (five-lane provider runtime, FLPR-GOV):
 
 - [`froggy--trend_pullback_v1--1.0.0.json`](./froggy--trend_pullback_v1--1.0.0.json) — the registration entry (`status: active`, `providerBindingPolicy: explicit` over the seeded [`provider-bindings`](../provider-bindings/)).
-- [`froggy--trend_pullback_v1--1.0.0.config.json`](./froggy--trend_pullback_v1--1.0.0.config.json) — the co-located registered `afi.analyst-strategy-config.v1` artifact the entry's `configRef` resolves to, pinning the [`froggy-trend-pullback--v1.3.0`](../pipelines/froggy-trend-pullback--v1.3.0.json) fail-fast manifest by canonical hash (EV3-GOV D-EV3-5(1)). Its canonical hash (domain tag `afi.d2.analyst-config`) is
-  `e34471dec8dd3b8fcf0e5576765e469aec1a89f77af6b693ef3c06fc4200bbad`, recomputed and asserted by the test suite.
+- [`froggy--trend_pullback_v1--1.0.0.config.json`](./froggy--trend_pullback_v1--1.0.0.config.json) — the co-located registered `afi.analyst-strategy-config.v1` artifact the entry's `configRef` resolves to, pinning the [`froggy-trend-pullback--v1.3.0`](../pipelines/froggy-trend-pullback--v1.3.0.json) fail-fast manifest by canonical hash (EV3-GOV D-EV3-5(1)) and selecting the strategy-appropriate `decay-intraday-v1` template (DH-GOV D-DH-1). Its canonical hash (domain tag `afi.d2.analyst-config`) is
+  `8ab167066132dbff48dc958afb51d93284fbf54f11b921a83092bec8b236749d`, recomputed and asserted by the test suite.
 
 Co-located config artifacts are named `<analystId>--<strategyId>--<strategyVersion>.config.json` beside their registration entry.
 
