@@ -183,12 +183,12 @@ AFI's signal processing pipeline has six distinct stages. Each agent operates in
 
 ### Validate
 
-**Role**: Deterministic Market Validator (DMV)—a dumb mint gate using replay + challenge windows (post-hoc yes/no only).
+**Role**: Deterministic Market Validator (DMV)—a dumb mint gate using replay + maturity hold (post-hoc yes/no only).
 
 **What it does**:
 
 - Consumes already-scored signals from analysts
-- Uses replay outputs and challenge windows to decide `mint` vs `no_mint`
+- Uses replay outputs and the maturity hold to decide `mint` vs `no_mint`
 - Enforces deterministic, rule-based validation (no AI/ML)
 - Emits mint events or rejection events
 
@@ -202,7 +202,7 @@ AFI's signal processing pipeline has six distinct stages. Each agent operates in
 
 **Example agents**:
 
-- `validator:mint-gate:v1` — Deterministic mint gate using replay + challenge windows
+- `validator:mint-gate:v1` — Deterministic mint gate using replay + maturity hold
 - `validator:replay-checker:v1` — Verifies signal replay consistency before minting
 
 ### Audit

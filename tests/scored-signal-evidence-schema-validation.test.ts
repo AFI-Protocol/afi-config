@@ -187,21 +187,23 @@ function admit(validate: any, record: any) {
   };
 }
 
-// LIFE-GOV D-LIFE-1 canonical states, restricted to the PERSISTABLE subset.
+// LIFE-GOV D-LIFE-1 canonical states (as amended by CHR-GOV D-CHR-2),
+// restricted to the PERSISTABLE subset.
 const PERSISTABLE_STATES = [
   'SCORED',
   'CERTIFIED',
   'DECERTIFIED',
   'QUALIFIED',
   'UNQUALIFIED',
-  'CHALLENGE_OPEN',
-  'CONTESTED',
   'FINALIZED',
   'FINAL_REJECTED',
   'EPOCH_ELIGIBLE',
 ];
 const FINALIZED_STATES = ['FINALIZED', 'FINAL_REJECTED', 'EPOCH_ELIGIBLE'];
 const PRE_SCORING_STATES = ['INGESTED', 'VALIDATED', 'SCHEMA_REJECTED'];
+// Retired with the challenge layer (CHR-GOV D-CHR-2(1)). Guarded so the
+// states cannot silently re-enter the contract.
+const RETIRED_CHALLENGE_STATES = ['CHALLENGE_OPEN', 'CONTESTED'];
 
 const EXPECTED_PROPERTY_KEYS = [
   'schema',
@@ -625,6 +627,16 @@ describe('EV3-CONTRACT — afi.scored-signal-evidence.v3', () => {
     it('should reject pre-scoring lifecycle states (not persistable per D-LIFE-6)', () => {
       const validate = compileEvidenceSchema();
       PRE_SCORING_STATES.forEach((state) => {
+        const invalid: any = clone(BASE);
+        invalid.lifecycleState = state;
+        invalid.finalized = false;
+        expect(validate(invalid), `${state} should be rejected`).toBe(false);
+      });
+    });
+
+    it('should reject the retired challenge lifecycle states (CHR-GOV D-CHR-2(1))', () => {
+      const validate = compileEvidenceSchema();
+      RETIRED_CHALLENGE_STATES.forEach((state) => {
         const invalid: any = clone(BASE);
         invalid.lifecycleState = state;
         invalid.finalized = false;

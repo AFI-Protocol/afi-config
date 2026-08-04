@@ -6,8 +6,6 @@
   "type": "object",
   "required": [
     "decayCheckIntervalMs",
-    "challengeWindowDurationHours",
-    "mintApprovalThreshold",
     "snapshotSpaceId"
   ],
   "properties": {
@@ -16,27 +14,6 @@
       "minimum": 1000,
       "default": 60000,
       "description": "Interval between decay evaluations in milliseconds"
-    },
-    "challengeWindowDurationHours": {
-      "type": "number",
-      "minimum": 1,
-      "maximum": 168,
-      "default": 24,
-      "description": "Duration of challenge window in hours (max 7 days)"
-    },
-    "mintApprovalThreshold": {
-      "type": "number",
-      "minimum": 0,
-      "maximum": 1,
-      "default": 0.66,
-      "description": "Minimum approval percentage for minting (0-1)"
-    },
-    "minQuorumThreshold": {
-      "type": "number",
-      "minimum": 0,
-      "maximum": 1,
-      "default": 0.1,
-      "description": "Minimum quorum for valid vote (0-1)"
     },
     "snapshotSpaceId": {
       "type": "string",

@@ -285,7 +285,7 @@ Validator agents maintain the integrity of AFI's signal validation and reputatio
 - **Inputs**: Historical signals, validator submissions, ground truth data (realized outcomes)
 - **Outputs**: PoI/PoInsight scores for validators, reputation rankings
 
-**Challenge & Replay Agent** (aspirational):
+**Replay & Determinism Agent** (aspirational):
 
 - **Interface**: System-facing (Codex replay service)
 - **Role**: Validator (audit and replay)

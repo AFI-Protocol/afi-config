@@ -394,7 +394,7 @@
       "structureId": "afi-mint",
       "name": "afi-mint off-chain orchestration",
       "kind": "service",
-      "purpose": "The off-chain TypeScript mint/emissions orchestration (signal-state, challenge-window, mint executor) parity-tested against the afi-math 86B schedule. On-chain execution is not wired (the executor targets an abstract interface; the Solidity contracts are empty stubs). Serves the reserved settlement domain; reserved to CHAIN-GOV.",
+      "purpose": "The off-chain TypeScript mint/emissions orchestration (signal-state, mint executor) parity-tested against the afi-math 86B schedule. On-chain execution is not wired (the executor targets an abstract interface; the Solidity stubs were deleted). Serves the reserved settlement domain; reserved to CHAIN-GOV.",
       "maturity": "underConstruction",
       "visibility": "internal",
       "capabilityRefs": [],
