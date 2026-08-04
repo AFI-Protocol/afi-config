@@ -42,3 +42,4 @@ Valid and invalid governed vectors live in [`../../../examples/scored-signal-evi
 ## Change control
 
 - `afi.scored-signal-evidence.v3` is a versioned contract. Any shape change requires a new governance decision and a new schema version (`.v4`) — never a silent mutation.
+- **Bounded exception (CHR-GOV D-CHR-5(1), which expressly supersedes the sentence above for this one case):** a **vacuous narrowing** — removing an enum member that no instance has ever carried and none can be constructed to carry — requires the new governance decision but **not** a version bump, because every existing valid instance remains valid and no record can be invalidated. Exercised once, to retire the `CHALLENGE_OPEN` and `CONTESTED` `lifecycleState` members with the challenge layer. Any non-vacuous shape change still requires `.v4`.

@@ -122,7 +122,7 @@ To preserve protocol integrity and determinism, reputation **MUST NOT**:
 
 - Once a signal is validated and recorded in the Codex, reputation cannot retroactively change its status
 - Vault finality (T.S.S.D. Vault immutability) is absolute; reputation cannot rewrite history
-- Challenge windows and replay mechanisms are the only ways to contest finality, and these are governed by deterministic rules, not reputation
+- Deterministic replay and governed supersession are the only ways to correct a recorded result, and these are governed by deterministic rules, not reputation
 
 **Change Validator Behavior Post-Hoc**:
 
@@ -167,7 +167,7 @@ Reputation **MAY** influence behavior through:
 Validators in AFI Protocol are **Deterministic Market Validators (DMVs)**—intentionally dumb, deterministic mint gates. They:
 
 - Consume already-scored signals from analyst agents
-- Use replay outputs, challenge windows, and fixed rules to decide `mint` vs `no_mint`
+- Use replay outputs, the maturity hold, and fixed rules to decide `mint` vs `no_mint`
 - Produce validation/attestation records that can be replayed for audit
 
 Validators **DO NOT**:

@@ -283,11 +283,10 @@
       "display_name": "Mint Gate Validator",
       "kind": "service",
       "lifecycle_stage": "validate",
-      "purpose": "Deterministic mint gate using replay + challenge windows (post-hoc yes/no only)",
+      "purpose": "Deterministic mint gate using replay + maturity hold (post-hoc yes/no only)",
       "inputs": [
         "afi_scored_signal",
-        "replay_output",
-        "challenge_window_status"
+        "replay_output"
       ],
       "outputs": [
         "mint_decision"
@@ -312,10 +311,6 @@
         {
           "name": "ReplayVerifier",
           "permissions": ["verify"]
-        },
-        {
-          "name": "ChallengeWindowChecker",
-          "permissions": ["check"]
         },
         {
           "name": "MintDecider",
