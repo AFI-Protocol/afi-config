@@ -654,15 +654,28 @@ describe('EV3-CONTRACT — afi.scored-signal-evidence.v3', () => {
       });
     });
 
-    it('should reject a finality marker inconsistent with lifecycleState (if/then/else binding)', () => {
+    it('should reject a finality-phase record whose marker is false (if/then binding)', () => {
       const validate = compileEvidenceSchema();
       const finalizedButFalse: any = clone(BASE); // BASE is FINALIZED
       finalizedButFalse.finalized = false;
       expect(validate(finalizedButFalse), 'FINALIZED + finalized:false').toBe(false);
-      const scoredButTrue: any = clone(BASE);
-      scoredButTrue.lifecycleState = 'SCORED';
-      scoredButTrue.finalized = true;
-      expect(validate(scoredButTrue), 'SCORED + finalized:true').toBe(false);
+    });
+
+    it('should accept a SCORED record sealed at admission (CFG-GOV D-CFG-2)', () => {
+      // D-CFG-2 amends D-MONGO-5: immutability attaches at SCORED admission,
+      // so the sole canonical writer now writes records finalized. Records
+      // admitted before CFG-GOV carry false and remain valid historical shapes.
+      const validate = compileEvidenceSchema();
+      const sealedAtAdmission: any = clone(BASE);
+      sealedAtAdmission.lifecycleState = 'SCORED';
+      sealedAtAdmission.finalized = true;
+      expect(admit(validate, sealedAtAdmission).ok, 'SCORED + finalized:true').toBe(true);
+      const preCfgHistorical: any = clone(BASE);
+      preCfgHistorical.lifecycleState = 'SCORED';
+      preCfgHistorical.finalized = false;
+      expect(admit(validate, preCfgHistorical).ok, 'SCORED + finalized:false (historical)').toBe(
+        true,
+      );
     });
 
     it('should reject a heavy ReactorScoredSignalDocument substituted for the thin projection', () => {
