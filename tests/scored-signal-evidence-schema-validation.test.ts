@@ -425,34 +425,117 @@ describe('EV3-CONTRACT — afi.scored-signal-evidence.v3', () => {
     });
   });
 
-  describe('Provider Invocation Proof binder (D-EV3-2: exactly five, unique, ordered)', () => {
-    const invocations = loadJSON(EVIDENCE_SCHEMA).properties.providerInvocations;
+  describe('Provider Invocation Proof binder (D-EV3-2 as amended by CFG-GOV D-CFG-3: composition-scoped subset, unique, ordered)', () => {
+    const schema = loadJSON(EVIDENCE_SCHEMA);
+    const invocations = schema.properties.providerInvocations;
 
-    it('is a closed positional five-tuple (count/order/uniqueness/aiMl position structural)', () => {
+    /** All 31 non-empty ascending subsets of the five categories, in the
+     *  schema's declared branch order: descending lane count, then
+     *  lexicographic. Recomputed here independently so the schema is checked
+     *  against the LAW, not against itself. */
+    const expectedSubsets: string[][] = [];
+    for (let size = GOVERNED_PROOF_ORDER.length; size >= 1; size--) {
+      const combos = (start: number, chosen: string[]): void => {
+        if (chosen.length === size) {
+          expectedSubsets.push([...chosen]);
+          return;
+        }
+        for (let i = start; i < GOVERNED_PROOF_ORDER.length; i++) {
+          chosen.push(GOVERNED_PROOF_ORDER[i]);
+          combos(i + 1, chosen);
+          chosen.pop();
+        }
+      };
+      combos(0, []);
+    }
+
+    it('admits 1..5 proofs via a oneOf enumerating exactly the 31 ascending subsets', () => {
       expect(invocations.type).toBe('array');
-      expect(invocations.minItems).toBe(5);
+      expect(invocations.minItems).toBe(1);
       expect(invocations.maxItems).toBe(5);
-      expect(invocations.additionalItems).toBe(false);
-      expect(Array.isArray(invocations.items)).toBe(true);
-      expect(invocations.items).toHaveLength(5);
+      expect(Array.isArray(invocations.oneOf)).toBe(true);
+      expect(expectedSubsets).toHaveLength(31);
+      const branchSubsets = invocations.oneOf.map((branch: any) =>
+        branch.items.map((item: any) => {
+          const def = item.$ref.replace('#/definitions/invocationProof', '');
+          return def.charAt(0).toLowerCase() + def.slice(1);
+        }),
+      );
+      expect(branchSubsets).toEqual(expectedSubsets);
     });
 
-    it('every position $refs the governed proof and pins its category const', () => {
-      invocations.items.forEach((item: any, i: number) => {
-        expect(item.allOf[0].$ref, `position ${i}`).toBe(
-          'https://afi-protocol.org/schemas/provider-invocation-proof/v1/provider-invocation-proof.schema.json',
-        );
-        expect(item.allOf[1].properties.category.const, `position ${i}`).toBe(
-          GOVERNED_PROOF_ORDER[i],
-        );
-        expect(item.allOf[1].required).toEqual(['category']);
+    it('every branch is a closed positional tuple (count pinned, additionalItems:false)', () => {
+      invocations.oneOf.forEach((branch: any, i: number) => {
+        expect(branch.type, `branch ${i}`).toBe('array');
+        expect(branch.minItems, `branch ${i}`).toBe(branch.items.length);
+        expect(branch.maxItems, `branch ${i}`).toBe(branch.items.length);
+        expect(branch.additionalItems, `branch ${i}`).toBe(false);
       });
     });
 
-    it('the pinned order IS ascending case-sensitive lexicographic (the D-EV3-2 law, self-checked)', () => {
-      const pinned = invocations.items.map((item: any) => item.allOf[1].properties.category.const);
-      expect(pinned).toEqual(GOVERNED_PROOF_ORDER);
-      expect(pinned).toEqual([...pinned].sort());
+    it('every category definition $refs the governed proof and pins its category const', () => {
+      GOVERNED_PROOF_ORDER.forEach((category) => {
+        const defName = `invocationProof${category.charAt(0).toUpperCase()}${category.slice(1)}`;
+        const def = schema.definitions[defName];
+        expect(def, defName).toBeDefined();
+        expect(def.allOf[0].$ref, defName).toBe(
+          'https://afi-protocol.org/schemas/provider-invocation-proof/v1/provider-invocation-proof.schema.json',
+        );
+        expect(def.allOf[1].properties.category.const, defName).toBe(category);
+        expect(def.allOf[1].required, defName).toEqual(['category']);
+      });
+    });
+
+    it('the subset law IS ascending case-sensitive lexicographic (D-EV3-2, self-checked)', () => {
+      expect(GOVERNED_PROOF_ORDER).toEqual([...GOVERNED_PROOF_ORDER].sort());
+      expectedSubsets.forEach((subset) => {
+        expect(subset, subset.join(',')).toEqual([...subset].sort());
+      });
+    });
+
+    it('admits an ascending SUBSET of the five (composition-scoped count, D-CFG-3(2))', () => {
+      const validate = compileEvidenceSchema();
+      const base = loadJSON(CANONICAL_EXAMPLE);
+      const subset: any = clone(base);
+      // Drop the news lane: [aiMl, pattern, sentiment, technical] — a lane the
+      // analyst did not select is not a failure (D-CFG-3(3)). Count-vs-
+      // composition (exactly the DECLARED lanes) is the sole builder's duty,
+      // outside the schema layer: the composition is not visible to the schema.
+      subset.providerInvocations = base.providerInvocations.filter(
+        (p: any) => p.category !== 'news',
+      );
+      expect(validate(subset), 'ascending 4-lane subset must be schema-admissible').toBe(true);
+    });
+
+    it('never admits an empty proof set, a duplicate, or ANY non-ascending tuple', () => {
+      const validate = compileEvidenceSchema();
+      const base = loadJSON(CANONICAL_EXAMPLE);
+
+      const empty: any = clone(base);
+      empty.providerInvocations = [];
+      expect(validate(empty), 'empty proof set (minItems 1)').toBe(false);
+
+      // Duplicate inside a subset — the shape the pre-amendment five-tuple
+      // could not even express: [aiMl, sentiment, sentiment].
+      const dup: any = clone(base);
+      dup.providerInvocations = [
+        clone(base.providerInvocations[0]),
+        clone(base.providerInvocations[3]),
+        clone(base.providerInvocations[3]),
+      ];
+      expect(validate(dup), 'duplicate category inside a 3-subset').toBe(false);
+
+      const reversed: any = clone(base);
+      reversed.providerInvocations = [...base.providerInvocations].reverse();
+      expect(validate(reversed), 'descending five-tuple').toBe(false);
+
+      // Mis-ordered subset: [pattern, aiMl] is a valid SET but not ascending.
+      const misordered: any = clone(base);
+      misordered.providerInvocations = [
+        clone(base.providerInvocations[2]),
+        clone(base.providerInvocations[0]),
+      ];
+      expect(validate(misordered), 'mis-ordered 2-subset').toBe(false);
     });
   });
 
@@ -492,7 +575,10 @@ describe('EV3-CONTRACT — afi.scored-signal-evidence.v3', () => {
       expect(files).toEqual(['credential-bound-news-lane.json', 'minimal-scored.json']);
     });
 
-    it('every committed record carries five proofs in the governed order with bound result schemas', () => {
+    it('every committed record declares all five lanes (froggy composition) in the governed order with bound result schemas', () => {
+      // The committed corpus is built from the froggy composition, which
+      // declares all five lanes — so these records carry five proofs. This is
+      // a fact about the corpus, not the (composition-scoped, D-CFG-3) law.
       ALL_COMMITTED_RECORDS().forEach((rel) => {
         const r = loadJSON(rel);
         expect(r.providerInvocations, `${rel} proof count`).toHaveLength(5);
@@ -559,7 +645,10 @@ describe('EV3-CONTRACT — afi.scored-signal-evidence.v3', () => {
     // Each vector is expected NOT admissible; every one is continuity-clean so
     // the SCHEMA layer is proven to be what rejects the defect.
     const EXPECTED: Record<string, { schemaValid: boolean; continuityOk: boolean }> = {
-      'missing-category-proof.json': { schemaValid: false, continuityOk: true },
+      // missing-category-proof.json was RETIRED by CFG-GOV D-CFG-3: a four-lane
+      // ascending subset is now schema-admissible (composition-scoped count);
+      // "fewer proofs than the composition declares" became a BUILDER-layer
+      // defect, proven fail-closed in afi-reactor's evidence builder tests.
       'duplicate-category-proof.json': { schemaValid: false, continuityOk: true },
       'wrong-order-proofs.json': { schemaValid: false, continuityOk: true },
       'unknown-category-proof.json': { schemaValid: false, continuityOk: true },
@@ -1072,6 +1161,9 @@ describe('EV3-CONTRACT — afi.scored-signal-evidence.v3', () => {
         '/schemas/composition-ref/v1/',
         '/schemas/provider-invocation-proof/v1/',
         '/schemas/aiml-invocation-proof/v1/',
+        // Internal category-bound proof variants (own-file definitions used by
+        // the providerInvocations subset tuples, D-CFG-3) — not a new family.
+        '#/definitions/invocationProof',
       ];
       refs.forEach((ref) =>
         expect(
