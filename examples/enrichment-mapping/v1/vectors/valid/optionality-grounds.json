@@ -1,0 +1,40 @@
+{
+  "schema": "afi.enrichment-mapping.v1",
+  "mappingId": "vector-optionality-grounds",
+  "version": "1.0.0",
+  "description": "Exercises the composition and producer-declared optionality grounds and the producedBy escape-hatch reference form (D-DEM-3(3), D-DEM-5(4)(a)(b)).",
+  "bindings": {
+    "unselectedLaneFact": {
+      "operator": "bind",
+      "source": {
+        "lane": "news",
+        "path": "hasShockEvent"
+      },
+      "type": "boolean",
+      "optionality": {
+        "ground": "composition",
+        "default": false
+      }
+    },
+    "producerDeclaredFact": {
+      "operator": "bind",
+      "source": {
+        "lane": "pattern",
+        "path": "structureBias",
+        "producedBy": {
+          "pluginId": "vector-producer-example",
+          "pluginVersion": "1.0.0"
+        }
+      },
+      "type": "string",
+      "optionality": {
+        "ground": "producer-declared",
+        "default": "unknown",
+        "producerRef": {
+          "pluginId": "vector-producer-example",
+          "pluginVersion": "1.0.0"
+        }
+      }
+    }
+  }
+}

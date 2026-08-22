@@ -1,0 +1,15 @@
+{
+  "schema": "afi.enrichment-mapping.v1",
+  "mappingId": "vector-minimal-bind",
+  "version": "1.0.0",
+  "bindings": {
+    "someInput": {
+      "operator": "bind",
+      "source": {
+        "lane": "technical",
+        "path": "atr14"
+      },
+      "type": "number"
+    }
+  }
+}

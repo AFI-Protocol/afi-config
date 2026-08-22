@@ -1,0 +1,57 @@
+{
+  "schema": "afi.enrichment-mapping.v1",
+  "mappingId": "vector-all-operators",
+  "version": "1.0.0",
+  "namespaceDefaults": [
+    "technical",
+    "aiMl"
+  ],
+  "bindings": {
+    "plainBind": {
+      "operator": "bind",
+      "source": {
+        "lane": "technical",
+        "path": "rsi14"
+      },
+      "type": "number"
+    },
+    "bandedGrade": {
+      "operator": "band",
+      "source": {
+        "lane": "aiMl",
+        "path": "ensembleScore"
+      },
+      "rows": [
+        {
+          "when": {
+            "gte": 0.8
+          },
+          "value": "strong"
+        },
+        {
+          "when": {
+            "gt": 0.5
+          },
+          "value": "lean"
+        }
+      ],
+      "otherwise": "weak",
+      "absent": "weak"
+    },
+    "recodedRegime": {
+      "operator": "recode",
+      "source": {
+        "lane": "technical",
+        "path": "atrRegime"
+      },
+      "table": {
+        "low": 0,
+        "normal": 1,
+        "high": 2,
+        "extreme": 3
+      },
+      "fallback": 1,
+      "absent": 1
+    }
+  }
+}

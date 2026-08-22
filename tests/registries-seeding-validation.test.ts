@@ -54,6 +54,10 @@ const FROGGY_TRIPLE = {
 };
 
 const PLUGINS_DIR = 'registries/analysis-plugins';
+const MAPPINGS_DIR = 'registries/enrichment-mappings';
+// DEM-CONTRACT lands the family EMPTY: the froggy registration is DEM-BIND
+// merge-order step (d) (declarative-enrichment-mapping-v0.1.md:82,:199).
+const EXPECTED_MAPPING_FILES: string[] = [];
 const PIPELINES_DIR = 'registries/pipelines';
 const STRATEGIES_DIR = 'registries/analyst-strategies';
 const BINDINGS_DIR = 'registries/provider-bindings';
@@ -543,5 +547,25 @@ describe('W3a SEEDING — byte-level provenance of the copied official artifacts
     expect(spec).toContain('afi.plugin-set.v1');
     expect(spec).toContain('implementationVersion');
     expect(spec).toContain('D-FCP-7');
+  });
+});
+
+describe('DEM-CONTRACT SEEDING — registries/enrichment-mappings', () => {
+  it('directory contains EXACTLY the authorized set + README (drift guard)', () => {
+    const files = readdirSync(join(rootDir, MAPPINGS_DIR)).sort();
+    expect(files).toEqual(['README.md', ...EXPECTED_MAPPING_FILES]);
+  });
+
+  it('every registered mapping is schema-valid and filename matches mappingId--version', () => {
+    const validate = createAjv().compile(
+      loadJSON('schemas/enrichment-mapping/v1/enrichment-mapping.schema.json'),
+    );
+    EXPECTED_MAPPING_FILES.forEach((f) => {
+      const doc = loadJSON(`${MAPPINGS_DIR}/${f}`);
+      const valid = validate(doc);
+      if (!valid) console.error(`${f} failure:`, validate.errors);
+      expect(valid, `${f} must be schema-valid`).toBe(true);
+      expect(f).toBe(`${doc.mappingId}--${doc.version}.json`);
+    });
   });
 });
