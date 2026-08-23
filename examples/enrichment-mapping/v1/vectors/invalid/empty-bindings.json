@@ -1,0 +1,11 @@
+{
+  "schema": "afi.enrichment-mapping.v1",
+  "mappingId": "froggy-trend-pullback",
+  "version": "1.0.0",
+  "description": "The expressible half of the froggy trend_pullback_v1 enrichment adapter, exactly as performed today (froggy.enrichment_adapter.ts:218-276 at afi-core 1be76cd). The D-DEM-5(4) grandfather — four absent-source defaults, exhaustive and non-extensible — is carried as two optionality declarations (ground 'grandfather') plus the band's declared absent member and the recode's fallback/absent members.",
+  "namespaceDefaults": [
+    "technical",
+    "pattern"
+  ],
+  "bindings": {}
+}
