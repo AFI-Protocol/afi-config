@@ -207,7 +207,12 @@ describe('FACTORY-CONTRACT — afi.analyst-strategy-config.v1', () => {
       const files = readdirSync(join(rootDir, VALID_DIR))
         .filter((f) => f.endsWith('.json'))
         .sort();
-      expect(files).toEqual(['inline-decay.json', 'ratio-decay.json', 'ref-decay.json']);
+      expect(files).toEqual([
+        'inline-decay.json',
+        'ratio-decay.json',
+        'ref-decay.json',
+        'with-mapping-ref.json',
+      ]);
       const validate = compileWithHash(CONFIG_SCHEMA);
       const forms: string[] = [];
       files.forEach((f) => {
@@ -217,7 +222,10 @@ describe('FACTORY-CONTRACT — afi.analyst-strategy-config.v1', () => {
         expect(result.ok, `${f} should be admissible`).toBe(true);
         forms.push(Object.keys(config.decayConfig)[0]);
       });
-      expect(forms.sort()).toEqual(['inline', 'ratio', 'ref']);
+      // with-mapping-ref.json deliberately reuses the ratio form: it exists to
+      // exercise the OPTIONAL mappingRef presence (DEM-BIND step (b)), not a
+      // fourth decay form — hence the expected duplicate.
+      expect(forms.sort()).toEqual(['inline', 'ratio', 'ratio', 'ref']);
     });
 
     it('every invalid vector should be inadmissible, at the expected layer', () => {
@@ -233,6 +241,10 @@ describe('FACTORY-CONTRACT — afi.analyst-strategy-config.v1', () => {
         'missing-manifest-hash.json': { schemaValid: false, semanticOk: true },
         'node-override-bad-shape.json': { schemaValid: false, semanticOk: true },
         'extra-properties.json': { schemaValid: false, semanticOk: true },
+        // DEM-BIND step (b): additionalProperties:false inside mappingRef —
+        // a hash member is expressly excluded (D-DEM-6(2) routes identity
+        // through analystConfigHash, no hash member on the ref).
+        'mapping-ref-bad-shape.json': { schemaValid: false, semanticOk: true },
       };
       const files = readdirSync(join(rootDir, INVALID_DIR))
         .filter((f) => f.endsWith('.json'))

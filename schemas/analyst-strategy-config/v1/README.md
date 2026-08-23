@@ -17,6 +17,7 @@ The config carries the **choices**; the pipeline manifest carries the **graph**.
 | `pipelineRef` | ✅ | `{pipelineId, pipelineVersion, manifestHash}` — `manifestHash` is a CanonicalHash v1 pin of the exact manifest |
 | `scorerRef` | ✅ | `{pluginId, pluginVersion}` — must agree with the pipeline's single scorer node |
 | `uwrProfileRef` | ✅ | `{profileId}` — selection only; UP-10 recognition / UP-9 qualification / rewards remain separately governed |
+| `mappingRef` | no (required at the DEM-BIND final step) | `{ mappingId, version }` — selects the registered enrichment mapping (DEM-GOV D-DEM-2(3)); no hash member — identity rides `analystConfigHash` (D-DEM-6(2)) |
 | `decayConfig` | ✅ | `oneOf` `{ref:{templateId}}` **or** `{inline:{halfLifeMinutes>0, greeksTemplateId}}` |
 | `nodeOverrides` | — | map `nodeId -> {enabled?, config?}` — bounded (values only, never topology) |
 | `metadata` | — | annotational; excluded from `analystConfigHash` material |
