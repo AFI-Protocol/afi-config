@@ -1,6 +1,6 @@
 {
   "schema": "afi.uwr-decay-kat.v0",
-  "x-afiStatus": "draft-non-implementation",
+  "x-afiStatus": "implemented",
   "profileId": "uwr-weighted-lifts-v0.1",
   "status": "testnet-provisional",
   "description": "Known-answer-test vectors for applyTimeDecay over the pinned GreeksDecayTemplate v1 template set of the version-pinned UWR profile uwr-weighted-lifts-v0.1 (UP-11 item 2). Pure data: expected values are decision-anchored literals; nothing in afi-config executes the decay function. 32 vectors: all four templates x base scores {1, 0.1875 (the D2 M2 golden anchor, = 3*2^-4)} x elapsed = {0, 1, 2, 4} half-lives. The base-1 rows at exactly one half-life land on 0.5, the testnet-provisional minDecayScoreThreshold (UP-9) - data commentary only; the qualification gate is not wired.",

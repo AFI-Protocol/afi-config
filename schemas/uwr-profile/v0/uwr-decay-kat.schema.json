@@ -34,7 +34,7 @@
     },
     "x-afiStatus": {
       "type": "string",
-      "const": "draft-non-implementation",
+      "const": "implemented",
       "description": "Artifact lifecycle marker carried on the document itself per UP-12."
     },
     "profileId": {
