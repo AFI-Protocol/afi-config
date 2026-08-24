@@ -11,7 +11,7 @@
 | `checkpointTime` | yes | `{ scoredAt, checkpointAt, elapsedMinutes, halfLifeMinutes }` — self-proving eligibility: `elapsedMinutes >= halfLifeMinutes` (semantic layer) |
 | `horizonsRead` | yes | the DH-GOV outcome rows read, label-for-label (`{ horizon, horizonBasis, fractionOfHalfLife? }`) |
 | `realizedFigures` | yes | the realization, copied **verbatim** from `signal_outcomes` — never recomputed |
-| `reassessmentReading` | yes | the **deterministic** classification (`rule: signedReturnPct-sign-v1`): per-horizon `favorable/adverse/flat/indeterminate` from the sign of `signedReturnPct`; `overall` = `confirmed/contradicted/mixed/indeterminate` over the non-indeterminate horizons. Not a score. |
+| `reassessmentReading` | yes | `{ direction, rule, perHorizon, overall }` — `direction` is the sealed assertion's direction, copied verbatim (`long/short/neutral`); the **deterministic** classification (`rule: signedReturnPct-sign-v1`): per-horizon `favorable/adverse/flat/indeterminate` from the sign of `signedReturnPct`; `overall` = `confirmed/contradicted/mixed/indeterminate` over the non-indeterminate horizons. Not a score. |
 | `seal` | yes | CanonicalHash v1 — **the D-DLC-4(3) sealing answer**: sha256 under canonical-json-hashing.v1 (`afi.hash.v1`) of this document with the top-level `seal` member excluded; domain tag `afi.checkpoint.signal-reassessment` carried, never hashed |
 
 ## What instances are — and are not

@@ -98,6 +98,17 @@ function overallOf(outcomes: string[]): string {
 }
 function semanticViolations(doc: any): string[] {
   const out: string[] = [];
+  // horizon labels are unique within each array — a duplicate would let the
+  // determinism check silently verify only the LAST row (Map semantics)
+  for (const [name, labels] of [
+    ['horizonsRead', doc.horizonsRead.map((h: any) => h.horizon)],
+    ['realizedFigures', doc.realizedFigures.map((f: any) => f.horizon)],
+    ['perHorizon', doc.reassessmentReading.perHorizon.map((p: any) => p.horizon)],
+  ] as Array<[string, string[]]>) {
+    if (new Set(labels).size !== labels.length) {
+      out.push(`duplicate horizon labels in ${name}`);
+    }
+  }
   // checkpointEligibility (D-DLC-4(1))
   if (!(doc.checkpointTime.elapsedMinutes >= doc.checkpointTime.halfLifeMinutes)) {
     out.push('checkpoint before the stamped half-life (eligibility)');
@@ -260,6 +271,7 @@ describe('DLC-CHECKPOINT — afi.signal-reassessment.v1', () => {
       'empty-horizons.json': { schemaValid: false },
       'bad-horizon-label.json': { schemaValid: false },
       // The schema alone cannot reject these four; the semantic layer must.
+      'duplicate-horizon.json': { schemaValid: true },
       'ineligible-checkpoint.json': { schemaValid: true },
       'misaligned-horizons.json': { schemaValid: true },
       'nondeterministic-reading.json': { schemaValid: true },
