@@ -60,3 +60,8 @@ and asserted by the test suite (AR-GOV rubric era: the scorer's
 
 Worked examples (schema-valid vectors, including negatives) live under
 [`examples/analysis-plugin/v1/`](../../examples/analysis-plugin/v1/).
+
+## Change control — implementationVersion 1.3.0 (DEM-BIND)
+
+`afi-scorer-froggy-trend-pullback--1.0.0` `implementationVersion` `1.2.0 → 1.3.0` under DEM-GOV D-DEM-7(4) (the EQ-GOV D-EQ-3(2) precedent class): the scorer node's realizing code changes in the DEM-BIND wave — it now composes its input from the registered mapping's interpreter fragment plus the residual builder. **Sequencing:** this bump records the era of the DEM-BIND wave (AR-GOV D-AR-4(2) precedent) and lands with the registration, before the reactor's fixture/golden wave consumes it — it must never be read as premature. `pluginVersion` stays `1.0.0` (the contract surface is unchanged); `pluginSetHash` rotates (`f63c6f21… → 220c004e…`).
+

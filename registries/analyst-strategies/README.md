@@ -40,3 +40,8 @@ Co-located config artifacts are named `<analystId>--<strategyId>--<strategyVersi
 
 Complete worked examples (schema-valid, semantically clean, with real canonical hashes) live under
 [`examples/analyst-strategy-registration/v1/`](../../examples/analyst-strategy-registration/v1/) with governed valid/invalid vectors.
+
+## Change control — analystConfigHash rotation (DEM-BIND step (d))
+
+`froggy--trend_pullback_v1--1.0.0.config.json` gains `mappingRef: {froggy-trend-pullback, 1.0.0}` (DEM-GOV D-DEM-2(3)); `analystConfigHash` rotates `1172e5da… → aa8cf5cf…` (D-DEM-6(2): mapping identity rides the config hash — no new record member). Prior rotations: TDR-GOV D-TDR-4 (`8ab16706 → 1172e5da`), DH-GOV D-DH-1 (`e34471de → 8ab16706`).
+
