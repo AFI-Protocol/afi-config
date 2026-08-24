@@ -12,7 +12,7 @@
     "algorithm": "sha256",
     "canonicalizationVersion": "afi.hash.v1",
     "domainTag": "afi.factory.analyst-config",
-    "value": "ea988ce85d1102ce17174bfdf8eb3d1530cefe7f0aae26b88be50f2fef7fb2a5"
+    "value": "3969cfe352fa6f45ba2ee8f1189c28d59b95b442799648cbdcdd7d230cdf84ce"
   },
   "scorerPluginId": "mean-reversion-scorer",
   "scorerPluginVersion": "1.0.0",
