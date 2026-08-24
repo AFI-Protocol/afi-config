@@ -174,6 +174,9 @@ describe('FACTORY-CONTRACT — afi.analyst-strategy-config.v1', () => {
           'scorerRef',
           'uwrProfileRef',
           'decayConfig',
+          // DEM-BIND step (e1): mappingRef flipped to required (D-DEM-2(5)(e)) —
+          // every consumer accepts it since steps (c)/(d)/(d′).
+          'mappingRef',
         ].sort(),
       );
       expect(schema.properties.pipelineRef.properties.manifestHash.$ref).toBe(
@@ -222,9 +225,9 @@ describe('FACTORY-CONTRACT — afi.analyst-strategy-config.v1', () => {
         expect(result.ok, `${f} should be admissible`).toBe(true);
         forms.push(Object.keys(config.decayConfig)[0]);
       });
-      // with-mapping-ref.json deliberately reuses the ratio form: it exists to
-      // exercise the OPTIONAL mappingRef presence (DEM-BIND step (b)), not a
-      // fourth decay form — hence the expected duplicate.
+      // with-mapping-ref.json deliberately reuses the ratio form: it was added
+      // at DEM-BIND step (b) to exercise mappingRef presence (optional then,
+      // required since (e1)), not a fourth decay form — hence the duplicate.
       expect(forms.sort()).toEqual(['inline', 'ratio', 'ratio', 'ref']);
     });
 
@@ -245,6 +248,9 @@ describe('FACTORY-CONTRACT — afi.analyst-strategy-config.v1', () => {
         // a hash member is expressly excluded (D-DEM-6(2) routes identity
         // through analystConfigHash, no hash member on the ref).
         'mapping-ref-bad-shape.json': { schemaValid: false, semanticOk: true },
+        // DEM-BIND step (e1): mappingRef is required — a config lacking it
+        // refuses at the schema layer (D-DEM-2(5)(e), fail-closed D-DEM-2(6)).
+        'missing-mapping-ref.json': { schemaValid: false, semanticOk: true },
       };
       const files = readdirSync(join(rootDir, INVALID_DIR))
         .filter((f) => f.endsWith('.json'))

@@ -7,7 +7,7 @@
     "algorithm": "sha256",
     "canonicalizationVersion": "afi.hash.v1",
     "domainTag": "afi.factory.analyst-config",
-    "value": "05d9c82352539b98fbab3b112b11b48f0b92075f2c02b5f0e8061c98d1f953f0"
+    "value": "b2861f7eeaaeff46d95e11e205276dfacc684480353b36ae89464701418a4bec"
   },
   "configRef": "afi-config/examples/analyst-strategy-config/v1/vectors/valid/inline-decay.json",
   "providerBindingPolicy": {
