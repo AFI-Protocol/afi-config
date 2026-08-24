@@ -1,0 +1,84 @@
+{
+  "schema": "afi.signal-reassessment.v1",
+  "signalId": "sig-example-checkpoint-1",
+  "checkpointTime": {
+    "scoredAt": "2026-08-20T00:00:00.000Z",
+    "checkpointAt": "2026-08-20T12:00:00.000Z",
+    "elapsedMinutes": 720,
+    "halfLifeMinutes": 720
+  },
+  "horizonsRead": [
+    {
+      "horizon": "3h",
+      "horizonBasis": "decay-derived",
+      "fractionOfHalfLife": 0.25
+    },
+    {
+      "horizon": "6h",
+      "horizonBasis": "decay-derived",
+      "fractionOfHalfLife": 0.5
+    },
+    {
+      "horizon": "12h",
+      "horizonBasis": "decay-derived",
+      "fractionOfHalfLife": 1
+    }
+  ],
+  "realizedFigures": [
+    {
+      "horizon": "3h",
+      "evaluatedAt": "2026-08-20T03:05:00.000Z",
+      "entryPrice": 65000,
+      "exitPrice": 65390,
+      "returnPct": 0.6,
+      "signedReturnPct": 0.6,
+      "mfePct": 0.9,
+      "maePct": -0.2
+    },
+    {
+      "horizon": "6h",
+      "evaluatedAt": "2026-08-20T06:05:00.000Z",
+      "entryPrice": 65000,
+      "exitPrice": 65845,
+      "returnPct": 1.3,
+      "signedReturnPct": 1.3,
+      "mfePct": 1.5,
+      "maePct": -0.2
+    },
+    {
+      "horizon": "12h",
+      "evaluatedAt": "2026-08-20T12:05:00.000Z",
+      "entryPrice": 65000,
+      "exitPrice": 64675,
+      "returnPct": -0.5,
+      "signedReturnPct": -0.5,
+      "mfePct": 1.5,
+      "maePct": -0.8
+    }
+  ],
+  "reassessmentReading": {
+    "direction": "long",
+    "rule": "signedReturnPct-sign-v1",
+    "perHorizon": [
+      {
+        "horizon": "3h",
+        "outcome": "favorable"
+      },
+      {
+        "horizon": "6h",
+        "outcome": "favorable"
+      },
+      {
+        "horizon": "12h",
+        "outcome": "adverse"
+      }
+    ],
+    "overall": "mixed"
+  },
+  "seal": {
+    "algorithm": "sha256",
+    "canonicalizationVersion": "afi.hash.v1",
+    "domainTag": "afi.factory.analyst-config",
+    "value": "270fdcc28461b494b960e95c7240bbe81ceba137a646759af1f13702d2c95de2"
+  }
+}

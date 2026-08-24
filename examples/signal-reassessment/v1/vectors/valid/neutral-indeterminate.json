@@ -1,0 +1,84 @@
+{
+  "schema": "afi.signal-reassessment.v1",
+  "signalId": "sig-example-checkpoint-neutral-1",
+  "checkpointTime": {
+    "scoredAt": "2026-08-22T14:00:00.000Z",
+    "checkpointAt": "2026-08-22T14:10:00.000Z",
+    "elapsedMinutes": 10,
+    "halfLifeMinutes": 8
+  },
+  "horizonsRead": [
+    {
+      "horizon": "2m",
+      "horizonBasis": "decay-derived",
+      "fractionOfHalfLife": 0.25
+    },
+    {
+      "horizon": "4m",
+      "horizonBasis": "decay-derived",
+      "fractionOfHalfLife": 0.5
+    },
+    {
+      "horizon": "8m",
+      "horizonBasis": "decay-derived",
+      "fractionOfHalfLife": 1
+    }
+  ],
+  "realizedFigures": [
+    {
+      "horizon": "2m",
+      "evaluatedAt": "2026-08-22T14:03:00.000Z",
+      "entryPrice": 184.2,
+      "exitPrice": 184.4,
+      "returnPct": 0.1,
+      "signedReturnPct": null,
+      "mfePct": 0.2,
+      "maePct": -0.1
+    },
+    {
+      "horizon": "4m",
+      "evaluatedAt": "2026-08-22T14:05:00.000Z",
+      "entryPrice": 184.2,
+      "exitPrice": 184.1,
+      "returnPct": -0.05,
+      "signedReturnPct": null,
+      "mfePct": 0.2,
+      "maePct": -0.2
+    },
+    {
+      "horizon": "8m",
+      "evaluatedAt": "2026-08-22T14:09:00.000Z",
+      "entryPrice": 184.2,
+      "exitPrice": 184.2,
+      "returnPct": 0,
+      "signedReturnPct": null,
+      "mfePct": 0.2,
+      "maePct": -0.2
+    }
+  ],
+  "reassessmentReading": {
+    "direction": "neutral",
+    "rule": "signedReturnPct-sign-v1",
+    "perHorizon": [
+      {
+        "horizon": "2m",
+        "outcome": "indeterminate"
+      },
+      {
+        "horizon": "4m",
+        "outcome": "indeterminate"
+      },
+      {
+        "horizon": "8m",
+        "outcome": "indeterminate"
+      }
+    ],
+    "overall": "indeterminate"
+  },
+  "seal": {
+    "algorithm": "sha256",
+    "canonicalizationVersion": "afi.hash.v1",
+    "domainTag": "afi.checkpoint.signal-reassessment",
+    "value": "5d75397d4d3770d252f0725dcf005df03604c8e98b7caaaa77ab1e083a62af97"
+  }
+}

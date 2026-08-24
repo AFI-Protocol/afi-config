@@ -1,0 +1,200 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://afi-protocol.org/schemas/signal-reassessment/v1/signal-reassessment.schema.json",
+  "title": "AFI Signal Reassessment v1 (DLC-CHECKPOINT — the sealed half-life checkpoint artifact)",
+  "description": "(afi.signal-reassessment.v1) The sealed artifact a validator — human or automated, same contract (DLC-GOV D-DLC-4(4)) — emits at/post a scored signal's stamped half-life: the comparison of the sealed assertion against the captured realization for that one signal. It NEVER mutates the scored record (immutability attaches at SCORED, CFG-GOV); it links by signalId and lives beside, never inside, the canonical evidence plane.",
+  "$comment": "BOUNDARY (DLC-GOV D-DLC-4(3)): the member set is EXHAUSTIVE — the checkpoint time, the horizons read, the realized figures consumed, the reassessment reading, and the signalId linkage, plus the artifact form (schema, seal). Nothing more without a further filing. Realized figures are copied VERBATIM from the signal_outcomes rows read; nothing here recomputes market data, and no member is a new score.",
+  "x-afiStatus": "governed-contract",
+  "x-afiPartOf": "AFI Decay Lifecycle v0.1 (DLC-GOV), slot DLC-CHECKPOINT",
+  "x-afiDoctrineRefs": [
+    "afi-governance/decisions/decay-lifecycle-v0.1.md D-DLC-4 (checkpoint semantics; sealed-artifact form; exhaustive members; named sealing question answered here)",
+    "afi-governance/decisions/decay-horizon-alignment-v0.1.md D-DH-2 (the {H/4, H/2, H} stamped-horizon capture this artifact consumes, unchanged)",
+    "afi-governance/decisions/analyst-configuration-freedom-v0.1.md (immutability attaches at SCORED — a reassessment never mutates the scored record)",
+    "afi-governance/decisions/persistence-v0.1.md D-MONGO-3 (the artifact lives beside, never inside, the canonical evidence plane)"
+  ],
+  "x-afiConstraints": {
+    "sealingDiscipline": "THE D-DLC-4(3) SEALING ANSWER: the artifact is sealed by canonical-json-hashing.v1 (afi.hash.v1) exactly as tests/canonical-hashing-kat.test.ts executes it — seal.value is the sha256 of the canonical serialization of this document with the single TOP-LEVEL member 'seal' excluded; the domain tag afi.checkpoint.signal-reassessment is carried, never hashed. Proven by governed vectors: every valid vector's seal.value reproduces under the reference implementation.",
+    "checkpointEligibility": "A reassessment exists only at/post the stamped half-life: checkpointTime.elapsedMinutes >= checkpointTime.halfLifeMinutes (DLC-GOV D-DLC-4(1); eligibility is a derived time predicate, not a lifecycle state). Draft-07 cannot compare members; the semantic layer enforces it.",
+    "horizonAlignment": "horizonsRead, realizedFigures, and reassessmentReading.perHorizon carry exactly the same horizon-label set, row-for-row: the reading reads what was read, nothing else. Semantic layer.",
+    "readingDeterminism": "reassessmentReading is a DETERMINISTIC classification (rule signedReturnPct-sign-v1) of the copied figures, never a judgment call and never a new score: per horizon, signedReturnPct null → indeterminate, > 0 → favorable, < 0 → adverse, exactly 0 → flat; overall over the non-indeterminate horizons — all favorable → confirmed, all adverse → contradicted, otherwise mixed; no non-indeterminate horizon → indeterminate. Semantic layer recomputes both levels.",
+    "verbatimRealization": "Every realizedFigures member is copied verbatim from the signal_outcomes row it names (afi.operational.signal-outcome.v0.1); this artifact never re-fetches or recomputes market data (DLC-GOV D-DLC-4(2)).",
+    "immutability": "Append-only, one reassessment per signalId at the store surface; a reassessment is never edited and the scored record is never touched (D-DLC-4(3))."
+  },
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "signalId",
+    "checkpointTime",
+    "horizonsRead",
+    "realizedFigures",
+    "reassessmentReading",
+    "seal"
+  ],
+  "properties": {
+    "schema": {
+      "type": "string",
+      "const": "afi.signal-reassessment.v1",
+      "description": "Schema-id version of the sealed reassessment artifact."
+    },
+    "signalId": {
+      "type": "string",
+      "minLength": 1,
+      "description": "The D-DLC-4(3) linkage: the scored signal this reassessment checkpoints. The sealed record itself is never referenced by copy, only by this id."
+    },
+    "checkpointTime": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["scoredAt", "checkpointAt", "elapsedMinutes", "halfLifeMinutes"],
+      "description": "The checkpoint moment, self-proving: elapsedMinutes >= halfLifeMinutes is the eligibility predicate (semantic layer).",
+      "properties": {
+        "scoredAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "The sealed scoring timestamp the clock runs from (D-DLC-3(1))."
+        },
+        "checkpointAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "When the checkpoint was taken."
+        },
+        "elapsedMinutes": {
+          "type": "number",
+          "minimum": 0,
+          "description": "Minutes elapsed scoredAt → checkpointAt."
+        },
+        "halfLifeMinutes": {
+          "type": "number",
+          "exclusiveMinimum": 0,
+          "description": "The determination's stamped half-life (TDR-GOV stamp), copied verbatim."
+        }
+      }
+    },
+    "horizonsRead": {
+      "type": "array",
+      "minItems": 1,
+      "description": "The captured horizons this checkpoint read (DH-GOV rows), label-for-label.",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["horizon", "horizonBasis"],
+        "properties": {
+          "horizon": {
+            "type": "string",
+            "pattern": "^[1-9][0-9]*[mh]$",
+            "description": "The outcome row's horizon label (DH-GOV label grammar)."
+          },
+          "horizonBasis": {
+            "type": "string",
+            "enum": ["decay-derived", "operator-override"],
+            "description": "The row's recorded basis, copied verbatim."
+          },
+          "fractionOfHalfLife": {
+            "type": "number",
+            "exclusiveMinimum": 0,
+            "description": "Present exactly when the row is decay-derived (0.25 / 0.5 / 1)."
+          }
+        }
+      }
+    },
+    "realizedFigures": {
+      "type": "array",
+      "minItems": 1,
+      "description": "The realization, copied VERBATIM from the signal_outcomes rows read — never recomputed here.",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "horizon",
+          "evaluatedAt",
+          "entryPrice",
+          "exitPrice",
+          "returnPct",
+          "signedReturnPct"
+        ],
+        "properties": {
+          "horizon": {
+            "type": "string",
+            "pattern": "^[1-9][0-9]*[mh]$"
+          },
+          "evaluatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "When the capture run wrote the row."
+          },
+          "entryPrice": { "type": "number" },
+          "exitPrice": { "type": "number" },
+          "returnPct": {
+            "type": "number",
+            "description": "Raw window return %, label-free."
+          },
+          "signedReturnPct": {
+            "type": ["number", "null"],
+            "description": "Direction-signed return % (null for a neutral assertion) — the reading's sole classification input."
+          },
+          "mfePct": {
+            "type": "number",
+            "description": "Max favorable excursion %, copied if the row carries it."
+          },
+          "maePct": {
+            "type": "number",
+            "description": "Max adverse excursion %, copied if the row carries it."
+          }
+        }
+      }
+    },
+    "reassessmentReading": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["direction", "rule", "perHorizon", "overall"],
+      "description": "The deterministic assertion-vs-realization reading (x-afiConstraints.readingDeterminism). Not a score; a classification.",
+      "properties": {
+        "direction": {
+          "type": "string",
+          "enum": ["long", "short", "neutral"],
+          "description": "The sealed assertion's direction, copied verbatim."
+        },
+        "rule": {
+          "type": "string",
+          "const": "signedReturnPct-sign-v1",
+          "description": "The governed classification rule this reading was produced by."
+        },
+        "perHorizon": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["horizon", "outcome"],
+            "properties": {
+              "horizon": {
+                "type": "string",
+                "pattern": "^[1-9][0-9]*[mh]$"
+              },
+              "outcome": {
+                "type": "string",
+                "enum": ["favorable", "adverse", "flat", "indeterminate"]
+              }
+            }
+          }
+        },
+        "overall": {
+          "type": "string",
+          "enum": ["confirmed", "contradicted", "mixed", "indeterminate"]
+        }
+      }
+    },
+    "seal": {
+      "description": "CanonicalHash v1 sealing this artifact (x-afiConstraints.sealingDiscipline): sha256 over the canonical serialization with the top-level 'seal' member excluded; domain tag afi.checkpoint.signal-reassessment carried, never hashed.",
+      "allOf": [
+        { "$ref": "https://afi-protocol.org/schemas/provenance/v1/canonical-hash.schema.json" },
+        {
+          "type": "object",
+          "properties": {
+            "domainTag": { "const": "afi.checkpoint.signal-reassessment" }
+          }
+        }
+      ]
+    }
+  }
+}
