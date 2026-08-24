@@ -34,13 +34,16 @@ const rootDir = join(__dirname, '..');
 // mechanism (D-FLPR-5(5) precedent); analystConfigHash moved under DH-GOV
 // D-DH-1 (decay-swing-v1 -> decay-intraday-v1) and again under TDR-GOV
 // D-TDR-4 (the per-signal ratio decay law: barsPerHalfLife 12,
-// unknownTimeframeMinutes 5); pluginSetHash moved under AR-GOV D-AR-4(2)
-// (scorer implementationVersion 1.1.0 -> 1.2.0, the ATR-regime rubric era;
-// prior move: EQ-GOV D-EQ-3(2), 1.0.0 -> 1.1.0). ---
+// unknownTimeframeMinutes 5); analystConfigHash moved under DEM-GOV
+// D-DEM-6(2) (DEM-BIND step (d): mappingRef froggy-trend-pullback--1.0.0
+// registered; prior value 1172e5da...); pluginSetHash moved under DEM-GOV
+// D-DEM-7(4) (scorer implementationVersion 1.2.0 -> 1.3.0, the DEM-BIND
+// mapping-consumption era, EQ-GOV D-EQ-3(2) precedent class; prior moves:
+// AR-GOV D-AR-4(2) 1.1.0 -> 1.2.0, EQ-GOV D-EQ-3(2) 1.0.0 -> 1.1.0). ---
 const PINNED_MANIFEST_HASH = 'df3372dadaca1595d0e6d2f6bad9464ccc9abb7106e9f5b7111df148a145bc4f';
 const PINNED_ANALYST_CONFIG_HASH =
-  '1172e5da91dfd9ac6e65a060b628c5a4f1bbdd41545904a7a6a59e15fc0fe705';
-const PINNED_PLUGIN_SET_HASH = 'f63c6f21beb20834c76bc392373746db520828802e7797e84085a831572629d5';
+  'aa8cf5cfd918ae9a80532b735db3236b708ce0cb82778d845b35220627dab479';
+const PINNED_PLUGIN_SET_HASH = '220c004ed615c58bd3f4187256568bfcc6ea375e49ce467ff06a2467b405c0b6';
 
 // D-FCP-7 registered composition domain tags (canonical-json-hashing.v1 §3, amended).
 const TAG_COMPOSITION_MANIFEST = 'afi.d2.composition-manifest';
@@ -55,9 +58,15 @@ const FROGGY_TRIPLE = {
 
 const PLUGINS_DIR = 'registries/analysis-plugins';
 const MAPPINGS_DIR = 'registries/enrichment-mappings';
-// DEM-CONTRACT lands the family EMPTY: the froggy registration is DEM-BIND
-// merge-order step (d) (declarative-enrichment-mapping-v0.1.md:82,:199).
-const EXPECTED_MAPPING_FILES: string[] = [];
+// DEM-BIND step (d) (declarative-enrichment-mapping-v0.1.md:82,:199): the
+// froggy mapping is registered. D-DEM-6(1): each registered document's
+// canonical-json hash (full document, no exclusions) is pinned here — the
+// registry's guard layer — and echoed human-readably in the family README.
+const EXPECTED_MAPPING_FILES: string[] = ['froggy-trend-pullback--1.0.0.json'];
+const PINNED_MAPPING_HASHES: Record<string, string> = {
+  'froggy-trend-pullback--1.0.0.json':
+    'fb68ef40681126554daf43f6b7828bf822f383be8ee03ffa358fe3f58957d488',
+};
 const PIPELINES_DIR = 'registries/pipelines';
 const STRATEGIES_DIR = 'registries/analyst-strategies';
 const BINDINGS_DIR = 'registries/provider-bindings';
@@ -566,6 +575,9 @@ describe('DEM-CONTRACT SEEDING — registries/enrichment-mappings', () => {
       if (!valid) console.error(`${f} failure:`, validate.errors);
       expect(valid, `${f} must be schema-valid`).toBe(true);
       expect(f).toBe(`${doc.mappingId}--${doc.version}.json`);
+      // D-DEM-6(1): the registered bytes hash to the pinned identity — a
+      // registered version is immutable; any edit is a red test.
+      expect(canonicalSha256(doc)).toBe(PINNED_MAPPING_HASHES[f]);
     });
   });
 });

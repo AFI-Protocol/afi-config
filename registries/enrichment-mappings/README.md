@@ -9,4 +9,8 @@ Every entry is AJV-validated against the family schema and drift-guarded by `tes
 
 ## Current contents
 
-Empty — the first registration (`froggy-trend-pullback` `1.0.0`, whose content the canonical example at `examples/enrichment-mapping/v1/enrichment-mapping.example.json` already carries) lands under the DEM-BIND slot, merge-order step (d) of D-DEM-2(5), and **no runtime resolves this registry yet** (DEM-CONTRACT slot text). Registration is an owner-gated act; the drift guard's pinned list updates in the same PR.
+| File | canonical-json sha256 (full document, no exclusions — D-DEM-6(1)) | Registered under |
+|---|---|---|
+| `froggy-trend-pullback--1.0.0.json` | `fb68ef40681126554daf43f6b7828bf822f383be8ee03ffa358fe3f58957d488` | DEM-GOV DEM-BIND step (d) (D-DEM-2(5)(d)), 2026-08-23; byte-copy of the canonical example at registration time |
+
+The suite-side pin lives in `tests/registries-seeding-validation.test.ts` (`PINNED_MAPPING_HASHES`) — a registered version is immutable; any byte change is a red test. The runtime resolves this registry lazily per `mappingRef` from DEM-BIND step (c) onward.
