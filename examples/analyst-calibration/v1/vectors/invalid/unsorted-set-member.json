@@ -1,0 +1,2127 @@
+{
+  "schema": "afi.analyst-calibration.v1",
+  "rule": "analyst-calibration-v1",
+  "readingRule": "signedReturnPct-sign-v1",
+  "groupKey": {
+    "analystId": "froggy",
+    "strategyId": "trend_pullback_v1",
+    "strategyVersion": "1.0.0",
+    "scoringIdentity": {
+      "pipelineId": "froggy-trend-pullback",
+      "pipelineVersion": "v1.3.0",
+      "manifestHash": "df3372dadaca1595d0e6d2f6bad9464ccc9abb7106e9f5b7111df148a145bc4f",
+      "scorerPluginId": "afi-scorer-froggy-trend-pullback",
+      "scorerPluginVersion": "1.0.0",
+      "pluginSetHash": "f63c6f21beb20834c76bc392373746db520828802e7797e84085a831572629d5",
+      "uwrProfileId": "uwr-weighted-lifts-v0.1",
+      "uwrProfileSource": "builtin-value-identity"
+    },
+    "halfLifeMinutes": 60
+  },
+  "n": 141,
+  "attribution": "corpus",
+  "provenance": {
+    "signalIds": [
+      {
+        "signalId": "btcusdt-5m-trend-pullback-v1-long-2026-08-06T07:20:06Z",
+        "recordHash": "fd4cfca1a791ef10ff85fb1a27d4b6c635c194d8b00fc567d289cacb7b4bd18a",
+        "recordVersion": 1
+      },
+      {
+        "signalId": "btcusdt-5m-trend-pullback-v1-short-2026-08-06T07:45:07Z",
+        "recordHash": "a72c4092d8f71df8297b36bb1500bef9eb4307a72e44f24cd60465ae030ebcfb",
+        "recordVersion": 1
+      },
+      {
+        "signalId": "btcusdt-5m-trend-pullback-v1-long-2026-08-06T08:55:08Z",
+        "recordHash": "16d664a44d1f86505ec15e4e1a74b0ace4fdd3550c4f15dd57aeba74cff39d65",
+        "recordVersion": 1
+      },
+      {
+        "signalId": "btcusdt-5m-trend-pullback-v1-short-2026-08-06T09:15:09Z",
+        "recordHash": "d3c81aba2f0fa0bfaf4fc9d2d4684142df0215968e3c088ac5bf87f0d6958508",
+        "recordVersion": 1
+      },
+      {
+        "signalId": "btcusdt-5m-trend-pullback-v1-long-2026-08-06T11:40:07Z",
+        "recordHash": "0a4a876dea2799b679526fe92991ed8040432ced7cd111138953e77f9398a9dc",
+        "recordVersion": 1
+      },
+      {
+        "signalId": "btcusdt-5m-trend-pullback-v1-short-2026-08-06T12:15:12Z",
+        "recordHash": "871f3a592c5d031eebb2db198ac74bc7c1058199a93abe757002840519f65c36",
+        "recordVersion": 1
+      },
+      {
+        "signalId": "btcusdt-5m-trend-pullback-v1-long-2026-08-06T12:30:10Z",
+        "recordHash": "2b2e658f92f5698db1cf76eb1be71236ae61ffba592577f33c9bf7d93e1a6f42",
+        "recordVersion": 1
+      },
+      {
+        "signalId": "btcusdt-5m-trend-pullback-v1-short-2026-08-06T13:05:06Z",
+        "recordHash": "dd2891058182504e5131bf7a374bfbfc29dac7a36a4a2641ea50b0d544a64673",
+        "recordVersion": 1
+      },
+      {
+        "signalId": "btcusdt-5m-trend-pullback-v1-long-2026-08-06T13:45:21Z",
+        "recordHash": "56148f632d77ba47fd2cf98a978ea4124802360ffd896fb426bcaff028b7b089",
+        "recordVersion": 1
+      },
+      {
+        "signalId": "btcusdt-5m-trend-pullback-v1-short-2026-08-06T16:00:24Z",
+        "recordHash": "785ae5ace3825b689dc1dad0336c22dd158d0383ecd5ee5f75951b126c10b344",
+        "recordVersion": 1
+      },
+      {
+        "signalId": "btcusdt-5m-trend-pullback-v1-long-2026-08-06T17:10:09Z",
+        "recordHash": "9f7a5c7116c22c5a18d70769cd7ee3f8aee1122f0b3331af0fe8e710bb2f2529",
+        "recordVersion": 1
+      },
+      {
+        "signalId": "btcusdt-5m-trend-pullback-v1-short-2026-08-06T17:20:10Z",
+        "recordHash": "a86efa11f31537aadc5b4a933f5eb3b12c351eeaf330679903fa2c49146bc04d",
+        "recordVersion": 1
+      },
+      {
+        "signalId": "btcusdt-5m-trend-pullback-v1-long-2026-08-06T17:25:05Z",
+        "recordHash": "47ee2dd4ae6de1db2e2afdc2ac2946c9cca271cf831dd1e4a093114feff9111f",
+        "recordVersion": 1
+      },
+      {
+        "signalId": "btcusdt-5m-trend-pullback-v1-short-2026-08-06T17:30:21Z",
+        "recordHash": "09173aed45a6f8bb49a2b86c9fb410da56e65c2e1ef3d9230e305e21fcb9d10f",
+        "recordVersion": 1
+      },
+      {
+        "signalId": "btcusdt-5m-trend-pullback-v1-long-2026-08-06T20:00:31Z",
+        "recordHash": "d821e16e69fffb7340f90fcf3e14bd2d1ea26897e724227840e8b454a940d359",
+        "recordVersion": 1
+      },
+      {
+        "signalId": "btcusdt-5m-trend-pullback-v1-short-2026-08-06T21:45:08Z",
+        "recordHash": "503ffd155a4788d68ac352675aad480e17963143e90533219167ee2a7b2fe4a6",
+        "recordVersion": 1
+      },
+      {
+        "signalId": "btcusdt-5m-trend-pullback-v1-long-2026-08-06T21:50:03Z",
+        "recordHash": "a39aee3b204e3c9cbb6355830e9237c9563c7723425d1d147ee63c552a667e9f",
+        "recordVersion": 1
+      },
+      {
+        "signalId": "btcusdt-5m-trend-pullback-v1-short-2026-08-06T22:10:03Z",
+        "recordHash": "c313e89e1be851c13ff463103a6a118196f2e0b85dc25e34f3bc38a3d394c69b",
+        "recordVersion": 1
+      },
+      {
+        "signalId": "btcusdt-5m-trend-pullback-v1-long-2026-08-06T22:20:03Z",
+        "recordHash": "8de1d390236b48b4960b4e7890948e351c111432a0f17e4a295aff549ddc0f09",
+        "recordVersion": 1
+      },
+      {
+        "signalId": "btcusdt-5m-trend-pullback-v1-short-2026-08-06T22:25:05Z",
+        "recordHash": "0756a25a2ab94e449fedbfae46d7699048de683628a905e0c04348d767e36077",
+        "recordVersion": 1
+      },
+      {
+        "signalId": "btcusdt-5m-trend-pullback-v1-long-2026-08-07T00:00:26Z",
+        "recordHash": "483f1beae5ed9dfacb70c08fc0fb2755a6c0bc18e30c5f49380a0aa70b9c5dcb",
+        "recordVersion": 1
+      },
+      {
+        "signalId": "btcusdt-5m-trend-pullback-v1-short-2026-08-07T02:35:04Z",
+        "recordHash": "5caf69f64c94327f4c008a1e90edfac9e3ff508f6468d55a51e6638d6ec46d67",
+        "recordVersion": 1
+      },
+      {
+        "signalId": "btcusdt-5m-trend-pullback-v1-long-2026-08-07T05:50:03Z",
+        "recordHash": "133f39f734019952b9b003c507cb86ba711a1f8ead0c0c9160c3a5147d83b85b",
+        "recordVersion": 1
+      },
+      {
+        "signalId": "btcusdt-5m-trend-pullback-v1-short-2026-08-07T07:05:29Z",
+        "recordHash": "1f3041fb1305a3f397d5ab758cf3019c5a25ac71c849bb894d9a3031a5d84193",
+        "recordVersion": 1
+      },
+      {
+        "signalId": "btcusdt-5m-trend-pullback-v1-long-2026-08-07T07:31:02Z",
+        "recordHash": "bedb19e3afb7fb20a5ebb9e312958b9472a064195e3160da32b18e579f2468b0",
+        "recordVersion": 1
+      },
+      {
+        "signalId": "btcusdt-5m-trend-pullback-v1-short-2026-08-07T07:35:24Z",
+        "recordHash": "2560082fe7cef3166e1858cb6fb9790cd253bf727fa445bbaf2f84854b215505",
+        "recordVersion": 1
+      },
+      {
+        "signalId": "btcusdt-5m-trend-pullback-v1-long-2026-08-07T08:20:07Z",
+        "recordHash": "afb99ea1f7dd60ce5a92d87a1c5b2239302346c3200c938eb6176f5f64bb3cb8",
+        "recordVersion": 1
+      },
+      {
+        "signalId": "btcusdt-5m-trend-pullback-v1-short-2026-08-07T10:45:41Z",
+        "recordHash": "37cca16dcc03d42240e8cacedd4cdafff1578837c8ee6b0901d26864e845e0e9",
+        "recordVersion": 1
+      },
+      {
+        "signalId": "btcusdt-5m-trend-pullback-v1-long-2026-08-07T10:55:04Z",
+        "recordHash": "ef6db1f4924840a44a9b90a9dee167309f8162fa9b2d1e793b4c75f76be2364d",
+        "recordVersion": 1
+      },
+      {
+        "signalId": "btcusdt-5m-trend-pullback-v1-short-2026-08-07T11:00:06Z",
+        "recordHash": "374bc8d63d601a69488945666b087b447648341982de517f4b457721d1a2d6fa",
+        "recordVersion": 1
+      },
+      {
+        "signalId": "btcusdt-5m-trend-pullback-v1-long-2026-08-07T11:10:11Z",
+        "recordHash": "7e7effdfab06d95c6bf45e4c437bef277196b41c83de07264ff4807703a0122f",
+        "recordVersion": 1
+      },
+      {
+        "signalId": "btcusdt-5m-trend-pullback-v1-short-2026-08-07T11:25:04Z",
+        "recordHash": "61f9b561cbd3da74be2d6bac4c3aa71a466ffe100e30c70a04f9bb2b735858f1",
+        "recordVersion": 1
+      },
+      {
+        "signalId": "btcusdt-5m-trend-pullback-v1-long-2026-08-07T11:30:08Z",
+        "recordHash": "6cd08f0ce6a1d503a8d6206553e85e7caa6b9a9bdace360be2d165022b4a613f",
+        "recordVersion": 1
+      },
+      {
+        "signalId": "btcusdt-5m-trend-pullback-v1-short-2026-08-07T11:35:04Z",
+        "recordHash": "e62e1e102771f119674df5dddb0cc2c436fb1e59389d31267d9c1f8c71938c6f",
+        "recordVersion": 1
+      },
+      {
+        "signalId": "btcusdt-5m-trend-pullback-v1-long-2026-08-07T12:15:08Z",
+        "recordHash": "163b58990f948163d8df44b10f9500285052f0cfab1c0a1b40a66cb10085a981",
+        "recordVersion": 1
+      },
+      {
+        "signalId": "btcusdt-5m-trend-pullback-v1-short-2026-08-07T12:25:02Z",
+        "recordHash": "73b75e1ce276a9d1b20f9cb37be41a881e47645c16b74097afc8717544ee39bc",
+        "recordVersion": 1
+      },
+      {
+        "signalId": "btcusdt-5m-trend-pullback-v1-long-2026-08-07T13:00:12Z",
+        "recordHash": "eab77ca52dc61c80dc19fabb828bb4e5f463d7e3fe5cb2b742abedaa4056ff5d",
+        "recordVersion": 1
+      },
+      {
+        "signalId": "btcusdt-5m-trend-pullback-v1-short-2026-08-07T13:15:06Z",
+        "recordHash": "ec7b6c4577f55442a94de94c641004d1047e98610a7415eb42861c530ca184ab",
+        "recordVersion": 1
+      },
+      {
+        "signalId": "btcusdt-5m-trend-pullback-v1-long-2026-08-07T15:40:05Z",
+        "recordHash": "da4e6cdda63e8ffd8a0f2334a1a66798552a311ff188002adede5fe0554ca5a7",
+        "recordVersion": 1
+      },
+      {
+        "signalId": "btcusdt-5m-trend-pullback-v1-short-2026-08-07T15:45:15Z",
+        "recordHash": "8edb47da0c45b622e5bde1dd573589d408ff9ec7cc9f90bcc8cf5a5fc6f62373",
+        "recordVersion": 1
+      },
+      {
+        "signalId": "btcusdt-5m-trend-pullback-v1-long-2026-08-07T16:10:09Z",
+        "recordHash": "ee269482915798f922643bf2821ef6d477639ba1bf2823b6deb79073a077ed33",
+        "recordVersion": 1
+      },
+      {
+        "signalId": "btcusdt-5m-trend-pullback-v1-short-2026-08-07T16:30:11Z",
+        "recordHash": "444386a8af8b2a1ccd16b4df941f7e8fbde7c3549b4700b44a00a76a876915e4",
+        "recordVersion": 1
+      },
+      {
+        "signalId": "btcusdt-5m-trend-pullback-v1-long-2026-08-07T16:40:09Z",
+        "recordHash": "9cb90fcf46560ad8fe7d8cc2b393c0a05295828542d8679ad9bcc3434dd5deaa",
+        "recordVersion": 1
+      },
+      {
+        "signalId": "btcusdt-5m-trend-pullback-v1-short-2026-08-07T16:45:03Z",
+        "recordHash": "f6724823e8c59c93be418fa1f935276a801332ccc316fca3e3b9836da038bc88",
+        "recordVersion": 1
+      },
+      {
+        "signalId": "btcusdt-5m-trend-pullback-v1-long-2026-08-07T16:50:09Z",
+        "recordHash": "ce24f8c99e7fb38d42d13bf91373e62c3ad8ac40c7278e7ce1dc711829167f44",
+        "recordVersion": 1
+      },
+      {
+        "signalId": "btcusdt-5m-trend-pullback-v1-short-2026-08-07T16:55:10Z",
+        "recordHash": "bce8af1bc3d77a086cc6c08b2432d1999c842494cd62306c9a38c8c4cd0d4fbd",
+        "recordVersion": 1
+      },
+      {
+        "signalId": "btcusdt-5m-trend-pullback-v1-long-2026-08-07T18:10:09Z",
+        "recordHash": "13421ff5c8c14dea994d3e2f6781bc1d697c75a62fccd7d97b603db438a407e9",
+        "recordVersion": 1
+      },
+      {
+        "signalId": "btcusdt-5m-trend-pullback-v1-short-2026-08-07T21:55:02Z",
+        "recordHash": "4693b02961bed5276db977c634a5440ae67289963aa5a87832d35141371e5e88",
+        "recordVersion": 1
+      },
+      {
+        "signalId": "btcusdt-5m-trend-pullback-v1-long-2026-08-07T23:56:00Z",
+        "recordHash": "cfd27596d0db9fa62a082d68aedd0c9715b8e181a58cc8f66e8b840f3ee44ab8",
+        "recordVersion": 1
+      },
+      {
+        "signalId": "btcusdt-5m-trend-pullback-v1-short-2026-08-08T00:25:22Z",
+        "recordHash": "3936068830170d313cbfea5c6eeaeb4fe7898937219484699797752834b1cbf2",
+        "recordVersion": 1
+      },
+      {
+        "signalId": "btcusdt-5m-trend-pullback-v1-long-2026-08-08T00:30:05Z",
+        "recordHash": "e50a9baa2316706539407c6a1f4dc5f2beb8331a3b60a9a314195d9d306fe801",
+        "recordVersion": 1
+      },
+      {
+        "signalId": "btcusdt-5m-trend-pullback-v1-short-2026-08-08T02:10:07Z",
+        "recordHash": "d9d44e543a0e6f0c5d63eb07a6ebfee36e240921700aacf95f9debcbe48b41b5",
+        "recordVersion": 1
+      },
+      {
+        "signalId": "btcusdt-5m-trend-pullback-v1-long-2026-08-08T03:15:02Z",
+        "recordHash": "57b006f6ffb064f0a93fe988d1348ab043dbf2de63443b8e2b46b80b2a282cdb",
+        "recordVersion": 1
+      },
+      {
+        "signalId": "btcusdt-5m-trend-pullback-v1-short-2026-08-08T04:15:32Z",
+        "recordHash": "c989fff2efb6f4ef4ddc03a3a6ecab4506ed7be4398e34fc3c7e6cf9518ef1a4",
+        "recordVersion": 1
+      },
+      {
+        "signalId": "btcusdt-5m-trend-pullback-v1-long-2026-08-08T04:40:04Z",
+        "recordHash": "9ca0922e2b0d6021c29a38d4e583e67bc708f3ff704a6d9acaacb0249113a892",
+        "recordVersion": 1
+      },
+      {
+        "signalId": "btcusdt-5m-trend-pullback-v1-short-2026-08-08T04:55:09Z",
+        "recordHash": "060f06455db4153850de053b2dcbddf762693f91e245ead59fa7f738a852e320",
+        "recordVersion": 1
+      },
+      {
+        "signalId": "btcusdt-5m-trend-pullback-v1-long-2026-08-08T07:10:31Z",
+        "recordHash": "7688e2a1896328463c70ba1195312d966087a6599d8b7f890d6a8439bacb6c82",
+        "recordVersion": 1
+      },
+      {
+        "signalId": "btcusdt-5m-trend-pullback-v1-short-2026-08-08T07:45:21Z",
+        "recordHash": "20b5618080ce1f6db71507e6936a4b175b08fd753499e0524bbedfdd9a5675e6",
+        "recordVersion": 1
+      },
+      {
+        "signalId": "btcusdt-5m-trend-pullback-v1-long-2026-08-08T08:35:10Z",
+        "recordHash": "b966c0c7f148f3ac099c4346700b2fb4a28cf255f8d8f7023b4318e3dede365c",
+        "recordVersion": 1
+      },
+      {
+        "signalId": "btcusdt-5m-trend-pullback-v1-short-2026-08-08T09:55:09Z",
+        "recordHash": "e7e2da172d17a20f406b524571a1f22a2ba45d1bf7a27499b2ac888885b65b48",
+        "recordVersion": 1
+      },
+      {
+        "signalId": "btcusdt-5m-trend-pullback-v1-long-2026-08-08T10:35:21Z",
+        "recordHash": "1d27d2f79ee28101a78af8f48eeda7d7299ded31eb2e413d3b01d0296abc6fb8",
+        "recordVersion": 1
+      },
+      {
+        "signalId": "btcusdt-5m-trend-pullback-v1-short-2026-08-08T11:10:19Z",
+        "recordHash": "554e577fe9fa684c6cacc2f9a9b26092cdf89a6bd7e2851e8ea6232723b942c4",
+        "recordVersion": 1
+      },
+      {
+        "signalId": "btcusdt-5m-trend-pullback-v1-long-2026-08-08T11:20:10Z",
+        "recordHash": "2f764cfd7e1f260d747cf33ee4a8c640cfd81ee49b90a57eea54864decdf506b",
+        "recordVersion": 1
+      },
+      {
+        "signalId": "btcusdt-5m-trend-pullback-v1-short-2026-08-08T11:25:20Z",
+        "recordHash": "de9a421f8948973066d95de784b78118e6b14df4cd42424ad9498c50f73c7a27",
+        "recordVersion": 1
+      },
+      {
+        "signalId": "btcusdt-5m-trend-pullback-v1-long-2026-08-08T12:20:00Z",
+        "recordHash": "2ef9ed79d93e26abcdec139d526db99d56b51120428e5abfa37d608b60b581d4",
+        "recordVersion": 1
+      },
+      {
+        "signalId": "btcusdt-5m-trend-pullback-v1-short-2026-08-08T15:15:03Z",
+        "recordHash": "77b784e92bbdf2af9fd69ee0233e3f45dd304538459511859c3dd2223264cc05",
+        "recordVersion": 1
+      },
+      {
+        "signalId": "btcusdt-5m-trend-pullback-v1-long-2026-08-08T17:15:09Z",
+        "recordHash": "1de6735270ec1af436ff4f7f3868b2c1d2d7ab1cdcf963abe999be340720d675",
+        "recordVersion": 1
+      },
+      {
+        "signalId": "btcusdt-5m-trend-pullback-v1-short-2026-08-08T18:20:02Z",
+        "recordHash": "fb39a5f22f63ea000d9a023e58720bd8f5b59da4a9b2587768261a2ffc8d69ce",
+        "recordVersion": 1
+      },
+      {
+        "signalId": "btcusdt-5m-trend-pullback-v1-long-2026-08-08T20:00:11Z",
+        "recordHash": "4e2a8784f01c37bcfbadfe4500cc8869ea9ba48853841e35b7596ba2eb31263c",
+        "recordVersion": 1
+      },
+      {
+        "signalId": "btcusdt-5m-trend-pullback-v1-short-2026-08-08T21:20:10Z",
+        "recordHash": "2d4790c9c6a21e7f2bb086523ca6006d72125384aec19e603f42d39a7dd0ca64",
+        "recordVersion": 1
+      },
+      {
+        "signalId": "btcusdt-5m-trend-pullback-v1-long-2026-08-08T23:45:19Z",
+        "recordHash": "1a7c1ad036173a0572f5522c963bccb8913d82727f6770726d9103249ed7ceac",
+        "recordVersion": 1
+      },
+      {
+        "signalId": "btcusdt-5m-trend-pullback-v1-short-2026-08-09T01:35:04Z",
+        "recordHash": "8e66967977f21e4fe8d4fafaa22bafdcecb33393d338908042fe9f200f4448e4",
+        "recordVersion": 1
+      },
+      {
+        "signalId": "btcusdt-5m-trend-pullback-v1-long-2026-08-09T03:05:11Z",
+        "recordHash": "f00da33c097eb991145d59fb1f5dbe45ff234c0291f79121f4493b3e450c5e97",
+        "recordVersion": 1
+      },
+      {
+        "signalId": "btcusdt-5m-trend-pullback-v1-short-2026-08-09T03:15:00Z",
+        "recordHash": "d0130d8448e74bc345b5c7541ba222a6f1088728048d16cde928440f8781d078",
+        "recordVersion": 1
+      },
+      {
+        "signalId": "btcusdt-5m-trend-pullback-v1-long-2026-08-09T03:30:04Z",
+        "recordHash": "16a95f7b08fb176ee6d644e2ab8836bfab03c846906e968098d490bf1dc5c180",
+        "recordVersion": 1
+      },
+      {
+        "signalId": "btcusdt-5m-trend-pullback-v1-short-2026-08-09T05:20:54Z",
+        "recordHash": "279402750507248bc4f31ab926a0ceb6a27aa48eb0c36609f6aa9d69747cac9f",
+        "recordVersion": 1
+      },
+      {
+        "signalId": "btcusdt-5m-trend-pullback-v1-long-2026-08-09T06:10:16Z",
+        "recordHash": "8fa079fd85359e67846e54d415be175704a4764a293aad4a1581b37950e594f5",
+        "recordVersion": 1
+      },
+      {
+        "signalId": "btcusdt-5m-trend-pullback-v1-short-2026-08-09T07:40:09Z",
+        "recordHash": "a6334187c3cae66ffbd73a34e879e328aadedb42223b30025474098a7ea2c401",
+        "recordVersion": 1
+      },
+      {
+        "signalId": "btcusdt-5m-trend-pullback-v1-long-2026-08-09T08:10:09Z",
+        "recordHash": "efb6e18e9b3858c85d53d8b3e2c2a26c48bf7daa8d0d4d03c60998ddba44e7d4",
+        "recordVersion": 1
+      },
+      {
+        "signalId": "btcusdt-5m-trend-pullback-v1-short-2026-08-09T08:35:27Z",
+        "recordHash": "a2178883209ef617f5a5efe686b03aae7cab4c2dd57b2767fd5303273b5d73d3",
+        "recordVersion": 1
+      },
+      {
+        "signalId": "btcusdt-5m-trend-pullback-v1-long-2026-08-09T10:00:11Z",
+        "recordHash": "246f51912c26eca001023b115105feb084c05a0d1d43f2a4248e6beb46682080",
+        "recordVersion": 1
+      },
+      {
+        "signalId": "btcusdt-5m-trend-pullback-v1-short-2026-08-09T12:05:18Z",
+        "recordHash": "4cf6d8106ba94091acfbbba3be17b706b680644d63748d948e5509fd76ac3d3e",
+        "recordVersion": 1
+      },
+      {
+        "signalId": "btcusdt-5m-trend-pullback-v1-long-2026-08-09T13:10:05Z",
+        "recordHash": "91e9a792e784788ccdc0e13b4d0c39b51328ede53b832a5a089b04b1a61f2a88",
+        "recordVersion": 1
+      },
+      {
+        "signalId": "btcusdt-5m-trend-pullback-v1-short-2026-08-09T14:30:00Z",
+        "recordHash": "cde87872baa6b97249284fdaae3b69895ef2b6df2e0c27ce069c85d33efa3c2a",
+        "recordVersion": 1
+      },
+      {
+        "signalId": "btcusdt-5m-trend-pullback-v1-long-2026-08-09T18:40:28Z",
+        "recordHash": "ca37efdee336770f358bc72c93338a9836e931fbfab8c228521e0b412cbc886b",
+        "recordVersion": 1
+      },
+      {
+        "signalId": "btcusdt-5m-trend-pullback-v1-short-2026-08-09T18:45:06Z",
+        "recordHash": "acf617ba87b045b05fff696cbb5dfce234dc78f1f74c9a0060e4e2d2c76babb9",
+        "recordVersion": 1
+      },
+      {
+        "signalId": "btcusdt-5m-trend-pullback-v1-long-2026-08-09T20:40:01Z",
+        "recordHash": "69fd637c963749d1565135e00b5035a785fc5366dec0d3907b75cc7ed9906578",
+        "recordVersion": 1
+      },
+      {
+        "signalId": "btcusdt-5m-trend-pullback-v1-short-2026-08-09T22:40:01Z",
+        "recordHash": "07eb1e3360f2814e6a2e4df83719e1173901123759d16a97cc66567039d680a7",
+        "recordVersion": 1
+      },
+      {
+        "signalId": "btcusdt-5m-trend-pullback-v1-long-2026-08-10T00:15:09Z",
+        "recordHash": "ae1be73eebeb9f668eba2e8be40c222259b460ac68dc90993fadbf0416c64d7b",
+        "recordVersion": 1
+      },
+      {
+        "signalId": "btcusdt-5m-trend-pullback-v1-short-2026-08-10T00:50:06Z",
+        "recordHash": "1471716f942f896c60bde5369c77e48ddcf7f49e76f0e47893b5191ecb226814",
+        "recordVersion": 1
+      },
+      {
+        "signalId": "btcusdt-5m-trend-pullback-v1-long-2026-08-10T00:55:05Z",
+        "recordHash": "9e9f66f5dd859a08f5fdf8f2c52b7535c2e69632a4a1d7e2976d7a2615dfd756",
+        "recordVersion": 1
+      },
+      {
+        "signalId": "btcusdt-5m-trend-pullback-v1-short-2026-08-10T02:25:01Z",
+        "recordHash": "94203a33e236527db6553b3245a25161f5e4f66a4d8cee0a8dc082cefab64105",
+        "recordVersion": 1
+      },
+      {
+        "signalId": "btcusdt-5m-trend-pullback-v1-long-2026-08-10T02:45:06Z",
+        "recordHash": "d0ede77aeedbb44f635e4f5bec6d40f41fa6587571843c737cf6fadd0cbab673",
+        "recordVersion": 1
+      },
+      {
+        "signalId": "btcusdt-5m-trend-pullback-v1-short-2026-08-10T03:20:01Z",
+        "recordHash": "fb042fe1ea15a16555f0bfb1eb2b9750efb17abfd4ede668a2ed7501954aabbd",
+        "recordVersion": 1
+      },
+      {
+        "signalId": "btcusdt-5m-trend-pullback-v1-long-2026-08-10T03:25:06Z",
+        "recordHash": "0b827ce500fec912ac789d6e97c9fc42815deea9abc1321cb1756742d77deda6",
+        "recordVersion": 1
+      },
+      {
+        "signalId": "btcusdt-5m-trend-pullback-v1-short-2026-08-10T04:00:11Z",
+        "recordHash": "060f78967cd389a5db30bc9715890ad656d5e0bb5979b9b7205a0c560a0bc825",
+        "recordVersion": 1
+      },
+      {
+        "signalId": "btcusdt-5m-trend-pullback-v1-long-2026-08-10T04:10:08Z",
+        "recordHash": "6d3fe9eec4ae4a14f0ae3d0cf8f356ad340873f06df8a23ecc8d4f2442628647",
+        "recordVersion": 1
+      },
+      {
+        "signalId": "btcusdt-5m-trend-pullback-v1-short-2026-08-10T04:45:17Z",
+        "recordHash": "d775ae486550d6d2b06906b5f6e9dea0799188e58da3c9876d345cd29fe4d979",
+        "recordVersion": 1
+      },
+      {
+        "signalId": "btcusdt-5m-trend-pullback-v1-long-2026-08-10T04:55:09Z",
+        "recordHash": "c348b1f787357b56cdfa2ddcad4a0861ef23b755e60367125695eb7df7c36e03",
+        "recordVersion": 1
+      },
+      {
+        "signalId": "btcusdt-5m-trend-pullback-v1-short-2026-08-10T05:20:06Z",
+        "recordHash": "2bcc54b8548e7f2633e0da7392e0f3b6a7e3bdc636669092fec0cfc51f7344ff",
+        "recordVersion": 1
+      },
+      {
+        "signalId": "btcusdt-5m-trend-pullback-v1-long-2026-08-10T05:30:04Z",
+        "recordHash": "97976374928e76d7a7015384b6a46d6add53373581c7e865dd4c8fbd5b7c7d61",
+        "recordVersion": 1
+      },
+      {
+        "signalId": "btcusdt-5m-trend-pullback-v1-short-2026-08-10T08:00:27Z",
+        "recordHash": "c8b2e89ee2ba71929e4b3900357a46f5a85d96607a9091d34fbe50ad325b16b2",
+        "recordVersion": 1
+      },
+      {
+        "signalId": "btcusdt-5m-trend-pullback-v1-long-2026-08-10T11:25:03Z",
+        "recordHash": "2511b2b07e418d1975d828704c9a1f5ebe7ef793e2f053628b6f0c69614ac809",
+        "recordVersion": 1
+      },
+      {
+        "signalId": "btcusdt-5m-trend-pullback-v1-short-2026-08-10T12:40:06Z",
+        "recordHash": "cbb5ccd368bffef5e24541d5549d8d9d8af5aa5e1f6830aedd6756073a832b67",
+        "recordVersion": 1
+      },
+      {
+        "signalId": "btcusdt-5m-trend-pullback-v1-long-2026-08-10T14:35:07Z",
+        "recordHash": "fe2ab61ef3015a2ae5b29ddd5aa8bb6c6fc910b479322924d15a32b8f285725f",
+        "recordVersion": 1
+      },
+      {
+        "signalId": "btcusdt-5m-trend-pullback-v1-short-2026-08-10T15:20:04Z",
+        "recordHash": "1f54f1361e5c0ddcb30457030ccae4525e36cc0bfe6941c6593e3e61728d4480",
+        "recordVersion": 1
+      },
+      {
+        "signalId": "btcusdt-5m-trend-pullback-v1-long-2026-08-10T17:20:08Z",
+        "recordHash": "17535e8b1ebd370fb26c9dbd74c34f5574564d322b9086c3195eaca98ed3c0ba",
+        "recordVersion": 1
+      },
+      {
+        "signalId": "btcusdt-5m-trend-pullback-v1-short-2026-08-10T21:45:02Z",
+        "recordHash": "7a6c28d1799e6e055dbba8d660e30e83af5459301094d4603409e1dd2185143a",
+        "recordVersion": 1
+      },
+      {
+        "signalId": "btcusdt-5m-trend-pullback-v1-long-2026-08-11T00:05:08Z",
+        "recordHash": "eb5bb93683182ed6e3e5ac3cdde9d3a2eba3a72b8186935227d1d9dd433bf621",
+        "recordVersion": 1
+      },
+      {
+        "signalId": "btcusdt-5m-trend-pullback-v1-short-2026-08-11T00:10:05Z",
+        "recordHash": "65a7cb54a74be74429f7384c0e9e257cdd2fbaa7fe7ccf0dc7753448e6f4f596",
+        "recordVersion": 1
+      },
+      {
+        "signalId": "btcusdt-5m-trend-pullback-v1-long-2026-08-11T00:15:12Z",
+        "recordHash": "a14e8b87b1dd3c2d939184e1f175b6ee66fc97aa0a6812c5cc343d25d80cec0f",
+        "recordVersion": 1
+      },
+      {
+        "signalId": "btcusdt-5m-trend-pullback-v1-short-2026-08-11T00:25:06Z",
+        "recordHash": "fc4257e40b85c32f37942d5860fa676efb0f11b4440dbf6e12706ba1a91c8806",
+        "recordVersion": 1
+      },
+      {
+        "signalId": "btcusdt-5m-trend-pullback-v1-long-2026-08-11T00:30:14Z",
+        "recordHash": "e20253ac162accbbdca8a020d403cf0f42ea0fc1ce1e7d14f03aac1431cc51b1",
+        "recordVersion": 1
+      },
+      {
+        "signalId": "btcusdt-5m-trend-pullback-v1-short-2026-08-11T04:15:13Z",
+        "recordHash": "db1ee43412700df193922dc4506e090b54613b1d47481243a8c5a907b3802018",
+        "recordVersion": 1
+      },
+      {
+        "signalId": "btcusdt-5m-trend-pullback-v1-long-2026-08-11T07:05:05Z",
+        "recordHash": "802b29d623abf63d39e40fd7e447d749c6ac6edc98dcc25283ab56b1a685530b",
+        "recordVersion": 1
+      },
+      {
+        "signalId": "btcusdt-5m-trend-pullback-v1-short-2026-08-11T10:55:05Z",
+        "recordHash": "066b165fd13745a365e50b182ae83eaf200d51a91c29e8bfc219f76da2e94385",
+        "recordVersion": 1
+      },
+      {
+        "signalId": "btcusdt-5m-trend-pullback-v1-long-2026-08-11T11:10:07Z",
+        "recordHash": "df4700a3ed4c563798dc7b852e6ea352d8011c95722af1e36a3572aeb1d838fa",
+        "recordVersion": 1
+      },
+      {
+        "signalId": "btcusdt-5m-trend-pullback-v1-short-2026-08-11T11:15:11Z",
+        "recordHash": "3257eb8115d1e6798fa2dbeb20d329f57a851fb5ad98906ea8e221c88bca540a",
+        "recordVersion": 1
+      },
+      {
+        "signalId": "btcusdt-5m-trend-pullback-v1-long-2026-08-11T12:00:16Z",
+        "recordHash": "b2ecaa8c7671e5beaf1e74ebbf9c7a2088363b1a7e07746f29cb14f3f9fdff08",
+        "recordVersion": 1
+      },
+      {
+        "signalId": "btcusdt-5m-trend-pullback-v1-short-2026-08-11T12:30:09Z",
+        "recordHash": "704fa654f02026606b8c71c7a6e0e63701eef38785761dbb0a88681c3a356802",
+        "recordVersion": 1
+      },
+      {
+        "signalId": "btcusdt-5m-trend-pullback-v1-long-2026-08-11T16:30:16Z",
+        "recordHash": "84f2187a632d05d4468fd42261b0ff8b5f671307d653dbe27f706441ec2f2015",
+        "recordVersion": 1
+      },
+      {
+        "signalId": "btcusdt-5m-trend-pullback-v1-short-2026-08-11T16:35:04Z",
+        "recordHash": "e0a3b1009f3349a44e9e895d66137fdf9b1ba832cc3255bc30dc5510ff7a4229",
+        "recordVersion": 1
+      },
+      {
+        "signalId": "btcusdt-5m-trend-pullback-v1-long-2026-08-11T16:55:39Z",
+        "recordHash": "af483e90cbaa25b19415d6a807c8d3556ba37832ebd3a77a16dd668f9aa613e7",
+        "recordVersion": 1
+      },
+      {
+        "signalId": "btcusdt-5m-trend-pullback-v1-short-2026-08-11T17:10:06Z",
+        "recordHash": "40087c5b13d209b2ec343d47ea96821864e3af5d357ed50128ead880d9c00bb6",
+        "recordVersion": 1
+      },
+      {
+        "signalId": "btcusdt-5m-trend-pullback-v1-long-2026-08-11T17:20:05Z",
+        "recordHash": "ba12af8294d1df026062dd62136ed8095fecc3e711ba5f35b936389f9e40c100",
+        "recordVersion": 1
+      },
+      {
+        "signalId": "btcusdt-5m-trend-pullback-v1-short-2026-08-11T18:40:10Z",
+        "recordHash": "493c9c305eeaf8ea125f0271711eac57e793cb3acfadab7e345d90a7143b5707",
+        "recordVersion": 1
+      },
+      {
+        "signalId": "btcusdt-5m-trend-pullback-v1-long-2026-08-11T19:45:10Z",
+        "recordHash": "a7f6617d6fe43147bc16befa437edbd97a9ba293ea7368892e524ed7d1bbf5e7",
+        "recordVersion": 1
+      },
+      {
+        "signalId": "btcusdt-5m-trend-pullback-v1-short-2026-08-11T22:45:16Z",
+        "recordHash": "427e5310dedb6100aabf7cdd951f21df0009384787b9d555df506eee21c0f13f",
+        "recordVersion": 1
+      },
+      {
+        "signalId": "btcusdt-5m-trend-pullback-v1-long-2026-08-12T00:30:09Z",
+        "recordHash": "8e54d1ab869d7cd3e898b17d7e0ce8c532a902b1264dbbfc4a57cf3c4c6dea31",
+        "recordVersion": 1
+      },
+      {
+        "signalId": "btcusdt-5m-trend-pullback-v1-short-2026-08-12T02:40:07Z",
+        "recordHash": "9b211edc4bba9009997003fe079183d1b91f650b4b8a6fd2b6d2989b0b97dcb6",
+        "recordVersion": 1
+      },
+      {
+        "signalId": "btcusdt-5m-trend-pullback-v1-long-2026-08-12T04:30:09Z",
+        "recordHash": "7281e9233b6d083ef4697a237a2e62650056d047f6fbe3b891e152d513b2c39a",
+        "recordVersion": 1
+      },
+      {
+        "signalId": "btcusdt-5m-trend-pullback-v1-short-2026-08-12T04:35:29Z",
+        "recordHash": "b5dbc9118826a7f27b683f283792262c5abda900da613a0619614872caf891c8",
+        "recordVersion": 1
+      },
+      {
+        "signalId": "btcusdt-5m-trend-pullback-v1-long-2026-08-12T05:35:01Z",
+        "recordHash": "d866cdac438e4a921402dfe365dc61fcf37adbaefa1a61cb27d028374f3b2cfa",
+        "recordVersion": 1
+      },
+      {
+        "signalId": "btcusdt-5m-trend-pullback-v1-short-2026-08-12T06:00:21Z",
+        "recordHash": "705f3dc6968e1acb7d3f7d9725d09ddb6a45d444f829dd44a2cbed050553d41e",
+        "recordVersion": 1
+      },
+      {
+        "signalId": "btcusdt-5m-trend-pullback-v1-long-2026-08-12T06:05:13Z",
+        "recordHash": "6410ec4578f2aa0ede4b1cb72981b54a1c0b3cb773205faf7847cb0104b5b8cf",
+        "recordVersion": 1
+      },
+      {
+        "signalId": "btcusdt-5m-trend-pullback-v1-short-2026-08-12T06:10:14Z",
+        "recordHash": "b0c480740bf04748976b38d19e988c187ba6dbf566afe474b3742f3da5b1bf19",
+        "recordVersion": 1
+      },
+      {
+        "signalId": "btcusdt-5m-trend-pullback-v1-long-2026-08-12T07:10:07Z",
+        "recordHash": "70ff43eef6a223e138f823e5fd5e9fc3dec9c854ebcb2772a363dcaf1798d223",
+        "recordVersion": 1
+      },
+      {
+        "signalId": "btcusdt-5m-trend-pullback-v1-short-2026-08-12T07:30:17Z",
+        "recordHash": "c012b176a5d1bee3175cf5396ae2ed02a6c13f78a392ac0baca5cdb2aa6b478f",
+        "recordVersion": 1
+      },
+      {
+        "signalId": "btcusdt-5m-trend-pullback-v1-long-2026-08-12T07:35:13Z",
+        "recordHash": "ec206f11d23aca4305c6e9043ce62f00d0c4c3f0c69f8002fa01977b43627633",
+        "recordVersion": 1
+      },
+      {
+        "signalId": "btcusdt-5m-trend-pullback-v1-short-2026-08-12T07:45:03Z",
+        "recordHash": "980714b2d103c4cadfb57617b72cb0fa5eddd01f1118f8cd6d3562845b90a276",
+        "recordVersion": 1
+      },
+      {
+        "signalId": "btcusdt-5m-trend-pullback-v1-long-2026-08-12T08:00:08Z",
+        "recordHash": "7956db6a5d969d89b18cadbf4200e022b7489f4d9515744ba7cc5b897f7743b0",
+        "recordVersion": 1
+      }
+    ],
+    "firstScoredAt": "2026-08-06T07:20:07.143Z",
+    "lastScoredAt": "2026-08-12T08:00:09.372Z",
+    "firstCheckpointAt": "2026-08-24T22:26:33.088Z",
+    "lastCheckpointAt": "2026-08-24T22:26:33.088Z",
+    "symbols": [
+      "ethusdt",
+      "btcusdt"
+    ],
+    "timeframes": [
+      "5m"
+    ],
+    "providers": [
+      "giovanni_tradingview_staging"
+    ],
+    "analystConfigHashes": [
+      "1172e5da91dfd9ac6e65a060b628c5a4f1bbdd41545904a7a6a59e15fc0fe705"
+    ],
+    "directions": {
+      "long": 71,
+      "short": 70,
+      "neutral": 0
+    },
+    "exclusions": {
+      "unverifiableInput": 0,
+      "supersededSinceCheckpoint": 0,
+      "supersededSinceCalibration": 0,
+      "magnitudeConventionViolation": 0
+    }
+  },
+  "readings": {
+    "overall": {
+      "confirmed": 41,
+      "contradicted": 43,
+      "mixed": 57,
+      "indeterminate": 0
+    },
+    "perF": {
+      "1": {
+        "favorable": 69,
+        "adverse": 71,
+        "flat": 1,
+        "indeterminate": 0
+      },
+      "0.25": {
+        "favorable": 68,
+        "adverse": 73,
+        "flat": 0,
+        "indeterminate": 0
+      },
+      "0.5": {
+        "favorable": 70,
+        "adverse": 70,
+        "flat": 1,
+        "indeterminate": 0
+      }
+    }
+  },
+  "realized": {
+    "1": {
+      "win": {
+        "n": 141,
+        "count": 69,
+        "status": "sealed",
+        "rate": 0.489362,
+        "se": 0.029567,
+        "interval": [
+          0.431412,
+          0.547311
+        ]
+      },
+      "meanSignedReturnPct": {
+        "n": 141,
+        "status": "sealed",
+        "mean": 0.003449,
+        "se": 0.010335,
+        "interval": [
+          -0.016808,
+          0.023706
+        ]
+      },
+      "medianSignedReturnPct": -0.003385,
+      "meanMfePct": {
+        "n": 141,
+        "status": "sealed",
+        "mean": 0.162773,
+        "se": 0.016914,
+        "interval": [
+          0.129621,
+          0.195925
+        ]
+      },
+      "meanMaePct": {
+        "n": 141,
+        "status": "sealed",
+        "mean": 0.159455,
+        "se": 0.017676,
+        "interval": [
+          0.124811,
+          0.194098
+        ]
+      }
+    },
+    "0.25": {
+      "win": {
+        "n": 141,
+        "count": 68,
+        "status": "sealed",
+        "rate": 0.48227,
+        "se": 0.034392,
+        "interval": [
+          0.414862,
+          0.549677
+        ]
+      },
+      "meanSignedReturnPct": {
+        "n": 141,
+        "status": "sealed",
+        "mean": -0.004613,
+        "se": 0.006298,
+        "interval": [
+          -0.016956,
+          0.007731
+        ]
+      },
+      "medianSignedReturnPct": -0.002,
+      "meanMfePct": {
+        "n": 141,
+        "status": "sealed",
+        "mean": 0.083182,
+        "se": 0.009077,
+        "interval": [
+          0.065391,
+          0.100972
+        ]
+      },
+      "meanMaePct": {
+        "n": 141,
+        "status": "sealed",
+        "mean": 0.078174,
+        "se": 0.007246,
+        "interval": [
+          0.063973,
+          0.092375
+        ]
+      }
+    },
+    "0.5": {
+      "win": {
+        "n": 141,
+        "count": 70,
+        "status": "sealed",
+        "rate": 0.496454,
+        "se": 0.044556,
+        "interval": [
+          0.409125,
+          0.583783
+        ]
+      },
+      "meanSignedReturnPct": {
+        "n": 141,
+        "status": "sealed",
+        "mean": -0.000345,
+        "se": 0.009001,
+        "interval": [
+          -0.017987,
+          0.017297
+        ]
+      },
+      "medianSignedReturnPct": 0,
+      "meanMfePct": {
+        "n": 141,
+        "status": "sealed",
+        "mean": 0.109122,
+        "se": 0.011753,
+        "interval": [
+          0.086087,
+          0.132157
+        ]
+      },
+      "meanMaePct": {
+        "n": 141,
+        "status": "sealed",
+        "mean": 0.110793,
+        "se": 0.010691,
+        "interval": [
+          0.089839,
+          0.131747
+        ]
+      }
+    }
+  },
+  "reliability": {
+    "1": [
+      {
+        "k": 0,
+        "lower": 0,
+        "upper": 0.05,
+        "n": 0,
+        "favorable": 0,
+        "status": "insufficient"
+      },
+      {
+        "k": 1,
+        "lower": 0.05,
+        "upper": 0.1,
+        "n": 0,
+        "favorable": 0,
+        "status": "insufficient"
+      },
+      {
+        "k": 2,
+        "lower": 0.1,
+        "upper": 0.15,
+        "n": 0,
+        "favorable": 0,
+        "status": "insufficient"
+      },
+      {
+        "k": 3,
+        "lower": 0.15,
+        "upper": 0.2,
+        "n": 0,
+        "favorable": 0,
+        "status": "insufficient"
+      },
+      {
+        "k": 4,
+        "lower": 0.2,
+        "upper": 0.25,
+        "n": 0,
+        "favorable": 0,
+        "status": "insufficient"
+      },
+      {
+        "k": 5,
+        "lower": 0.25,
+        "upper": 0.3,
+        "n": 0,
+        "favorable": 0,
+        "status": "insufficient"
+      },
+      {
+        "k": 6,
+        "lower": 0.3,
+        "upper": 0.35,
+        "n": 15,
+        "favorable": 5,
+        "status": "insufficient"
+      },
+      {
+        "k": 7,
+        "lower": 0.35,
+        "upper": 0.4,
+        "n": 21,
+        "favorable": 13,
+        "status": "sealed",
+        "rate": 0.619048,
+        "se": 0.098102,
+        "interval": [
+          0.426771,
+          0.811324
+        ]
+      },
+      {
+        "k": 8,
+        "lower": 0.4,
+        "upper": 0.45,
+        "n": 49,
+        "favorable": 22,
+        "status": "sealed",
+        "rate": 0.44898,
+        "se": 0.05514,
+        "interval": [
+          0.340908,
+          0.557051
+        ]
+      },
+      {
+        "k": 9,
+        "lower": 0.45,
+        "upper": 0.5,
+        "n": 3,
+        "favorable": 1,
+        "status": "insufficient"
+      },
+      {
+        "k": 10,
+        "lower": 0.5,
+        "upper": 0.55,
+        "n": 24,
+        "favorable": 12,
+        "status": "sealed",
+        "rate": 0.5,
+        "se": 0.095723,
+        "interval": [
+          0.312387,
+          0.687613
+        ]
+      },
+      {
+        "k": 11,
+        "lower": 0.55,
+        "upper": 0.6,
+        "n": 21,
+        "favorable": 12,
+        "status": "sealed",
+        "rate": 0.571429,
+        "se": 0.125493,
+        "interval": [
+          0.325467,
+          0.81739
+        ]
+      },
+      {
+        "k": 12,
+        "lower": 0.6,
+        "upper": 0.65,
+        "n": 3,
+        "favorable": 2,
+        "status": "insufficient"
+      },
+      {
+        "k": 13,
+        "lower": 0.65,
+        "upper": 0.7,
+        "n": 5,
+        "favorable": 2,
+        "status": "insufficient"
+      },
+      {
+        "k": 14,
+        "lower": 0.7,
+        "upper": 0.75,
+        "n": 0,
+        "favorable": 0,
+        "status": "insufficient"
+      },
+      {
+        "k": 15,
+        "lower": 0.75,
+        "upper": 0.8,
+        "n": 0,
+        "favorable": 0,
+        "status": "insufficient"
+      },
+      {
+        "k": 16,
+        "lower": 0.8,
+        "upper": 0.85,
+        "n": 0,
+        "favorable": 0,
+        "status": "insufficient"
+      },
+      {
+        "k": 17,
+        "lower": 0.85,
+        "upper": 0.9,
+        "n": 0,
+        "favorable": 0,
+        "status": "insufficient"
+      },
+      {
+        "k": 18,
+        "lower": 0.9,
+        "upper": 0.95,
+        "n": 0,
+        "favorable": 0,
+        "status": "insufficient"
+      },
+      {
+        "k": 19,
+        "lower": 0.95,
+        "upper": 1,
+        "n": 0,
+        "favorable": 0,
+        "status": "insufficient"
+      }
+    ],
+    "0.25": [
+      {
+        "k": 0,
+        "lower": 0,
+        "upper": 0.05,
+        "n": 0,
+        "favorable": 0,
+        "status": "insufficient"
+      },
+      {
+        "k": 1,
+        "lower": 0.05,
+        "upper": 0.1,
+        "n": 0,
+        "favorable": 0,
+        "status": "insufficient"
+      },
+      {
+        "k": 2,
+        "lower": 0.1,
+        "upper": 0.15,
+        "n": 0,
+        "favorable": 0,
+        "status": "insufficient"
+      },
+      {
+        "k": 3,
+        "lower": 0.15,
+        "upper": 0.2,
+        "n": 0,
+        "favorable": 0,
+        "status": "insufficient"
+      },
+      {
+        "k": 4,
+        "lower": 0.2,
+        "upper": 0.25,
+        "n": 0,
+        "favorable": 0,
+        "status": "insufficient"
+      },
+      {
+        "k": 5,
+        "lower": 0.25,
+        "upper": 0.3,
+        "n": 0,
+        "favorable": 0,
+        "status": "insufficient"
+      },
+      {
+        "k": 6,
+        "lower": 0.3,
+        "upper": 0.35,
+        "n": 15,
+        "favorable": 6,
+        "status": "insufficient"
+      },
+      {
+        "k": 7,
+        "lower": 0.35,
+        "upper": 0.4,
+        "n": 21,
+        "favorable": 12,
+        "status": "sealed",
+        "rate": 0.571429,
+        "se": 0.137977,
+        "interval": [
+          0.300999,
+          0.841859
+        ]
+      },
+      {
+        "k": 8,
+        "lower": 0.4,
+        "upper": 0.45,
+        "n": 49,
+        "favorable": 22,
+        "status": "sealed",
+        "rate": 0.44898,
+        "se": 0.069323,
+        "interval": [
+          0.313108,
+          0.584851
+        ]
+      },
+      {
+        "k": 9,
+        "lower": 0.45,
+        "upper": 0.5,
+        "n": 3,
+        "favorable": 1,
+        "status": "insufficient"
+      },
+      {
+        "k": 10,
+        "lower": 0.5,
+        "upper": 0.55,
+        "n": 24,
+        "favorable": 11,
+        "status": "sealed",
+        "rate": 0.458333,
+        "se": 0.095523,
+        "interval": [
+          0.271112,
+          0.645555
+        ]
+      },
+      {
+        "k": 11,
+        "lower": 0.55,
+        "upper": 0.6,
+        "n": 21,
+        "favorable": 13,
+        "status": "sealed",
+        "rate": 0.619048,
+        "se": 0.118549,
+        "interval": [
+          0.386695,
+          0.8514
+        ]
+      },
+      {
+        "k": 12,
+        "lower": 0.6,
+        "upper": 0.65,
+        "n": 3,
+        "favorable": 2,
+        "status": "insufficient"
+      },
+      {
+        "k": 13,
+        "lower": 0.65,
+        "upper": 0.7,
+        "n": 5,
+        "favorable": 1,
+        "status": "insufficient"
+      },
+      {
+        "k": 14,
+        "lower": 0.7,
+        "upper": 0.75,
+        "n": 0,
+        "favorable": 0,
+        "status": "insufficient"
+      },
+      {
+        "k": 15,
+        "lower": 0.75,
+        "upper": 0.8,
+        "n": 0,
+        "favorable": 0,
+        "status": "insufficient"
+      },
+      {
+        "k": 16,
+        "lower": 0.8,
+        "upper": 0.85,
+        "n": 0,
+        "favorable": 0,
+        "status": "insufficient"
+      },
+      {
+        "k": 17,
+        "lower": 0.85,
+        "upper": 0.9,
+        "n": 0,
+        "favorable": 0,
+        "status": "insufficient"
+      },
+      {
+        "k": 18,
+        "lower": 0.9,
+        "upper": 0.95,
+        "n": 0,
+        "favorable": 0,
+        "status": "insufficient"
+      },
+      {
+        "k": 19,
+        "lower": 0.95,
+        "upper": 1,
+        "n": 0,
+        "favorable": 0,
+        "status": "insufficient"
+      }
+    ],
+    "0.5": [
+      {
+        "k": 0,
+        "lower": 0,
+        "upper": 0.05,
+        "n": 0,
+        "favorable": 0,
+        "status": "insufficient"
+      },
+      {
+        "k": 1,
+        "lower": 0.05,
+        "upper": 0.1,
+        "n": 0,
+        "favorable": 0,
+        "status": "insufficient"
+      },
+      {
+        "k": 2,
+        "lower": 0.1,
+        "upper": 0.15,
+        "n": 0,
+        "favorable": 0,
+        "status": "insufficient"
+      },
+      {
+        "k": 3,
+        "lower": 0.15,
+        "upper": 0.2,
+        "n": 0,
+        "favorable": 0,
+        "status": "insufficient"
+      },
+      {
+        "k": 4,
+        "lower": 0.2,
+        "upper": 0.25,
+        "n": 0,
+        "favorable": 0,
+        "status": "insufficient"
+      },
+      {
+        "k": 5,
+        "lower": 0.25,
+        "upper": 0.3,
+        "n": 0,
+        "favorable": 0,
+        "status": "insufficient"
+      },
+      {
+        "k": 6,
+        "lower": 0.3,
+        "upper": 0.35,
+        "n": 15,
+        "favorable": 7,
+        "status": "insufficient"
+      },
+      {
+        "k": 7,
+        "lower": 0.35,
+        "upper": 0.4,
+        "n": 21,
+        "favorable": 10,
+        "status": "sealed",
+        "rate": 0.47619,
+        "se": 0.123983,
+        "interval": [
+          0.233188,
+          0.719193
+        ]
+      },
+      {
+        "k": 8,
+        "lower": 0.4,
+        "upper": 0.45,
+        "n": 49,
+        "favorable": 23,
+        "status": "sealed",
+        "rate": 0.469388,
+        "se": 0.070812,
+        "interval": [
+          0.330599,
+          0.608177
+        ]
+      },
+      {
+        "k": 9,
+        "lower": 0.45,
+        "upper": 0.5,
+        "n": 3,
+        "favorable": 1,
+        "status": "insufficient"
+      },
+      {
+        "k": 10,
+        "lower": 0.5,
+        "upper": 0.55,
+        "n": 24,
+        "favorable": 13,
+        "status": "sealed",
+        "rate": 0.541667,
+        "se": 0.095523,
+        "interval": [
+          0.354445,
+          0.728888
+        ]
+      },
+      {
+        "k": 11,
+        "lower": 0.55,
+        "upper": 0.6,
+        "n": 21,
+        "favorable": 13,
+        "status": "sealed",
+        "rate": 0.619048,
+        "se": 0.118549,
+        "interval": [
+          0.386695,
+          0.8514
+        ]
+      },
+      {
+        "k": 12,
+        "lower": 0.6,
+        "upper": 0.65,
+        "n": 3,
+        "favorable": 2,
+        "status": "insufficient"
+      },
+      {
+        "k": 13,
+        "lower": 0.65,
+        "upper": 0.7,
+        "n": 5,
+        "favorable": 1,
+        "status": "insufficient"
+      },
+      {
+        "k": 14,
+        "lower": 0.7,
+        "upper": 0.75,
+        "n": 0,
+        "favorable": 0,
+        "status": "insufficient"
+      },
+      {
+        "k": 15,
+        "lower": 0.75,
+        "upper": 0.8,
+        "n": 0,
+        "favorable": 0,
+        "status": "insufficient"
+      },
+      {
+        "k": 16,
+        "lower": 0.8,
+        "upper": 0.85,
+        "n": 0,
+        "favorable": 0,
+        "status": "insufficient"
+      },
+      {
+        "k": 17,
+        "lower": 0.85,
+        "upper": 0.9,
+        "n": 0,
+        "favorable": 0,
+        "status": "insufficient"
+      },
+      {
+        "k": 18,
+        "lower": 0.9,
+        "upper": 0.95,
+        "n": 0,
+        "favorable": 0,
+        "status": "insufficient"
+      },
+      {
+        "k": 19,
+        "lower": 0.95,
+        "upper": 1,
+        "n": 0,
+        "favorable": 0,
+        "status": "insufficient"
+      }
+    ]
+  },
+  "rank": {
+    "1": {
+      "n": 141,
+      "status": "sealed",
+      "rho": 0.037435,
+      "claim": "insufficient-for-claim",
+      "se": 0.079936,
+      "interval": [
+        -0.118875,
+        0.191934
+      ]
+    },
+    "0.25": {
+      "n": 141,
+      "status": "sealed",
+      "rho": 0.055554,
+      "claim": "insufficient-for-claim",
+      "se": 0.072976,
+      "interval": [
+        -0.087636,
+        0.196494
+      ]
+    },
+    "0.5": {
+      "n": 141,
+      "status": "sealed",
+      "rho": 0.028744,
+      "claim": "insufficient-for-claim",
+      "se": 0.080056,
+      "interval": [
+        -0.127586,
+        0.183681
+      ]
+    }
+  },
+  "strata": {
+    "riskBucket": {
+      "extreme": {
+        "n": 22,
+        "readings": {
+          "overall": {
+            "confirmed": 3,
+            "contradicted": 5,
+            "mixed": 14,
+            "indeterminate": 0
+          },
+          "perF": {
+            "1": {
+              "favorable": 8,
+              "adverse": 13,
+              "flat": 1,
+              "indeterminate": 0
+            },
+            "0.25": {
+              "favorable": 11,
+              "adverse": 11,
+              "flat": 0,
+              "indeterminate": 0
+            },
+            "0.5": {
+              "favorable": 10,
+              "adverse": 12,
+              "flat": 0,
+              "indeterminate": 0
+            }
+          }
+        },
+        "realized": {
+          "1": {
+            "win": {
+              "n": 22,
+              "count": 8,
+              "status": "insufficient"
+            },
+            "meanSignedReturnPct": {
+              "n": 22,
+              "status": "insufficient"
+            },
+            "medianSignedReturnPct": null,
+            "meanMfePct": {
+              "n": 22,
+              "status": "insufficient"
+            },
+            "meanMaePct": {
+              "n": 22,
+              "status": "insufficient"
+            }
+          },
+          "0.25": {
+            "win": {
+              "n": 22,
+              "count": 11,
+              "status": "insufficient"
+            },
+            "meanSignedReturnPct": {
+              "n": 22,
+              "status": "insufficient"
+            },
+            "medianSignedReturnPct": null,
+            "meanMfePct": {
+              "n": 22,
+              "status": "insufficient"
+            },
+            "meanMaePct": {
+              "n": 22,
+              "status": "insufficient"
+            }
+          },
+          "0.5": {
+            "win": {
+              "n": 22,
+              "count": 10,
+              "status": "insufficient"
+            },
+            "meanSignedReturnPct": {
+              "n": 22,
+              "status": "insufficient"
+            },
+            "medianSignedReturnPct": null,
+            "meanMfePct": {
+              "n": 22,
+              "status": "insufficient"
+            },
+            "meanMaePct": {
+              "n": 22,
+              "status": "insufficient"
+            }
+          }
+        }
+      },
+      "high": {
+        "n": 19,
+        "readings": {
+          "overall": {
+            "confirmed": 5,
+            "contradicted": 8,
+            "mixed": 6,
+            "indeterminate": 0
+          },
+          "perF": {
+            "1": {
+              "favorable": 9,
+              "adverse": 10,
+              "flat": 0,
+              "indeterminate": 0
+            },
+            "0.25": {
+              "favorable": 6,
+              "adverse": 13,
+              "flat": 0,
+              "indeterminate": 0
+            },
+            "0.5": {
+              "favorable": 9,
+              "adverse": 9,
+              "flat": 1,
+              "indeterminate": 0
+            }
+          }
+        },
+        "realized": {
+          "1": {
+            "win": {
+              "n": 19,
+              "count": 9,
+              "status": "insufficient"
+            },
+            "meanSignedReturnPct": {
+              "n": 19,
+              "status": "insufficient"
+            },
+            "medianSignedReturnPct": null,
+            "meanMfePct": {
+              "n": 19,
+              "status": "insufficient"
+            },
+            "meanMaePct": {
+              "n": 19,
+              "status": "insufficient"
+            }
+          },
+          "0.25": {
+            "win": {
+              "n": 19,
+              "count": 6,
+              "status": "insufficient"
+            },
+            "meanSignedReturnPct": {
+              "n": 19,
+              "status": "insufficient"
+            },
+            "medianSignedReturnPct": null,
+            "meanMfePct": {
+              "n": 19,
+              "status": "insufficient"
+            },
+            "meanMaePct": {
+              "n": 19,
+              "status": "insufficient"
+            }
+          },
+          "0.5": {
+            "win": {
+              "n": 19,
+              "count": 9,
+              "status": "insufficient"
+            },
+            "meanSignedReturnPct": {
+              "n": 19,
+              "status": "insufficient"
+            },
+            "medianSignedReturnPct": null,
+            "meanMfePct": {
+              "n": 19,
+              "status": "insufficient"
+            },
+            "meanMaePct": {
+              "n": 19,
+              "status": "insufficient"
+            }
+          }
+        }
+      },
+      "low": {
+        "n": 50,
+        "readings": {
+          "overall": {
+            "confirmed": 17,
+            "contradicted": 13,
+            "mixed": 20,
+            "indeterminate": 0
+          },
+          "perF": {
+            "1": {
+              "favorable": 28,
+              "adverse": 22,
+              "flat": 0,
+              "indeterminate": 0
+            },
+            "0.25": {
+              "favorable": 26,
+              "adverse": 24,
+              "flat": 0,
+              "indeterminate": 0
+            },
+            "0.5": {
+              "favorable": 26,
+              "adverse": 24,
+              "flat": 0,
+              "indeterminate": 0
+            }
+          }
+        },
+        "realized": {
+          "1": {
+            "win": {
+              "n": 50,
+              "count": 28,
+              "status": "insufficient"
+            },
+            "meanSignedReturnPct": {
+              "n": 50,
+              "status": "insufficient"
+            },
+            "medianSignedReturnPct": null,
+            "meanMfePct": {
+              "n": 50,
+              "status": "insufficient"
+            },
+            "meanMaePct": {
+              "n": 50,
+              "status": "insufficient"
+            }
+          },
+          "0.25": {
+            "win": {
+              "n": 50,
+              "count": 26,
+              "status": "insufficient"
+            },
+            "meanSignedReturnPct": {
+              "n": 50,
+              "status": "insufficient"
+            },
+            "medianSignedReturnPct": null,
+            "meanMfePct": {
+              "n": 50,
+              "status": "insufficient"
+            },
+            "meanMaePct": {
+              "n": 50,
+              "status": "insufficient"
+            }
+          },
+          "0.5": {
+            "win": {
+              "n": 50,
+              "count": 26,
+              "status": "insufficient"
+            },
+            "meanSignedReturnPct": {
+              "n": 50,
+              "status": "insufficient"
+            },
+            "medianSignedReturnPct": null,
+            "meanMfePct": {
+              "n": 50,
+              "status": "insufficient"
+            },
+            "meanMaePct": {
+              "n": 50,
+              "status": "insufficient"
+            }
+          }
+        }
+      },
+      "medium": {
+        "n": 50,
+        "readings": {
+          "overall": {
+            "confirmed": 16,
+            "contradicted": 17,
+            "mixed": 17,
+            "indeterminate": 0
+          },
+          "perF": {
+            "1": {
+              "favorable": 24,
+              "adverse": 26,
+              "flat": 0,
+              "indeterminate": 0
+            },
+            "0.25": {
+              "favorable": 25,
+              "adverse": 25,
+              "flat": 0,
+              "indeterminate": 0
+            },
+            "0.5": {
+              "favorable": 25,
+              "adverse": 25,
+              "flat": 0,
+              "indeterminate": 0
+            }
+          }
+        },
+        "realized": {
+          "1": {
+            "win": {
+              "n": 50,
+              "count": 24,
+              "status": "insufficient"
+            },
+            "meanSignedReturnPct": {
+              "n": 50,
+              "status": "insufficient"
+            },
+            "medianSignedReturnPct": null,
+            "meanMfePct": {
+              "n": 50,
+              "status": "insufficient"
+            },
+            "meanMaePct": {
+              "n": 50,
+              "status": "insufficient"
+            }
+          },
+          "0.25": {
+            "win": {
+              "n": 50,
+              "count": 25,
+              "status": "insufficient"
+            },
+            "meanSignedReturnPct": {
+              "n": 50,
+              "status": "insufficient"
+            },
+            "medianSignedReturnPct": null,
+            "meanMfePct": {
+              "n": 50,
+              "status": "insufficient"
+            },
+            "meanMaePct": {
+              "n": 50,
+              "status": "insufficient"
+            }
+          },
+          "0.5": {
+            "win": {
+              "n": 50,
+              "count": 25,
+              "status": "insufficient"
+            },
+            "meanSignedReturnPct": {
+              "n": 50,
+              "status": "insufficient"
+            },
+            "medianSignedReturnPct": null,
+            "meanMfePct": {
+              "n": 50,
+              "status": "insufficient"
+            },
+            "meanMaePct": {
+              "n": 50,
+              "status": "insufficient"
+            }
+          }
+        }
+      }
+    },
+    "direction": {
+      "long": {
+        "n": 71,
+        "readings": {
+          "overall": {
+            "confirmed": 18,
+            "contradicted": 27,
+            "mixed": 26,
+            "indeterminate": 0
+          },
+          "perF": {
+            "1": {
+              "favorable": 35,
+              "adverse": 35,
+              "flat": 1,
+              "indeterminate": 0
+            },
+            "0.25": {
+              "favorable": 27,
+              "adverse": 44,
+              "flat": 0,
+              "indeterminate": 0
+            },
+            "0.5": {
+              "favorable": 30,
+              "adverse": 40,
+              "flat": 1,
+              "indeterminate": 0
+            }
+          }
+        },
+        "realized": {
+          "1": {
+            "win": {
+              "n": 71,
+              "count": 35,
+              "status": "insufficient"
+            },
+            "meanSignedReturnPct": {
+              "n": 71,
+              "status": "insufficient"
+            },
+            "medianSignedReturnPct": null,
+            "meanMfePct": {
+              "n": 71,
+              "status": "insufficient"
+            },
+            "meanMaePct": {
+              "n": 71,
+              "status": "insufficient"
+            }
+          },
+          "0.25": {
+            "win": {
+              "n": 71,
+              "count": 27,
+              "status": "insufficient"
+            },
+            "meanSignedReturnPct": {
+              "n": 71,
+              "status": "insufficient"
+            },
+            "medianSignedReturnPct": null,
+            "meanMfePct": {
+              "n": 71,
+              "status": "insufficient"
+            },
+            "meanMaePct": {
+              "n": 71,
+              "status": "insufficient"
+            }
+          },
+          "0.5": {
+            "win": {
+              "n": 71,
+              "count": 30,
+              "status": "insufficient"
+            },
+            "meanSignedReturnPct": {
+              "n": 71,
+              "status": "insufficient"
+            },
+            "medianSignedReturnPct": null,
+            "meanMfePct": {
+              "n": 71,
+              "status": "insufficient"
+            },
+            "meanMaePct": {
+              "n": 71,
+              "status": "insufficient"
+            }
+          }
+        }
+      },
+      "short": {
+        "n": 70,
+        "readings": {
+          "overall": {
+            "confirmed": 23,
+            "contradicted": 16,
+            "mixed": 31,
+            "indeterminate": 0
+          },
+          "perF": {
+            "1": {
+              "favorable": 34,
+              "adverse": 36,
+              "flat": 0,
+              "indeterminate": 0
+            },
+            "0.25": {
+              "favorable": 41,
+              "adverse": 29,
+              "flat": 0,
+              "indeterminate": 0
+            },
+            "0.5": {
+              "favorable": 40,
+              "adverse": 30,
+              "flat": 0,
+              "indeterminate": 0
+            }
+          }
+        },
+        "realized": {
+          "1": {
+            "win": {
+              "n": 70,
+              "count": 34,
+              "status": "insufficient"
+            },
+            "meanSignedReturnPct": {
+              "n": 70,
+              "status": "insufficient"
+            },
+            "medianSignedReturnPct": null,
+            "meanMfePct": {
+              "n": 70,
+              "status": "insufficient"
+            },
+            "meanMaePct": {
+              "n": 70,
+              "status": "insufficient"
+            }
+          },
+          "0.25": {
+            "win": {
+              "n": 70,
+              "count": 41,
+              "status": "insufficient"
+            },
+            "meanSignedReturnPct": {
+              "n": 70,
+              "status": "insufficient"
+            },
+            "medianSignedReturnPct": null,
+            "meanMfePct": {
+              "n": 70,
+              "status": "insufficient"
+            },
+            "meanMaePct": {
+              "n": 70,
+              "status": "insufficient"
+            }
+          },
+          "0.5": {
+            "win": {
+              "n": 70,
+              "count": 40,
+              "status": "insufficient"
+            },
+            "meanSignedReturnPct": {
+              "n": 70,
+              "status": "insufficient"
+            },
+            "medianSignedReturnPct": null,
+            "meanMfePct": {
+              "n": 70,
+              "status": "insufficient"
+            },
+            "meanMaePct": {
+              "n": 70,
+              "status": "insufficient"
+            }
+          }
+        }
+      }
+    }
+  },
+  "dependence": {
+    "clusters": 57,
+    "withNeighbour": 107,
+    "pairedOpposite": 107,
+    "pairingFraction": 0.758865,
+    "greedyNonOverlap": 69,
+    "perFraction": {
+      "1": {
+        "designEffect": {
+          "status": "sealed",
+          "value": 0.493262
+        },
+        "lag1Autocorrelation": {
+          "status": "sealed",
+          "value": -0.549906
+        }
+      },
+      "0.25": {
+        "designEffect": {
+          "status": "sealed",
+          "value": 0.667961
+        },
+        "lag1Autocorrelation": {
+          "status": "sealed",
+          "value": -0.242049
+        }
+      },
+      "0.5": {
+        "designEffect": {
+          "status": "sealed",
+          "value": 1.119746
+        },
+        "lag1Autocorrelation": {
+          "status": "sealed",
+          "value": -0.425699
+        }
+      }
+    }
+  },
+  "supersedes": null,
+  "seal": {
+    "algorithm": "sha256",
+    "canonicalizationVersion": "afi.hash.v1",
+    "domainTag": "afi.calibration.analyst",
+    "value": "5596898b5d1c8a95756195284935aa5a9a884b84b600434ab41253506de020bf"
+  }
+}

@@ -1,0 +1,1388 @@
+{
+  "schema": "afi.analyst-calibration.v1",
+  "rule": "analyst-calibration-v1",
+  "readingRule": "signedReturnPct-sign-v1",
+  "groupKey": {
+    "analystId": "froggy",
+    "strategyId": "trend_pullback_v1",
+    "strategyVersion": "1.0.0",
+    "scoringIdentity": {
+      "pipelineId": "froggy-trend-pullback",
+      "pipelineVersion": "v1.3.0",
+      "manifestHash": "df3372dadaca1595d0e6d2f6bad9464ccc9abb7106e9f5b7111df148a145bc4f",
+      "scorerPluginId": "afi-scorer-froggy-trend-pullback",
+      "scorerPluginVersion": "1.0.0",
+      "pluginSetHash": "f63c6f21beb20834c76bc392373746db520828802e7797e84085a831572629d5",
+      "uwrProfileId": "uwr-weighted-lifts-v0.1",
+      "uwrProfileSource": "builtin-value-identity"
+    },
+    "halfLifeMinutes": 180
+  },
+  "n": 45,
+  "attribution": "corpus",
+  "provenance": {
+    "signalIds": [
+      {
+        "signalId": "btcusdt-15m-trend-pullback-v1-long-2026-08-06T09:30:11Z",
+        "recordHash": "73364da47d7ce851557e86967f4bc202c258ffb23b301eee780534fcdbd285b3",
+        "recordVersion": 1
+      },
+      {
+        "signalId": "btcusdt-15m-trend-pullback-v1-long-2026-08-06T15:00:06Z",
+        "recordHash": "86ac6abab950b99c61c9c8f8c653f7146f6d2430bab521e328a4815c7179ec7b",
+        "recordVersion": 1
+      },
+      {
+        "signalId": "btcusdt-15m-trend-pullback-v1-long-2026-08-06T18:30:07Z",
+        "recordHash": "247c21101a21c3b8dbdb2fc91756450500f4f66a3d5ad98f69105eab0fbf346c",
+        "recordVersion": 1
+      },
+      {
+        "signalId": "btcusdt-15m-trend-pullback-v1-long-2026-08-07T01:30:11Z",
+        "recordHash": "148d3cb0f8db04e64cdaad8099eaad2c9a20e214c476f9a9541c8f9860cb4327",
+        "recordVersion": 1
+      },
+      {
+        "signalId": "btcusdt-15m-trend-pullback-v1-long-2026-08-07T05:00:19Z",
+        "recordHash": "8b1c4f0a08c4b5f0187569bc0c76c49b06ae34232c6bb2f76e80ca2b6d1a7a33",
+        "recordVersion": 1
+      },
+      {
+        "signalId": "btcusdt-15m-trend-pullback-v1-long-2026-08-07T06:15:08Z",
+        "recordHash": "245e46233bf1febc93fb3f9cab7dec9ef98504bde66f4120b169e74b38b58d5c",
+        "recordVersion": 1
+      },
+      {
+        "signalId": "btcusdt-15m-trend-pullback-v1-long-2026-08-07T14:30:26Z",
+        "recordHash": "f6c35f3a0ad7a0472384b3b3f00918bcd7955209d5428c9087087db8f0d24a2f",
+        "recordVersion": 1
+      },
+      {
+        "signalId": "btcusdt-15m-trend-pullback-v1-long-2026-08-07T20:30:07Z",
+        "recordHash": "1d521645ef5488da328d59c71f9a3d84f8fd14413f0d4c8fbf7cd29d3e7504a1",
+        "recordVersion": 1
+      },
+      {
+        "signalId": "btcusdt-15m-trend-pullback-v1-long-2026-08-08T02:15:12Z",
+        "recordHash": "2b323d358deb350fc747e603249ebc5fa5967f2a02d72929e63bcd768b7f5881",
+        "recordVersion": 1
+      },
+      {
+        "signalId": "btcusdt-15m-trend-pullback-v1-long-2026-08-08T02:45:01Z",
+        "recordHash": "a028d940e4132a0b5b3f1291451cd57adfff1825d3d2080e3c980da86d63c53c",
+        "recordVersion": 1
+      },
+      {
+        "signalId": "btcusdt-15m-trend-pullback-v1-long-2026-08-08T03:00:22Z",
+        "recordHash": "a0ecaab48f3d9855de82cd03190ee660ef055823fb48b89c632f4a99113b0125",
+        "recordVersion": 1
+      },
+      {
+        "signalId": "btcusdt-15m-trend-pullback-v1-long-2026-08-08T03:30:08Z",
+        "recordHash": "6e75b888f3c832366deeeb4d692c7508bafe001395022dbf71510c2db4bead1d",
+        "recordVersion": 1
+      },
+      {
+        "signalId": "btcusdt-15m-trend-pullback-v1-long-2026-08-08T06:30:14Z",
+        "recordHash": "fc5c07b53278165146e92d73161930d084c9350c1e50781bde459c957937153c",
+        "recordVersion": 1
+      },
+      {
+        "signalId": "btcusdt-15m-trend-pullback-v1-long-2026-08-08T07:15:00Z",
+        "recordHash": "3c02087f66375e9e823a66ace35d8ff81c71362149ed96892580650895c3f6b8",
+        "recordVersion": 1
+      },
+      {
+        "signalId": "btcusdt-15m-trend-pullback-v1-long-2026-08-08T07:30:44Z",
+        "recordHash": "1229e883b5e133906b8f3930248cf149cea132c9d3114556f840d4f3df83fcf1",
+        "recordVersion": 1
+      },
+      {
+        "signalId": "btcusdt-15m-trend-pullback-v1-long-2026-08-08T09:45:01Z",
+        "recordHash": "a0e626cc64d625b88bd73737379ffcc15e03d0c421f96e67b0cd06d8127bfe71",
+        "recordVersion": 1
+      },
+      {
+        "signalId": "btcusdt-15m-trend-pullback-v1-long-2026-08-08T10:16:00Z",
+        "recordHash": "15d6274c4c58ed4f9e8d1c9c9482e13b6941577c6fcbd134ce4e53561433c64a",
+        "recordVersion": 1
+      },
+      {
+        "signalId": "btcusdt-15m-trend-pullback-v1-long-2026-08-08T10:30:31Z",
+        "recordHash": "49e7bb9f5d267d38dea31dd0ab18e5e1743f8a6af4b2c9970fe7e5571e7ffedb",
+        "recordVersion": 1
+      },
+      {
+        "signalId": "btcusdt-15m-trend-pullback-v1-long-2026-08-08T11:45:03Z",
+        "recordHash": "d70a9caa7f1872a916d2d8ef60022bfb0b0a84edb6e72db4ab9b2199858b1313",
+        "recordVersion": 1
+      },
+      {
+        "signalId": "btcusdt-15m-trend-pullback-v1-long-2026-08-08T14:30:02Z",
+        "recordHash": "33fde2e7a86ba18a993c6c09d59b6c025f3bf348556befd358a9b539508698e8",
+        "recordVersion": 1
+      },
+      {
+        "signalId": "btcusdt-15m-trend-pullback-v1-long-2026-08-08T16:00:12Z",
+        "recordHash": "bdb2bac0cd96ba92d5ebae92e2b58528766e28a22747a53185ea9959a4335833",
+        "recordVersion": 1
+      },
+      {
+        "signalId": "btcusdt-15m-trend-pullback-v1-long-2026-08-08T17:30:34Z",
+        "recordHash": "64ef3146e2dffc3ea74512a051bd0a32deed8a19b5e0043ee27ebc52c20e3995",
+        "recordVersion": 1
+      },
+      {
+        "signalId": "btcusdt-15m-trend-pullback-v1-long-2026-08-08T17:45:04Z",
+        "recordHash": "227c2e9e781118c912d244aef01baa28bd009a958decb9148582b9a3e8787605",
+        "recordVersion": 1
+      },
+      {
+        "signalId": "btcusdt-15m-trend-pullback-v1-long-2026-08-08T18:00:38Z",
+        "recordHash": "5d36226d280174f21bc57136b6200f5694cacf61bb8d0dd4c66d887ffbb3eea6",
+        "recordVersion": 1
+      },
+      {
+        "signalId": "btcusdt-15m-trend-pullback-v1-long-2026-08-08T18:15:13Z",
+        "recordHash": "978b45ae793c73751face402b811e353d1dae1b01b648672b1eb1b8bdfec1e36",
+        "recordVersion": 1
+      },
+      {
+        "signalId": "btcusdt-15m-trend-pullback-v1-long-2026-08-09T04:30:31Z",
+        "recordHash": "e728a40a10975a2814495be3dc7cf8932c22ff255c5aea28b331623bfd13f238",
+        "recordVersion": 1
+      },
+      {
+        "signalId": "btcusdt-15m-trend-pullback-v1-long-2026-08-09T16:45:04Z",
+        "recordHash": "84acef64e695872c21670f2003d581858c1d7d3253845c5628eda697f9d9bbfb",
+        "recordVersion": 1
+      },
+      {
+        "signalId": "btcusdt-15m-trend-pullback-v1-long-2026-08-09T17:00:18Z",
+        "recordHash": "2db79d514716790075c71d89d98a677ab6d2a9a85f6f87e1723a55ebc0ea0c12",
+        "recordVersion": 1
+      },
+      {
+        "signalId": "btcusdt-15m-trend-pullback-v1-long-2026-08-09T17:15:23Z",
+        "recordHash": "f04f6f26af3b175d16c00c867b42e7f2f6e032ad1911bccc899ab097566d7052",
+        "recordVersion": 1
+      },
+      {
+        "signalId": "btcusdt-15m-trend-pullback-v1-long-2026-08-09T22:00:06Z",
+        "recordHash": "28f0344d2282bde50462a974cfffe2d2f192b972c08f13dfe580d1439a040f04",
+        "recordVersion": 1
+      },
+      {
+        "signalId": "btcusdt-15m-trend-pullback-v1-long-2026-08-09T22:15:02Z",
+        "recordHash": "a7dc6c3e8bd43e53e5be95d854132a15943e4165780d948fc7a5d87097b705aa",
+        "recordVersion": 1
+      },
+      {
+        "signalId": "btcusdt-15m-trend-pullback-v1-long-2026-08-09T22:30:04Z",
+        "recordHash": "00ed2418d8dd17f35a5f8b44f95b366c89e8394a2693684157326b4b235a7522",
+        "recordVersion": 1
+      },
+      {
+        "signalId": "btcusdt-15m-trend-pullback-v1-long-2026-08-09T22:45:08Z",
+        "recordHash": "928248c36ec5cad4e81dd50eaa34d8e278902f77b9ff56497219c9176560a228",
+        "recordVersion": 1
+      },
+      {
+        "signalId": "btcusdt-15m-trend-pullback-v1-long-2026-08-10T03:00:15Z",
+        "recordHash": "53127c00c2163e9e56078bdfa2c3192d0baa5fe12bb8272ce045afdc1e1021fd",
+        "recordVersion": 1
+      },
+      {
+        "signalId": "btcusdt-15m-trend-pullback-v1-long-2026-08-10T10:00:10Z",
+        "recordHash": "c953060d40796e9b5a29dd47432c245cb0833aad5aee239c059deac731a602e4",
+        "recordVersion": 1
+      },
+      {
+        "signalId": "btcusdt-15m-trend-pullback-v1-long-2026-08-10T20:30:08Z",
+        "recordHash": "b4fe449efb2c4a7f197ea60ec00099afb0e52bf3e86c0e2b4ae0cdd809fe9e9d",
+        "recordVersion": 1
+      },
+      {
+        "signalId": "btcusdt-15m-trend-pullback-v1-long-2026-08-11T00:15:11Z",
+        "recordHash": "d3045b519093c9297fe2e549aa2bfa43e34bf54833b4a87f19cc5ca3bc625af4",
+        "recordVersion": 1
+      },
+      {
+        "signalId": "btcusdt-15m-trend-pullback-v1-long-2026-08-11T01:15:09Z",
+        "recordHash": "b419641384803960830043801874e5c435ed932f6588de529eb66c8c067ea76d",
+        "recordVersion": 1
+      },
+      {
+        "signalId": "btcusdt-15m-trend-pullback-v1-long-2026-08-11T05:45:27Z",
+        "recordHash": "5b7de8f4f7c0dc1e752ecb354f504348c7038ace64fd0e7f8e768284cfb362ff",
+        "recordVersion": 1
+      },
+      {
+        "signalId": "btcusdt-15m-trend-pullback-v1-long-2026-08-11T06:01:00Z",
+        "recordHash": "6a9634038a7e95676b890685660c812dc7524ea6f1a8f67306028c17ac60d8fb",
+        "recordVersion": 1
+      },
+      {
+        "signalId": "btcusdt-15m-trend-pullback-v1-long-2026-08-11T06:45:11Z",
+        "recordHash": "640be9d8bd9a34347ab3ac2a527d0acfc6dcf96ea0374a79a546c81a4c79e9af",
+        "recordVersion": 1
+      },
+      {
+        "signalId": "btcusdt-15m-trend-pullback-v1-long-2026-08-11T08:00:02Z",
+        "recordHash": "76ca770c879f142cbffbde65fdfdbf69c619c7229b28cf8b89c59cba03dd4c96",
+        "recordVersion": 1
+      },
+      {
+        "signalId": "btcusdt-15m-trend-pullback-v1-long-2026-08-11T13:45:05Z",
+        "recordHash": "f699262333c0d962546e379e6ed42ede88a72c216ac6ef358ed87257e98b0759",
+        "recordVersion": 1
+      },
+      {
+        "signalId": "btcusdt-15m-trend-pullback-v1-long-2026-08-11T20:30:03Z",
+        "recordHash": "0f2b2c2c09b6f352fe53a5f1509b5006d5d2e9f8341c345bfb94ae70d2c9189b",
+        "recordVersion": 1
+      },
+      {
+        "signalId": "btcusdt-15m-trend-pullback-v1-long-2026-08-12T06:30:14Z",
+        "recordHash": "551c941856558a457819cbd56e37225761871b3ff0995d6dc2ee32dd03c13e75",
+        "recordVersion": 1
+      }
+    ],
+    "firstScoredAt": "2026-08-06T09:30:13.521Z",
+    "lastScoredAt": "2026-08-12T06:30:15.801Z",
+    "firstCheckpointAt": "2026-08-24T22:26:33.088Z",
+    "lastCheckpointAt": "2026-08-24T22:26:33.088Z",
+    "symbols": [
+      "btcusdt"
+    ],
+    "timeframes": [
+      "15m"
+    ],
+    "providers": [
+      "giovanni_tradingview_staging"
+    ],
+    "analystConfigHashes": [
+      "1172e5da91dfd9ac6e65a060b628c5a4f1bbdd41545904a7a6a59e15fc0fe705"
+    ],
+    "directions": {
+      "long": 45,
+      "short": 0,
+      "neutral": 0
+    },
+    "exclusions": {
+      "unverifiableInput": 0,
+      "supersededSinceCheckpoint": 0,
+      "supersededSinceCalibration": 0,
+      "magnitudeConventionViolation": 0
+    }
+  },
+  "readings": {
+    "overall": {
+      "confirmed": 10,
+      "contradicted": 15,
+      "mixed": 20,
+      "indeterminate": 0
+    },
+    "perF": {
+      "1": {
+        "favorable": 22,
+        "adverse": 23,
+        "flat": 0,
+        "indeterminate": 0
+      },
+      "0.25": {
+        "favorable": 19,
+        "adverse": 26,
+        "flat": 0,
+        "indeterminate": 0
+      },
+      "0.5": {
+        "favorable": 18,
+        "adverse": 27,
+        "flat": 0,
+        "indeterminate": 0
+      }
+    }
+  },
+  "realized": {
+    "1": {
+      "win": {
+        "n": 45,
+        "count": 22,
+        "status": "insufficient"
+      },
+      "meanSignedReturnPct": {
+        "n": 45,
+        "status": "insufficient"
+      },
+      "medianSignedReturnPct": null,
+      "meanMfePct": {
+        "n": 45,
+        "status": "insufficient"
+      },
+      "meanMaePct": {
+        "n": 45,
+        "status": "insufficient"
+      }
+    },
+    "0.25": {
+      "win": {
+        "n": 45,
+        "count": 19,
+        "status": "insufficient"
+      },
+      "meanSignedReturnPct": {
+        "n": 45,
+        "status": "insufficient"
+      },
+      "medianSignedReturnPct": null,
+      "meanMfePct": {
+        "n": 45,
+        "status": "insufficient"
+      },
+      "meanMaePct": {
+        "n": 45,
+        "status": "insufficient"
+      }
+    },
+    "0.5": {
+      "win": {
+        "n": 45,
+        "count": 18,
+        "status": "insufficient"
+      },
+      "meanSignedReturnPct": {
+        "n": 45,
+        "status": "insufficient"
+      },
+      "medianSignedReturnPct": null,
+      "meanMfePct": {
+        "n": 45,
+        "status": "insufficient"
+      },
+      "meanMaePct": {
+        "n": 45,
+        "status": "insufficient"
+      }
+    }
+  },
+  "reliability": {
+    "1": [
+      {
+        "k": 0,
+        "lower": 0,
+        "upper": 0.05,
+        "n": 0,
+        "favorable": 0,
+        "status": "insufficient"
+      },
+      {
+        "k": 1,
+        "lower": 0.05,
+        "upper": 0.1,
+        "n": 0,
+        "favorable": 0,
+        "status": "insufficient"
+      },
+      {
+        "k": 2,
+        "lower": 0.1,
+        "upper": 0.15,
+        "n": 0,
+        "favorable": 0,
+        "status": "insufficient"
+      },
+      {
+        "k": 3,
+        "lower": 0.15,
+        "upper": 0.2,
+        "n": 0,
+        "favorable": 0,
+        "status": "insufficient"
+      },
+      {
+        "k": 4,
+        "lower": 0.2,
+        "upper": 0.25,
+        "n": 0,
+        "favorable": 0,
+        "status": "insufficient"
+      },
+      {
+        "k": 5,
+        "lower": 0.25,
+        "upper": 0.3,
+        "n": 0,
+        "favorable": 0,
+        "status": "insufficient"
+      },
+      {
+        "k": 6,
+        "lower": 0.3,
+        "upper": 0.35,
+        "n": 3,
+        "favorable": 1,
+        "status": "insufficient"
+      },
+      {
+        "k": 7,
+        "lower": 0.35,
+        "upper": 0.4,
+        "n": 6,
+        "favorable": 4,
+        "status": "insufficient"
+      },
+      {
+        "k": 8,
+        "lower": 0.4,
+        "upper": 0.45,
+        "n": 17,
+        "favorable": 8,
+        "status": "insufficient"
+      },
+      {
+        "k": 9,
+        "lower": 0.45,
+        "upper": 0.5,
+        "n": 1,
+        "favorable": 0,
+        "status": "insufficient"
+      },
+      {
+        "k": 10,
+        "lower": 0.5,
+        "upper": 0.55,
+        "n": 10,
+        "favorable": 7,
+        "status": "insufficient"
+      },
+      {
+        "k": 11,
+        "lower": 0.55,
+        "upper": 0.6,
+        "n": 7,
+        "favorable": 2,
+        "status": "insufficient"
+      },
+      {
+        "k": 12,
+        "lower": 0.6,
+        "upper": 0.65,
+        "n": 0,
+        "favorable": 0,
+        "status": "insufficient"
+      },
+      {
+        "k": 13,
+        "lower": 0.65,
+        "upper": 0.7,
+        "n": 1,
+        "favorable": 0,
+        "status": "insufficient"
+      },
+      {
+        "k": 14,
+        "lower": 0.7,
+        "upper": 0.75,
+        "n": 0,
+        "favorable": 0,
+        "status": "insufficient"
+      },
+      {
+        "k": 15,
+        "lower": 0.75,
+        "upper": 0.8,
+        "n": 0,
+        "favorable": 0,
+        "status": "insufficient"
+      },
+      {
+        "k": 16,
+        "lower": 0.8,
+        "upper": 0.85,
+        "n": 0,
+        "favorable": 0,
+        "status": "insufficient"
+      },
+      {
+        "k": 17,
+        "lower": 0.85,
+        "upper": 0.9,
+        "n": 0,
+        "favorable": 0,
+        "status": "insufficient"
+      },
+      {
+        "k": 18,
+        "lower": 0.9,
+        "upper": 0.95,
+        "n": 0,
+        "favorable": 0,
+        "status": "insufficient"
+      },
+      {
+        "k": 19,
+        "lower": 0.95,
+        "upper": 1,
+        "n": 0,
+        "favorable": 0,
+        "status": "insufficient"
+      }
+    ],
+    "0.25": [
+      {
+        "k": 0,
+        "lower": 0,
+        "upper": 0.05,
+        "n": 0,
+        "favorable": 0,
+        "status": "insufficient"
+      },
+      {
+        "k": 1,
+        "lower": 0.05,
+        "upper": 0.1,
+        "n": 0,
+        "favorable": 0,
+        "status": "insufficient"
+      },
+      {
+        "k": 2,
+        "lower": 0.1,
+        "upper": 0.15,
+        "n": 0,
+        "favorable": 0,
+        "status": "insufficient"
+      },
+      {
+        "k": 3,
+        "lower": 0.15,
+        "upper": 0.2,
+        "n": 0,
+        "favorable": 0,
+        "status": "insufficient"
+      },
+      {
+        "k": 4,
+        "lower": 0.2,
+        "upper": 0.25,
+        "n": 0,
+        "favorable": 0,
+        "status": "insufficient"
+      },
+      {
+        "k": 5,
+        "lower": 0.25,
+        "upper": 0.3,
+        "n": 0,
+        "favorable": 0,
+        "status": "insufficient"
+      },
+      {
+        "k": 6,
+        "lower": 0.3,
+        "upper": 0.35,
+        "n": 3,
+        "favorable": 0,
+        "status": "insufficient"
+      },
+      {
+        "k": 7,
+        "lower": 0.35,
+        "upper": 0.4,
+        "n": 6,
+        "favorable": 2,
+        "status": "insufficient"
+      },
+      {
+        "k": 8,
+        "lower": 0.4,
+        "upper": 0.45,
+        "n": 17,
+        "favorable": 6,
+        "status": "insufficient"
+      },
+      {
+        "k": 9,
+        "lower": 0.45,
+        "upper": 0.5,
+        "n": 1,
+        "favorable": 0,
+        "status": "insufficient"
+      },
+      {
+        "k": 10,
+        "lower": 0.5,
+        "upper": 0.55,
+        "n": 10,
+        "favorable": 7,
+        "status": "insufficient"
+      },
+      {
+        "k": 11,
+        "lower": 0.55,
+        "upper": 0.6,
+        "n": 7,
+        "favorable": 4,
+        "status": "insufficient"
+      },
+      {
+        "k": 12,
+        "lower": 0.6,
+        "upper": 0.65,
+        "n": 0,
+        "favorable": 0,
+        "status": "insufficient"
+      },
+      {
+        "k": 13,
+        "lower": 0.65,
+        "upper": 0.7,
+        "n": 1,
+        "favorable": 0,
+        "status": "insufficient"
+      },
+      {
+        "k": 14,
+        "lower": 0.7,
+        "upper": 0.75,
+        "n": 0,
+        "favorable": 0,
+        "status": "insufficient"
+      },
+      {
+        "k": 15,
+        "lower": 0.75,
+        "upper": 0.8,
+        "n": 0,
+        "favorable": 0,
+        "status": "insufficient"
+      },
+      {
+        "k": 16,
+        "lower": 0.8,
+        "upper": 0.85,
+        "n": 0,
+        "favorable": 0,
+        "status": "insufficient"
+      },
+      {
+        "k": 17,
+        "lower": 0.85,
+        "upper": 0.9,
+        "n": 0,
+        "favorable": 0,
+        "status": "insufficient"
+      },
+      {
+        "k": 18,
+        "lower": 0.9,
+        "upper": 0.95,
+        "n": 0,
+        "favorable": 0,
+        "status": "insufficient"
+      },
+      {
+        "k": 19,
+        "lower": 0.95,
+        "upper": 1,
+        "n": 0,
+        "favorable": 0,
+        "status": "insufficient"
+      }
+    ],
+    "0.5": [
+      {
+        "k": 0,
+        "lower": 0,
+        "upper": 0.05,
+        "n": 0,
+        "favorable": 0,
+        "status": "insufficient"
+      },
+      {
+        "k": 1,
+        "lower": 0.05,
+        "upper": 0.1,
+        "n": 0,
+        "favorable": 0,
+        "status": "insufficient"
+      },
+      {
+        "k": 2,
+        "lower": 0.1,
+        "upper": 0.15,
+        "n": 0,
+        "favorable": 0,
+        "status": "insufficient"
+      },
+      {
+        "k": 3,
+        "lower": 0.15,
+        "upper": 0.2,
+        "n": 0,
+        "favorable": 0,
+        "status": "insufficient"
+      },
+      {
+        "k": 4,
+        "lower": 0.2,
+        "upper": 0.25,
+        "n": 0,
+        "favorable": 0,
+        "status": "insufficient"
+      },
+      {
+        "k": 5,
+        "lower": 0.25,
+        "upper": 0.3,
+        "n": 0,
+        "favorable": 0,
+        "status": "insufficient"
+      },
+      {
+        "k": 6,
+        "lower": 0.3,
+        "upper": 0.35,
+        "n": 3,
+        "favorable": 1,
+        "status": "insufficient"
+      },
+      {
+        "k": 7,
+        "lower": 0.35,
+        "upper": 0.4,
+        "n": 6,
+        "favorable": 2,
+        "status": "insufficient"
+      },
+      {
+        "k": 8,
+        "lower": 0.4,
+        "upper": 0.45,
+        "n": 17,
+        "favorable": 5,
+        "status": "insufficient"
+      },
+      {
+        "k": 9,
+        "lower": 0.45,
+        "upper": 0.5,
+        "n": 1,
+        "favorable": 1,
+        "status": "insufficient"
+      },
+      {
+        "k": 10,
+        "lower": 0.5,
+        "upper": 0.55,
+        "n": 10,
+        "favorable": 6,
+        "status": "insufficient"
+      },
+      {
+        "k": 11,
+        "lower": 0.55,
+        "upper": 0.6,
+        "n": 7,
+        "favorable": 3,
+        "status": "insufficient"
+      },
+      {
+        "k": 12,
+        "lower": 0.6,
+        "upper": 0.65,
+        "n": 0,
+        "favorable": 0,
+        "status": "insufficient"
+      },
+      {
+        "k": 13,
+        "lower": 0.65,
+        "upper": 0.7,
+        "n": 1,
+        "favorable": 0,
+        "status": "insufficient"
+      },
+      {
+        "k": 14,
+        "lower": 0.7,
+        "upper": 0.75,
+        "n": 0,
+        "favorable": 0,
+        "status": "insufficient"
+      },
+      {
+        "k": 15,
+        "lower": 0.75,
+        "upper": 0.8,
+        "n": 0,
+        "favorable": 0,
+        "status": "insufficient"
+      },
+      {
+        "k": 16,
+        "lower": 0.8,
+        "upper": 0.85,
+        "n": 0,
+        "favorable": 0,
+        "status": "insufficient"
+      },
+      {
+        "k": 17,
+        "lower": 0.85,
+        "upper": 0.9,
+        "n": 0,
+        "favorable": 0,
+        "status": "insufficient"
+      },
+      {
+        "k": 18,
+        "lower": 0.9,
+        "upper": 0.95,
+        "n": 0,
+        "favorable": 0,
+        "status": "insufficient"
+      },
+      {
+        "k": 19,
+        "lower": 0.95,
+        "upper": 1,
+        "n": 0,
+        "favorable": 0,
+        "status": "insufficient"
+      }
+    ]
+  },
+  "rank": {
+    "1": {
+      "n": 45,
+      "status": "insufficient"
+    },
+    "0.25": {
+      "n": 45,
+      "status": "insufficient"
+    },
+    "0.5": {
+      "n": 45,
+      "status": "insufficient"
+    }
+  },
+  "strata": {
+    "riskBucket": {
+      "extreme": {
+        "n": 6,
+        "readings": {
+          "overall": {
+            "confirmed": 0,
+            "contradicted": 4,
+            "mixed": 2,
+            "indeterminate": 0
+          },
+          "perF": {
+            "1": {
+              "favorable": 2,
+              "adverse": 4,
+              "flat": 0,
+              "indeterminate": 0
+            },
+            "0.25": {
+              "favorable": 0,
+              "adverse": 6,
+              "flat": 0,
+              "indeterminate": 0
+            },
+            "0.5": {
+              "favorable": 1,
+              "adverse": 5,
+              "flat": 0,
+              "indeterminate": 0
+            }
+          }
+        },
+        "realized": {
+          "1": {
+            "win": {
+              "n": 6,
+              "count": 2,
+              "status": "insufficient"
+            },
+            "meanSignedReturnPct": {
+              "n": 6,
+              "status": "insufficient"
+            },
+            "medianSignedReturnPct": null,
+            "meanMfePct": {
+              "n": 6,
+              "status": "insufficient"
+            },
+            "meanMaePct": {
+              "n": 6,
+              "status": "insufficient"
+            }
+          },
+          "0.25": {
+            "win": {
+              "n": 6,
+              "count": 0,
+              "status": "insufficient"
+            },
+            "meanSignedReturnPct": {
+              "n": 6,
+              "status": "insufficient"
+            },
+            "medianSignedReturnPct": null,
+            "meanMfePct": {
+              "n": 6,
+              "status": "insufficient"
+            },
+            "meanMaePct": {
+              "n": 6,
+              "status": "insufficient"
+            }
+          },
+          "0.5": {
+            "win": {
+              "n": 6,
+              "count": 1,
+              "status": "insufficient"
+            },
+            "meanSignedReturnPct": {
+              "n": 6,
+              "status": "insufficient"
+            },
+            "medianSignedReturnPct": null,
+            "meanMfePct": {
+              "n": 6,
+              "status": "insufficient"
+            },
+            "meanMaePct": {
+              "n": 6,
+              "status": "insufficient"
+            }
+          }
+        }
+      },
+      "high": {
+        "n": 6,
+        "readings": {
+          "overall": {
+            "confirmed": 0,
+            "contradicted": 1,
+            "mixed": 5,
+            "indeterminate": 0
+          },
+          "perF": {
+            "1": {
+              "favorable": 2,
+              "adverse": 4,
+              "flat": 0,
+              "indeterminate": 0
+            },
+            "0.25": {
+              "favorable": 2,
+              "adverse": 4,
+              "flat": 0,
+              "indeterminate": 0
+            },
+            "0.5": {
+              "favorable": 3,
+              "adverse": 3,
+              "flat": 0,
+              "indeterminate": 0
+            }
+          }
+        },
+        "realized": {
+          "1": {
+            "win": {
+              "n": 6,
+              "count": 2,
+              "status": "insufficient"
+            },
+            "meanSignedReturnPct": {
+              "n": 6,
+              "status": "insufficient"
+            },
+            "medianSignedReturnPct": null,
+            "meanMfePct": {
+              "n": 6,
+              "status": "insufficient"
+            },
+            "meanMaePct": {
+              "n": 6,
+              "status": "insufficient"
+            }
+          },
+          "0.25": {
+            "win": {
+              "n": 6,
+              "count": 2,
+              "status": "insufficient"
+            },
+            "meanSignedReturnPct": {
+              "n": 6,
+              "status": "insufficient"
+            },
+            "medianSignedReturnPct": null,
+            "meanMfePct": {
+              "n": 6,
+              "status": "insufficient"
+            },
+            "meanMaePct": {
+              "n": 6,
+              "status": "insufficient"
+            }
+          },
+          "0.5": {
+            "win": {
+              "n": 6,
+              "count": 3,
+              "status": "insufficient"
+            },
+            "meanSignedReturnPct": {
+              "n": 6,
+              "status": "insufficient"
+            },
+            "medianSignedReturnPct": null,
+            "meanMfePct": {
+              "n": 6,
+              "status": "insufficient"
+            },
+            "meanMaePct": {
+              "n": 6,
+              "status": "insufficient"
+            }
+          }
+        }
+      },
+      "low": {
+        "n": 17,
+        "readings": {
+          "overall": {
+            "confirmed": 8,
+            "contradicted": 2,
+            "mixed": 7,
+            "indeterminate": 0
+          },
+          "perF": {
+            "1": {
+              "favorable": 15,
+              "adverse": 2,
+              "flat": 0,
+              "indeterminate": 0
+            },
+            "0.25": {
+              "favorable": 11,
+              "adverse": 6,
+              "flat": 0,
+              "indeterminate": 0
+            },
+            "0.5": {
+              "favorable": 10,
+              "adverse": 7,
+              "flat": 0,
+              "indeterminate": 0
+            }
+          }
+        },
+        "realized": {
+          "1": {
+            "win": {
+              "n": 17,
+              "count": 15,
+              "status": "insufficient"
+            },
+            "meanSignedReturnPct": {
+              "n": 17,
+              "status": "insufficient"
+            },
+            "medianSignedReturnPct": null,
+            "meanMfePct": {
+              "n": 17,
+              "status": "insufficient"
+            },
+            "meanMaePct": {
+              "n": 17,
+              "status": "insufficient"
+            }
+          },
+          "0.25": {
+            "win": {
+              "n": 17,
+              "count": 11,
+              "status": "insufficient"
+            },
+            "meanSignedReturnPct": {
+              "n": 17,
+              "status": "insufficient"
+            },
+            "medianSignedReturnPct": null,
+            "meanMfePct": {
+              "n": 17,
+              "status": "insufficient"
+            },
+            "meanMaePct": {
+              "n": 17,
+              "status": "insufficient"
+            }
+          },
+          "0.5": {
+            "win": {
+              "n": 17,
+              "count": 10,
+              "status": "insufficient"
+            },
+            "meanSignedReturnPct": {
+              "n": 17,
+              "status": "insufficient"
+            },
+            "medianSignedReturnPct": null,
+            "meanMfePct": {
+              "n": 17,
+              "status": "insufficient"
+            },
+            "meanMaePct": {
+              "n": 17,
+              "status": "insufficient"
+            }
+          }
+        }
+      },
+      "medium": {
+        "n": 16,
+        "readings": {
+          "overall": {
+            "confirmed": 2,
+            "contradicted": 8,
+            "mixed": 6,
+            "indeterminate": 0
+          },
+          "perF": {
+            "1": {
+              "favorable": 3,
+              "adverse": 13,
+              "flat": 0,
+              "indeterminate": 0
+            },
+            "0.25": {
+              "favorable": 6,
+              "adverse": 10,
+              "flat": 0,
+              "indeterminate": 0
+            },
+            "0.5": {
+              "favorable": 4,
+              "adverse": 12,
+              "flat": 0,
+              "indeterminate": 0
+            }
+          }
+        },
+        "realized": {
+          "1": {
+            "win": {
+              "n": 16,
+              "count": 3,
+              "status": "insufficient"
+            },
+            "meanSignedReturnPct": {
+              "n": 16,
+              "status": "insufficient"
+            },
+            "medianSignedReturnPct": null,
+            "meanMfePct": {
+              "n": 16,
+              "status": "insufficient"
+            },
+            "meanMaePct": {
+              "n": 16,
+              "status": "insufficient"
+            }
+          },
+          "0.25": {
+            "win": {
+              "n": 16,
+              "count": 6,
+              "status": "insufficient"
+            },
+            "meanSignedReturnPct": {
+              "n": 16,
+              "status": "insufficient"
+            },
+            "medianSignedReturnPct": null,
+            "meanMfePct": {
+              "n": 16,
+              "status": "insufficient"
+            },
+            "meanMaePct": {
+              "n": 16,
+              "status": "insufficient"
+            }
+          },
+          "0.5": {
+            "win": {
+              "n": 16,
+              "count": 4,
+              "status": "insufficient"
+            },
+            "meanSignedReturnPct": {
+              "n": 16,
+              "status": "insufficient"
+            },
+            "medianSignedReturnPct": null,
+            "meanMfePct": {
+              "n": 16,
+              "status": "insufficient"
+            },
+            "meanMaePct": {
+              "n": 16,
+              "status": "insufficient"
+            }
+          }
+        }
+      }
+    },
+    "direction": {
+      "long": {
+        "n": 45,
+        "readings": {
+          "overall": {
+            "confirmed": 10,
+            "contradicted": 15,
+            "mixed": 20,
+            "indeterminate": 0
+          },
+          "perF": {
+            "1": {
+              "favorable": 22,
+              "adverse": 23,
+              "flat": 0,
+              "indeterminate": 0
+            },
+            "0.25": {
+              "favorable": 19,
+              "adverse": 26,
+              "flat": 0,
+              "indeterminate": 0
+            },
+            "0.5": {
+              "favorable": 18,
+              "adverse": 27,
+              "flat": 0,
+              "indeterminate": 0
+            }
+          }
+        },
+        "realized": {
+          "1": {
+            "win": {
+              "n": 45,
+              "count": 22,
+              "status": "insufficient"
+            },
+            "meanSignedReturnPct": {
+              "n": 45,
+              "status": "insufficient"
+            },
+            "medianSignedReturnPct": null,
+            "meanMfePct": {
+              "n": 45,
+              "status": "insufficient"
+            },
+            "meanMaePct": {
+              "n": 45,
+              "status": "insufficient"
+            }
+          },
+          "0.25": {
+            "win": {
+              "n": 45,
+              "count": 19,
+              "status": "insufficient"
+            },
+            "meanSignedReturnPct": {
+              "n": 45,
+              "status": "insufficient"
+            },
+            "medianSignedReturnPct": null,
+            "meanMfePct": {
+              "n": 45,
+              "status": "insufficient"
+            },
+            "meanMaePct": {
+              "n": 45,
+              "status": "insufficient"
+            }
+          },
+          "0.5": {
+            "win": {
+              "n": 45,
+              "count": 18,
+              "status": "insufficient"
+            },
+            "meanSignedReturnPct": {
+              "n": 45,
+              "status": "insufficient"
+            },
+            "medianSignedReturnPct": null,
+            "meanMfePct": {
+              "n": 45,
+              "status": "insufficient"
+            },
+            "meanMaePct": {
+              "n": 45,
+              "status": "insufficient"
+            }
+          }
+        }
+      }
+    }
+  },
+  "dependence": {
+    "clusters": 20,
+    "withNeighbour": 32,
+    "pairedOpposite": 0,
+    "pairingFraction": 0,
+    "greedyNonOverlap": 23,
+    "perFraction": {
+      "1": {
+        "designEffect": {
+          "status": "sealed",
+          "value": 1.28692
+        },
+        "lag1Autocorrelation": {
+          "status": "sealed",
+          "value": 0.003724
+        }
+      },
+      "0.25": {
+        "designEffect": {
+          "status": "sealed",
+          "value": 1.271018
+        },
+        "lag1Autocorrelation": {
+          "status": "sealed",
+          "value": 0.322905
+        }
+      },
+      "0.5": {
+        "designEffect": {
+          "status": "sealed",
+          "value": 0.810916
+        },
+        "lag1Autocorrelation": {
+          "status": "sealed",
+          "value": 0.135254
+        }
+      }
+    }
+  },
+  "supersedes": null,
+  "seal": {
+    "algorithm": "sha256",
+    "canonicalizationVersion": "afi.hash.v1",
+    "domainTag": "afi.calibration.analyst",
+    "value": "86dca341778a8612a78847069c9f4c68cc7f87d96539699510398d810705948a"
+  }
+}

@@ -1,0 +1,373 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://afi-protocol.org/schemas/analyst-calibration/v1/analyst-calibration.schema.json",
+  "title": "AFI Analyst Calibration Record v1 (CAL-GOV CAL-SCHEMA — the sealed per-analyst calibration record)",
+  "description": "(afi.analyst-calibration.v1) The sealed, append-only, per-analyst aggregation of that analyst's sealed afi.signal-reassessment.v1 artifacts, joined by signalId to the SEALED scored-signal evidence record (CAL-GOV D-CAL-1). Counts, rates and means with cluster-robust intervals, a reliability table, a rank statistic with its claim flag, strata, and a dependence block. NEVER a scalar summary of an analyst. It names no member as PoI or PoInsight — those remain the reserved on-chain per-analyst reputation primitives (CONST-GOV D-CONST-5; CAL-GOV D-CAL-5) for which this record is the off-chain evidentiary input. It lives beside, never inside, the scored record and the reassessment; it mutates neither.",
+  "$comment": "BOUNDARY (CAL-GOV D-CAL-1(3)): the member set is EXHAUSTIVE — nothing more without a further filing. No composite, no scalar, no PoI/PoInsight/Rep member or label, no cross-key member, no comparison between bins. Every derived non-integer member is sealed rounded to six decimal places (round-half-even on the exact binary value); set-valued provenance members are serialized sorted ascending by UTF-16 code units; the semantic layer (tests/analyst-calibration-schema-validation.test.ts) enforces what draft-07 cannot.",
+  "x-afiStatus": "governed-contract",
+  "x-afiPartOf": "AFI Analyst Calibration Record v0.1 (CAL-GOV), slot CAL-SCHEMA",
+  "x-afiDoctrineRefs": [
+    "afi-governance/decisions/analyst-calibration-record-v0.1.md D-CAL-1 (record form; exhaustive members; verify-on-read; sealing; rounding law), D-CAL-2 (grouping key; scoring identity), D-CAL-3 (estimators; minimum-N; status vocabulary; dependence block), D-CAL-4 (issuance; supersession counters), D-CAL-5 (PoI / PoInsight preserved — no member is named for either)",
+    "afi-governance/decisions/decay-lifecycle-v0.1.md D-DLC-4 (the reassessment artifact this record consumes, unchanged)",
+    "afi-governance/decisions/constitutional-architecture-v1.0.md D-CONST-5 (PoI / PoInsight reserved primitives — untouched)",
+    "afi-governance/decisions/analyst-configuration-freedom-v0.1.md D-CFG-2 (immutability at SCORED; read-only analytics credentials; the analytics plane is non-canonical)"
+  ],
+  "x-afiConstraints": {
+    "sealingDiscipline": "THE D-CAL-1(5) SEALING ANSWER: canonical-json-hashing.v1 (afi.hash.v1) — seal.value is the sha256 of the canonical serialization of this document with the single TOP-LEVEL member 'seal' excluded; domain tag afi.calibration.analyst carried, never hashed. Proven by governed vectors: every valid vector's seal.value reproduces under the reference implementation.",
+    "roundingLaw": "Every derived non-integer member (rate, se, interval bounds, mean, median, rho, pairingFraction, designEffect, lag1Autocorrelation, bin lower/upper) is rounded to six decimal places, round-half-even on the exact binary value — never via a half-up formatter. Semantic layer.",
+    "sortedSets": "provenance.symbols, timeframes, providers, analystConfigHashes are sorted ascending by UTF-16 code units and duplicate-free; provenance.signalIds is in accumulation order (ascending scoredAt, then signalId). Semantic layer.",
+    "statusVocabulary": "Every rate, mean, median and rho block carries status ∈ {sealed, withheld, insufficient}: sealed = estimate + interval present (block n ≥ its minimum and G ≥ 3 clusters); withheld = estimate present, interval absent (n ≥ minimum, G < 3); insufficient = counts only (n < minimum: 100 for group/strata/rank blocks, 20 for reliability bins). rank.claim is present exactly when rank.status ≠ insufficient and is 'sealed' only at n ≥ 200, else 'insufficient-for-claim'. Semantic layer.",
+    "noScalar": "No member is a single number summarizing an analyst; no key anywhere carries the token poi, poinsight, reputation, or rep_t (token-bounded, case-insensitive); no member references another groupKey. Semantic layer.",
+    "provenanceLaw": "Every uwrScore, analystId, strategy triple, riskBucket, providerId, composition member, uwrProfile stamp, recordHash and recordVersion comes from the SEALED evidence record verified on read (recordHash recomputed); every reading and realized figure comes from the SEALED reassessment verified on read (seal recomputed); timeframe and symbol are signalId-derived. n equals provenance.signalIds.length and the direction counts sum to n. Semantic layer.",
+    "immutability": "Append-only; a record is never edited; supersedes links to the previous record for the same groupKey by seal.value (D-CAL-4)."
+  },
+  "definitions": {
+    "hex64": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+    "fraction6": { "type": "number", "minimum": 0, "maximum": 1 },
+    "nonNegInt": { "type": "integer", "minimum": 0 },
+    "status": { "type": "string", "enum": ["sealed", "withheld", "insufficient"] },
+    "interval": { "type": "array", "minItems": 2, "maxItems": 2, "items": { "type": "number" } },
+    "rateBlock": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["n", "count", "status"],
+      "properties": {
+        "n": { "$ref": "#/definitions/nonNegInt" },
+        "count": { "$ref": "#/definitions/nonNegInt" },
+        "status": { "$ref": "#/definitions/status" },
+        "rate": { "$ref": "#/definitions/fraction6" },
+        "se": { "type": "number", "minimum": 0 },
+        "interval": { "$ref": "#/definitions/interval" }
+      }
+    },
+    "meanBlock": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["n", "status"],
+      "properties": {
+        "n": { "$ref": "#/definitions/nonNegInt" },
+        "status": { "$ref": "#/definitions/status" },
+        "mean": { "type": "number" },
+        "se": { "type": "number", "minimum": 0 },
+        "interval": { "$ref": "#/definitions/interval" }
+      }
+    },
+    "magnitudeMeanBlock": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["n", "status"],
+      "properties": {
+        "n": { "$ref": "#/definitions/nonNegInt" },
+        "status": { "$ref": "#/definitions/status" },
+        "mean": { "type": "number", "minimum": 0 },
+        "se": { "type": "number", "minimum": 0 },
+        "interval": { "$ref": "#/definitions/interval" }
+      }
+    },
+    "readingCounts": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["favorable", "adverse", "flat", "indeterminate"],
+      "properties": {
+        "favorable": { "$ref": "#/definitions/nonNegInt" },
+        "adverse": { "$ref": "#/definitions/nonNegInt" },
+        "flat": { "$ref": "#/definitions/nonNegInt" },
+        "indeterminate": { "$ref": "#/definitions/nonNegInt" }
+      }
+    },
+    "overallCounts": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["confirmed", "contradicted", "mixed", "indeterminate"],
+      "properties": {
+        "confirmed": { "$ref": "#/definitions/nonNegInt" },
+        "contradicted": { "$ref": "#/definitions/nonNegInt" },
+        "mixed": { "$ref": "#/definitions/nonNegInt" },
+        "indeterminate": { "$ref": "#/definitions/nonNegInt" }
+      }
+    },
+    "readings": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["overall", "perF"],
+      "properties": {
+        "overall": { "$ref": "#/definitions/overallCounts" },
+        "perF": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["0.25", "0.5", "1"],
+          "properties": {
+            "0.25": { "$ref": "#/definitions/readingCounts" },
+            "0.5": { "$ref": "#/definitions/readingCounts" },
+            "1": { "$ref": "#/definitions/readingCounts" }
+          }
+        }
+      }
+    },
+    "realizedF": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["win", "meanSignedReturnPct", "medianSignedReturnPct", "meanMfePct", "meanMaePct"],
+      "properties": {
+        "win": { "$ref": "#/definitions/rateBlock" },
+        "meanSignedReturnPct": { "$ref": "#/definitions/meanBlock" },
+        "medianSignedReturnPct": { "type": ["number", "null"] },
+        "meanMfePct": { "$ref": "#/definitions/magnitudeMeanBlock" },
+        "meanMaePct": { "$ref": "#/definitions/magnitudeMeanBlock" }
+      }
+    },
+    "realized": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["0.25", "0.5", "1"],
+      "properties": {
+        "0.25": { "$ref": "#/definitions/realizedF" },
+        "0.5": { "$ref": "#/definitions/realizedF" },
+        "1": { "$ref": "#/definitions/realizedF" }
+      }
+    },
+    "bin": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["k", "lower", "upper", "n", "favorable", "status"],
+      "properties": {
+        "k": { "type": "integer", "minimum": 0, "maximum": 19 },
+        "lower": { "$ref": "#/definitions/fraction6" },
+        "upper": { "$ref": "#/definitions/fraction6" },
+        "n": { "$ref": "#/definitions/nonNegInt" },
+        "favorable": { "$ref": "#/definitions/nonNegInt" },
+        "status": { "$ref": "#/definitions/status" },
+        "rate": { "$ref": "#/definitions/fraction6" },
+        "se": { "type": "number", "minimum": 0 },
+        "interval": { "$ref": "#/definitions/interval" }
+      }
+    },
+    "bins": { "type": "array", "minItems": 20, "maxItems": 20, "items": { "$ref": "#/definitions/bin" } },
+    "rankBlock": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["n", "status"],
+      "properties": {
+        "n": { "$ref": "#/definitions/nonNegInt" },
+        "status": { "$ref": "#/definitions/status" },
+        "rho": { "type": "number", "minimum": -1, "maximum": 1 },
+        "claim": { "type": "string", "enum": ["sealed", "insufficient-for-claim"] },
+        "se": { "type": "number", "minimum": 0 },
+        "interval": { "$ref": "#/definitions/interval" }
+      }
+    },
+    "stratum": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["n", "readings", "realized"],
+      "properties": {
+        "n": { "$ref": "#/definitions/nonNegInt" },
+        "readings": { "$ref": "#/definitions/readings" },
+        "realized": { "$ref": "#/definitions/realized" }
+      }
+    },
+    "dependenceMember": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status"],
+      "properties": {
+        "status": { "type": "string", "enum": ["sealed", "withheld"] },
+        "value": { "type": "number" }
+      }
+    },
+    "dependencePerF": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["designEffect", "lag1Autocorrelation"],
+      "properties": {
+        "designEffect": { "$ref": "#/definitions/dependenceMember" },
+        "lag1Autocorrelation": { "$ref": "#/definitions/dependenceMember" }
+      }
+    }
+  },
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "rule",
+    "readingRule",
+    "groupKey",
+    "n",
+    "attribution",
+    "provenance",
+    "readings",
+    "realized",
+    "reliability",
+    "rank",
+    "strata",
+    "dependence",
+    "supersedes",
+    "seal"
+  ],
+  "properties": {
+    "schema": { "type": "string", "const": "afi.analyst-calibration.v1" },
+    "rule": { "type": "string", "const": "analyst-calibration-v1", "description": "The governed calibration rule this record was produced by (CAL-GOV D-CAL-3)." },
+    "readingRule": { "type": "string", "const": "signedReturnPct-sign-v1", "description": "The governed reading rule of the consumed reassessments (DLC-GOV D-DLC-4), copied — never re-classified." },
+    "groupKey": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["analystId", "strategyId", "strategyVersion", "scoringIdentity", "halfLifeMinutes"],
+      "description": "D-CAL-2: analystId × strategyId@strategyVersion × scoringIdentity × halfLifeMinutes. The record never pools keys.",
+      "properties": {
+        "analystId": { "type": "string", "minLength": 1 },
+        "strategyId": { "type": "string", "minLength": 1 },
+        "strategyVersion": { "type": "string", "minLength": 1 },
+        "scoringIdentity": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["pipelineId", "pipelineVersion", "manifestHash", "scorerPluginId", "scorerPluginVersion", "pluginSetHash", "uwrProfileId", "uwrProfileSource"],
+          "description": "The composition members that pin the scoring instrument on the sealed record plus the record's runtime-layer uwrProfile stamp identity (D-CAL-2(2)) — deliberately not analystConfigHash alone.",
+          "properties": {
+            "pipelineId": { "type": ["string", "null"] },
+            "pipelineVersion": { "type": ["string", "null"] },
+            "manifestHash": { "anyOf": [{ "$ref": "#/definitions/hex64" }, { "type": "null" }] },
+            "scorerPluginId": { "type": ["string", "null"] },
+            "scorerPluginVersion": { "type": ["string", "null"] },
+            "pluginSetHash": { "anyOf": [{ "$ref": "#/definitions/hex64" }, { "type": "null" }] },
+            "uwrProfileId": { "type": ["string", "null"] },
+            "uwrProfileSource": { "type": ["string", "null"] }
+          }
+        },
+        "halfLifeMinutes": { "type": "number", "exclusiveMinimum": 0, "description": "The sealed reassessment member checkpointTime.halfLifeMinutes — the key's horizon element; timeframe is signalId-derived provenance, not a key element." }
+      }
+    },
+    "n": { "$ref": "#/definitions/nonNegInt", "description": "Rows aggregated (= provenance.signalIds.length)." },
+    "attribution": { "type": "string", "enum": ["corpus", "analyst"], "description": "D-CAL-3(3): 'corpus' when fewer than two distinct symbols AND lastScoredAt − firstScoredAt < 28 days — the statistics describe that corpus, not the analyst's skill." },
+    "provenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["signalIds", "firstScoredAt", "lastScoredAt", "firstCheckpointAt", "lastCheckpointAt", "symbols", "timeframes", "providers", "analystConfigHashes", "directions", "exclusions"],
+      "properties": {
+        "signalIds": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["signalId", "recordHash", "recordVersion"],
+            "properties": {
+              "signalId": { "type": "string", "minLength": 1 },
+              "recordHash": { "$ref": "#/definitions/hex64" },
+              "recordVersion": { "type": "integer", "minimum": 1 }
+            }
+          }
+        },
+        "firstScoredAt": { "type": ["string", "null"], "format": "date-time" },
+        "lastScoredAt": { "type": ["string", "null"], "format": "date-time" },
+        "firstCheckpointAt": { "type": ["string", "null"], "format": "date-time" },
+        "lastCheckpointAt": { "type": ["string", "null"], "format": "date-time" },
+        "symbols": { "type": "array", "items": { "type": "string" } },
+        "timeframes": { "type": "array", "items": { "type": "string" } },
+        "providers": { "type": "array", "items": { "type": "string" } },
+        "analystConfigHashes": { "type": "array", "items": { "type": "string" } },
+        "directions": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["long", "short", "neutral"],
+          "properties": {
+            "long": { "$ref": "#/definitions/nonNegInt" },
+            "short": { "$ref": "#/definitions/nonNegInt" },
+            "neutral": { "$ref": "#/definitions/nonNegInt" }
+          }
+        },
+        "exclusions": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["unverifiableInput", "supersededSinceCheckpoint", "supersededSinceCalibration", "magnitudeConventionViolation"],
+          "properties": {
+            "unverifiableInput": { "$ref": "#/definitions/nonNegInt" },
+            "supersededSinceCheckpoint": { "$ref": "#/definitions/nonNegInt" },
+            "supersededSinceCalibration": { "$ref": "#/definitions/nonNegInt" },
+            "magnitudeConventionViolation": { "$ref": "#/definitions/nonNegInt" }
+          }
+        }
+      }
+    },
+    "readings": { "$ref": "#/definitions/readings" },
+    "realized": { "$ref": "#/definitions/realized" },
+    "reliability": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["0.25", "0.5", "1"],
+      "description": "D-CAL-3(2)(b): twenty bins [k·0.05, (k+1)·0.05), k = floor(round(uwrScore × 1000) / 50); every k present with its n; a rate only at n ≥ 20. No comparison between bins is ever a member.",
+      "properties": {
+        "0.25": { "$ref": "#/definitions/bins" },
+        "0.5": { "$ref": "#/definitions/bins" },
+        "1": { "$ref": "#/definitions/bins" }
+      }
+    },
+    "rank": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["0.25", "0.5", "1"],
+      "description": "D-CAL-3(1)(iv): Spearman ρ(uwrScore, signedReturnPct) as Pearson on mid-ranks, interval via the influence-function CR1 sandwich and Fisher-z. Never a headline; claim 'sealed' only at n ≥ 200.",
+      "properties": {
+        "0.25": { "$ref": "#/definitions/rankBlock" },
+        "0.5": { "$ref": "#/definitions/rankBlock" },
+        "1": { "$ref": "#/definitions/rankBlock" }
+      }
+    },
+    "strata": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["riskBucket", "direction"],
+      "properties": {
+        "riskBucket": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "low": { "$ref": "#/definitions/stratum" },
+            "medium": { "$ref": "#/definitions/stratum" },
+            "high": { "$ref": "#/definitions/stratum" },
+            "extreme": { "$ref": "#/definitions/stratum" },
+            "unknown": { "$ref": "#/definitions/stratum" }
+          }
+        },
+        "direction": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "long": { "$ref": "#/definitions/stratum" },
+            "short": { "$ref": "#/definitions/stratum" },
+            "neutral": { "$ref": "#/definitions/stratum" }
+          }
+        }
+      }
+    },
+    "dependence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["clusters", "withNeighbour", "pairedOpposite", "pairingFraction", "greedyNonOverlap", "perFraction"],
+      "description": "D-CAL-3(4): per group — overlap-cluster count (connected components at |Δt| < H), pairing integers (|Δt| ≤ H), greedy non-overlap count; per (group, f) — design effect of the win rate and lag-1 autocorrelation of signedReturnPct in scoring order.",
+      "properties": {
+        "clusters": { "$ref": "#/definitions/nonNegInt" },
+        "withNeighbour": { "$ref": "#/definitions/nonNegInt" },
+        "pairedOpposite": { "$ref": "#/definitions/nonNegInt" },
+        "pairingFraction": { "$ref": "#/definitions/fraction6" },
+        "greedyNonOverlap": { "$ref": "#/definitions/nonNegInt" },
+        "perFraction": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["0.25", "0.5", "1"],
+          "properties": {
+            "0.25": { "$ref": "#/definitions/dependencePerF" },
+            "0.5": { "$ref": "#/definitions/dependencePerF" },
+            "1": { "$ref": "#/definitions/dependencePerF" }
+          }
+        }
+      }
+    },
+    "supersedes": { "anyOf": [{ "$ref": "#/definitions/hex64" }, { "type": "null" }], "description": "D-CAL-4(1): seal.value of the previous record for the same groupKey, or null for the first." },
+    "seal": {
+      "description": "CanonicalHash v1 sealing this record (x-afiConstraints.sealingDiscipline): sha256 over the canonical serialization with the top-level 'seal' member excluded; domain tag afi.calibration.analyst carried, never hashed.",
+      "allOf": [
+        { "$ref": "https://afi-protocol.org/schemas/provenance/v1/canonical-hash.schema.json" },
+        { "type": "object", "properties": { "domainTag": { "const": "afi.calibration.analyst" } } }
+      ]
+    }
+  }
+}
