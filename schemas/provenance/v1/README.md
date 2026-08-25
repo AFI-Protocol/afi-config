@@ -31,7 +31,7 @@ District 2 distinguishes **volatile processing timestamps** from **normalized ev
 
 ## Boundaries (what these drafts deliberately do NOT do)
 
-- **No weighting/evaluation policy** — District 2 defines descriptive, computable metadata; **BenchKit owns weighting**. No reward weights, transparency bonuses, payout logic, or reputation effects are encoded (and such fields are rejected by tests).
+- **No weighting/evaluation policy** — District 2 defines descriptive, computable metadata; **no weighting is owned here**. The former afi-benchkit research harness is retired under CAL-GOV D-CAL-6 (it was ungoverned research tooling, never the owner of protocol weighting); PoI / PoInsight remain reserved, preserved primitives (CONST-GOV D-CONST-5, reaffirmed by CAL-GOV D-CAL-5), and their per-analyst off-chain evidentiary input is the CAL-GOV analyst calibration record (`afi.analyst-calibration.v1`, afi-governance PR #53). The historical "BenchKit owns weighting" prose inside the governed `source-disclosure-profile.schema.json`, its example, and the test asserting it are governed bytes deferred by name to a future provenance-schema filing (D-CAL-6(3)) and are deliberately left untouched. No reward weights, transparency bonuses, payout logic, or reputation effects are encoded (and such fields are rejected by tests).
 - **No settlement, rewards, vaults, claims, or validator-decision schemas** — those fields are structurally rejected on ProvenanceRecord.
 - **No L1 anchoring / on-chain domains** — CanonicalHash v1 covers off-chain sha256 domains only; keccak256 on-chain domains are a separate family.
 - **No hashing code** — CanonicalHash fixes the reference shape only; canonicalization/hashing implementations live elsewhere and later.

@@ -406,22 +406,6 @@
         { "kind": "repoPath", "ref": "afi-mint:src/orchestrator/MintExecutor.ts:32", "note": "abstract IMintCoordinatorContract; not wired on-chain" },
         { "kind": "test", "ref": "afi-mint:test/emissions-schedule-parity.test.ts", "note": "86B parity vs afi-math" }
       ]
-    },
-    {
-      "structureId": "afi-benchkit",
-      "name": "afi-benchkit benchmark harness",
-      "kind": "benchmark",
-      "purpose": "A standalone deterministic PoI/PoInsight benchmark and reproducibility harness over static CSV fixtures. Research surface: it has no live finalized-receipt feed and no protocol reputation or incentive integration; its composite reputation number is a local research computation, not protocol law.",
-      "maturity": "partial",
-      "visibility": "public",
-      "capabilityRefs": [],
-      "servedDistrictRefs": [],
-      "repositoryRefs": ["repo-afi-benchkit"],
-      "exposedInterfaceRefs": [],
-      "routingInterfaceRefs": [],
-      "evidence": [
-        { "kind": "repoPath", "ref": "afi-benchkit:src/afi_benchkit/cli.py", "note": "afi-bench CLI; two golden-plot tests fail pre-existing" }
-      ]
     }
   ],
 
@@ -864,7 +848,6 @@
     { "repositoryId": "repo-afi-token", "identity": "AFI-Protocol/afi-token", "role": "On-chain token (86B hard cap xERC20); Base Sepolia testnet; reserved settlement domain", "hostedStructureRefs": ["afi-token"], "implementedCapabilityRefs": [], "visibility": "public" },
     { "repositoryId": "repo-afi-xerc20", "identity": "AFI-Protocol/afi-xerc20", "role": "Vendored xERC20 standard (dependency of afi-token)", "hostedStructureRefs": [], "implementedCapabilityRefs": [], "visibility": "public" },
     { "repositoryId": "repo-afi-econ", "identity": "AFI-Protocol/afi-econ", "role": "Economic research kit (non-canonical, placeholder)", "hostedStructureRefs": [], "implementedCapabilityRefs": [], "visibility": "public" },
-    { "repositoryId": "repo-afi-benchkit", "identity": "AFI-Protocol/afi-benchkit", "role": "PoI / PoInsight benchmark + reproducibility harness (research)", "hostedStructureRefs": ["afi-benchkit"], "implementedCapabilityRefs": [], "visibility": "public" },
     { "repositoryId": "repo-afi-artifacts", "identity": "AFI-Protocol/afi-artifacts", "role": "Frozen, DOI-minted paper reproducibility bundle", "hostedStructureRefs": [], "implementedCapabilityRefs": [], "visibility": "public" },
     { "repositoryId": "repo-afi-docs", "identity": "AFI-Protocol/afi-docs", "role": "Documentation hub; single authoritative current architecture map", "hostedStructureRefs": ["docs-hub"], "implementedCapabilityRefs": [], "visibility": "public" },
     { "repositoryId": "repo-afi-protocol", "identity": "AFI-Protocol/afi-protocol", "role": "Public flagship repository/navigation map (start here)", "hostedStructureRefs": [], "implementedCapabilityRefs": [], "visibility": "public" },
@@ -1057,7 +1040,7 @@
 
   "audienceDescriptors": [
     { "audienceId": "audience-investor", "name": "Investor", "note": "A non-conformance audience descriptor only. 'Investor' is NOT an AFI protocol-conformance role and implies no protocol activation, validator/provider privilege, or economic authority (ATLAS-GOV D-ATLAS-10)." },
-    { "audienceId": "audience-researcher", "name": "Researcher", "note": "A non-conformance audience descriptor: consumes afi-benchkit, afi-artifacts, and afi-docs. Implies no protocol activation or conformance role." },
+    { "audienceId": "audience-researcher", "name": "Researcher", "note": "A non-conformance audience descriptor: consumes afi-artifacts and afi-docs. Implies no protocol activation or conformance role." },
     { "audienceId": "audience-observer", "name": "Ecosystem observer", "note": "A non-conformance audience descriptor for ecosystem observers; implies no protocol activation or conformance role." }
   ]
 }
