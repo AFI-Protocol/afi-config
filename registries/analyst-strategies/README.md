@@ -34,7 +34,7 @@ The production **froggy** registration (five-lane provider runtime, FLPR-GOV):
 
 - [`froggy--trend_pullback_v1--1.0.0.json`](./froggy--trend_pullback_v1--1.0.0.json) — the registration entry (`status: active`, `providerBindingPolicy: explicit` over the seeded [`provider-bindings`](../provider-bindings/)).
 - [`froggy--trend_pullback_v1--1.0.0.config.json`](./froggy--trend_pullback_v1--1.0.0.config.json) — the co-located registered `afi.analyst-strategy-config.v1` artifact the entry's `configRef` resolves to, pinning the [`froggy-trend-pullback--v1.3.0`](../pipelines/froggy-trend-pullback--v1.3.0.json) fail-fast manifest by canonical hash (EV3-GOV D-EV3-5(1)) and declaring the per-signal ratio decay law `barsPerHalfLife: 12` with assumed timeframe 5m for unparseable timeframes (TDR-GOV D-TDR-4; supersedes the DH-GOV D-DH-1 `decay-intraday-v1` ref — live 5m stamps stay at halfLifeMinutes 60 by construction). Its canonical hash (domain tag `afi.d2.analyst-config`) is
-  `1172e5da91dfd9ac6e65a060b628c5a4f1bbdd41545904a7a6a59e15fc0fe705`, recomputed and asserted by the test suite.
+  `5cb9b7a4652f3cfaa31d8a069c14c3282bbdf9354443badb033b05b01fd01e22`, recomputed and asserted by the test suite (DEM-PRODUCER-PLAN era; the config's hash-excluded `metadata.supersedes` records the prior versions).
 
 Co-located config artifacts are named `<analystId>--<strategyId>--<strategyVersion>.config.json` beside their registration entry.
 
@@ -45,3 +45,7 @@ Complete worked examples (schema-valid, semantically clean, with real canonical 
 
 `froggy--trend_pullback_v1--1.0.0.config.json` gains `mappingRef: {froggy-trend-pullback, 1.0.0}` (DEM-GOV D-DEM-2(3)); `analystConfigHash` rotates `1172e5da… → aa8cf5cf…` (D-DEM-6(2): mapping identity rides the config hash — no new record member). Prior rotations: TDR-GOV D-TDR-4 (`8ab16706 → 1172e5da`), DH-GOV D-DH-1 (`e34471de → 8ab16706`).
 
+
+## Change control — analystConfigHash re-record (DEM-PRODUCER-PLAN)
+
+`froggy--trend_pullback_v1--1.0.0.config.json` moves `mappingRef` `1.0.0 → 1.1.0` (DEM-GOV §9 `DEM-PRODUCER-PLAN`, owner-authorized 2026-08-25, determination D-5): `rrMultiplePlanned` is bound to the technical lane's verified trade-plan fact. `analystConfigHash` re-records `aa8cf5cf… → 5cb9b7a4…` under the frozen triple (SV-GOV D-SV-1; D-CFG-5(4): the version identity IS the hash — the superseded version survives on every record sealed under it and in git history, and is listed in the config's hash-excluded `metadata.supersedes`). Prior rotations: DEM-BIND step (d) (`1172e5da → aa8cf5cf`), TDR-GOV D-TDR-4 (`8ab16706 → 1172e5da`), DH-GOV D-DH-1 (`e34471de → 8ab16706`).

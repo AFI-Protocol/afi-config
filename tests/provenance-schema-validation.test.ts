@@ -189,12 +189,16 @@ describe('District 2 M1 Provenance Schema Drafts (v1)', () => {
       });
     });
 
-    it('all provenance draft schemas should be marked draft-non-implementation', () => {
+    it('provenance draft schemas are marked draft-non-implementation; TradePlan v1 is a governed contract (DEM-PRODUCER-PLAN)', () => {
       ALL_PROVENANCE_SCHEMAS.forEach((schemaFile) => {
         const schema = loadJSON(schemaFile);
-        expect(schema['x-afiStatus'], `${schemaFile} should carry x-afiStatus draft marker`).toBe(
-          'draft-non-implementation',
-        );
+        // DEM-GOV §9 DEM-PRODUCER-PLAN (owner-authorized 2026-08-25; determination
+        // D-4): afi.trade-plan.v1 is wired at the CPJ→USS seam and carries a
+        // governed status; every other D2 draft stays draft-non-implementation.
+        const expected = schemaFile.endsWith('/trade-plan.schema.json')
+          ? 'governed-contract'
+          : 'draft-non-implementation';
+        expect(schema['x-afiStatus'], `${schemaFile} x-afiStatus`).toBe(expected);
       });
     });
   });

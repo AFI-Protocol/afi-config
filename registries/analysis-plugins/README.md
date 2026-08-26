@@ -40,23 +40,24 @@ This directory holds the **canonical registry of analysis plugin manifests** —
 
 The **seven official froggy-trend-pullback plugin manifests** (five-lane provider runtime, FLPR-GOV — the five lane plugins are vendor-neutral and provider-instance-backed):
 
-| pluginId | pluginVersion | category |
-|---|---|---|
-| `afi-analysis-technical` | 2.0.0 | technical |
-| `afi-analysis-pattern` | 2.0.0 | pattern |
-| `afi-analysis-sentiment` | 2.0.0 | sentiment |
-| `afi-analysis-news` | 2.0.0 | news |
-| `afi-analysis-aiml` | 2.0.0 | aiMl |
-| `afi-merge-enriched-view` | 1.1.0 | merge |
-| `afi-scorer-froggy-trend-pullback` | 1.0.0 | scorer |
+| pluginId | pluginVersion | implementationVersion | category |
+|---|---|---|---|
+| `afi-analysis-technical` | 2.0.0 | 2.1.0 | technical |
+| `afi-analysis-pattern` | 2.0.0 | 2.0.0 | pattern |
+| `afi-analysis-sentiment` | 2.0.0 | 2.0.0 | sentiment |
+| `afi-analysis-news` | 2.0.0 | 2.0.0 | news |
+| `afi-analysis-aiml` | 2.0.0 | 2.0.0 | aiMl |
+| `afi-merge-enriched-view` | 1.1.0 | 1.2.0 | merge |
+| `afi-scorer-froggy-trend-pullback` | 1.0.0 | 1.4.0 | scorer |
 
 Their canonical plugin-set hash (`afi.d2.plugin-set`) is
-`f63c6f21beb20834c76bc392373746db520828802e7797e84085a831572629d5`, recomputed
-and asserted by the test suite (AR-GOV rubric era: the scorer's
-`implementationVersion` is `1.2.0`; prior eras — `1.1.0`/EQ-GOV
-`e10cf9eeaa0b1878e970dddfcccce7371a946bd0a4079141ed70a857815bfb9f`,
-`1.0.0`/seeding
-`5384e1c08ce4bd7f533acc15487df81d7d37b6615d109d611bde968a81f2f386`).
+`36f911f4fd37eb0d161ab4df7a9650fd1c477bf6dbd71de4a82e0f73c71c4c93`, recomputed
+and asserted by the test suite (DEM-PRODUCER-PLAN era — technical `2.1.0`,
+merge `1.2.0`, scorer `1.4.0`; prior eras — DEM-BIND scorer `1.3.0`
+`220c004ed615c58bd3f4187256568bfcc6ea375e49ce467ff06a2467b405c0b6`, AR-GOV
+scorer `1.2.0` `f63c6f21beb20834c76bc392373746db520828802e7797e84085a831572629d5`,
+EQ-GOV scorer `1.1.0` `e10cf9eeaa0b1878e970dddfcccce7371a946bd0a4079141ed70a857815bfb9f`,
+seeding `1.0.0` `5384e1c08ce4bd7f533acc15487df81d7d37b6615d109d611bde968a81f2f386`).
 
 Worked examples (schema-valid vectors, including negatives) live under
 [`examples/analysis-plugin/v1/`](../../examples/analysis-plugin/v1/).
@@ -65,3 +66,7 @@ Worked examples (schema-valid vectors, including negatives) live under
 
 `afi-scorer-froggy-trend-pullback--1.0.0` `implementationVersion` `1.2.0 → 1.3.0` under DEM-GOV D-DEM-7(4) (the EQ-GOV D-EQ-3(2) precedent class): the scorer node's realizing code changes in the DEM-BIND wave — it now composes its input from the registered mapping's interpreter fragment plus the residual builder. **Sequencing:** this bump records the era of the DEM-BIND wave (AR-GOV D-AR-4(2) precedent) and lands with the registration, before the reactor's fixture/golden wave consumes it — it must never be read as premature. `pluginVersion` stays `1.0.0` (the contract surface is unchanged); `pluginSetHash` rotates (`f63c6f21… → 220c004e…`).
 
+
+## Change control — implementationVersion moves (DEM-PRODUCER-PLAN)
+
+Under DEM-GOV D-DEM-7(4) (owner-authorized 2026-08-25, §9 `DEM-PRODUCER-PLAN`), every plugin record whose realizing code changes in the slot moves one minor: `afi-analysis-technical` `2.0.0 → 2.1.0` (the technical lane now verifies the submitted `afi.trade-plan.v1` against its fetched candles and emits `technical.plan` — the producer contract and its declared absences are recorded in the manifest `description`); `afi-merge-enriched-view` `1.1.0 → 1.2.0` (`viewTechnical` projects the plan facts — `laneView.ts` is the merge node's sole realizing helper); `afi-scorer-froggy-trend-pullback` `1.3.0 → 1.4.0` (the `rrMultiplePlanned` synthesis is deleted from the scorer-realizing adapter; the composer is generalized). `pluginVersion` is unchanged on all three (contract surface untouched); `pluginSetHash` rotates (`220c004e… → 36f911f4…`). Adapter identity `afi-adapter-technical-local@1.0.0` is held (DEM-GOV §9 determination D-2).
