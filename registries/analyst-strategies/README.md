@@ -34,7 +34,7 @@ The production **froggy** registration (five-lane provider runtime, FLPR-GOV):
 
 - [`froggy--trend_pullback_v1--1.0.0.json`](./froggy--trend_pullback_v1--1.0.0.json) — the registration entry (`status: active`, `providerBindingPolicy: explicit` over the seeded [`provider-bindings`](../provider-bindings/)).
 - [`froggy--trend_pullback_v1--1.0.0.config.json`](./froggy--trend_pullback_v1--1.0.0.config.json) — the co-located registered `afi.analyst-strategy-config.v1` artifact the entry's `configRef` resolves to, pinning the [`froggy-trend-pullback--v1.3.0`](../pipelines/froggy-trend-pullback--v1.3.0.json) fail-fast manifest by canonical hash (EV3-GOV D-EV3-5(1)) and declaring the per-signal ratio decay law `barsPerHalfLife: 12` with assumed timeframe 5m for unparseable timeframes (TDR-GOV D-TDR-4; supersedes the DH-GOV D-DH-1 `decay-intraday-v1` ref — live 5m stamps stay at halfLifeMinutes 60 by construction). Its canonical hash (domain tag `afi.d2.analyst-config`) is
-  `300783e4f93ae07b2d758a3780b03cfbf6e4742bb4e0e5c9e06fb54c1df1ff99`, recomputed and asserted by the test suite (DEM-PRODUCER-CANDLE era; the config's hash-excluded `metadata.supersedes` records the prior versions).
+  `71de40d255a22e50d9b353f05722f560fc03911c8bd2daffb974f068060aa4b1`, recomputed and asserted by the test suite (DEM-PRODUCER-HTF era; the config's hash-excluded `metadata.supersedes` records the prior versions).
 
 Co-located config artifacts are named `<analystId>--<strategyId>--<strategyVersion>.config.json` beside their registration entry.
 
@@ -53,3 +53,7 @@ Complete worked examples (schema-valid, semantically clean, with real canonical 
 ## Change control — analystConfigHash re-record (DEM-PRODUCER-CANDLE)
 
 `froggy--trend_pullback_v1--1.0.0.config.json` moves `mappingRef` `1.1.0 → 1.2.0` (DEM-GOV §9 `DEM-PRODUCER-CANDLE`, owner-authorized 2026-08-25): `brokeEmaWithBody` and `haFlatBackConfirmed` are bound (required) to the technical lane's computed candle-structure facts. `analystConfigHash` re-records `5cb9b7a4… → 300783e4…` under the frozen triple (SV-GOV D-SV-1; D-CFG-5(4)); the superseded version is listed in the config's hash-excluded `metadata.supersedes`.
+
+## Change control — analystConfigHash re-record + the HTF composition value (DEM-PRODUCER-HTF)
+
+`froggy--trend_pullback_v1--1.0.0.config.json` moves `mappingRef` `1.2.0 → 1.3.0` and gains `nodeOverrides.technical.config.htf` = `{dailyTimeframe: "1d", weeklyTimeframe: "1w", htfCandleLimit: 100}` — **the registered composition value** the DEM-GOV §9 `DEM-PRODUCER-HTF` gate requires ("timeframe selection is a registered composition value, never a code constant"), carried on the one surface CFG-GOV bounds to `{enabled, config}` and `analystConfigHash` commits. `analystConfigHash` re-records `300783e4… → 71de40d2…` under the frozen triple (SV-GOV D-SV-1; D-CFG-5(4)). The pipeline manifest, `pipelineRef`, `pipelineVersion` and plugin-set membership are untouched (DEM-GOV §8).

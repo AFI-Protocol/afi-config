@@ -35,6 +35,11 @@ const rootDir = join(__dirname, '..');
 // D-DH-1 (decay-swing-v1 -> decay-intraday-v1) and again under TDR-GOV
 // D-TDR-4 (the per-signal ratio decay law: barsPerHalfLife 12,
 // unknownTimeframeMinutes 5); analystConfigHash moved under DEM-GOV
+// DEM-PRODUCER-HTF (owner-authorized 2026-08-25): analystConfigHash re-recorded
+// (mappingRef 1.2.0 -> 1.3.0 + nodeOverrides.technical.config.htf, the registered
+// composition value for HTF timeframe selection; prior 300783e4...);
+// pluginSetHash moved (technical 2.2.0 -> 2.3.0, merge 1.3.0 -> 1.4.0, scorer
+// 1.5.0 -> 1.6.0). Before that,
 // DEM-PRODUCER-CANDLE (owner-authorized 2026-08-25): analystConfigHash re-recorded
 // (mappingRef 1.1.0 -> 1.2.0; prior 5cb9b7a4...); pluginSetHash moved (technical
 // 2.1.0 -> 2.2.0, merge 1.2.0 -> 1.3.0, scorer 1.4.0 -> 1.5.0). Before that,
@@ -48,8 +53,8 @@ const rootDir = join(__dirname, '..');
 // EQ-GOV D-EQ-3(2) 1.0.0 -> 1.1.0. ---
 const PINNED_MANIFEST_HASH = 'df3372dadaca1595d0e6d2f6bad9464ccc9abb7106e9f5b7111df148a145bc4f';
 const PINNED_ANALYST_CONFIG_HASH =
-  '300783e4f93ae07b2d758a3780b03cfbf6e4742bb4e0e5c9e06fb54c1df1ff99';
-const PINNED_PLUGIN_SET_HASH = '5eef1faf93d0a1fd5f616fd19a98a10da514afa73141aaddd77e308290a72471';
+  '71de40d255a22e50d9b353f05722f560fc03911c8bd2daffb974f068060aa4b1';
+const PINNED_PLUGIN_SET_HASH = '59ff54379d44ec250d924a5000f3f85a2e041fb1b12bc5c424d877fb2e2aa419';
 
 // D-FCP-7 registered composition domain tags (canonical-json-hashing.v1 §3, amended).
 const TAG_COMPOSITION_MANIFEST = 'afi.d2.composition-manifest';
@@ -72,6 +77,7 @@ const EXPECTED_MAPPING_FILES: string[] = [
   'froggy-trend-pullback--1.0.0.json',
   'froggy-trend-pullback--1.1.0.json',
   'froggy-trend-pullback--1.2.0.json',
+  'froggy-trend-pullback--1.3.0.json',
 ];
 const PINNED_MAPPING_HASHES: Record<string, string> = {
   'froggy-trend-pullback--1.0.0.json':
@@ -84,6 +90,10 @@ const PINNED_MAPPING_HASHES: Record<string, string> = {
   // haFlatBackConfirmed as required binds; 1.0.0 and 1.1.0 stay byte-identical.
   'froggy-trend-pullback--1.2.0.json':
     '6ecfa9dc1041f17722759baedcd19d8208015c46ee5dcbb930c9e60115d4a9c6',
+  // DEM-PRODUCER-HTF (owner-authorized 2026-08-25): weeklyBias/dailyBias recoded
+  // from the lane's higher-timeframe trend facts; 1.0.0-1.2.0 byte-identical.
+  'froggy-trend-pullback--1.3.0.json':
+    '148fa7be3c87a3cd17e0e61d2407eacc7717a84fdea083d790537790eef65f35',
 };
 const PIPELINES_DIR = 'registries/pipelines';
 const STRATEGIES_DIR = 'registries/analyst-strategies';
