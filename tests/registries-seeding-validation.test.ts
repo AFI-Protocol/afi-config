@@ -35,7 +35,10 @@ const rootDir = join(__dirname, '..');
 // D-DH-1 (decay-swing-v1 -> decay-intraday-v1) and again under TDR-GOV
 // D-TDR-4 (the per-signal ratio decay law: barsPerHalfLife 12,
 // unknownTimeframeMinutes 5); analystConfigHash moved under DEM-GOV
-// DEM-PRODUCER-PLAN (owner-authorized 2026-08-25): analystConfigHash re-recorded
+// DEM-PRODUCER-CANDLE (owner-authorized 2026-08-25): analystConfigHash re-recorded
+// (mappingRef 1.1.0 -> 1.2.0; prior 5cb9b7a4...); pluginSetHash moved (technical
+// 2.1.0 -> 2.2.0, merge 1.2.0 -> 1.3.0, scorer 1.4.0 -> 1.5.0). Before that,
+// DEM-PRODUCER-PLAN: analystConfigHash re-recorded
 // (mappingRef 1.0.0 -> 1.1.0; prior value aa8cf5cf..., before that 1172e5da...);
 // pluginSetHash moved under DEM-GOV D-DEM-7(4) — every plugin record whose
 // realizing code changed in the slot: afi-analysis-technical 2.0.0 -> 2.1.0 (the
@@ -45,8 +48,8 @@ const rootDir = join(__dirname, '..');
 // EQ-GOV D-EQ-3(2) 1.0.0 -> 1.1.0. ---
 const PINNED_MANIFEST_HASH = 'df3372dadaca1595d0e6d2f6bad9464ccc9abb7106e9f5b7111df148a145bc4f';
 const PINNED_ANALYST_CONFIG_HASH =
-  '5cb9b7a4652f3cfaa31d8a069c14c3282bbdf9354443badb033b05b01fd01e22';
-const PINNED_PLUGIN_SET_HASH = '36f911f4fd37eb0d161ab4df7a9650fd1c477bf6dbd71de4a82e0f73c71c4c93';
+  '300783e4f93ae07b2d758a3780b03cfbf6e4742bb4e0e5c9e06fb54c1df1ff99';
+const PINNED_PLUGIN_SET_HASH = '5eef1faf93d0a1fd5f616fd19a98a10da514afa73141aaddd77e308290a72471';
 
 // D-FCP-7 registered composition domain tags (canonical-json-hashing.v1 §3, amended).
 const TAG_COMPOSITION_MANIFEST = 'afi.d2.composition-manifest';
@@ -68,6 +71,7 @@ const MAPPINGS_DIR = 'registries/enrichment-mappings';
 const EXPECTED_MAPPING_FILES: string[] = [
   'froggy-trend-pullback--1.0.0.json',
   'froggy-trend-pullback--1.1.0.json',
+  'froggy-trend-pullback--1.2.0.json',
 ];
 const PINNED_MAPPING_HASHES: Record<string, string> = {
   'froggy-trend-pullback--1.0.0.json':
@@ -76,6 +80,10 @@ const PINNED_MAPPING_HASHES: Record<string, string> = {
   // technical lane's verified trade-plan fact; 1.0.0 stays byte-identical (D-DEM-6(1)).
   'froggy-trend-pullback--1.1.0.json':
     '4642fe926b663faded2a674efd5c44e9ecefb4b4205e2ce9ee348cf974a117c3',
+  // DEM-PRODUCER-CANDLE (owner-authorized 2026-08-25): brokeEmaWithBody +
+  // haFlatBackConfirmed as required binds; 1.0.0 and 1.1.0 stay byte-identical.
+  'froggy-trend-pullback--1.2.0.json':
+    '6ecfa9dc1041f17722759baedcd19d8208015c46ee5dcbb930c9e60115d4a9c6',
 };
 const PIPELINES_DIR = 'registries/pipelines';
 const STRATEGIES_DIR = 'registries/analyst-strategies';

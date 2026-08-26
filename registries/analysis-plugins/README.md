@@ -42,18 +42,19 @@ The **seven official froggy-trend-pullback plugin manifests** (five-lane provide
 
 | pluginId | pluginVersion | implementationVersion | category |
 |---|---|---|---|
-| `afi-analysis-technical` | 2.0.0 | 2.1.0 | technical |
+| `afi-analysis-technical` | 2.0.0 | 2.2.0 | technical |
 | `afi-analysis-pattern` | 2.0.0 | 2.0.0 | pattern |
 | `afi-analysis-sentiment` | 2.0.0 | 2.0.0 | sentiment |
 | `afi-analysis-news` | 2.0.0 | 2.0.0 | news |
 | `afi-analysis-aiml` | 2.0.0 | 2.0.0 | aiMl |
-| `afi-merge-enriched-view` | 1.1.0 | 1.2.0 | merge |
-| `afi-scorer-froggy-trend-pullback` | 1.0.0 | 1.4.0 | scorer |
+| `afi-merge-enriched-view` | 1.1.0 | 1.3.0 | merge |
+| `afi-scorer-froggy-trend-pullback` | 1.0.0 | 1.5.0 | scorer |
 
 Their canonical plugin-set hash (`afi.d2.plugin-set`) is
-`36f911f4fd37eb0d161ab4df7a9650fd1c477bf6dbd71de4a82e0f73c71c4c93`, recomputed
-and asserted by the test suite (DEM-PRODUCER-PLAN era — technical `2.1.0`,
-merge `1.2.0`, scorer `1.4.0`; prior eras — DEM-BIND scorer `1.3.0`
+`5eef1faf93d0a1fd5f616fd19a98a10da514afa73141aaddd77e308290a72471`, recomputed
+and asserted by the test suite (DEM-PRODUCER-CANDLE era — technical `2.2.0`,
+merge `1.3.0`, scorer `1.5.0`; prior eras — DEM-PRODUCER-PLAN
+`36f911f4fd37eb0d161ab4df7a9650fd1c477bf6dbd71de4a82e0f73c71c4c93`, DEM-BIND scorer `1.3.0`
 `220c004ed615c58bd3f4187256568bfcc6ea375e49ce467ff06a2467b405c0b6`, AR-GOV
 scorer `1.2.0` `f63c6f21beb20834c76bc392373746db520828802e7797e84085a831572629d5`,
 EQ-GOV scorer `1.1.0` `e10cf9eeaa0b1878e970dddfcccce7371a946bd0a4079141ed70a857815bfb9f`,
@@ -70,3 +71,7 @@ Worked examples (schema-valid vectors, including negatives) live under
 ## Change control — implementationVersion moves (DEM-PRODUCER-PLAN)
 
 Under DEM-GOV D-DEM-7(4) (owner-authorized 2026-08-25, §9 `DEM-PRODUCER-PLAN`), every plugin record whose realizing code changes in the slot moves one minor: `afi-analysis-technical` `2.0.0 → 2.1.0` (the technical lane now verifies the submitted `afi.trade-plan.v1` against its fetched candles and emits `technical.plan` — the producer contract and its declared absences are recorded in the manifest `description`); `afi-merge-enriched-view` `1.1.0 → 1.2.0` (`viewTechnical` projects the plan facts — `laneView.ts` is the merge node's sole realizing helper); `afi-scorer-froggy-trend-pullback` `1.3.0 → 1.4.0` (the `rrMultiplePlanned` synthesis is deleted from the scorer-realizing adapter; the composer is generalized). `pluginVersion` is unchanged on all three (contract surface untouched); `pluginSetHash` rotates (`220c004e… → 36f911f4…`). Adapter identity `afi-adapter-technical-local@1.0.0` is held (DEM-GOV §9 determination D-2).
+
+## Change control — implementationVersion moves (DEM-PRODUCER-CANDLE)
+
+Under DEM-GOV D-DEM-7(4) (owner-authorized 2026-08-25, §9 `DEM-PRODUCER-CANDLE` — the act D5-GOV D-D5-1 reserved): `afi-analysis-technical` `2.1.0 → 2.2.0` (the technical kernel emits `brokeEmaWithBody`, `haFlatBack`, `haFlatBackConfirmed` over the window it already fetches — no new fetch, no new provider, no new parameter; the producer contract is recorded in the manifest `description`: `brokeEmaWithBody` = the latest bar's body closed on the counter-trend side of EMA20 (bullish → close below ema20, bearish → close above ema20, range → the body crossed EMA20 on this bar); Heikin-Ashi flat-back = recurrence over the whole fetched window, seed `(o+c)/2` on the first bar, epsilon 0 (`low >= haOpen` bullish, `high <= haOpen` bearish), confirmed iff it agrees with the lane's EMA20/EMA50 trend law; both evaluated on the last fetched bar, the convention every existing kernel uses); `afi-merge-enriched-view` `1.2.0 → 1.3.0` (`viewTechnical` projects the computed facts in place of the retired D5-GOV stub pin); `afi-scorer-froggy-trend-pullback` `1.4.0 → 1.5.0` (`BROKE_EMA_WITH_BODY_UNIMPLEMENTED_STUB` and the `haFlatBackConfirmed: false` literal are deleted from the scorer-realizing adapter). `pluginVersion` unchanged on all three; `pluginSetHash` rotates (`36f911f4… → 5eef1faf…`). Adapter identity `afi-adapter-technical-local@1.0.0` held (§9 determination D-2).

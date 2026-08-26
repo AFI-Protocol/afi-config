@@ -7,7 +7,7 @@
     "algorithm": "sha256",
     "canonicalizationVersion": "afi.hash.v1",
     "domainTag": "afi.d2.analyst-config",
-    "value": "5cb9b7a4652f3cfaa31d8a069c14c3282bbdf9354443badb033b05b01fd01e22"
+    "value": "300783e4f93ae07b2d758a3780b03cfbf6e4742bb4e0e5c9e06fb54c1df1ff99"
   },
   "configRef": "afi-config/registries/analyst-strategies/froggy--trend_pullback_v1--1.0.0.config.json",
   "providerBindingPolicy": {
@@ -23,5 +23,5 @@
   },
   "status": "active",
   "registeredAt": "2026-07-18",
-  "registrationRef": "AFI-Protocol/afi-config PR (branch dem/plan-config): DEM-GOV DEM-PRODUCER-PLAN (owner-authorized 2026-08-25; §9 D-5) — mappingRef froggy-trend-pullback 1.0.0 -> 1.1.0 (rrMultiplePlanned = the technical lane's verified trade-plan fact); analystConfigHash re-record aa8cf5cf... -> 5cb9b7a4... under the frozen triple (SV-GOV D-SV-1, D-CFG-5(4)). Prior rotations: DEM-BIND (d) 1172e5da->aa8cf5cf, TDR-GOV, DH-GOV — see README change control; registered per factory-configurable-pipelines-v1 D-FCP-5"
+  "registrationRef": "AFI-Protocol/afi-config PR (branch dem/candle-config): DEM-GOV DEM-PRODUCER-CANDLE (owner-authorized 2026-08-25) — mappingRef froggy-trend-pullback 1.1.0 -> 1.2.0 (brokeEmaWithBody + haFlatBackConfirmed = the technical lane's computed candle-structure facts); analystConfigHash re-record 5cb9b7a4... -> 300783e4... under the frozen triple (SV-GOV D-SV-1, D-CFG-5(4)). Prior: DEM-PRODUCER-PLAN, DEM-BIND (d), TDR-GOV, DH-GOV — see README; registered per factory-configurable-pipelines-v1 D-FCP-5"
 }
