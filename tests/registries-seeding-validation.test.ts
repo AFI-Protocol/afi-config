@@ -35,15 +35,18 @@ const rootDir = join(__dirname, '..');
 // D-DH-1 (decay-swing-v1 -> decay-intraday-v1) and again under TDR-GOV
 // D-TDR-4 (the per-signal ratio decay law: barsPerHalfLife 12,
 // unknownTimeframeMinutes 5); analystConfigHash moved under DEM-GOV
-// D-DEM-6(2) (DEM-BIND step (d): mappingRef froggy-trend-pullback--1.0.0
-// registered; prior value 1172e5da...); pluginSetHash moved under DEM-GOV
-// D-DEM-7(4) (scorer implementationVersion 1.2.0 -> 1.3.0, the DEM-BIND
-// mapping-consumption era, EQ-GOV D-EQ-3(2) precedent class; prior moves:
-// AR-GOV D-AR-4(2) 1.1.0 -> 1.2.0, EQ-GOV D-EQ-3(2) 1.0.0 -> 1.1.0). ---
+// DEM-PRODUCER-PLAN (owner-authorized 2026-08-25): analystConfigHash re-recorded
+// (mappingRef 1.0.0 -> 1.1.0; prior value aa8cf5cf..., before that 1172e5da...);
+// pluginSetHash moved under DEM-GOV D-DEM-7(4) — every plugin record whose
+// realizing code changed in the slot: afi-analysis-technical 2.0.0 -> 2.1.0 (the
+// plan producer), afi-merge-enriched-view 1.1.0 -> 1.2.0 (the projection),
+// afi-scorer-froggy-trend-pullback 1.3.0 -> 1.4.0 (synthesis deleted). Prior
+// moves: DEM-BIND scorer 1.2.0 -> 1.3.0, AR-GOV D-AR-4(2) 1.1.0 -> 1.2.0,
+// EQ-GOV D-EQ-3(2) 1.0.0 -> 1.1.0. ---
 const PINNED_MANIFEST_HASH = 'df3372dadaca1595d0e6d2f6bad9464ccc9abb7106e9f5b7111df148a145bc4f';
 const PINNED_ANALYST_CONFIG_HASH =
-  'aa8cf5cfd918ae9a80532b735db3236b708ce0cb82778d845b35220627dab479';
-const PINNED_PLUGIN_SET_HASH = '220c004ed615c58bd3f4187256568bfcc6ea375e49ce467ff06a2467b405c0b6';
+  '5cb9b7a4652f3cfaa31d8a069c14c3282bbdf9354443badb033b05b01fd01e22';
+const PINNED_PLUGIN_SET_HASH = '36f911f4fd37eb0d161ab4df7a9650fd1c477bf6dbd71de4a82e0f73c71c4c93';
 
 // D-FCP-7 registered composition domain tags (canonical-json-hashing.v1 §3, amended).
 const TAG_COMPOSITION_MANIFEST = 'afi.d2.composition-manifest';
@@ -62,10 +65,17 @@ const MAPPINGS_DIR = 'registries/enrichment-mappings';
 // froggy mapping is registered. D-DEM-6(1): each registered document's
 // canonical-json hash (full document, no exclusions) is pinned here — the
 // registry's guard layer — and echoed human-readably in the family README.
-const EXPECTED_MAPPING_FILES: string[] = ['froggy-trend-pullback--1.0.0.json'];
+const EXPECTED_MAPPING_FILES: string[] = [
+  'froggy-trend-pullback--1.0.0.json',
+  'froggy-trend-pullback--1.1.0.json',
+];
 const PINNED_MAPPING_HASHES: Record<string, string> = {
   'froggy-trend-pullback--1.0.0.json':
     'fb68ef40681126554daf43f6b7828bf822f383be8ee03ffa358fe3f58957d488',
+  // DEM-PRODUCER-PLAN (owner-authorized 2026-08-25): rrMultiplePlanned bound to the
+  // technical lane's verified trade-plan fact; 1.0.0 stays byte-identical (D-DEM-6(1)).
+  'froggy-trend-pullback--1.1.0.json':
+    '4642fe926b663faded2a674efd5c44e9ecefb4b4205e2ce9ee348cf974a117c3',
 };
 const PIPELINES_DIR = 'registries/pipelines';
 const STRATEGIES_DIR = 'registries/analyst-strategies';

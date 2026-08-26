@@ -1,6 +1,6 @@
 # District 2 Provenance Schema Drafts (v1)
 
-**Status:** `draft-non-implementation` — schema/spec surface only.
+**Status:** `draft-non-implementation` — schema/spec surface only — **except `trade-plan.schema.json`, `governed-contract` since DEM-PRODUCER-PLAN (see its row).**
 **Authorization:** R1-GOV **D-R1-5**, which authorizes **District Two M1 only**: afi-config schema drafts and tests.
 **Part of:** AFI District 2 — Canonical Data & Provenance Boundary.
 
@@ -17,7 +17,7 @@ These schemas are drafts for District 2 implementation. They are **not productio
 | ScoredSignal v1 projection | `scored-signal.schema.json` | Thin canonical scored-signal projection (identity, direction, risk bucket, conviction, UWR score/axes, provenance links). Structurally excludes `rawUss`, `lenses`, `_priceFeedMetadata`, `rawPayload`, storage fields, and volatile processing timestamps. |
 | ProvenanceRecord v1 | `provenance-record.schema.json` | Generalized per-pass provenance record (input/enrichment/output hashes, evidence + source-disclosure refs, replay pins, domain tags, stage schema versions, optional storage profile ref). No demoOnly fields. |
 | ReplayProfile v1 | `replay-profile.schema.json` | Stricter D2-conformant replay metadata (factsRequired, dataset/code/seed pins, evidence hashes/refs, source refs, lane versions) without breaking broad USS v1.1. |
-| TradePlan v1 / SignalLevels v1 | `trade-plan.schema.json` | Preserves CPJ trade intent (entry range, stop loss, take profits, leverage/venue/market-type hints) that is currently dropped at CPJ→USS mapping. All prices are **decimal strings, never floats**. |
+| TradePlan v1 / SignalLevels v1 | `trade-plan.schema.json` | **`governed-contract`** (DEM-GOV §9 `DEM-PRODUCER-PLAN`, owner-authorized 2026-08-25, determination D-4): preserves the CPJ trade intent (entry range, stop loss, take profits, leverage/venue/market-type hints) as `uss.plan` at the CPJ→USS mapping; the technical lane verifies the levels against the candles it fetched and refuses an unverifiable plan (D-DEM-5(6)). All prices are **decimal strings, never floats**. The only schema in this directory that is runtime-wired. |
 
 Valid examples live in `examples/provenance/v1/`; positive and negative validation tests live in `tests/provenance-schema-validation.test.ts` (AJV strict, same conventions as the existing harness).
 

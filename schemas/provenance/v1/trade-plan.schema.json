@@ -1,13 +1,14 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
   "$id": "https://afi-protocol.org/schemas/provenance/v1/trade-plan.schema.json",
-  "title": "AFI TradePlan v1 / SignalLevels v1 (District 2 M1 DRAFT)",
-  "description": "DRAFT / NON-IMPLEMENTATION canonical trade-intent projection. Preserves CPJ trade intent (entry range, stop loss, take profits, leverage/venue/market-type hints) that is currently dropped at the CPJ→USS mapping. NUMBER POLICY: all prices and quantities are DECIMAL STRINGS, never IEEE-754 floats — raw JSON numbers are invalid for these fields (precedent: settlement draft's string-encoded integers). SignalLevels v1 is defined under #/definitions/signalLevels.",
+  "title": "AFI TradePlan v1 / SignalLevels v1",
+  "description": "Canonical trade-intent projection: preserves the CPJ trade intent (entry range, stop loss, take profits, leverage/venue/market-type hints) at the CPJ→USS mapping as `uss.plan` (DEM-GOV §9 DEM-PRODUCER-PLAN; the technical lane verifies the levels against the candles it fetched, D-DEM-5(6)). NUMBER POLICY: all prices and quantities are DECIMAL STRINGS, never IEEE-754 floats — raw JSON numbers are invalid for these fields (precedent: settlement draft's string-encoded integers). SignalLevels v1 is defined under #/definitions/signalLevels.",
   "$comment": "This schema captures intent as stated by the source signal. It defines no execution, routing, sizing, or settlement behavior.",
-  "x-afiStatus": "draft-non-implementation",
+  "x-afiStatus": "governed-contract",
   "x-afiPartOf": "AFI District 2 — Canonical Data & Provenance Boundary (D2 M1)",
   "x-afiDoctrineRefs": [
-    "District Two M1 provenance-schema authorization — R1-GOV D-R1-5 (afi-config schema drafts and tests only; no runtime wiring)"
+    "afi-governance/decisions/declarative-enrichment-mapping-v0.1.md (DEM-GOV: §9 DEM-PRODUCER-PLAN row — 'against the governed trade-plan contract'; D-DEM-5(6); §9 owner determination D-4, 2026-08-25, consuming D2R §3/§8's reserved TradePlan-survival act and R1-GOV D-R1-5's 'no runtime wiring' bound for this contract only)",
+    "District Two M1 provenance-schema authorization — R1-GOV D-R1-5 (origin: afi-config schema draft; wired at the CPJ→USS seam by DEM-PRODUCER-PLAN)"
   ],
   "x-afiOpenItems": {
     "TP-O1": "Decimal precision/scale limits per venue/instrument — OPEN; the decimalString pattern fixes syntax only.",
@@ -46,7 +47,11 @@
     "marketTypeHint": {
       "type": "string",
       "description": "OPTIONAL suggested market type (aligned with CPJ v0.1 extracted.marketTypeHint).",
-      "enum": ["spot", "perp", "futures"]
+      "enum": [
+        "spot",
+        "perp",
+        "futures"
+      ]
     },
     "notes": {
       "type": "string",
@@ -63,7 +68,10 @@
       "type": "object",
       "description": "An inclusive price range with decimal-string bounds.",
       "additionalProperties": false,
-      "required": ["min", "max"],
+      "required": [
+        "min",
+        "max"
+      ],
       "properties": {
         "min": {
           "$ref": "#/definitions/decimalString",
@@ -79,7 +87,9 @@
       "type": "object",
       "description": "One take-profit target.",
       "additionalProperties": false,
-      "required": ["price"],
+      "required": [
+        "price"
+      ],
       "properties": {
         "price": {
           "$ref": "#/definitions/decimalString",
@@ -95,13 +105,19 @@
       "type": "object",
       "description": "SignalLevels v1: the price levels stated by the source signal, using decimal strings throughout.",
       "additionalProperties": false,
-      "required": ["entry"],
+      "required": [
+        "entry"
+      ],
       "properties": {
         "entry": {
           "description": "Entry price or entry range.",
           "oneOf": [
-            { "$ref": "#/definitions/decimalString" },
-            { "$ref": "#/definitions/priceRange" }
+            {
+              "$ref": "#/definitions/decimalString"
+            },
+            {
+              "$ref": "#/definitions/priceRange"
+            }
           ]
         },
         "stopLoss": {
@@ -111,7 +127,9 @@
         "takeProfits": {
           "type": "array",
           "description": "OPTIONAL take-profit targets, in source order.",
-          "items": { "$ref": "#/definitions/takeProfitLevel" }
+          "items": {
+            "$ref": "#/definitions/takeProfitLevel"
+          }
         }
       }
     }
